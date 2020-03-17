@@ -18,9 +18,10 @@ add_executable(techvscats
         main.cpp
         mainwindow.cpp
         Controller/controller.cpp
+        Controller/gameobject.h
         View/view.cpp
         Model/model.cpp
-        )
+        Controller/movingobject.h Controller/enemy.cpp Controller/enemy.h)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

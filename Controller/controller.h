@@ -1,7 +1,10 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
-#include<Model/model.h>
-#include<View/view.h>
+
+#include "Model/model.h"
+#include "View/view.h"
+#include "enemy.h"
+#include "mainwindow.h"
 
 class Model;
 class View;

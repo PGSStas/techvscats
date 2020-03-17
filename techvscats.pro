@@ -17,14 +17,16 @@ CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 
 SOURCES += \
-        Controller\controller.cpp \
+        Controller/controller.cpp \
         Model/model.cpp \
         main.cpp \
         mainwindow.cpp \
-        View\view.cpp
+        View/view.cpp
 
 HEADERS += \
-        Controller\controller.h \
-    Model/model.h \
-        View\view.h \
+        Controller/gameobject.h \
+        Controller/controller.h \
+        Controller/Mo.h \
+        Model/model.h \
+        View/view.h \
         mainwindow.h \

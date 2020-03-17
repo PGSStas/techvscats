@@ -5,6 +5,8 @@
 #include <Controller/controller.h>
 
 class Controller;
+class Enemy;
+class MainWindow;
 
 class View {
  public:
@@ -12,6 +14,7 @@ class View {
   Controller* controller;
   MainWindow* main_window;
   ~View();
+ private:
 };
 
 #endif // VIEW_H

@@ -6,3 +6,7 @@ View::View(MainWindow* window_p, Controller* controller_p)
 }
 
 
+void Enemy::Draw(QPainter*) {
+
+}
+

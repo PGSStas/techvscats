@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <vector>
+#include <QtGui/QPainter>
 
 class MainWindow : public QMainWindow {
  Q_OBJECT
