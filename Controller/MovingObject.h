@@ -2,7 +2,7 @@
 #define MOVINGOBJECT_H
 
 #include <utility>
-#include "gameobject.h"
+#include "GameObject.h"
 
 class MovingObject : public GameObject {
  public:

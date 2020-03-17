@@ -1,7 +1,7 @@
 os: linux
 dist: bionic
 language: cpp
-compiler: g++
+compiler: gcc
 sudo: required
 
 before_install:

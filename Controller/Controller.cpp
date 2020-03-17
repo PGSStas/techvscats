@@ -1,8 +1,8 @@
-#include "controller.h"
+#include "Controller.h"
 
-Controller::Controller(MainWindow* window) {
+Controller::Controller() {
   model_ = new Model(this);
-  view_ = new View(window, this);
+  view_ = new View(this);
 }
 
 void Controller::StartGame(int) {

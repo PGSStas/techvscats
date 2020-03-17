@@ -1,7 +1,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "movingobject.h"
+#include "MovingObject.h"
 
 class Enemy : public MovingObject {
  public:
