@@ -7,7 +7,6 @@ class View
 {
 public:
     View();
-
     ~View();
 };
 

@@ -10,7 +10,6 @@ public:
 private:
     Model* model_;
     View* view_;
-
     ~Controller();
 };
 

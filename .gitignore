@@ -1,0 +1,8 @@
+build-techvscats/
+.idea/
+cmake-build-debug/
+cmake-build-release/
+CMakeLists.txt
+cpplint.py
+/cpplint.py
+/techvscat.pro.user
