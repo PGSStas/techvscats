@@ -3,14 +3,13 @@
 #include<Model/model.h>
 #include<View/view.h>
 
-class Controller
-{
-public:
-    Controller();
-private:
-    Model* model_;
-    View* view_;
-    ~Controller();
+class Controller {
+ public:
+  Controller();
+ private:
+  Model* model_;
+  View* view_;
+  ~Controller();
 };
 
 #endif // CONTROLLER_H
