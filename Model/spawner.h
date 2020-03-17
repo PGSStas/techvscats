@@ -4,13 +4,14 @@
 #include "model.h"
 
 class Spawner {
-  Spawner(int road_num,int wave_num);
  public:
-  int road; // На какой дороге я нахожусь
+  Spawner(int road_num,int wave_num);
   //Enemy SpawnUnit(Enemy*);
-  // Wave current_wave; // Какая волная сейчас выпускается
 
  private:
+
+  // Wave current_wave; // Какая волная сейчас выпускается
+  int road; // На какой дороге я нахожусь
 
 };
 

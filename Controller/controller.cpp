@@ -6,7 +6,7 @@ Controller::Controller(MainWindow* window) {
 }
 
 void Controller::StartGame(int) {
-  //model_->SetDataBase(lvl_id);
+  // model_->SetDataBase(lvl_id);
 }
 
 void Controller::Tick() {
