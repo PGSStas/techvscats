@@ -8,7 +8,7 @@
 class Controller;
 
 class MainWindow : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   int controller_id;

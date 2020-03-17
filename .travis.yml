@@ -12,12 +12,15 @@ before_install:
 
 install:
   - source /opt/qt5*/bin/qt5*-env.sh
-  - /opt/qt5*/bin/qmake PREFIX=/usr
+  - /opt/qt5*/bin/qmake PREFIX=/usr || cmake CMakeLists.txt
 
 script:
   - make
-  - rm qrc_resources.cpp moc*.*
-  - cppcheck --enable=unusedFunction --language=c++ *.h *.cpp
-  - cppcheck --enable=warning,performance --language=c++ --error-exitcode=1 *.h *.cpp
-  - cpplint --filter=-legal/copyright,-build/include_subdir,-build/c++11 *.h *.cpp
+  - rm ./qrc_* || true
+  - rm ./moc* || true
+  - rm ./ui* || true
+  - rm -rf ./CMakeFiles ./box2d ./src/box2d || true
+  - cppcheck --enable=unusedFunction --language=c++ $(find -name "*.h" -o -name "*.cpp")
+  - cppcheck --enable=warning,performance --language=c++ --error-exitcode=1 $(find -name "*.h" -o -name "*.cpp")
+  - cpplint --filter=-legal/copyright,-build/include_subdir,-build/c++11,-build/include_order $(find -name "*.h" -o -name "*.cpp")
 
