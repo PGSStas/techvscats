@@ -20,7 +20,6 @@ SOURCES += \
         Controller/controller.cpp \
         Model/model.cpp \
         main.cpp \
-        mainwindow.cpp \
         View/view.cpp
 
 HEADERS += \
@@ -29,4 +28,3 @@ HEADERS += \
         Controller/Mo.h \
         Model/model.h \
         View/view.h \
-        mainwindow.h \
