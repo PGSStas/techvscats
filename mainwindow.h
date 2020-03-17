@@ -1,9 +1,9 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAINWINDOW_H_
+#define MAINWINDOW_H_
 
 #include <QMainWindow>
 #include <QtGui/QPainter>
-
+#include "Controller/controller.h"
 
 class Controller;
 
@@ -13,7 +13,7 @@ class MainWindow : public QMainWindow {
  public:
   int controller_id;
   Controller* controller;
-  MainWindow(QWidget* parent = 0);
+  explicit MainWindow(QWidget* parent = 0);
   ~MainWindow();
 
   void timerEvent(QTimerEvent* event);
@@ -22,7 +22,6 @@ class MainWindow : public QMainWindow {
 //  void mouseMoveEvent(QMouseEvent* event);
 //  void mouseReleaseEvent(QMouseEvent* event);
 //  void keyPressEvent(QKeyEvent* e);
-
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H_

@@ -8,11 +8,10 @@ MainWindow::MainWindow(QWidget* parent)
   controller_id = startTimer(10);
 }
 
-void MainWindow::timerEvent(QTimerEvent* ) {
+void MainWindow::timerEvent(QTimerEvent*) {
   controller->Tick();
 }
 
 MainWindow::~MainWindow() {
-
 }
 
