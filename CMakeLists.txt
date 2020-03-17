@@ -14,7 +14,13 @@ set(CMAKE_PREFIX_PATH "C:/Qt/5.13.2/mingw73_64/lib/cmake")  # Windows
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
-add_executable(techvscats main.cpp mainwindow.cpp mainwindow.h)
+add_executable(techvscats
+        main.cpp
+        mainwindow.cpp
+        Controller/controller.cpp
+        View/view.cpp
+        Model/model.cpp
+        )
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)
