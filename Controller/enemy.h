@@ -2,6 +2,7 @@
 #define ENEMY_H
 
 #include "movingobject.h"
+
 class Enemy : public MovingObject {
  public:
   void Update() override;

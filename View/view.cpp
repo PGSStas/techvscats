@@ -5,6 +5,9 @@ View::View(MainWindow* window_p, Controller* controller_p)
 
 }
 
+void MainWindow::paintEvent(QPaintEvent *) {
+
+}
 
 void Enemy::Draw(QPainter*) {
 

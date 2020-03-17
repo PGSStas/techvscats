@@ -13,4 +13,5 @@ class MovingObject : public GameObject {
   std::pair<double, double> position_;
  private:
 };
+
 #endif //MOVINGOBJECT_H

@@ -21,7 +21,13 @@ add_executable(techvscats
         Controller/gameobject.h
         View/view.cpp
         Model/model.cpp
-        Controller/movingobject.h Controller/enemy.cpp Controller/enemy.h)
+        Controller/movingobject.h
+        Controller/enemy.cpp
+        Controller/enemy.h
+        Model/road.cpp
+        Model/road.h
+        Model/spawner.cpp
+        Model/spawner.h)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)
