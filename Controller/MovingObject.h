@@ -1,5 +1,5 @@
-#ifndef MOVINGOBJECT_H_
-#define MOVINGOBJECT_H_
+#ifndef CONTROLLER_MOVINGOBJECT_H_
+#define CONTROLLER_MOVINGOBJECT_H_
 
 #include <utility>
 #include "GameObject.h"
@@ -14,4 +14,4 @@ class MovingObject : public GameObject {
  private:
 };
 
-#endif  // MOVINGOBJECT_H_
+#endif  // CONTROLLER_MOVINGOBJECT_H_

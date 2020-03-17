@@ -10,6 +10,5 @@ void Controller::StartGame(int) {
 }
 
 void Controller::Tick() {
-
 }
 

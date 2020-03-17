@@ -1,5 +1,5 @@
-#ifndef ENEMY_H_
-#define ENEMY_H_
+#ifndef CONTROLLER_ENEMY_H_
+#define CONTROLLER_ENEMY_H_
 
 #include "MovingObject.h"
 
@@ -17,4 +17,4 @@ class Enemy : public MovingObject {
  private:
 };
 
-#endif  // ENEMY_H_
+#endif  // CONTROLLER_ENEMY_H_

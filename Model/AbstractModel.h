@@ -1,5 +1,5 @@
-#ifndef ABSTRACTMODEL_H_
-#define ABSTRACTMODEL_H_
+#ifndef MODEL_ABSTRACTMODEL_H_
+#define MODEL_ABSTRACTMODEL_H_
 
 #include "vector"
 #include "Controller/Enemy.h"
@@ -10,20 +10,19 @@ struct Map {
   std::vector<GameObject*> obj_handler;
   std::vector<std::vector<Wave> > Rounds;
   std::vector<Road*> roads;
-  //vector<Building*> buildings;
+  // vector<Building*> buildings;
   std::vector<Enemy*> enemies;
 };
 
 class AbstractModel {
  public:
   virtual ~AbstractModel() = default;
-  //virtual void SetDataBase(int level_id) = 0;
-  //virtual Wave GetWave(int wave_id, int road_id) = 0;
+  // virtual void SetDataBase(int level_id) = 0;
+  // virtual Wave GetWave(int wave_id, int road_id) = 0;
   Map map;
-  //std::vector<Enemy> id_to_Enemy;
-  //std::vector <Building> id_to_Building;
-  //std::vector<std::vector<int>> possible_upgrades;
-
+  // std::vector<Enemy> id_to_Enemy;
+  // std::vector <Building> id_to_Building;
+  // std::vector<std::vector<int>> possible_upgrades;
 };
 
-#endif  // ABSTRACTMODEL_H_
+#endif  // MODEL_ABSTRACTMODEL_H_

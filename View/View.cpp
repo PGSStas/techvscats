@@ -6,6 +6,4 @@ View::View(AbstractController* controller_p) {
 }
 
 void Enemy::Draw(QPainter*) {
-
 }
-

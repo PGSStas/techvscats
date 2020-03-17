@@ -1,8 +1,7 @@
-#ifndef CONTROLLER_H_
-#define CONTROLLER_H_
+#ifndef CONTROLLER_CONTROLLER_H_
+#define CONTROLLER_CONTROLLER_H_
 
 #include <vector>
-
 #include "View/View.h"
 #include "Model/Model.h"
 
@@ -17,4 +16,4 @@ class Controller : public AbstractController {
   View* view_;
 };
 
-#endif  // CONTROLLER_H
+#endif  // CONTROLLER_CONTROLLER_H_

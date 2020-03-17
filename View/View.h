@@ -1,5 +1,5 @@
-#ifndef VIEW_H_
-#define VIEW_H_
+#ifndef VIEW_VIEW_H_
+#define VIEW_VIEW_H_
 
 #include <QObject>
 #include <QMainWindow>
@@ -9,10 +9,10 @@
 class View : public QMainWindow, public AbstractView {
   Q_OBJECT
  public:
-  View(AbstractController*);
+  explicit View(AbstractController*);
   ~View() override = default;
  private:
   AbstractController* controller;
 };
 
-#endif  // VIEW_H_
+#endif  // VIEW_VIEW_H_

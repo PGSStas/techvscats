@@ -1,5 +1,5 @@
-#ifndef MODEL_H_
-#define MODEL_H_
+#ifndef MODEL_MODEL_H_
+#define MODEL_MODEL_H_
 
 #include "AbstractModel.h"
 #include "Controller/AbstractController.h"
@@ -17,4 +17,4 @@ class Model : public AbstractModel {
   int score{};
 };
 
-#endif  // MODEL_H_
+#endif  // MODEL_MODEL_H_
