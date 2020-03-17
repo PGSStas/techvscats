@@ -1,0 +1,23 @@
+os: linux
+dist: bionic
+language: cpp
+compiler: g++
+sudo: required
+
+before_install:
+  - sudo add-apt-repository ppa:beineri/opt-qt-5.14.1-bionic -y
+  - sudo apt update
+  - sudo apt install libglu1-mesa-dev libgl1-mesa-dev qt514base python-pip cppcheck -y
+  - pip install cpplint
+
+install:
+  - source /opt/qt5*/bin/qt5*-env.sh
+  - /opt/qt5*/bin/qmake PREFIX=/usr
+
+script:
+  - make
+  - rm qrc_resources.cpp moc*.*
+  - cppcheck --enable=unusedFunction --language=c++ *.h *.cpp
+  - cppcheck --enable=warning,performance --language=c++ --error-exitcode=1 *.h *.cpp
+  - cpplint --filter=-legal/copyright,-build/include_subdir,-build/c++11 *.h *.cpp
+
