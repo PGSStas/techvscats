@@ -1,5 +1,5 @@
-#ifndef ABSTRACTMODEL_H
-#define ABSTRACTMODEL_H
+#ifndef ABSTRACTMODEL_H_
+#define ABSTRACTMODEL_H_
 
 #include "vector"
 #include "Controller/Enemy.h"
@@ -26,4 +26,4 @@ class AbstractModel {
 
 };
 
-#endif //ABSTRACTMODEL_H
+#endif  // ABSTRACTMODEL_H_

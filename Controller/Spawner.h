@@ -1,5 +1,5 @@
-#ifndef SPAWNER_H
-#define SPAWNER_H
+#ifndef SPAWNER_H_
+#define SPAWNER_H_
 
 #include "Model/AbstractModel.h"
 
@@ -13,4 +13,4 @@ class Spawner {
   int road;  // На какой дороге я нахожусь
 };
 
-#endif  // SPAWNER_H
+#endif  // SPAWNER_H_

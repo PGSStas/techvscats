@@ -1,5 +1,5 @@
-#ifndef ABSTRACTVIEW_H
-#define ABSTRACTVIEW_H
+#ifndef ABSTRACTVIEW_H_
+#define ABSTRACTVIEW_H_
 
 class AbstractView {
  public:
@@ -7,4 +7,4 @@ class AbstractView {
 
 };
 
-#endif //ABSTRACTVIEW_H
+#endif  // ABSTRACTVIEW_H_

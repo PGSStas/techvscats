@@ -1,5 +1,5 @@
-#ifndef WAVE_H
-#define WAVE_H
+#ifndef WAVE_H_
+#define WAVE_H_
 
 #include "vector"
 
@@ -9,4 +9,4 @@ struct Wave { // to be updated
   std::vector<std::pair<int, int>> enemyid_times;
 };
 
-#endif //WAVE_H
+#endif  // WAVE_H_

@@ -1,5 +1,5 @@
-#ifndef MOVINGOBJECT_H
-#define MOVINGOBJECT_H
+#ifndef MOVINGOBJECT_H_
+#define MOVINGOBJECT_H_
 
 #include <utility>
 #include "GameObject.h"
@@ -9,9 +9,9 @@ class MovingObject : public GameObject {
   std::pair<double, double> destination;
   double speed;
   double speed_bonus;
-  //void Death();
+  // void Death();
   std::pair<double, double> position_;
  private:
 };
 
-#endif //MOVINGOBJECT_H
+#endif  // MOVINGOBJECT_H_

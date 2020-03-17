@@ -1,5 +1,5 @@
-#ifndef ABSTRACTCONTROLLER_H
-#define ABSTRACTCONTROLLER_H
+#ifndef ABSTRACTCONTROLLER_H_
+#define ABSTRACTCONTROLLER_H_
 
 #include "Enemy.h"
 
@@ -10,4 +10,4 @@ class AbstractController {
   virtual void Tick() = 0;
 };
 
-#endif //ABSTRACTCONTROLLER_H
+#endif  // ABSTRACTCONTROLLER_H_

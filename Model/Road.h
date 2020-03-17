@@ -1,5 +1,5 @@
-#ifndef ROAD_H
-#define ROAD_H
+#ifndef ROAD_H_
+#define ROAD_H_
 #include <vector>
 class Road {
  public:
@@ -7,4 +7,4 @@ class Road {
   std::pair<double, double> GetNextNode(int direction_num);
 };
 
-#endif //ROAD_H
+#endif  // ROAD_H_

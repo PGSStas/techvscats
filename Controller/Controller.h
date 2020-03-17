@@ -1,5 +1,5 @@
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
+#ifndef CONTROLLER_H_
+#define CONTROLLER_H_
 
 #include <vector>
 
@@ -17,4 +17,4 @@ class Controller : public AbstractController {
   View* view_;
 };
 
-#endif // CONTROLLER_H
+#endif  // CONTROLLER_H
