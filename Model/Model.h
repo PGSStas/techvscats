@@ -13,8 +13,8 @@ class Model : public AbstractModel {
   // Wave SumWaves(Wave*, Wave*)
   ~Model() override = default;
  private:
-  int gold{};
-  int score{};
+  int gold_{};
+  int score_{};
 };
 
 #endif  // MODEL_MODEL_H_

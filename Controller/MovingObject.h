@@ -10,7 +10,6 @@ class MovingObject : public GameObject {
   double speed;
   double speed_bonus;
   // void Death();
-  std::pair<double, double> position_;
  private:
 };
 

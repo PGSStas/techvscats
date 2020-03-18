@@ -7,14 +7,15 @@ class Enemy : public MovingObject {
  public:
   void Update() override;
   void Draw(QPainter*) override;
-  double dealing_damage{};
-  double armor{};  // Снижает получаемый урон
-  int bounty{};
-  double health{};
-  double maxHealth{};
-  // Road* my_road;
-  int direction_num{};  // чтобы из дороги достать следующую вершину
  private:
+  double dealing_damage_{};
+  double armor_{};  // Снижает получаемый урон
+  int reward_{};
+  double health_{};
+  double max_health_{};
+  // Road* my_road_;
+  int direction_num{};  // чтобы из дороги достать следующую вершину
+
 };
 
 #endif  // CONTROLLER_ENEMY_H_

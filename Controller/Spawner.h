@@ -9,8 +9,8 @@ class Spawner {
   void SpawnUnit(Enemy*);
 
  private:
-  Wave current_wave;
-  int road;  // На какой дороге я нахожусь
+  Wave current_wave_;
+  int road_;  // На какой дороге я нахожусь
 };
 
 #endif  // CONTROLLER_SPAWNER_H_

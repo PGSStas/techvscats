@@ -12,7 +12,7 @@ class View : public QMainWindow, public AbstractView {
   explicit View(AbstractController*);
   ~View() override = default;
  private:
-  AbstractController* controller;
+  AbstractController* controller_;
 };
 
 #endif  // VIEW_VIEW_H_
