@@ -7,12 +7,16 @@
 #include "View/View.h"
 #include "Model/Model.h"
 
+// Controller control Every Single Step of each Game Object.
 class Controller : public AbstractController {
  public:
   Controller();
+
   ~Controller() override = default;
-  void StartGame(int lvl) override;
+
+  void StartGame(int level) override;
   void Tick() override;
+
  private:
   Model* model_;
   View* view_;

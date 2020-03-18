@@ -3,11 +3,17 @@
 
 #include <vector>
 #include <utility>
+#include "GameObject/Enemy.h"
+
+struct EnemyPack {
+  Enemy enemy;
+  int number;
+};
 
 struct Wave {  // to be updated
   int frequency;
-  int road_num;
-  std::vector<std::pair<int, int>> enemyid_times;
+  int road_count;
+  EnemyPack enemies;
 };
 
 #endif  // MODEL_WAVE_H_

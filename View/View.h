@@ -8,8 +8,10 @@
 class View : public QMainWindow {
   Q_OBJECT
  public:
-  explicit View(AbstractController*);
+  explicit View(AbstractController* controller);
+
   ~View() = default;
+
  private:
   AbstractController* controller_;
 };

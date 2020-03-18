@@ -23,7 +23,9 @@ add_executable(techvscats
         View/View.cpp
         Model/Model.cpp
         Model/Road.cpp
-        )
+        GameObject/PassiveTower.cpp
+        GameObject/ActiveTower.cpp
+        GameObject/Projectile.cpp)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

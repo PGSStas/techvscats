@@ -1,16 +1,17 @@
 #ifndef GAMEOBJECT_GAMEOBJECT_H_
 #define GAMEOBJECT_GAMEOBJECT_H_
 
-#include <utility>
+#include "Model/Coordinate.h"
 
 class QPainter;
 
 class GameObject {
  public:
   virtual void Draw(QPainter*) = 0;
-  virtual void Update() = 0;  // выполнение действий
+  virtual void Tick() = 0;
+
  protected:
-  std::pair<double, double> position_;
+  Coordinate position_;
 };
 
 #endif  // GAMEOBJECT_GAMEOBJECT_H_

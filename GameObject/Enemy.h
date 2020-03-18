@@ -5,16 +5,16 @@
 
 class Enemy : public MovingObject {
  public:
-  void Update() override;
-  void Draw(QPainter*) override;
+  void Tick() override;
+  void Draw(QPainter* painter) override;
+
  private:
-  double dealing_damage_{};
-  double armor_{};  // Снижает получаемый урон
-  int reward_{};
-  double health_{};
-  double max_health_{};
-  // Road* my_road_;
-  int direction_num{};  // чтобы из дороги достать следующую вершину
+  double damage_dealing_;
+  double armor_;  // Снижает получаемый урон
+  int reward_;
+  double health_;
+  double max_health_;
+  int direction_num;  // чтобы из дороги достать следующую вершину
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_

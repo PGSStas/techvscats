@@ -1,0 +1,7 @@
+#ifndef GAMEOBJECT_ACTIVE_TOWER_H
+#define GAMEOBJECT_ACTIVE_TOWER_H
+
+class ActiveTower {
+};
+
+#endif  // GAMEOBJECT_ACTIVE_TOWER_H
