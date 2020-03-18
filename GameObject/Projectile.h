@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_PROJECTILE_H
-#define GAMEOBJECT_PROJECTILE_H
+#ifndef GAMEOBJECT_PROJECTILE_H_
+#define GAMEOBJECT_PROJECTILE_H_
 
 #include "MovingObject.h"
 #include "Building.h"
@@ -13,4 +13,4 @@ class Projectile : public MovingObject {
   int damage_;
 };
 
-#endif  // GAMEOBJECT_PROJECTILE_H
+#endif  // GAMEOBJECT_PROJECTILE_H_
