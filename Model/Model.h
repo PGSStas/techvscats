@@ -8,7 +8,7 @@
 
 struct Map {
   std::vector<GameObject*> obj_handler;
-  std::vector<std::vector<Wave> > Rounds;
+  std::vector<std::vector<Wave>> Rounds;
   std::vector<Road*> roads;
   // vector<Building*> buildings;
   std::vector<Enemy*> enemies;
@@ -16,11 +16,11 @@ struct Map {
 
 class Model {
  public:
-  Map map;
   // void SetDataBase(int level_id);
   // Wave GetWave(int wave_id, int road_id);
   // Wave SumWaves(Wave*, Wave*)
   ~Model() = default;
+  Map map;
  private:
   int gold_{};
   int score_{};

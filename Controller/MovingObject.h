@@ -6,9 +6,9 @@
 
 class MovingObject : public GameObject {
  protected:
-  std::pair<double, double> destination;
-  double speed;
-  double speed_bonus;
+  std::pair<double, double> destination_;
+  double speed_;
+  double speed_bonus_;
 };
 
 #endif  // CONTROLLER_MOVINGOBJECT_H_

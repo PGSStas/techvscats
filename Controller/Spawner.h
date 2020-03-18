@@ -9,7 +9,7 @@ class Spawner {
   void SpawnUnit(Enemy*);
 
  private:
-  Wave current_wave_;
+  Wave* current_wave_;
   int road_;  // На какой дороге я нахожусь
 };
 
