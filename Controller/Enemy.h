@@ -15,7 +15,6 @@ class Enemy : public MovingObject {
   double max_health_{};
   // Road* my_road_;
   int direction_num{};  // чтобы из дороги достать следующую вершину
-
 };
 
 #endif  // CONTROLLER_ENEMY_H_
