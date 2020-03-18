@@ -6,10 +6,6 @@
 #include "Wave.h"
 #include "Road.h"
 
-struct Map {
-
-};
-
 class Model {
  public:
   ~Model() = default;
