@@ -1,8 +1,8 @@
 #ifndef CONTROLLER_SPAWNER_H_
 #define CONTROLLER_SPAWNER_H_
 
-#include "Model/AbstractModel.h"
-
+#include "Controller/AbstractController.h"
+#include "Model/Wave.h"
 class Spawner {
  public:
   Spawner(int road_num, int wave_num);

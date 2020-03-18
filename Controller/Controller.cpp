@@ -1,7 +1,8 @@
 #include "Controller.h"
 
+
 Controller::Controller() {
-  model_ = new Model(this);
+  model_ = new Model();
   view_ = new View(this);
 }
 

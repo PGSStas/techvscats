@@ -9,7 +9,7 @@ class GameObject {
  public:
   virtual void Draw(QPainter*) = 0;
   virtual void Update() = 0;  // выполнение действий
- private:
+ protected:
   std::pair<double, double> position_;
 };
 

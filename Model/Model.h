@@ -1,17 +1,26 @@
 #ifndef MODEL_MODEL_H_
 #define MODEL_MODEL_H_
 
-#include "AbstractModel.h"
-#include "Controller/AbstractController.h"
+#include <vector>
+#include "Controller/Enemy.h"
+#include "Wave.h"
+#include "Road.h"
 
-class Model : public AbstractModel {
+struct Map {
+  std::vector<GameObject*> obj_handler;
+  std::vector<std::vector<Wave> > Rounds;
+  std::vector<Road*> roads;
+  // vector<Building*> buildings;
+  std::vector<Enemy*> enemies;
+};
+
+class Model {
  public:
-  explicit Model(AbstractController*);
-  AbstractController* controller;
+  Map map;
   // void SetDataBase(int level_id);
   // Wave GetWave(int wave_id, int road_id);
   // Wave SumWaves(Wave*, Wave*)
-  ~Model() override = default;
+  ~Model() = default;
  private:
   int gold_{};
   int score_{};

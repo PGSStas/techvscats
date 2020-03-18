@@ -5,12 +5,10 @@
 #include "GameObject.h"
 
 class MovingObject : public GameObject {
- public:
+ protected:
   std::pair<double, double> destination;
   double speed;
   double speed_bonus;
-  // void Death();
- private:
 };
 
 #endif  // CONTROLLER_MOVINGOBJECT_H_

@@ -3,14 +3,13 @@
 
 #include <QObject>
 #include <QMainWindow>
-#include "AbstractView.h"
 #include "Controller/AbstractController.h"
 
-class View : public QMainWindow, public AbstractView {
-  Q_OBJECT
+class View : public QMainWindow {
+ Q_OBJECT
  public:
   explicit View(AbstractController*);
-  ~View() override = default;
+  ~View() = default;
  private:
   AbstractController* controller_;
 };

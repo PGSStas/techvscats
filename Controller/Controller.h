@@ -2,6 +2,8 @@
 #define CONTROLLER_CONTROLLER_H_
 
 #include <vector>
+#include "AbstractController.h"
+
 #include "View/View.h"
 #include "Model/Model.h"
 
