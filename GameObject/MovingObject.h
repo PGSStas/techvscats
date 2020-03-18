@@ -1,5 +1,5 @@
-#ifndef CONTROLLER_MOVINGOBJECT_H_
-#define CONTROLLER_MOVINGOBJECT_H_
+#ifndef GAMEOBJECT_MOVINGOBJECT_H_
+#define GAMEOBJECT_MOVINGOBJECT_H_
 
 #include <utility>
 #include "GameObject.h"
@@ -11,4 +11,4 @@ class MovingObject : public GameObject {
   double speed_bonus_;
 };
 
-#endif  // CONTROLLER_MOVINGOBJECT_H_
+#endif  // GAMEOBJECT_MOVINGOBJECT_H_

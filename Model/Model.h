@@ -2,7 +2,7 @@
 #define MODEL_MODEL_H_
 
 #include <vector>
-#include "Controller/Enemy.h"
+#include "GameObject/Enemy.h"
 #include "Wave.h"
 #include "Road.h"
 

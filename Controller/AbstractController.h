@@ -1,7 +1,7 @@
 #ifndef CONTROLLER_ABSTRACTCONTROLLER_H_
 #define CONTROLLER_ABSTRACTCONTROLLER_H_
 
-#include "Enemy.h"
+#include "GameObject/Enemy.h"
 
 class AbstractController {
  public:

@@ -1,5 +1,5 @@
-#ifndef CONTROLLER_ENEMY_H_
-#define CONTROLLER_ENEMY_H_
+#ifndef GAMEOBJECT_ENEMY_H_
+#define GAMEOBJECT_ENEMY_H_
 
 #include "MovingObject.h"
 
@@ -17,4 +17,4 @@ class Enemy : public MovingObject {
   int direction_num{};  // чтобы из дороги достать следующую вершину
 };
 
-#endif  // CONTROLLER_ENEMY_H_
+#endif  // GAMEOBJECT_ENEMY_H_

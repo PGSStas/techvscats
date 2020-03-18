@@ -1,5 +1,5 @@
-#ifndef CONTROLLER_GAMEOBJECT_H_
-#define CONTROLLER_GAMEOBJECT_H_
+#ifndef GAMEOBJECT_GAMEOBJECT_H_
+#define GAMEOBJECT_GAMEOBJECT_H_
 
 #include <utility>
 
@@ -13,4 +13,4 @@ class GameObject {
   std::pair<double, double> position_;
 };
 
-#endif  // CONTROLLER_GAMEOBJECT_H_
+#endif  // GAMEOBJECT_GAMEOBJECT_H_

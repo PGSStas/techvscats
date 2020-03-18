@@ -18,7 +18,7 @@ find_package(Qt5Widgets REQUIRED)
 add_executable(techvscats
         main.cpp
         Controller/Controller.cpp
-        Controller/Enemy.cpp
+        GameObject/Enemy.cpp
         Controller/Spawner.cpp
         View/View.cpp
         Model/Model.cpp
