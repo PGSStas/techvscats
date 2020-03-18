@@ -6,7 +6,7 @@
 #include "Controller/AbstractController.h"
 
 class View : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
  public:
   explicit View(AbstractController*);
   ~View() = default;
