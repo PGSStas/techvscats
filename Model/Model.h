@@ -17,7 +17,7 @@ class Model {
  public:
   ~Model() = default;
 
-  void SetGameModel(int level);
+  void SetGameModel(int level); // test commit
 
  private:
   // Database which is loaded in SetGameModel and updated by Controller
