@@ -16,7 +16,7 @@
 
 class Model {
  public:
-  Model();
+  Model() = default;
   ~Model() = default;
 
   void SetGameModel(int level);
