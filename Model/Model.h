@@ -9,7 +9,6 @@
 #include "GameObject/Building.h"
 #include "GameObject/Projectile.h"
 
-// The auxiliary model classes
 #include "Controller/Spawner.h"
 #include "Wave.h"
 #include "Road.h"
