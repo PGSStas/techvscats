@@ -13,7 +13,7 @@ class Enemy : public MovingObject {
   double armor_;
   int enemy_id_;
   int reward_;
-  double health_;
+  double current_health_;
   double max_health_;
   int node_number_;
 };
