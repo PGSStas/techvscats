@@ -8,10 +8,10 @@ class Road {
  public:
   // Returns the next vertex for the coordinate_num.
   // If the vertex is the last, it returns null.
-  Coordinate GetNode(int direction_num);
+  Coordinate GetNode(int node_number);
 
  private:
-  std::vector<Coordinate> vertex;
+  std::vector<Coordinate> nodes;
 };
 
 #endif  // MODEL_ROAD_H_

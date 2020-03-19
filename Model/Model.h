@@ -16,14 +16,13 @@
 
 class Model {
  public:
-  Model() = default;
   ~Model() = default;
 
   void SetGameModel(int level);
 
  private:
   // Database which is loaded in SetGameModel and updated by Controller
-  std::vector<GameObject> objects_;
+  std::vector<GameObject*> objects_;
   std::vector<Building*> buildings_;
   std::vector<Enemy*> enemies_;
   std::vector<std::vector<Wave>> rounds_;

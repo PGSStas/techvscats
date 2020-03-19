@@ -2,6 +2,7 @@
 #define CONTROLLER_CONTROLLER_H_
 
 #include <vector>
+#include <memory>
 #include "AbstractController.h"
 
 #include "View/View.h"
@@ -17,8 +18,8 @@ class Controller : public AbstractController {
   void Tick() override;
 
  private:
-  Model* model_;
-  View* view_;
+  std::unique_ptr<Model> model_;
+  std::unique_ptr<View> view_;
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

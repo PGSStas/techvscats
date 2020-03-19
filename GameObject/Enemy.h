@@ -15,7 +15,7 @@ class Enemy : public MovingObject {
   int reward_;
   double health_;
   double max_health_;
-  int direction_num_;
+  int node_number_;
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_
