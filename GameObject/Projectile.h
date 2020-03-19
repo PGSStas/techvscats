@@ -4,8 +4,8 @@
 #include "MovingObject.h"
 #include "Building.h"
 
-// if Projectile achive aim enemy, than controller will
-// remove this class and damage the enemy.
+// if the projectile reaches enemy, the controller will
+// remove this class and deal damage to the enemy.
 class Projectile : public MovingObject {
  private:
   GameObject* aim_;

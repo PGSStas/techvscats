@@ -5,6 +5,6 @@
 
 class Building : GameObject {
  protected:
-  int id_building_;  // identifier of building
+  int building_id;
 };
 #endif  // GAMEOBJECT_BUILDING_H_

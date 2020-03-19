@@ -4,18 +4,19 @@
 #include "Model/Wave.h"
 #include "GameObject/Enemy.h"
 
-// Spawner installs on a road, and spawn enemy from the wave,
-// as help-class for controller.
-// Controller check if ready_to_spawn, and if true, than it spawn
-// next_enemy_to_spawn on the road_num_ and call NextEnemy(), so road
-// can load Enemy from Wave.
+// The Spawner is installed on the road, and creates enemies from
+// Controller checks if ready_to_spawn, and if true, then it creates
+// next_enemy_to_spawn on road_num_ and call NextEnemy (), so that the road
+// can load an enemy from the wave.
 class Spawner {
  public:
   Spawner(int road_number, Wave* wave);
 
-  // Set's ready_to_spawn.
+  ~Spawner() = default;
+
+  //
   void Tick(int current_time);
-  void NextEemy();
+  void NextEnemy();
 
  private:
   bool ready_to_spawn_;

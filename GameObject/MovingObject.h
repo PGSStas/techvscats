@@ -1,7 +1,6 @@
 #ifndef GAMEOBJECT_MOVINGOBJECT_H_
 #define GAMEOBJECT_MOVINGOBJECT_H_
 
-
 #include "GameObject.h"
 
 class MovingObject : public GameObject {

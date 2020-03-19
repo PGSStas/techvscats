@@ -10,11 +10,12 @@ class Enemy : public MovingObject {
 
  private:
   double damage_dealing_;
-  double armor_;  // Снижает получаемый урон
+  double armor_;
+  int enemy_id_;
   int reward_;
   double health_;
   double max_health_;
-  int direction_num;  // чтобы из дороги достать следующую вершину
+  int direction_num_;
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_

@@ -1,9 +1,8 @@
 #ifndef GAMEOBJECT_GAMEOBJECT_H_
 #define GAMEOBJECT_GAMEOBJECT_H_
 
+#include <QPainter>
 #include "Model/Coordinate.h"
-
-class QPainter;
 
 class GameObject {
  public:

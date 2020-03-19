@@ -3,21 +3,26 @@
 
 #include <vector>
 
-// Game objects, that Model store.
+// Game objects, that Model stores.
 #include "GameObject/Enemy.h"
 #include "GameObject/ActiveTower.h"
 #include "GameObject/Building.h"
 #include "GameObject/Projectile.h"
+
+// The auxiliary model classes
 #include "Controller/Spawner.h"
 #include "Wave.h"
 #include "Road.h"
 
 class Model {
  public:
+  Model();
   ~Model() = default;
 
+  void SetGameModel(int level);
+
  private:
-  // Data that update all time
+  // Database which is loaded in SetGameModel and updated by Controller
   std::vector<GameObject> objects_;
   std::vector<Building*> buildings_;
   std::vector<Enemy*> enemies_;
@@ -26,7 +31,8 @@ class Model {
   std::vector<Spawner> spawners_;
   int gold_;
   int score_;
-  // Data that update ones
+
+  // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_Enemy_;
   std::vector<Building> id_to_Building_;
 };

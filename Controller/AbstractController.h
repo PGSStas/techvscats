@@ -1,7 +1,7 @@
 #ifndef CONTROLLER_ABSTRACTCONTROLLER_H_
 #define CONTROLLER_ABSTRACTCONTROLLER_H_
 
-// Include GameObjects, that Controller use
+// GameObjects, that Controller update
 #include "GameObject/Enemy.h"
 #include "GameObject/ActiveTower.h"
 #include "GameObject/PassiveTower.h"

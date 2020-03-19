@@ -7,9 +7,9 @@
 
 class View : public QMainWindow {
   Q_OBJECT
+
  public:
   explicit View(AbstractController* controller);
-
   ~View() = default;
 
  private:

@@ -7,11 +7,10 @@
 #include "View/View.h"
 #include "Model/Model.h"
 
-// Controller control Every Single Step of each Game Object.
+// This class controls the interaction between objects.
 class Controller : public AbstractController {
  public:
   Controller();
-
   ~Controller() override = default;
 
   void StartGame(int level) override;
