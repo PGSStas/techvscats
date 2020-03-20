@@ -9,7 +9,7 @@ class Enemy : public MovingObject {
   void Draw(QPainter* painter) override;
 
  private:
-  double damage_dealing_;
+  double damage_;
   double armor_;
   int enemy_id_;
   int reward_;

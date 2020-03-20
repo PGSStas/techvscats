@@ -10,7 +10,6 @@
 class Spawner {
  public:
   Spawner(int road_number, std::shared_ptr<Wave> wave);
-
   ~Spawner() = default;
 
   void Tick(int current_time);

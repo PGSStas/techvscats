@@ -4,7 +4,6 @@
 #include <vector>
 #include <memory>
 
-// Game objects, that Model stores.
 #include "GameObject/enemy.h"
 #include "GameObject/active_tower.h"
 #include "GameObject/building.h"

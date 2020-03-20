@@ -8,7 +8,7 @@
 
 
 // If the projectile reaches enemy, the controller will
-// remove Projectile's object and deal damage to the enemy.
+// remove Projectile's object and cause damage damage to the enemy.
 class Projectile : public MovingObject {
  private:
   std::shared_ptr<GameObject> aim_;

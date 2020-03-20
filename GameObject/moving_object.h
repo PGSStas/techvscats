@@ -7,7 +7,7 @@ class MovingObject : public GameObject {
  protected:
   Coordinate destination_;
   double speed_;
-  double speed_bonus_;
+  double speed_coefficient_;
 };
 
 #endif  // GAMEOBJECT_MOVING_OBJECT_H_
