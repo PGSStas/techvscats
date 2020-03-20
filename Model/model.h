@@ -22,7 +22,7 @@ class Model {
 
  private:
   // Database which is loaded in SetGameModel and updated by Controller
-  std::vector<std::shared_ptr<GameObject>> objects_;
+  std::vector<std::shared_ptr<Projectile>> projectiles_;
   std::vector<std::shared_ptr<Building>> buildings_;
   std::vector<std::shared_ptr<Enemy>> enemies_;
   std::vector<std::vector<Wave>> rounds_;
