@@ -28,7 +28,7 @@ void Controller::CreateNextWave() {
   last_round_start_time_ = game_time_.elapsed();
   if (current_round_number == model_->GetRoundsCount()) {
     is_rounds_end_ = true;
-    qDebug()<<"Round ends.";
+    qDebug() << "Round ends.";
     return;
   }
 
@@ -38,7 +38,7 @@ void Controller::CreateNextWave() {
     model_->AddSpawner(i, temporary_wave, game_time_.elapsed());
   }
   model_->IncrementCurrentRoundNumber();
-  qDebug()<<"Round!";
+  qDebug() << "Round!";
 }
 
 void Controller::MenuProcess() {
@@ -75,7 +75,8 @@ void Controller::TickSpawners(int current_time) {
 }
 
 void Controller::CreateEnemy(Enemy* enemy) {
- qDebug()<<"new enemy";
+  model_->AddEnemyFromInstance(enemy);
+  qDebug() << "new enemy";
 }
 
 
