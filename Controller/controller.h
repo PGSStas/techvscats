@@ -11,8 +11,7 @@
 #include "Model/model.h"
 
 // This class controls the interaction between objects.
-class Controller : public AbstractController, public QObject {
- Q_OBJECT
+class Controller : public AbstractController, public QMainWindow {
 
  public:
   Controller();

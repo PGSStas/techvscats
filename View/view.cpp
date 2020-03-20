@@ -9,7 +9,8 @@ View::View(AbstractController* controller) : controller_(controller) {
 void View::paintEvent(QPaintEvent* event) {
   // Example of work
   QPainter painter(this);
-  painter.setBrush(Qt::black);
+  painter.setBrush(Qt::red);
+  painter.drawRect(0, 0, 500, 500);
   //
 }
 

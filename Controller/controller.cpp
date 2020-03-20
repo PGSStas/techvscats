@@ -23,12 +23,12 @@ void Controller::CreateNextWave() {
   if (model_->map.current_round_num == model_->map.rounds_count) {
     EndGame(0);
     return;
-  }*/
+  }
   //  for (int i = 0; i < model_->map.current_round_num; i++) { // spawn create part
   //   Wave current = model_->map.Rounds[model_->map.current_round_num][i];
   // new Spawner(i,current); spawner Create part
   // }
-  //++model_->map.current_round_num;
+  //++model_->map.current_round_num;*/
 }
 
 void Controller::MenuProcess() {
@@ -39,7 +39,7 @@ void Controller::GameProcess() {
 }
 
 void Controller::Tick() {
-  if (game_start_time.isValid()) {
+  if (game_start_time_.isValid()) {
     GameProcess();
     return;
   }
@@ -47,10 +47,10 @@ void Controller::Tick() {
 }
 
 void Controller::timerEvent(QTimerEvent* event) {
-  if (event->timerId() == tick_id_) {
-    Tick();
-  }
- // view_->repaint();
+   if (event->timerId() == tick_id_) {
+     Tick();
+   }
+   view_->repaint();
 }
 
 
