@@ -6,7 +6,7 @@
 #include "Controller/abstract_controller.h"
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -14,6 +14,7 @@ class View : public QMainWindow {
 
  private:
   AbstractController* controller_;
+  void paintEvent(QPaintEvent* event);
 };
 
 #endif  // VIEW_VIEW_H_

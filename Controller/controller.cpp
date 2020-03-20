@@ -6,7 +6,7 @@ Controller::Controller() : model_(std::make_unique<Model>()),
 
 void Controller::StartGame(int level_id) {
   model_->SetGameModel(level_id);
-  game_start_time.start();
+  game_start_time_.start();
   last_round_start_time = 0;
 }
 
@@ -50,7 +50,7 @@ void Controller::timerEvent(QTimerEvent* event) {
   if (event->timerId() == tick_id_) {
     Tick();
   }
-  view_->repaint();
+ // view_->repaint();
 }
 
 

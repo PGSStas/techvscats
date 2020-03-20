@@ -6,7 +6,6 @@
 
 #include <QElapsedTimer>
 #include <QTimerEvent>
-#include <QObject>
 #include "abstract_controller.h"
 #include "View/view.h"
 #include "Model/model.h"
@@ -29,7 +28,7 @@ class Controller : public AbstractController, public QObject {
   void MenuProcess();
   void CreateNextWave();
   void timerEvent(QTimerEvent* event);
-  QElapsedTimer game_start_time; // class for time access
+  QElapsedTimer game_start_time_; // class for time access
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
   int last_round_start_time;
