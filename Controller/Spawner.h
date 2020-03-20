@@ -17,7 +17,7 @@ class Spawner {
   void NextEnemy();
 
  private:
-  bool ready_to_spawn_;
+  bool is_ready_to_spawn_;
   int last_time_enemy_spawn_;
   std::shared_ptr<Enemy> next_enemy_to_spawn_;
   std::shared_ptr<Wave> wave_to_spawn_;

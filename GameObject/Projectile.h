@@ -7,7 +7,7 @@
 #include "Building.h"
 
 
-// if the projectile reaches enemy, the controller will
+// If the projectile reaches enemy, the controller will
 // remove Projectile's object and deal damage to the enemy.
 class Projectile : public MovingObject {
  private:
