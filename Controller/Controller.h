@@ -3,8 +3,8 @@
 
 #include <vector>
 #include <memory>
-#include "AbstractController.h"
 
+#include "AbstractController.h"
 #include "View/View.h"
 #include "Model/Model.h"
 

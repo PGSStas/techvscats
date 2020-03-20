@@ -1,6 +1,8 @@
 #ifndef CONTROLLER_SPAWNER_H_
 #define CONTROLLER_SPAWNER_H_
 
+#include <memory>
+
 #include "Model/Wave.h"
 #include "GameObject/Enemy.h"
 

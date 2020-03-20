@@ -1,8 +1,11 @@
 #ifndef GAMEOBJECT_PROJECTILE_H_
 #define GAMEOBJECT_PROJECTILE_H_
 
+#include <memory>
+
 #include "MovingObject.h"
 #include "Building.h"
+
 
 // if the projectile reaches enemy, the controller will
 // remove Projectile's object and deal damage to the enemy.

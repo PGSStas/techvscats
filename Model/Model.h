@@ -2,6 +2,7 @@
 #define MODEL_MODEL_H_
 
 #include <vector>
+#include <memory>
 
 // Game objects, that Model stores.
 #include "GameObject/Enemy.h"
