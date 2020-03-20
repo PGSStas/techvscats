@@ -5,7 +5,7 @@ Spawner::Spawner(Road* road_to_spawn, Wave* wave_to_spawn, int current_time) {
     is_dead_ = true;
     return;
   }
-  road_to_spawn_ = road_to_spawn_;
+  road_to_spawn_ = road_to_spawn;
   wave_to_spawn_ = wave_to_spawn;
   last_time_enemy_spawn_ = current_time;
 }
@@ -14,7 +14,7 @@ void Spawner::Tick(int current_time) {
   if (current_time - last_time_enemy_spawn_ < wave_to_spawn_->frequency) {
     return;
   }
-  qDebug()<<this<<"this spawner";
+  qDebug()<<road_to_spawn_<<"this road";
 
   is_ready_to_spawn_ = true;
   last_time_enemy_spawn_ = current_time;

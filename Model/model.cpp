@@ -6,8 +6,7 @@ void Model::SetGameModel(int level_id) {
   score_ = 0;
 
   switch (level_id) {
-    case 0: int x;
-
+    case 0:
       // To be changed. All this is need to be downloaded form file.
       Enemy temporary_enemy;
       EnemyPack temporary_enemy_pack;
@@ -16,22 +15,25 @@ void Model::SetGameModel(int level_id) {
 
       Wave temporary_wave;
       temporary_wave.frequency = 2000;
-      temporary_wave.road_number = 0;
       temporary_wave.enemies.push_back(temporary_enemy_pack);
 
-      roads_count_ = 1;
+      roads_count_ = 2;
       rounds_count_ = 2;
       time_between_waves_ = 5000;
       rounds_.resize(rounds_count_, std::vector<Wave>(roads_count_));
 
       rounds_[0][0] = temporary_wave;
+      rounds_[0][1] = temporary_wave;
+      rounds_[1][1] = temporary_wave;
 
       roads_.resize(roads_count_);
       std::vector<Coordinate> nodes = {{0, 0}, {100, 100}};
       Road temporary_road(nodes);
       roads_[0] = temporary_road;
-      // 1 road , 2 round , 2 enemies(no params) , nodes 0,0->100,100
+      // 2 road , 2 round
       // 5 sec between waves, 2 sec between enemy spawn.
+      // 1 round 2 enemies on each road
+      // 2 round 2 enemies on second road
   }
 }
 
@@ -40,7 +42,7 @@ int Model::GetTimeBetweenWaves() {
 }
 
 int Model::GetRoundsCount() {
-  return roads_count_;
+  return rounds_count_;
 }
 
 int Model::GetCurrentRoundNumber() {
@@ -51,8 +53,8 @@ void Model::IncrementCurrentRoundNumber() {
   current_round_number_++;
 }
 
-void Model::AddSpawner(int road_number, Wave* wave,int current_time) {
-  spawners_.emplace_back(&roads_[road_number], wave,current_time);
+void Model::AddSpawner(int road_number, Wave* wave, int current_time) {
+  spawners_.emplace_back(GetRoad(road_number), wave, current_time);
 }
 
 Road* Model::GetRoad(int i) {

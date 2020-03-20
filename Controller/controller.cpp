@@ -20,7 +20,6 @@ void Controller::EndGame(int end_code) {
 void Controller::CreateNextWave() {
   // Checks if Wave can be created
   int current_round_number = model_->GetCurrentRoundNumber();
-
   if (is_rounds_end_ || game_time_.elapsed() - last_round_start_time_
       < model_->GetTimeBetweenWaves()) {
     return;
@@ -29,6 +28,7 @@ void Controller::CreateNextWave() {
   last_round_start_time_ = game_time_.elapsed();
   if (current_round_number == model_->GetRoundsCount()) {
     is_rounds_end_ = true;
+    qDebug()<<"Round ends.";
     return;
   }
 

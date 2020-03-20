@@ -13,7 +13,6 @@ struct EnemyPack {
 
 struct Wave {  // to be updated
   int frequency;
-  int road_number;
   std::vector<EnemyPack> enemies;
 };
 
