@@ -7,12 +7,12 @@
 
 struct EnemyPack {
   Enemy enemy;
-  int number;
+  int times;
 };
 
 struct Wave {  // to be updated
   int frequency;
-  int road_count;
+  int road_number;
   EnemyPack enemies;
 };
 

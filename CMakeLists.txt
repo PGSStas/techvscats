@@ -18,14 +18,15 @@ find_package(Qt5Widgets REQUIRED)
 add_executable(techvscats
         main.cpp
         Controller/controller.cpp
-        GameObject/enemy.cpp
         Controller/spawner.cpp
-        View/view.cpp
-        Model/model.cpp
-        Model/road.cpp
         GameObject/passive_tower.cpp
         GameObject/active_tower.cpp
-        GameObject/projectile.cpp)
+        GameObject/projectile.cpp
+        GameObject/enemy.cpp
+        Model/model.cpp
+        Model/road.cpp
+        View/view.cpp
+        )
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

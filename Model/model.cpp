@@ -1,27 +1,36 @@
 #include "model.h"
 
 void Model::SetGameModel(int level_id) {
-/*  current_round_numbe = 0;
-  gold = 0;
-  map.score = 0;
+//  current_round_number_ = 0;
+//  gold_ = 100;
+//  score_ = 0;
 
   switch (level_id) {
-    case 0:rounds_count = 1;
-      // to be changed, initialize  waves, only for 1 road and 1 round
-      time_to_prepair = 1000;
-      time_btwn_waves = 10000;
-      Rounds.resize(map.rounds_count);
-      Wave tmp_wave;
-      tmp_wave.frequency = 1000;
-      tmp_wave.road_num = 0;
-      tmp_wave.enemyid_times.emplace_back(1, 1);
-      Rounds[0].resize(map.roads_count);
-      Rounds[0][0] = tmp_wave;
-      // initialize roads
-      roads.resize(map.roads_count);
-      Road tmp_road;
-      tmp_road.direction_points = {{0, 0}, {100, 100}};
-      roads[0] = tmp_road;
-      //
-  }*/
+    case 0:
+
+      // To be changed. All this is need to be downloaded form file.
+      Enemy temporary_enemy;
+/*      EnemyPack temporary_enemy_pack;
+      temporary_enemy_pack.enemy = temporary_enemy;
+      temporary_enemy_pack.times = 3;
+
+      Wave temporary_wave;
+      temporary_wave.frequency = 1000;
+      temporary_wave.road_number = 0;
+      temporary_wave.enemies = temporary_enemy_pack;
+
+      rounds_count_ = 1;
+      rounds_.resize(rounds_count_);
+      time_between_waves_ = 10000;
+      rounds_.resize(rounds_count_, std::vector<Wave>(roads_count_));
+
+      rounds_[0][0] = temporary_wave;
+
+      roads_.resize(roads_count_);
+      std::vector<Coordinate> nodes = {{0, 0}, {100, 100}};
+      Road temporary_road(nodes);
+      roads_[0] = temporary_road;
+      //*/
+  }
+
 }
