@@ -20,23 +20,21 @@ class Model {
 
   void SetGameModel(int level);
 
-  void CreateSpawner(int road_number, Wave wave);
+  void AddSpawner(int road_number, Wave* wave, int current_time);
   int GetTimeBetweenWaves();
   int GetRoundsCount();
+  int GetRoadsCount();
   int GetCurrentRoundNumber();
+  std::list<Spawner>* GetSpawners();
   void IncrementCurrentRoundNumber();
-  std::vector<std::shared_ptr<Projectile>> GetProjectiles();
-  std::vector<std::shared_ptr<Building>> GetBuildings();
-  std::vector<std::shared_ptr<Enemy>> GetEnemies();
-  std::vector<std::vector<Wave>> GetRounds();
-  std::vector<Road> GetRoads();
-  std::vector<Spawner> GetSpawners();
+  Wave* GetWave(int round_number, int road_number);
+  Road* GetRoad(int i);
 
  private:
   // Database which is updated by Controller all time
-  std::vector<std::shared_ptr<Projectile>> projectiles_;
-  std::vector<std::shared_ptr<Building>> buildings_;
-  std::vector<std::shared_ptr<Enemy>> enemies_;
+  std::list<std::shared_ptr<Projectile>> projectiles_;
+  std::list<std::shared_ptr<Building>> buildings_;
+  std::list<std::shared_ptr<Enemy>> enemies_;
   int current_round_number_;
   int gold_;
   int score_;
@@ -44,7 +42,7 @@ class Model {
   //Database which is loaded in SetGameModel once
   std::vector<std::vector<Wave>> rounds_;
   std::vector<Road> roads_;
-  std::vector<Spawner> spawners_;
+  std::list<Spawner> spawners_;
   int time_between_waves_;
   int rounds_count_;
   int roads_count_;

@@ -25,15 +25,21 @@ class Controller : public AbstractController, public QMainWindow {
 
   void GameProcess();
   void MenuProcess();
+
   void CreateNextWave();
+  void CreateEnemy(Enemy* enemy);
+  void TickSpawners(int current_time);
+
   void timerEvent(QTimerEvent* event);
-  QElapsedTimer game_start_time_; // class for time access
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
+  QElapsedTimer game_time_;
+
   bool is_game_now_;
+  bool is_rounds_end_;
   int last_round_start_time_;
-  int tick_id_;  // info for timer
-  const int time_between_ticks = 10; // time between tick
+  int tick_id_;
+  const int time_between_ticks = 10;
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

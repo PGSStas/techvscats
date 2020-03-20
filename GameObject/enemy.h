@@ -2,12 +2,13 @@
 #define GAMEOBJECT_ENEMY_H_
 
 #include "moving_object.h"
-
+#include "Model/road.h"
 class Enemy : public MovingObject {
  public:
   void Tick() override;
   void Draw(QPainter* painter) override;
-
+  void SetRoad(Road* road);
+  bool  IsDead();
  private:
   double damage_;
   double armor_;
@@ -15,7 +16,9 @@ class Enemy : public MovingObject {
   int reward_;
   double current_health_;
   double max_health_;
+  Road* road_;
   int node_number_;
+  bool is_dead_;
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_

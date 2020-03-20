@@ -8,32 +8,37 @@ void Controller::StartGame(int level_id) {
   model_->SetGameModel(level_id);
   tick_id_ = startTimer(time_between_ticks);
   is_game_now_ = true;
-  game_start_time_.start();
+  game_time_.start();
   last_round_start_time_ = 0;
 }
 
 void Controller::EndGame(int end_code) {
-  game_start_time_.invalidate();
-  // if 0 - win
+  // if end_code == 0 - win
+  is_game_now_ = false;
 }
 
 void Controller::CreateNextWave() {
-  // checks if Wave can be created
-  int currrent_round_number = model_->GetCurrentRoundNumber();
-  if (game_start_time_.elapsed() - last_round_start_time_
+  // Checks if Wave can be created
+  int current_round_number = model_->GetCurrentRoundNumber();
+
+  if (is_rounds_end_ || game_time_.elapsed() - last_round_start_time_
       < model_->GetTimeBetweenWaves()) {
     return;
   }
-  if (currrent_round_number == model_->GetRoundsCount()) {
-    EndGame(0);
+
+  last_round_start_time_ = game_time_.elapsed();
+  if (current_round_number == model_->GetRoundsCount()) {
+    is_rounds_end_ = true;
     return;
   }
 
-  for (int i = 0; i < currrent_round_number; i++) {
-    Wave temporary_wave = model_->GetRounds()[currrent_round_number][i];
-    model_->CreateSpawner(i, temporary_wave);
+  int roads_number = model_->GetRoadsCount();
+  for (int i = 0; i < roads_number; i++) {
+    Wave* temporary_wave = model_->GetWave(current_round_number, i);
+    model_->AddSpawner(i, temporary_wave, game_time_.elapsed());
   }
   model_->IncrementCurrentRoundNumber();
+  qDebug()<<"Round!";
 }
 
 void Controller::MenuProcess() {
@@ -41,6 +46,7 @@ void Controller::MenuProcess() {
 
 void Controller::GameProcess() {
   CreateNextWave();
+  TickSpawners(game_time_.elapsed());
 }
 
 void Controller::Tick() {
@@ -56,6 +62,20 @@ void Controller::timerEvent(QTimerEvent* event) {
     Tick();
   }
   view_->repaint();
+}
+void Controller::TickSpawners(int current_time) {
+  std::list<Spawner>* spawners = model_->GetSpawners();
+  spawners->remove_if([&](Spawner& i) { return i.IsDead(); });
+  for (auto& spawner : *spawners) {
+    spawner.Tick(current_time);
+    if (spawner.IsReadyToSpawn()) {
+      CreateEnemy(spawner.GetEnemy());
+    }
+  }
+}
+
+void Controller::CreateEnemy(Enemy* enemy) {
+ qDebug()<<"new enemy";
 }
 
 

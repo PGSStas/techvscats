@@ -1,5 +1,5 @@
 #include "model.h"
-
+#include "QDebug"
 void Model::SetGameModel(int level_id) {
   current_round_number_ = 0;
   gold_ = 100;
@@ -12,16 +12,16 @@ void Model::SetGameModel(int level_id) {
       Enemy temporary_enemy;
       EnemyPack temporary_enemy_pack;
       temporary_enemy_pack.enemy = temporary_enemy;
-      temporary_enemy_pack.times = 3;
+      temporary_enemy_pack.times = 2;
 
       Wave temporary_wave;
-      temporary_wave.frequency = 1000;
+      temporary_wave.frequency = 2000;
       temporary_wave.road_number = 0;
-      temporary_wave.enemies = temporary_enemy_pack;
+      temporary_wave.enemies.push_back(temporary_enemy_pack);
 
       roads_count_ = 1;
-      rounds_count_ = 1;
-      time_between_waves_ = 10000;
+      rounds_count_ = 2;
+      time_between_waves_ = 5000;
       rounds_.resize(rounds_count_, std::vector<Wave>(roads_count_));
 
       rounds_[0][0] = temporary_wave;
@@ -30,7 +30,8 @@ void Model::SetGameModel(int level_id) {
       std::vector<Coordinate> nodes = {{0, 0}, {100, 100}};
       Road temporary_road(nodes);
       roads_[0] = temporary_road;
-      // 1 road , 1 round , 1 enemy(no params) , nodes 0,0->100,100
+      // 1 road , 2 round , 2 enemies(no params) , nodes 0,0->100,100
+      // 5 sec between waves, 2 sec between enemy spawn.
   }
 }
 
@@ -50,30 +51,22 @@ void Model::IncrementCurrentRoundNumber() {
   current_round_number_++;
 }
 
-std::vector<std::shared_ptr<Projectile>> Model::GetProjectiles() {
-  return projectiles_;
+void Model::AddSpawner(int road_number, Wave* wave,int current_time) {
+  spawners_.emplace_back(&roads_[road_number], wave,current_time);
 }
 
-std::vector<std::shared_ptr<Building>> Model::GetBuildings() {
-  return buildings_;
+Road* Model::GetRoad(int i) {
+  return &roads_[i];
 }
 
-std::vector<std::shared_ptr<Enemy>> Model::GetEnemies() {
-  return enemies_;
+Wave* Model::GetWave(int round_number, int road_number) {
+  return &rounds_[round_number][road_number];
 }
 
-std::vector<std::vector<Wave>> Model::GetRounds() {
-  return rounds_;
+std::list<Spawner>* Model::GetSpawners() {
+  return &spawners_;
 }
 
-std::vector<Road> Model::GetRoads() {
-  return roads_;
-}
-
-std::vector<Spawner> Model::GetSpawners() {
-  return spawners_;
-}
-
-void Model::CreateSpawner(int road_number, Wave wave) {
-  spawners_.emplace_back(road_number, wave);
+int Model::GetRoadsCount() {
+  return roads_count_;
 }
