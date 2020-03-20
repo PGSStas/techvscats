@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "Controller/Controller.h"
+#include "Controller/controller.h"
 #include "memory"
 
 int main(int argc, char* argv[]) {

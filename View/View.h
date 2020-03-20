@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QMainWindow>
-#include "Controller/AbstractController.h"
+#include "Controller/abstract_controller.h"
 
 class View : public QMainWindow {
   Q_OBJECT

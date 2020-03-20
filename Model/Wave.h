@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <utility>
-#include "GameObject/Enemy.h"
+#include "GameObject/enemy.h"
 
 struct EnemyPack {
   Enemy enemy;

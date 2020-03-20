@@ -5,12 +5,12 @@
 #include <memory>
 
 // Game objects, that Model stores.
-#include "GameObject/Enemy.h"
-#include "GameObject/ActiveTower.h"
-#include "GameObject/Building.h"
-#include "GameObject/Projectile.h"
+#include "GameObject/enemy.h"
+#include "GameObject/active_tower.h"
+#include "GameObject/building.h"
+#include "GameObject/projectile.h"
 
-#include "Controller/Spawner.h"
+#include "Controller/spawner.h"
 #include "Wave.h"
 #include "Road.h"
 

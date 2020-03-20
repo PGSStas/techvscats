@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_GAMEOBJECT_H_
-#define GAMEOBJECT_GAMEOBJECT_H_
+#ifndef GAMEOBJECT_GAME_OBJECT_H_
+#define GAMEOBJECT_GAME_OBJECT_H_
 
 #include <QPainter>
 #include "Model/Coordinate.h"
@@ -13,4 +13,4 @@ class GameObject {
   Coordinate position_;
 };
 
-#endif  // GAMEOBJECT_GAMEOBJECT_H_
+#endif  // GAMEOBJECT_GAME_OBJECT_H_

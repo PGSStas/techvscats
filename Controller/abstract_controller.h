@@ -1,10 +1,10 @@
-#ifndef CONTROLLER_ABSTRACTCONTROLLER_H_
-#define CONTROLLER_ABSTRACTCONTROLLER_H_
+#ifndef CONTROLLER_ABSTRACT_CONTROLLER_H_
+#define CONTROLLER_ABSTRACT_CONTROLLER_H_
 
-#include "GameObject/Enemy.h"
-#include "GameObject/ActiveTower.h"
-#include "GameObject/PassiveTower.h"
-#include "GameObject/Projectile.h"
+#include "GameObject/enemy.h"
+#include "GameObject/active_tower.h"
+#include "GameObject/passive_tower.h"
+#include "GameObject/projectile.h"
 
 // AbstractController is needed to avoid the problem with looping include
 // All public methods of controller should also be written here

@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "Model/Wave.h"
-#include "GameObject/Enemy.h"
+#include "GameObject/enemy.h"
 
 // The Spawner is installed on the road, and creates enemies from wave.
 class Spawner {

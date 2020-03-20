@@ -1,7 +1,7 @@
 #ifndef GAMEOBJECT_ENEMY_H_
 #define GAMEOBJECT_ENEMY_H_
 
-#include "MovingObject.h"
+#include "moving_object.h"
 
 class Enemy : public MovingObject {
  public:

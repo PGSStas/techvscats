@@ -1,4 +1,4 @@
-#include "Controller.h"
+#include "controller.h"
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)) {

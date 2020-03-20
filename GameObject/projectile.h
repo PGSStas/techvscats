@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "MovingObject.h"
-#include "Building.h"
+#include "moving_object.h"
+#include "building.h"
 
 
 // If the projectile reaches enemy, the controller will

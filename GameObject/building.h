@@ -1,7 +1,7 @@
 #ifndef GAMEOBJECT_BUILDING_H_
 #define GAMEOBJECT_BUILDING_H_
 
-#include "GameObject.h"
+#include "game_object.h"
 
 class Building : GameObject {
  protected:
