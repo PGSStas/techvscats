@@ -3,7 +3,6 @@
 
 View::View(AbstractController* controller) : controller_(controller) {
   show();
-  controller->StartGame(0);
 }
 
 void View::paintEvent(QPaintEvent* event) {

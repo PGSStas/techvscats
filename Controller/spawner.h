@@ -9,7 +9,7 @@
 // The Spawner is installed on the road, and creates enemies from wave.
 class Spawner {
  public:
-  Spawner(int road_number, std::shared_ptr<Wave> wave);
+  Spawner(int road_to_spawn_number, Wave wave);
   ~Spawner() = default;
 
   void Tick(int current_time);
@@ -18,9 +18,9 @@ class Spawner {
  private:
   bool is_ready_to_spawn_;
   int last_time_enemy_spawn_;
-  std::shared_ptr<Enemy> next_enemy_to_spawn_;
-  std::shared_ptr<Wave> wave_to_spawn_;
-  int road_number_to_spawn_;
+  Enemy next_enemy_to_spawn_;
+  Wave wave_to_spawn_;
+  int road_to_spawn_number_;
 };
 
 #endif  // CONTROLLER_SPAWNER_H_

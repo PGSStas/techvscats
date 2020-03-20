@@ -30,7 +30,50 @@ void Model::SetGameModel(int level_id) {
       std::vector<Coordinate> nodes = {{0, 0}, {100, 100}};
       Road temporary_road(nodes);
       roads_[0] = temporary_road;
-      //
+      // 1 road , 1 round , 1 enemy(no params) , nodes 0,0->100,100
   }
+}
 
+int Model::GetTimeBetweenWaves() {
+  return time_between_waves_;
+}
+
+int Model::GetRoundsCount() {
+  return roads_count_;
+}
+
+int Model::GetCurrentRoundNumber() {
+  return current_round_number_;
+}
+
+void Model::IncrementCurrentRoundNumber() {
+  current_round_number_++;
+}
+
+std::vector<std::shared_ptr<Projectile>> Model::GetProjectiles() {
+  return projectiles_;
+}
+
+std::vector<std::shared_ptr<Building>> Model::GetBuildings() {
+  return buildings_;
+}
+
+std::vector<std::shared_ptr<Enemy>> Model::GetEnemies() {
+  return enemies_;
+}
+
+std::vector<std::vector<Wave>> Model::GetRounds() {
+  return rounds_;
+}
+
+std::vector<Road> Model::GetRoads() {
+  return roads_;
+}
+
+std::vector<Spawner> Model::GetSpawners() {
+  return spawners_;
+}
+
+void Model::CreateSpawner(int road_number, Wave wave) {
+  spawners_.emplace_back(road_number, wave);
 }

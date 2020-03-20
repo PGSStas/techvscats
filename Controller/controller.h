@@ -30,9 +30,10 @@ class Controller : public AbstractController, public QMainWindow {
   QElapsedTimer game_start_time_; // class for time access
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
-  int last_round_start_time;
+  bool is_game_now_;
+  int last_round_start_time_;
   int tick_id_;  // info for timer
-  const int tick_time_ = 10; // time between tick
+  const int time_between_ticks = 10; // time between tick
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

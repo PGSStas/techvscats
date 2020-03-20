@@ -20,6 +20,18 @@ class Model {
 
   void SetGameModel(int level);
 
+  void CreateSpawner(int road_number, Wave wave);
+  int GetTimeBetweenWaves();
+  int GetRoundsCount();
+  int GetCurrentRoundNumber();
+  void IncrementCurrentRoundNumber();
+  std::vector<std::shared_ptr<Projectile>> GetProjectiles();
+  std::vector<std::shared_ptr<Building>> GetBuildings();
+  std::vector<std::shared_ptr<Enemy>> GetEnemies();
+  std::vector<std::vector<Wave>> GetRounds();
+  std::vector<Road> GetRoads();
+  std::vector<Spawner> GetSpawners();
+
  private:
   // Database which is updated by Controller all time
   std::vector<std::shared_ptr<Projectile>> projectiles_;
