@@ -1,6 +1,7 @@
 #include "Controller.h"
 
-Controller::Controller() : model_(new Model()), view_(new View(this)) {
+Controller::Controller() : model_(std::make_unique<Model>()),
+                           view_(std::make_unique<View>(this)) {
 }
 
 void Controller::StartGame(int level) {

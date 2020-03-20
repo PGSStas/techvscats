@@ -21,9 +21,9 @@ class Model {
 
  private:
   // Database which is loaded in SetGameModel and updated by Controller
-  std::vector<GameObject*> objects_;
-  std::vector<Building*> buildings_;
-  std::vector<Enemy*> enemies_;
+  std::vector<std::shared_ptr<GameObject>> objects_;
+  std::vector<std::shared_ptr<Building>> buildings_;
+  std::vector<std::shared_ptr<Enemy>> enemies_;
   std::vector<std::vector<Wave>> rounds_;
   std::vector<Road> roads_;
   std::vector<Spawner> spawners_;

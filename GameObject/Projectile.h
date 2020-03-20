@@ -8,7 +8,7 @@
 // remove Projectile's object and deal damage to the enemy.
 class Projectile : public MovingObject {
  private:
-  GameObject* aim_;
+  std::shared_ptr<GameObject> aim_;
   bool is_aim_achived_;
   int damage_;
 };

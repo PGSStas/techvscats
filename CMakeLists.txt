@@ -10,7 +10,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -Wextra ")
 
 #set(CMAKE_PREFIX_PATH "~/Qt/5.13.2/gcc_64/lib/cmake")  # Linux
-#set(CMAKE_PREFIX_PATH "C:/Qt/5.13.2/mingw73_64/lib/cmake")  # Windows
+#   set(CMAKE_PREFIX_PATH "D:/QT/5.14.1/mingw73_64/lib/cmake")  # Windows
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
