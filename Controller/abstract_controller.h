@@ -13,6 +13,7 @@ class AbstractController {
   virtual ~AbstractController() = default;
 
   virtual void StartGame(int level) = 0;
+  virtual void EndGame(int end_code) = 0;
   virtual void Tick() = 0;
 };
 
