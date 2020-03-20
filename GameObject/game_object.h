@@ -2,7 +2,7 @@
 #define GAMEOBJECT_GAME_OBJECT_H_
 
 #include <QPainter>
-#include "Model/Coordinate.h"
+#include "Model/сoordinate.h"
 
 class GameObject {
  public:

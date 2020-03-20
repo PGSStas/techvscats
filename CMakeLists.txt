@@ -20,9 +20,9 @@ add_executable(techvscats
         Controller/controller.cpp
         GameObject/enemy.cpp
         Controller/spawner.cpp
-        View/View.cpp
-        Model/Model.cpp
-        Model/Road.cpp
+        View/view.cpp
+        Model/model.cpp
+        Model/road.cpp
         GameObject/passive_tower.cpp
         GameObject/active_tower.cpp
         GameObject/projectile.cpp)

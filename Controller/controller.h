@@ -5,8 +5,8 @@
 #include <memory>
 
 #include "abstract_controller.h"
-#include "View/View.h"
-#include "Model/Model.h"
+#include "View/view.h"
+#include "Model/model.h"
 
 // This class controls the interaction between objects.
 class Controller : public AbstractController {
