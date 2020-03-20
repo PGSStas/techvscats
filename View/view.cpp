@@ -1,4 +1,4 @@
-#include "View.h"
+#include "view.h"
 #include <QPushButton>
 
 View::View(AbstractController* controller) : controller_(controller) {
