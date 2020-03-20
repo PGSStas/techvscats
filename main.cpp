@@ -1,10 +1,9 @@
-#include "mainwindow.h"
 #include <QApplication>
-#include<Controller/controller.h>
+#include "Controller/controller.h"
+#include "memory"
+
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
-  MainWindow w;
-  w.show();
-
+  auto controller = std::make_shared<Controller>();
   return a.exec();
 }

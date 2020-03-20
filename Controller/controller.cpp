@@ -1,10 +1,13 @@
 #include "controller.h"
 
-Controller::Controller(MainWindow* window) {
-  model_ = new Model(this);
-  view_ = new View(window, this);
+Controller::Controller() : model_(std::make_unique<Model>()),
+                           view_(std::make_unique<View>(this)) {
 }
 
-void Controller::StartGame(int) {
-  //model_->SetDataBase(lvl_id);
+void Controller::StartGame(int level) {
+  // model_->SetDataBase(lvl_id);
 }
+
+void Controller::Tick() {
+}
+

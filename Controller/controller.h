@@ -1,22 +1,25 @@
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
+#ifndef CONTROLLER_CONTROLLER_H_
+#define CONTROLLER_CONTROLLER_H_
 
-#include "Model/model.h"
+#include <vector>
+#include <memory>
+
+#include "abstract_controller.h"
 #include "View/view.h"
-#include "enemy.h"
-#include "mainwindow.h"
+#include "Model/model.h"
 
-class Model;
-class View;
-
-class Controller {
+// This class controls the interaction between objects.
+class Controller : public AbstractController {
  public:
-  Controller(MainWindow*);
-  void StartGame(int lvl = 1);
+  Controller();
+  ~Controller() override = default;
+
+  void StartGame(int level) override;
+  void Tick() override;
+
  private:
-  Model* model_;
-  View* view_;
-  ~Controller();
+  std::unique_ptr<Model> model_;
+  std::unique_ptr<View> view_;
 };
 
-#endif // CONTROLLER_H
+#endif  // CONTROLLER_CONTROLLER_H_
