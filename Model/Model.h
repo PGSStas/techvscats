@@ -32,8 +32,8 @@ class Model {
   int score_;
 
   // Database of GameObject's instances, that is used to create GameObjects.
-  std::vector<Enemy> id_to_Enemy_;
-  std::vector<Building> id_to_Building_;
+  std::vector<Enemy> id_to_enemy_;
+  std::vector<Building> id_to_building_;
 };
 
 #endif  // MODEL_MODEL_H_
