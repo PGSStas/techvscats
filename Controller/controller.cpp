@@ -10,7 +10,7 @@ void Controller::StartGame(int level_id) {
   last_round_start_time = 0;
 }
 
-void Controller::EndGame(int code) {
+void Controller::EndGame(int end_code) {
   // if 0 - win
 }
 

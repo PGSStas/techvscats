@@ -6,8 +6,7 @@
 
 class Road {
  public:
-  // Returns the next vertex for the coordinate_num.
-  // If the vertex is the last, it returns null.
+  Road() = default;
   explicit Road(std::vector<Coordinate> nodes);
   Coordinate GetNode(int node_number);
 

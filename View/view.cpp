@@ -13,6 +13,3 @@ void View::paintEvent(QPaintEvent* event) {
   painter.drawRect(0, 0, 500, 500);
   //
 }
-
-void Enemy::Draw(QPainter*) {
-}
