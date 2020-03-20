@@ -13,7 +13,7 @@ class View : public QMainWindow {
   ~View() = default;
 
  private:
-  std::shared_ptr<AbstractController> controller_;
+  AbstractController* controller_;
 };
 
 #endif  // VIEW_VIEW_H_
