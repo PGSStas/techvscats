@@ -12,10 +12,9 @@
 class AbstractController {
  public:
   virtual ~AbstractController() = default;
-
+  virtual void Tick(int current_time) = 0;
   virtual void StartGame(int level) = 0;
   virtual void EndGame(int end_code) = 0;
-  virtual void Tick() = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

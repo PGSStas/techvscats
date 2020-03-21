@@ -3,23 +3,35 @@
 #include "QDebug"
 View::View(AbstractController* controller)
     : controller_(controller) {
+
   start_game_button_ = new QPushButton(this);
   start_game_button_->setText(tr("Начать"));
-  connect(start_game_button_, SIGNAL(clicked()),
-          this, SLOT(StartGameButtonClick()));
+  auto start_game_button_click = [&]() {
+    controller_->StartGame(0);
+  };
+  connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
   return_menu_button_ = new QPushButton(this);
   return_menu_button_->setText(tr("Вернуться"));
-  connect(return_menu_button_, SIGNAL(clicked()),
-          this, SLOT(ReturnMenuButtonClick()));
+  auto return_menu_button_click = [&]() {
+    controller_->EndGame(1);
+  };
+  connect(return_menu_button_, &QPushButton::clicked, return_menu_button_click);
 
   wave_status_label_ = new QLabel(this);
   wave_status_label_->move(100, 10);
   wave_status_label_->setText(tr("Rounds 0 / 0"));
   show();
 
+  game_time_.start();
+  timer_controller_id_ = startTimer(time_between_ticks_);
   EnableMenuWindow();
   DisableGameWindow();
+}
+
+void View::timerEvent(QTimerEvent* event) {
+  controller_->Tick(game_time_.elapsed());
+  repaint();
 }
 
 void View::paintEvent(QPaintEvent* event) {
@@ -54,13 +66,6 @@ void View::DisableMenuWindow() {
   start_game_button_->hide();
 }
 
-void View::StartGameButtonClick() {
-  controller_->StartGame(0);
-}
-
-void View::ReturnMenuButtonClick() {
-  controller_->EndGame(1);
-}
 void View::UpdateRounds(int current_round_nubmer, int rounds_size) {
   wave_status_label_->setText(
       "Rounds " + QString::number(current_round_nubmer) + "/"

@@ -15,6 +15,14 @@ bool Enemy::IsDead() const {
 }
 
 Enemy::Enemy(const Enemy& enemy_instance) {
+  *this = enemy_instance;
+}
+
+Enemy::Enemy(Enemy* enemy_instance) {
+  *this = *enemy_instance;
+}
+
+Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   is_dead_ = enemy_instance.is_dead_;
   damage_ = enemy_instance.damage_;
   armor_ = enemy_instance.armor_;
@@ -24,6 +32,5 @@ Enemy::Enemy(const Enemy& enemy_instance) {
   current_health_ = enemy_instance.max_health_;
   road_ = enemy_instance.road_;
   node_number_ = 0;
-}
-Enemy::Enemy(Enemy* enemy_instance):Enemy(*enemy_instance) {
+  return *this;
 }

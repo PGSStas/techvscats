@@ -1,11 +1,13 @@
 #ifndef VIEW_VIEW_H_
 #define VIEW_VIEW_H_
 
-#include <QObject>
+#include <QTimerEvent>
 #include <QMainWindow>
-#include <QLabel>
 #include <QPushButton>
+#include <QElapsedTimer>
+#include <QObject>
 #include <QString>
+#include <QLabel>
 #include "Controller/abstract_controller.h"
 
 class View : public QMainWindow {
@@ -26,15 +28,16 @@ class View : public QMainWindow {
   bool is_menu_window_enabled;
   AbstractController* controller_;
   void paintEvent(QPaintEvent* event);
+  void timerEvent(QTimerEvent* event);
+  QElapsedTimer game_time_;
   // Game window
   QLabel* wave_status_label_;
   QPushButton* start_game_button_;
   // Menu window
   QPushButton* return_menu_button_;
- private
-    slots:
-  void StartGameButtonClick();
-  void ReturnMenuButtonClick();
+  int timer_controller_id_;
+  const int time_between_ticks_ = 10;
+
 };
 
 #endif  // VIEW_VIEW_H_

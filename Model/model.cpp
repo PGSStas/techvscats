@@ -2,7 +2,7 @@
 
 void Model::SetGameModel(int level_id) {
   current_round_number_ = 0;
-
+  qDebug() <<"Set Model";
   switch (level_id) {
     case 0:
       // To be changed. All this is need to be downloaded form file.
@@ -86,10 +86,13 @@ void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
 void Model::ClearGameModel() {
   qDebug() << "Clear Model";
   // will this part of the code correctly destroy shared ptr?
-  enemies_.resize(0);
-  buildings_.resize(0);
-  // projectiles_.resize(0);
-  // spawners_.resize(0);
-  // rounds_.resize(0);
-  // roads_.resize(0);
+  current_round_number_=0;
+  roads_count_=0;
+  rounds_count_=0;
+  enemies_.clear();
+  buildings_.clear();
+  projectiles_.clear();
+  spawners_.clear();
+  rounds_.clear();
+  roads_.clear();
 }
