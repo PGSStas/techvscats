@@ -13,12 +13,15 @@
 #include "wave.h"
 #include "road.h"
 
+#include "QDebug"
+
 class Model {
  public:
   Model() = default;
   ~Model() = default;
 
   void SetGameModel(int level);
+  void ClearGameModel();
 
   void AddSpawner(int road_number, Wave* wave, int current_time);
   void AddEnemyFromInstance(Enemy* enemy_instance);
@@ -26,8 +29,8 @@ class Model {
   int GetRoundsCount();
   int GetRoadsCount();
   int GetCurrentRoundNumber();
-  std::list<Spawner>* GetSpawners();
   void IncrementCurrentRoundNumber();
+  std::list<Spawner>* GetSpawners();
   Wave* GetWave(int round_number, int road_number);
   Road* GetRoad(int i);
 

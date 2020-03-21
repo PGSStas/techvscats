@@ -5,6 +5,7 @@ Spawner::Spawner(Road* road_to_spawn, Wave* wave_to_spawn, int current_time) {
     is_dead_ = true;
     return;
   }
+  is_ready_to_spawn_ = false;
   road_to_spawn_ = road_to_spawn;
   wave_to_spawn_ = wave_to_spawn;
   last_time_enemy_spawn_ = current_time;

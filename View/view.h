@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QPushButton>
+#include <QString>
 #include "Controller/abstract_controller.h"
 
 class View : public QMainWindow {
@@ -14,18 +15,25 @@ class View : public QMainWindow {
   explicit View(AbstractController* controller);
   ~View() = default;
 
-  void Tick();
-
   void EnableGameWindow();
   void DisableGameWindow();
+  void EnableMenuWindow();
+  void DisableMenuWindow();
 
+  void UpdateRounds(int current_round_number, int rounds_count);
  private:
-  bool is_game_window;
+  bool is_menu_window;
   AbstractController* controller_;
   void paintEvent(QPaintEvent* event);
-
-  // Game Ui
+  // Game window
   QLabel* wave_status_label;
+  QPushButton* start_game_button_;
+  // Menu window
+  QPushButton* return_menu_button_;
+ private slots:
+  void StartGameButtonClick();
+  void ReturnMenuButtonClick();
+
 };
 
 #endif  // VIEW_VIEW_H_

@@ -2,21 +2,54 @@
 #include <QDebug>
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)) {
+  is_game_now_ = false;
 }
 
 void Controller::StartGame(int level_id) {
-  model_->SetGameModel(level_id);
-  view_->EnableGameWindow();
+  qDebug() << "start game";
+
   tick_id_ = startTimer(time_between_ticks);
   is_game_now_ = true;
   game_time_.start();
   last_round_start_time_ = 0;
+
+  model_->SetGameModel(level_id);
+
+  view_->DisableMenuWindow();
+  view_->EnableGameWindow();
+  view_->UpdateRounds(model_->GetCurrentRoundNumber(),
+                      model_->GetRoundsCount());
 }
 
 void Controller::EndGame(int end_code) {
-  // if end_code == 0 - win
+  // if end_code == 0 - win, 1 - return menu clicked
+  model_->ClearGameModel();
   view_->DisableGameWindow();
+  view_->EnableMenuWindow();
   is_game_now_ = false;
+}
+
+void Controller::Tick() {
+  if (is_game_now_) {
+    GameProcess();
+    return;
+  }
+  MenuProcess();
+}
+
+void Controller::timerEvent(QTimerEvent* event) {
+  if (event->timerId() == tick_id_) {
+    Tick();
+  }
+  view_->repaint();
+}
+
+void Controller::MenuProcess() {
+}
+
+void Controller::GameProcess() {
+  CreateNextWave();
+  TickSpawners(game_time_.elapsed());
 }
 
 void Controller::CreateNextWave() {
@@ -41,31 +74,10 @@ void Controller::CreateNextWave() {
   }
 
   model_->IncrementCurrentRoundNumber();
-//  view_->IncrementCurrentRoundNumber();
+
+  view_->UpdateRounds(model_->GetCurrentRoundNumber(),
+                      model_->GetRoundsCount());
   qDebug() << "Round!";
-}
-
-void Controller::MenuProcess() {
-}
-
-void Controller::GameProcess() {
-  CreateNextWave();
-  TickSpawners(game_time_.elapsed());
-}
-
-void Controller::Tick() {
-  if (is_game_now_) {
-    GameProcess();
-    return;
-  }
-  MenuProcess();
-}
-
-void Controller::timerEvent(QTimerEvent* event) {
-  if (event->timerId() == tick_id_) {
-    Tick();
-  }
-  view_->repaint();
 }
 
 void Controller::TickSpawners(int current_time) {

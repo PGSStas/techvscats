@@ -1,5 +1,5 @@
 #include "model.h"
-#include "QDebug"
+
 void Model::SetGameModel(int level_id) {
   current_round_number_ = 0;
   gold_ = 100;
@@ -75,4 +75,15 @@ int Model::GetRoadsCount() {
 
 void Model::AddEnemyFromInstance(Enemy* enemy_instance) {
   enemies_.push_back(std::make_shared<Enemy>(new Enemy()));
+}
+
+void Model::ClearGameModel() {
+  qDebug() << "Clear Model";
+  // will this part of the code correctly destroy shared ptr?
+  enemies_.resize(0);
+  buildings_.resize(0);
+  // projectiles_.resize(0);
+  // spawners_.resize(0);
+  //rounds_.resize(0);
+  // roads_.resize(0);
 }
