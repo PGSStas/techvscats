@@ -32,8 +32,8 @@ class Controller : public AbstractController {
 
   bool is_game_now_ = false;
   bool is_rounds_end_ = false;
-  int current_time_=0;
-  int last_round_start_time_;
+  int current_time_ = 0;
+  int last_round_start_time_ = 0;
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

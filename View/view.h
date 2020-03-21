@@ -11,7 +11,7 @@
 #include "Controller/abstract_controller.h"
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -37,7 +37,6 @@ class View : public QMainWindow {
   QPushButton* return_menu_button_;
   int timer_controller_id_;
   const int time_between_ticks_ = 10;
-
 };
 
 #endif  // VIEW_VIEW_H_

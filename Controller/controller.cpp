@@ -17,7 +17,7 @@ void Controller::StartGame(int level_id) {
   view_->EnableGameWindow();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
-  }
+}
 
 void Controller::EndGame(int end_code) {
   // if end_code == 0 - win, 1 - return menu clicked

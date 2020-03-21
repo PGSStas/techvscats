@@ -46,7 +46,5 @@ const Enemy& Spawner::GetEnemy() {
   return enemy_to_spawn_;
 }
 
-Spawner::Spawner(){
-}
 
 

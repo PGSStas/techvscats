@@ -10,7 +10,7 @@
 // The Spawner is installed on the road, and creates enemies from wave.
 class Spawner {
  public:
-  Spawner();
+  Spawner() = default;
   Spawner(const Road& road_to_spawn_, const Wave& wave, int current_time);
   ~Spawner() = default;
   bool IsReadyToSpawn() const;

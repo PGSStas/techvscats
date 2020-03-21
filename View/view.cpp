@@ -30,8 +30,10 @@ View::View(AbstractController* controller)
 }
 
 void View::timerEvent(QTimerEvent* event) {
-  controller_->Tick(game_time_.elapsed());
-  repaint();
+  if (event->timerId()) {
+    controller_->Tick(game_time_.elapsed());
+    repaint();
+  }
 }
 
 void View::paintEvent(QPaintEvent* event) {
