@@ -59,16 +59,16 @@ void Model::IncrementCurrentRoundNumber() {
   current_round_number_++;
 }
 
-void Model::AddSpawner(int road_number, const Wave* wave, int current_time) {
+void Model::AddSpawner(int road_number, const Wave& wave, int current_time) {
   spawners_.emplace_back(GetRoad(road_number), wave, current_time);
 }
 
-const Road* Model::GetRoad(int i) const {
-  return &roads_[i];
+const Road& Model::GetRoad(int i) const {
+  return roads_[i];
 }
 
-const Wave* Model::GetWave(int round_number, int road_number) const {
-  return &rounds_[round_number][road_number];
+const Wave& Model::GetWave(int round_number, int road_number) const {
+  return rounds_[round_number][road_number];
 }
 
 std::list<Spawner>* Model::GetSpawners() {
@@ -79,7 +79,7 @@ int Model::GetRoadsCount() const {
   return roads_count_;
 }
 
-void Model::AddEnemyFromInstance(const Enemy* enemy_instance) {
+void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
   enemies_.push_back(std::make_shared<Enemy>(new Enemy(enemy_instance)));
 }
 
@@ -90,6 +90,6 @@ void Model::ClearGameModel() {
   buildings_.resize(0);
   // projectiles_.resize(0);
   // spawners_.resize(0);
-  //rounds_.resize(0);
+  // rounds_.resize(0);
   // roads_.resize(0);
 }

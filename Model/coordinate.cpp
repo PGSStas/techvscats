@@ -1,21 +1,21 @@
 #include "coordinate.h"
 
-Coordinate operator+(const Coordinate& left, const Coordinate& right) {
-  return Coordinate({left.x + right.x, left.y + right.y});
+Coordinate Coordinate::operator+(const Coordinate& right) {
+  return Coordinate({x + right.x, y + right.y});
 }
 
-Coordinate operator-(const Coordinate& left, const Coordinate& right) {
-  return Coordinate({left.x - right.x, left.y - right.y});
+Coordinate Coordinate::operator-(const Coordinate& right) {
+  return Coordinate({x - right.x, y - right.y});
 }
 
-Coordinate& operator+=(Coordinate& left, const Coordinate& right) {
-  left.x += right.x;
-  left.y += right.y;
-  return left;
+Coordinate& Coordinate::operator+=(const Coordinate& right) {
+  x += right.x;
+  y += right.y;
+  return *this;
 }
 
-bool operator==(const Coordinate& left, const Coordinate& right) {
-  return left.x == right.x && left.y == right.y;
+bool Coordinate::operator==(const Coordinate& right) {
+  return x == right.x && y == right.y;
 }
 
 

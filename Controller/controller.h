@@ -1,6 +1,7 @@
 #ifndef CONTROLLER_CONTROLLER_H_
 #define CONTROLLER_CONTROLLER_H_
 
+#include <list>
 #include <vector>
 #include <memory>
 
@@ -12,7 +13,6 @@
 
 // This class controls the interaction between objects.
 class Controller : public AbstractController, public QMainWindow {
-
  public:
   Controller();
   ~Controller() override = default;
@@ -31,12 +31,12 @@ class Controller : public AbstractController, public QMainWindow {
   void MenuProcess();
 
   void CreateNextWave();
-  void CreateEnemy(const Enemy* enemy) const;
-  void TickSpawners(int current_time) const ;
+  void CreateEnemy(const Enemy& enemy) const;
+  void TickSpawners(int current_time) const;
 
-  bool is_game_now_;
-  bool is_rounds_end_;
-  int last_round_start_time_;
+  bool is_game_now_ = false;
+  bool is_rounds_end_ = false;
+  int last_round_start_time_ = 0;
   int tick_id_;
   const int time_between_ticks = 10;
 };

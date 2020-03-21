@@ -9,7 +9,7 @@
 #include "Controller/abstract_controller.h"
 
 class View : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -31,10 +31,9 @@ class View : public QMainWindow {
   QPushButton* start_game_button_;
   // Menu window
   QPushButton* return_menu_button_;
- private slots:
+ private  slots:
   void StartGameButtonClick();
   void ReturnMenuButtonClick();
-
 };
 
 #endif  // VIEW_VIEW_H_

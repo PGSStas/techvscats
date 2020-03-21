@@ -20,7 +20,6 @@ View::View(AbstractController* controller)
 
   EnableMenuWindow();
   DisableGameWindow();
-
 }
 
 void View::paintEvent(QPaintEvent* event) {

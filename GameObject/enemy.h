@@ -6,10 +6,11 @@
 class Enemy : public MovingObject {
  public:
   Enemy() = default;
-  explicit Enemy(const Enemy* enemy_instance);
+  explicit Enemy(const Enemy& enemy_instance);
+  explicit Enemy(Enemy* enemy_instance);
   void Tick() override;
   void Draw(QPainter* painter) const override;
-  void SetRoad(const Road* road);
+  void SetRoad(const Road& road);
   bool IsDead() const;
  private:
   double damage_;

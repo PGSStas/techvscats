@@ -1,6 +1,7 @@
 #ifndef MODEL_MODEL_H_
 #define MODEL_MODEL_H_
 
+#include <list>
 #include <vector>
 #include <memory>
 
@@ -23,16 +24,16 @@ class Model {
   void SetGameModel(int level);
   void ClearGameModel();
 
-  void AddSpawner(int road_number, const Wave* wave, int current_time);
-  void AddEnemyFromInstance(const Enemy* enemy_instance);
+  void AddSpawner(int road_number, const Wave& wave, int current_time);
+  void AddEnemyFromInstance(const Enemy& enemy_instance);
   int GetTimeBetweenWaves() const;
   int GetRoundsCount() const;
   int GetRoadsCount() const;
   int GetCurrentRoundNumber() const;
   void IncrementCurrentRoundNumber();
   std::list<Spawner>* GetSpawners();
-  const Wave* GetWave(int round_number, int road_number) const;
-  const Road* GetRoad(int i) const;
+  const Wave& GetWave(int round_number, int road_number) const;
+  const Road& GetRoad(int i) const;
 
  private:
   // Database which is updated by Controller all time
@@ -43,7 +44,7 @@ class Model {
   int gold_;
   int score_;
 
-  //Database which is loaded in SetGameModel once
+  // Database which is loaded in SetGameModel once
   std::vector<std::vector<Wave>> rounds_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;

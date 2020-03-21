@@ -5,13 +5,10 @@ struct Coordinate {
   double x;
   double y;
 
-  friend Coordinate operator+(const Coordinate& left,
-                              const Coordinate& right);
-  friend Coordinate operator-(const Coordinate& left,
-                              const Coordinate& right);
-  friend Coordinate& operator+=(Coordinate& left, const Coordinate& right);
-  friend bool operator==(const Coordinate& left, const Coordinate& right);
-
+  Coordinate operator+(const Coordinate& right);
+  Coordinate operator-(const Coordinate& right);
+  Coordinate& operator+=(const Coordinate& right);
+  bool operator==(const Coordinate& right);
 };
 
 #endif  // MODEL_COORDINATE_H_

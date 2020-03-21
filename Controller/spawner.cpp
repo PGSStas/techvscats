@@ -1,17 +1,16 @@
 #include "spawner.h"
 #include <QDebug>
-Spawner::Spawner(const Road* road_to_spawn,
-                 const Wave* wave_to_spawn,
+Spawner::Spawner(const Road& road_to_spawn,
+                 const Wave& wave_to_spawn,
                  int current_time) {
-  if (wave_to_spawn->enemies.size() == 0) {
+  if (wave_to_spawn.enemies.size() == 0) {
     is_dead_ = true;
     return;
   }
-  is_ready_to_spawn_ = false;
-  road_to_spawn_ = road_to_spawn;
-  wave_to_spawn_ = wave_to_spawn;
+  road_to_spawn_ = &road_to_spawn;
+  wave_to_spawn_ = &wave_to_spawn;
   last_time_enemy_spawn_ = current_time;
-  current_enemy_number = wave_to_spawn->enemies[current_pack_number].times;
+  current_enemy_number = wave_to_spawn.enemies[current_pack_number].times;
 }
 
 void Spawner::Tick(int current_time) {
@@ -29,7 +28,7 @@ void Spawner::Tick(int current_time) {
   }
   current_pack_number++;
   current_enemy_number = wave_to_spawn_->enemies[current_pack_number].times;
-  if (current_pack_number == wave_to_spawn_->enemies.size()) {
+  if (current_pack_number == static_cast<int>(wave_to_spawn_->enemies.size())) {
     is_dead_ = true;
   }
 }
@@ -42,9 +41,9 @@ bool Spawner::IsReadyToSpawn() const {
   return is_ready_to_spawn_;
 }
 
-const Enemy* Spawner::GetEnemy() {
+const Enemy& Spawner::GetEnemy() {
   is_ready_to_spawn_ = false;
-  return enemy_to_spawn_;
+  return *enemy_to_spawn_;
 }
 
 
