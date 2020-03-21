@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMainWindow>
 #include <QLabel>
+#include <QPushButton>
 #include "Controller/abstract_controller.h"
 
 class View : public QMainWindow {
@@ -13,14 +14,18 @@ class View : public QMainWindow {
   explicit View(AbstractController* controller);
   ~View() = default;
 
-  void StartGameUi();
-  void UpdateGameUi();
-  void EndGameUi();
+  void Tick();
+
+  void EnableGameWindow();
+  void DisableGameWindow();
 
  private:
+  bool is_game_window;
   AbstractController* controller_;
   void paintEvent(QPaintEvent* event);
-  std::unique_ptr<QLabel> wave_status_;
+
+  // Game Ui
+  QLabel* wave_status_label;
 };
 
 #endif  // VIEW_VIEW_H_

@@ -1,7 +1,8 @@
 #include "view.h"
 #include <QPushButton>
 
-View::View(AbstractController* controller) : controller_(controller) {
+View::View(AbstractController* controller)
+    : controller_(controller) {
   show();
 }
 
@@ -13,8 +14,16 @@ void View::paintEvent(QPaintEvent* event) {
   //
 }
 
-void View::StartGameUi() {
-  wave_status_ = std::make_unique<QLabel>(new QLabel(tr("e")));
-  wave_status_->move(10, 10);
+void View::EnableGameWindow() {
+  is_game_window = true;
+  wave_status_label = new QLabel(this);
+  wave_status_label->move(10, 10);
+  wave_status_label->setText(tr("Rounds : "));
 }
+void View::DisableGameWindow() {
+  is_game_window=false;
+  delete wave_status_label;
+}
+
+
 

@@ -6,7 +6,7 @@ Controller::Controller() : model_(std::make_unique<Model>()),
 
 void Controller::StartGame(int level_id) {
   model_->SetGameModel(level_id);
-  view_->StartGameUi();
+  view_->EnableGameWindow();
   tick_id_ = startTimer(time_between_ticks);
   is_game_now_ = true;
   game_time_.start();
@@ -15,6 +15,7 @@ void Controller::StartGame(int level_id) {
 
 void Controller::EndGame(int end_code) {
   // if end_code == 0 - win
+  view_->DisableGameWindow();
   is_game_now_ = false;
 }
 
