@@ -6,6 +6,7 @@ Controller::Controller() : model_(std::make_unique<Model>()),
 
 void Controller::StartGame(int level_id) {
   model_->SetGameModel(level_id);
+  view_->StartGameUi();
   tick_id_ = startTimer(time_between_ticks);
   is_game_now_ = true;
   game_time_.start();
@@ -37,7 +38,9 @@ void Controller::CreateNextWave() {
     Wave* temporary_wave = model_->GetWave(current_round_number, i);
     model_->AddSpawner(i, temporary_wave, game_time_.elapsed());
   }
+
   model_->IncrementCurrentRoundNumber();
+//  view_->IncrementCurrentRoundNumber();
   qDebug() << "Round!";
 }
 
@@ -63,6 +66,7 @@ void Controller::timerEvent(QTimerEvent* event) {
   }
   view_->repaint();
 }
+
 void Controller::TickSpawners(int current_time) {
   std::list<Spawner>* spawners = model_->GetSpawners();
   spawners->remove_if([&](Spawner& i) { return i.IsDead(); });

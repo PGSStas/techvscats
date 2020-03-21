@@ -12,3 +12,9 @@ void View::paintEvent(QPaintEvent* event) {
   painter.drawRect(0, 0, 500, 500);
   //
 }
+
+void View::StartGameUi() {
+  wave_status_ = std::make_unique<QLabel>(new QLabel(tr("e")));
+  wave_status_->move(10, 10);
+}
+

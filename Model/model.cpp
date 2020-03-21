@@ -73,6 +73,6 @@ int Model::GetRoadsCount() {
   return roads_count_;
 }
 
-void Model::AddEnemy(Enemy* enemy_instance) {
+void Model::AddEnemyFromInstance(Enemy* enemy_instance) {
   enemies_.push_back(std::make_shared<Enemy>(new Enemy()));
 }

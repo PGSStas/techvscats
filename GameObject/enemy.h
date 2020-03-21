@@ -5,10 +5,12 @@
 #include "Model/road.h"
 class Enemy : public MovingObject {
  public:
+  Enemy() = default;
+  explicit Enemy(Enemy* enemy_instance);
   void Tick() override;
   void Draw(QPainter* painter) override;
   void SetRoad(Road* road);
-  bool  IsDead();
+  bool IsDead();
  private:
   double damage_;
   double armor_;
