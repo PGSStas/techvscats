@@ -7,3 +7,11 @@ void MovingObject::Move() {
   position += move;
   SetPosition(position);
 }
+
+void MovingObject::SetDestination(const Coordinate& destination) {
+  destination_ = destination;
+}
+
+double MovingObject::GetSpeed() const {
+  return speed_;
+}

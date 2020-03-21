@@ -32,5 +32,6 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   current_health_ = enemy_instance.max_health_;
   road_ = enemy_instance.road_;
   node_number_ = 0;
+  SetPosition(road_->GetNode(node_number_));
   return *this;
 }

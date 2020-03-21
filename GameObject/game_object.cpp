@@ -4,6 +4,6 @@ Coordinate GameObject::GetPosition() const {
   return position_;
 }
 
-void GameObject::SetPosition(Coordinate position) {
+void GameObject::SetPosition(const Coordinate& position) {
   position_ = position;
 }

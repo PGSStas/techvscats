@@ -9,7 +9,7 @@ class GameObject {
   virtual void Draw(QPainter*) const = 0;
   virtual void Tick() = 0;
   Coordinate GetPosition() const;
-  void SetPosition(Coordinate position);
+  void SetPosition(const Coordinate& position);
  private:
   Coordinate position_;
 };

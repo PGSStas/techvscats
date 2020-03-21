@@ -25,8 +25,7 @@ class Spawner {
   Enemy enemy_to_spawn_;
   Wave wave_to_spawn_;
   Road road_to_spawn_;
-  int current_pack_number = 0;
-  int current_enemy_number = 0;
+  int current_pack_number_ = 0;
 };
 
 #endif  // CONTROLLER_SPAWNER_H_

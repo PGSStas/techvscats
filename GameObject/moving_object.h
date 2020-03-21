@@ -5,6 +5,8 @@
 
 class MovingObject : public GameObject {
   void Move();
+  void SetDestination(const Coordinate& destination);
+  double GetSpeed() const ;
  private:
   Coordinate destination_;
   double speed_;
