@@ -14,7 +14,7 @@ void Controller::StartGame(int level_id) {
   model_->SetGameModel(level_id);
 
   view_->DisableMenuWindow();
-  view_->EnableGameWindow();
+  view_->EnableGameUi();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
 }
@@ -22,8 +22,8 @@ void Controller::StartGame(int level_id) {
 void Controller::EndGame(int end_code) {
   // if end_code == 0 - win, 1 - return menu clicked
   model_->ClearGameModel();
-  view_->DisableGameWindow();
-  view_->EnableMenuWindow();
+  view_->DisableGameUi();
+  view_->EnableMenuUi();
   is_game_now_ = false;
 }
 
@@ -55,7 +55,7 @@ void Controller::CreateNextWave() {
   last_round_start_time_ = current_time_;
   if (current_round_number == model_->GetRoundsCount()) {
     is_rounds_end_ = true;
-    qDebug() << "Round ends.";
+    qDebug() << "Rounds end.";
     return;
   }
 

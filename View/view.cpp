@@ -25,8 +25,8 @@ View::View(AbstractController* controller)
 
   game_time_.start();
   timer_controller_id_ = startTimer(time_between_ticks_);
-  EnableMenuWindow();
-  DisableGameWindow();
+  EnableMenuUi();
+  DisableGameUi();
 }
 
 void View::timerEvent(QTimerEvent* event) {
@@ -48,17 +48,17 @@ void View::paintEvent(QPaintEvent* event) {
   painter.drawRect(20, 20, 40, 40);
 }
 
-void View::EnableGameWindow() {
+void View::EnableGameUi() {
   return_menu_button_->show();
   wave_status_label_->show();
 }
 
-void View::DisableGameWindow() {
+void View::DisableGameUi() {
   return_menu_button_->hide();
   wave_status_label_->hide();
 }
 
-void View::EnableMenuWindow() {
+void View::EnableMenuUi() {
   is_menu_window_enabled = true;
   start_game_button_->show();
 }

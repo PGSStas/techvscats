@@ -17,9 +17,9 @@ class View : public QMainWindow {
   explicit View(AbstractController* controller);
   ~View() = default;
 
-  void EnableGameWindow();
-  void DisableGameWindow();
-  void EnableMenuWindow();
+  void EnableGameUi();
+  void DisableGameUi();
+  void EnableMenuUi();
   void DisableMenuWindow();
 
   void UpdateRounds(int current_round_number, int rounds_count);
