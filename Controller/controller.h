@@ -32,7 +32,7 @@ class Controller : public AbstractController, public QMainWindow {
 
   void CreateNextWave();
   void CreateEnemy(const Enemy& enemy) const;
-  void TickSpawners(int current_time) const;
+  void TickSpawners(int current_time);
 
   bool is_game_now_ = false;
   bool is_rounds_end_ = false;

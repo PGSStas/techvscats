@@ -79,7 +79,7 @@ void Controller::CreateNextWave() {
   qDebug() << "Round!";
 }
 
-void Controller::TickSpawners(int current_time) const {
+void Controller::TickSpawners(int current_time) {
   std::list<Spawner>* spawners = model_->GetSpawners();
   spawners->remove_if([&](Spawner& i) { return i.IsDead(); });
   for (auto& spawner : *spawners) {

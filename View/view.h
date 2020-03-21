@@ -31,7 +31,8 @@ class View : public QMainWindow {
   QPushButton* start_game_button_;
   // Menu window
   QPushButton* return_menu_button_;
- private  slots:
+ private
+    slots:
   void StartGameButtonClick();
   void ReturnMenuButtonClick();
 };
