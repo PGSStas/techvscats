@@ -23,16 +23,16 @@ class Model {
   void SetGameModel(int level);
   void ClearGameModel();
 
-  void AddSpawner(int road_number, Wave* wave, int current_time);
-  void AddEnemyFromInstance(Enemy* enemy_instance);
-  int GetTimeBetweenWaves();
-  int GetRoundsCount();
-  int GetRoadsCount();
-  int GetCurrentRoundNumber();
+  void AddSpawner(int road_number, const Wave* wave, int current_time);
+  void AddEnemyFromInstance(const Enemy* enemy_instance);
+  int GetTimeBetweenWaves() const;
+  int GetRoundsCount() const;
+  int GetRoadsCount() const;
+  int GetCurrentRoundNumber() const;
   void IncrementCurrentRoundNumber();
   std::list<Spawner>* GetSpawners();
-  Wave* GetWave(int round_number, int road_number);
-  Road* GetRoad(int i);
+  const Wave* GetWave(int round_number, int road_number) const;
+  const Road* GetRoad(int i) const;
 
  private:
   // Database which is updated by Controller all time
@@ -47,7 +47,7 @@ class Model {
   std::vector<std::vector<Wave>> rounds_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;
-  int time_between_waves_;
+  int time_between_ronds_;
   int rounds_count_;
   int roads_count_;
 

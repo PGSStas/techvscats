@@ -9,21 +9,22 @@
 // The Spawner is installed on the road, and creates enemies from wave.
 class Spawner {
  public:
-  Spawner(Road* road_to_spawn_, Wave* wave, int current_time);
+  Spawner(const Road* road_to_spawn_, const Wave* wave, int current_time);
   ~Spawner() = default;
-  bool IsReadyToSpawn();
-  bool IsDead();
+  bool IsReadyToSpawn() const;
+  bool IsDead() const;
   void Tick(int current_time);
-  Enemy* GetEnemy();
+  const Enemy* GetEnemy();
 
  private:
   int last_time_enemy_spawn_;
   bool is_ready_to_spawn_;
   bool is_dead_ = false;
-  Enemy* enemy_to_spawn_;
-  Wave* wave_to_spawn_;
-  Road* road_to_spawn_;
+  const Enemy* enemy_to_spawn_;
+  const Wave* wave_to_spawn_;
+  const Road* road_to_spawn_;
   int current_pack_number = 0;
+  int current_enemy_number = 0;
 };
 
 #endif  // CONTROLLER_SPAWNER_H_

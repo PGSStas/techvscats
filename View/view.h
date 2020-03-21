@@ -21,12 +21,13 @@ class View : public QMainWindow {
   void DisableMenuWindow();
 
   void UpdateRounds(int current_round_number, int rounds_count);
+
  private:
-  bool is_menu_window;
+  bool is_menu_window_enabled;
   AbstractController* controller_;
   void paintEvent(QPaintEvent* event);
   // Game window
-  QLabel* wave_status_label;
+  QLabel* wave_status_label_;
   QPushButton* start_game_button_;
   // Menu window
   QPushButton* return_menu_button_;

@@ -22,18 +22,17 @@ class Controller : public AbstractController, public QMainWindow {
   void Tick() override;
 
  private:
+  void timerEvent(QTimerEvent* event);
+  std::unique_ptr<Model> model_;
+  std::unique_ptr<View> view_;
+  QElapsedTimer game_time_;
 
   void GameProcess();
   void MenuProcess();
 
   void CreateNextWave();
-  void CreateEnemy(Enemy* enemy);
-  void TickSpawners(int current_time);
-
-  void timerEvent(QTimerEvent* event);
-  std::unique_ptr<Model> model_;
-  std::unique_ptr<View> view_;
-  QElapsedTimer game_time_;
+  void CreateEnemy(const Enemy* enemy) const;
+  void TickSpawners(int current_time) const ;
 
   bool is_game_now_;
   bool is_rounds_end_;

@@ -13,9 +13,9 @@ View::View(AbstractController* controller)
   connect(return_menu_button_, SIGNAL(clicked()),
           this, SLOT(ReturnMenuButtonClick()));
 
-  wave_status_label = new QLabel(this);
-  wave_status_label->move(100, 10);
-  wave_status_label->setText(tr("Rounds 0 / 0"));
+  wave_status_label_ = new QLabel(this);
+  wave_status_label_->move(100, 10);
+  wave_status_label_->setText(tr("Rounds 0 / 0"));
   show();
 
   EnableMenuWindow();
@@ -26,7 +26,7 @@ View::View(AbstractController* controller)
 void View::paintEvent(QPaintEvent* event) {
   QPainter painter(this);
   // Example of work
-  if (is_menu_window) {
+  if (is_menu_window_enabled) {
     painter.setBrush(Qt::green);
     painter.drawRect(20, 20, 40, 40);
     return;
@@ -37,21 +37,21 @@ void View::paintEvent(QPaintEvent* event) {
 
 void View::EnableGameWindow() {
   return_menu_button_->show();
-  wave_status_label->show();
+  wave_status_label_->show();
 }
 
 void View::DisableGameWindow() {
   return_menu_button_->hide();
-  wave_status_label->hide();
+  wave_status_label_->hide();
 }
 
 void View::EnableMenuWindow() {
-  is_menu_window = true;
+  is_menu_window_enabled = true;
   start_game_button_->show();
 }
 
 void View::DisableMenuWindow() {
-  is_menu_window = false;
+  is_menu_window_enabled = false;
   start_game_button_->hide();
 }
 
@@ -63,7 +63,7 @@ void View::ReturnMenuButtonClick() {
   controller_->EndGame(1);
 }
 void View::UpdateRounds(int current_round_nubmer, int rounds_size) {
-  wave_status_label->setText(
+  wave_status_label_->setText(
       "Rounds " + QString::number(current_round_nubmer) + "/"
           + QString::number(rounds_size));
 }

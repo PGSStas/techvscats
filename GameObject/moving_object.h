@@ -4,7 +4,8 @@
 #include "game_object.h"
 
 class MovingObject : public GameObject {
- protected:
+  void Move();
+ private:
   Coordinate destination_;
   double speed_;
   double speed_coefficient_;

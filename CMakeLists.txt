@@ -26,7 +26,7 @@ add_executable(techvscats
         Model/model.cpp
         Model/road.cpp
         View/view.cpp
-        )
+        GameObject/game_object.cpp GameObject/moving_object.cpp Model/coordinate.cpp)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

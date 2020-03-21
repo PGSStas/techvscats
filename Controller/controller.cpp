@@ -1,17 +1,17 @@
 #include "controller.h"
 #include <QDebug>
 Controller::Controller() : model_(std::make_unique<Model>()),
-                           view_(std::make_unique<View>(this)) {
-  is_game_now_ = false;
+                           view_(std::make_unique<View>(this)),
+                           is_game_now_(false) {
 }
 
 void Controller::StartGame(int level_id) {
-  qDebug() << "start game";
-
-  tick_id_ = startTimer(time_between_ticks);
+  qDebug() << "Game Start!";
   is_game_now_ = true;
+
   game_time_.start();
   last_round_start_time_ = 0;
+  tick_id_ = startTimer(time_between_ticks);
 
   model_->SetGameModel(level_id);
 
@@ -69,7 +69,7 @@ void Controller::CreateNextWave() {
 
   int roads_number = model_->GetRoadsCount();
   for (int i = 0; i < roads_number; i++) {
-    Wave* temporary_wave = model_->GetWave(current_round_number, i);
+    const Wave* temporary_wave = model_->GetWave(current_round_number, i);
     model_->AddSpawner(i, temporary_wave, game_time_.elapsed());
   }
 
@@ -80,7 +80,7 @@ void Controller::CreateNextWave() {
   qDebug() << "Round!";
 }
 
-void Controller::TickSpawners(int current_time) {
+void Controller::TickSpawners(int current_time) const{
   std::list<Spawner>* spawners = model_->GetSpawners();
   spawners->remove_if([&](Spawner& i) { return i.IsDead(); });
   for (auto& spawner : *spawners) {
@@ -91,7 +91,7 @@ void Controller::TickSpawners(int current_time) {
   }
 }
 
-void Controller::CreateEnemy(Enemy* enemy) {
+void Controller::CreateEnemy(const Enemy* enemy) const {
   model_->AddEnemyFromInstance(enemy);
   qDebug() << "new enemy";
 }

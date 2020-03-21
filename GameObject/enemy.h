@@ -6,11 +6,11 @@
 class Enemy : public MovingObject {
  public:
   Enemy() = default;
-  explicit Enemy(Enemy* enemy_instance);
+  explicit Enemy(const Enemy* enemy_instance);
   void Tick() override;
-  void Draw(QPainter* painter) override;
-  void SetRoad(Road* road);
-  bool IsDead();
+  void Draw(QPainter* painter) const override;
+  void SetRoad(const Road* road);
+  bool IsDead() const;
  private:
   double damage_;
   double armor_;
@@ -18,9 +18,10 @@ class Enemy : public MovingObject {
   int reward_;
   double current_health_;
   double max_health_;
-  Road* road_;
-  int node_number_;
   bool is_dead_;
+
+  const Road* road_;
+  int node_number_;
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_
