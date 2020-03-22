@@ -8,6 +8,8 @@
 #include <QObject>
 #include <QString>
 #include <QLabel>
+#include <QDebug>
+#include <list>
 #include "Controller/abstract_controller.h"
 
 class View : public QMainWindow {

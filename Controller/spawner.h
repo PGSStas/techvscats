@@ -24,7 +24,7 @@ class Spawner {
   bool is_dead_ = false;
   Enemy enemy_to_spawn_;
   Wave wave_to_spawn_;
-  Road road_to_spawn_;
+  const Road* road_to_spawn_;
   int current_pack_number_ = 0;
 };
 

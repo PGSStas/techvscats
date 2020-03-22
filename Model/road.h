@@ -10,6 +10,7 @@ class Road {
   explicit Road(const std::vector<Coordinate>& nodes);
   void SetRoad(const std::vector<Coordinate>& nodes);
   Coordinate GetNode(int node_number) const;
+  bool IsEnd(int node_number) const;
 
  private:
   std::vector<Coordinate> nodes_;
