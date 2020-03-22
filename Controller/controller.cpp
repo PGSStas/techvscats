@@ -36,14 +36,15 @@ void Controller::Tick(int current_time) {
   MenuProcess();
 }
 
-void Controller::MenuProcess() {}
-
 void Controller::GameProcess() {
   if (CanCreateNextWave()) {
     CreateNextWave();
   }
   TickSpawners();
+  TickEnemies();
 }
+
+void Controller::MenuProcess() {}
 
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
@@ -85,8 +86,17 @@ void Controller::TickSpawners() {
     if (spawner.IsReadyToSpawn()) {
       Enemy enemy_to_spawn = spawner.GetEnemy();
       enemy_to_spawn.SetRoad(model_->GetRoad(spawner.GetRoadNumber()));
-      CreateEnemy(spawner.GetEnemy());
+      CreateEnemy(enemy_to_spawn);
     }
+  }
+}
+
+void Controller::TickEnemies() {
+  std::list<std::shared_ptr<Enemy>>* enemies = model_->GetEnemies();
+  // Delete enemies code here
+
+  for (auto &enemy : *enemies) {
+    enemy->Tick();
   }
 }
 
@@ -94,5 +104,10 @@ void Controller::CreateEnemy(const Enemy& enemy) const {
   model_->AddEnemyFromInstance(enemy);
   qDebug() << "new enemy";
 }
+
+const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
+  return *model_->GetEnemies();
+}
+
 
 

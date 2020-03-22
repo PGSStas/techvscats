@@ -1,13 +1,5 @@
 #include "moving_object.h"
 
-void MovingObject::Move() {
-  Coordinate position = GetPosition();
-  // to update
-  Coordinate move (1, 1);
-  position += move;
-  SetPosition(position);
-}
-
 double MovingObject::GetSpeed() const {
   return speed_;
 }
@@ -16,6 +8,19 @@ void MovingObject::SetSpeed(double speed) {
   speed_ = speed;
 }
 
+Coordinate MovingObject::GetDestination() const {
+  return destination_;
+}
+
+bool MovingObject::GetIsReached() const {
+  return is_reached_destination_;
+}
+
+void MovingObject::SetIsReached(bool is_reached) {
+  is_reached_destination_ = is_reached;
+}
+
 void MovingObject::SetDestination(const Coordinate& destination) {
   destination_ = destination;
 }
+

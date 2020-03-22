@@ -3,13 +3,12 @@
 
 #include <cmath>
 
-class Coordinate {
- public:
-  Coordinate() = default;
-  Coordinate(double position_x, double position_y);
-
+struct Coordinate {
   double x;
   double y;
+
+  Coordinate() = default;
+  Coordinate(double position_x, double position_y);
 
   double Lentgth();
   Coordinate VectorTo(const Coordinate& right);

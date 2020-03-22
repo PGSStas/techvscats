@@ -3,6 +3,7 @@
 void Model::SetGameModel(int level_id) {
   current_round_number_ = 0;
   EnemyPack temporary_enemy_pack;
+  EnemyPack temporary_enemy_pack2;
   Enemy temporary_enemy;
   Wave temporary_wave;
   Road temporary_road;
@@ -11,12 +12,18 @@ void Model::SetGameModel(int level_id) {
   switch (level_id) {
     case 0:
       // To be changed. All this is need to be downloaded form file.
-      //temporary_enemy.SetSpeed(1);
+      temporary_enemy.SetSpeed(1);
       gold_ = 100;
       score_ = 0;
       // Pack with enemies
       temporary_enemy_pack.enemy = temporary_enemy;
       temporary_enemy_pack.times = 2;
+
+      temporary_enemy.SetSpeed(4);
+      temporary_enemy_pack2.enemy = temporary_enemy;
+      temporary_enemy_pack2.times = 7;
+
+
       // Wave, that holds some packs.
       temporary_wave.frequency = 2000;
       temporary_wave.enemies.push_back(temporary_enemy_pack);
@@ -27,13 +34,16 @@ void Model::SetGameModel(int level_id) {
       // Put wave to rounds[round_number][road_number]
       rounds_[0][0] = temporary_wave;
       rounds_[0][1] = temporary_wave;
+      temporary_wave.frequency = 100;
+      temporary_wave.enemies.push_back(temporary_enemy_pack2);
       rounds_[1][1] = temporary_wave;
 
+      nodes = {{800, 1000}, {600, 800}, {760, 760}};
       roads_.resize(roads_count_);
-      nodes = {{400, 400}, {500, 700}};
       temporary_road.SetRoad(nodes);
       roads_[0] = temporary_road;
-      nodes = {{700, 500}, {400, 340}};
+      nodes = {{100, 150}, {400, 150}, {500, 500}, {760, 760}};
+
       temporary_road.SetRoad(nodes);
       roads_[1] = temporary_road;
 
@@ -43,8 +53,7 @@ void Model::SetGameModel(int level_id) {
       // 1 round 2 enemies on each road
       // 2 round 2 enemies on the second road
       break;
-    case 1://
-      // temporary_enemy.SetSpeed(1);
+    case 1:temporary_enemy.SetSpeed(1);
       temporary_enemy_pack.enemy = temporary_enemy;
       temporary_enemy_pack.times = 1;
       // Wave, that holds some packs.
@@ -58,7 +67,7 @@ void Model::SetGameModel(int level_id) {
       rounds_[0][0] = temporary_wave;
 
       roads_.resize(roads_count_);
-      nodes = {{100, 100}, {100, 102}, {100, 103}};
+      nodes = {{100, 100}, {100, 101}, {100, 103}};
       temporary_road.SetRoad(nodes);
       roads_[0] = temporary_road;
 
@@ -97,6 +106,10 @@ const Wave& Model::GetWave(int round_number, int road_number) const {
 
 std::list<Spawner>* Model::GetSpawners() {
   return &spawners_;
+}
+
+std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
+  return &enemies_;
 }
 
 int Model::GetRoadsCount() const {

@@ -3,7 +3,6 @@
 
 #include "building.h"
 
-class PassiveTower : public Building {
-};
+class PassiveTower : public Building {};
 
 #endif  // GAMEOBJECT_PASSIVE_TOWER_H_
