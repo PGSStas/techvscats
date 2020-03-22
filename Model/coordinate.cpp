@@ -40,3 +40,8 @@ Coordinate Coordinate::VectorTo(const Coordinate& right) {
   tmp.y = right.y - tmp.y;
   return tmp;
 }
+
+Coordinate::Coordinate(double position_x, double position_y) {
+  x=position_x;
+  y=position_y;
+}

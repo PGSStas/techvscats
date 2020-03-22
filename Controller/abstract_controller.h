@@ -6,6 +6,12 @@
 #include "GameObject/passive_tower.h"
 #include "GameObject/projectile.h"
 
+enum Exit {
+  kWin,
+  kLose,
+  kMenu,
+};
+
 // AbstractController is needed to avoid the problem with looping include
 // All public methods of controller should also be written here
 class AbstractController {
@@ -13,7 +19,7 @@ class AbstractController {
   virtual ~AbstractController() = default;
   virtual void Tick(int current_time) = 0;
   virtual void StartGame(int level) = 0;
-  virtual void EndGame(int end_code) = 0;
+  virtual void EndGame(Exit exit) = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

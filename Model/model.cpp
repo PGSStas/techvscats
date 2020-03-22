@@ -84,7 +84,7 @@ void Model::IncrementCurrentRoundNumber() {
 }
 
 void Model::AddSpawner(int road_number, const Wave& wave, int current_time) {
-  spawners_.emplace_back(GetRoad(road_number), wave, current_time);
+  spawners_.emplace_back(road_number, wave, current_time);
 }
 
 const Road& Model::GetRoad(int i) const {

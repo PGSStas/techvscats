@@ -3,7 +3,11 @@
 
 #include <cmath>
 
-struct Coordinate {
+class Coordinate {
+ public:
+  Coordinate() = default;
+  Coordinate(double position_x, double position_y);
+
   double x;
   double y;
 

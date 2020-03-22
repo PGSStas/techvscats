@@ -14,7 +14,7 @@ View::View(AbstractController* controller)
   return_menu_button_ = new QPushButton(this);
   return_menu_button_->setText(tr("Вернуться"));
   auto return_menu_button_click = [&]() {
-    controller_->EndGame(1);
+    controller_->EndGame(Exit::kLose);
   };
   connect(return_menu_button_, &QPushButton::clicked, return_menu_button_click);
 

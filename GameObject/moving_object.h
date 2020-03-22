@@ -8,6 +8,10 @@ class MovingObject : public GameObject {
   MovingObject() = default;
   virtual void Move() = 0;
 
+  double GetSpeed() const;
+  void SetSpeed(double speed);
+  void SetDestination(const Coordinate& direction);
+
  protected:
   Coordinate destination_;
   double speed_;

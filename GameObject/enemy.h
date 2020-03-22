@@ -1,6 +1,7 @@
 #ifndef GAMEOBJECT_ENEMY_H_
 #define GAMEOBJECT_ENEMY_H_
 
+#include <memory>
 #include "moving_object.h"
 #include "Model/road.h"
 
@@ -8,12 +9,8 @@ class Enemy : public MovingObject {
  public:
   Enemy() = default;
   Enemy(const Enemy& enemy_instance);
-  explicit Enemy(Enemy* enemy_instance);
+  Enemy(Enemy* enemy_instance);
   Enemy& operator=(const Enemy& enemy_instance);
-
-  double GetSpeed() const;
-  void SetSpeed(double speed);
-  void SetDestination(Coordinate direction) const;
 
   void Tick() override;
   void Move() override;

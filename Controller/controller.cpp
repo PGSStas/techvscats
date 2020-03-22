@@ -19,7 +19,7 @@ void Controller::StartGame(int level_id) {
                       model_->GetRoundsCount());
 }
 
-void Controller::EndGame(int end_code) {
+void Controller::EndGame(Exit exit) {
   // if end_code == 0 - win, 1 - return menu clicked
   model_->ClearGameModel();
   view_->DisableGameUi();
@@ -39,25 +39,31 @@ void Controller::Tick(int current_time) {
 void Controller::MenuProcess() {}
 
 void Controller::GameProcess() {
-  CreateNextWave();
+  if (CanCreateNextWave()) {
+    CreateNextWave();
+  }
   TickSpawners();
 }
 
-void Controller::CreateNextWave() {
+bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
   if (is_rounds_end_ || current_time_ - last_round_start_time_
       < model_->GetTimeBetweenWaves()) {
-    return;
+    return false;
   }
 
   last_round_start_time_ = current_time_;
   if (current_round_number == model_->GetRoundsCount()) {
     is_rounds_end_ = true;
     qDebug() << "Rounds end.";
-    return;
+    return false;
   }
+  return true;
+}
 
+void Controller::CreateNextWave() {
+  int current_round_number = model_->GetCurrentRoundNumber();
   int roads_count = model_->GetRoadsCount();
   for (int i = 0; i < roads_count; i++) {
     const Wave& temporary_wave = model_->GetWave(current_round_number, i);
@@ -77,6 +83,8 @@ void Controller::TickSpawners() {
   for (auto& spawner : *spawners) {
     spawner.Tick(current_time_);
     if (spawner.IsReadyToSpawn()) {
+      Enemy enemy_to_spawn = spawner.GetEnemy();
+      enemy_to_spawn.SetRoad(model_->GetRoad(spawner.GetRoadNumber()));
       CreateEnemy(spawner.GetEnemy());
     }
   }

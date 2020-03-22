@@ -18,21 +18,6 @@ Enemy::Enemy(const Enemy& enemy_instance) {
   *this = enemy_instance;
 }
 
-Enemy::Enemy(Enemy* enemy_instance) {
-  *this = *enemy_instance;
-}
-
-double Enemy::GetSpeed() const {
-  return speed_;
-}
-
-void Enemy::SetSpeed(double speed) {
-  speed_ = speed;
-}
-
-void Enemy::SetDestination(Coordinate destination) const {
- destination_ = destination;
-}
 Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   if (this == &enemy_instance) {
     return *this;
