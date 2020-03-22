@@ -85,7 +85,6 @@ void Controller::TickSpawners() {
     spawner.Tick(current_time_);
     if (spawner.IsReadyToSpawn()) {
       Enemy enemy_to_spawn = spawner.GetEnemy();
-      // enemy_to_spawn.SetRoad(model_->GetRoad(spawner.GetRoadNumber()));
       CreateEnemy(enemy_to_spawn);
     }
   }
@@ -108,6 +107,7 @@ void Controller::CreateEnemy(const Enemy& enemy) const {
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
   return *model_->GetEnemies();
 }
+
 const std::vector<Road>& Controller::GetRoads() const {
   return model_->GetRoads();
 }

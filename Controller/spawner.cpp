@@ -24,7 +24,8 @@ void Spawner::Tick(int current_time) {
   last_time_spawn_ = current_time;
   enemy_to_spawn_ = wave_to_spawn_.enemies.begin()->enemy;
   enemy_to_spawn_.SetRoad(road_to_spawn_);
-  if (--wave_to_spawn_.enemies.begin()->times != 0) {
+  wave_to_spawn_.enemies.begin()->times--;
+  if (wave_to_spawn_.enemies.begin()->times != 0) {
     return;
   }
   // Start spawning from next pack

@@ -50,15 +50,15 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   road_ = enemy_instance.road_;
   node_number_ = 0;
   if (road_ != nullptr) {
-    position_ = road_->GetNode(node_number_);
-    destination_ = road_->GetNode(node_number_);
+    SetRoad(*road_);
   }
   return *this;
 }
 
 void Enemy::SetRoad(const Road& road) {
   road_ = std::make_shared<const Road>(road);
-  destination_ = road_->GetNode(0);
+  position_ = road_->GetNode(node_number_);
+  destination_ = road_->GetNode(node_number_);
 }
 
 bool Enemy::IsDead() const {
@@ -67,9 +67,4 @@ bool Enemy::IsDead() const {
 
 Enemy::Enemy(const Enemy& enemy_instance) {
   *this = enemy_instance;
-}
-
-Enemy::Enemy(const Road& road)
-    : MovingObject(), road_(std::make_shared<const Road>(road)) {
-  destination_ = road_->GetNode(0);
 }
