@@ -12,7 +12,7 @@ class Enemy : public MovingObject {
   Enemy(Enemy* enemy_instance);
   Enemy& operator=(const Enemy& enemy_instance);
 
-  void Tick(int current_time) override;
+  void Tick() override;
   void Move() override;
   void Draw(QPainter* painter) const override;
   void SetRoad(const Road& road);

@@ -14,7 +14,7 @@ class Controller : public AbstractController {
  public:
   Controller();
   ~Controller() override = default;
-  const std::list<std::shared_ptr<Enemy>>* GetEnemyes() const override ;
+  const std::list<std::shared_ptr<Enemy>>* GetEnemies() const override ;
   void Tick(int current_time) override;
   void StartGame(int level) override;
   void EndGame(Exit exit) override;

@@ -3,6 +3,7 @@
 void Model::SetGameModel(int level_id) {
   current_round_number_ = 0;
   EnemyPack temporary_enemy_pack;
+  EnemyPack temporary_enemy_pack2;
   Enemy temporary_enemy;
   Wave temporary_wave;
   Road temporary_road;
@@ -17,6 +18,12 @@ void Model::SetGameModel(int level_id) {
       // Pack with enemies
       temporary_enemy_pack.enemy = temporary_enemy;
       temporary_enemy_pack.times = 2;
+
+      temporary_enemy.SetSpeed(4);
+      temporary_enemy_pack2.enemy = temporary_enemy;
+      temporary_enemy_pack2.times = 7;
+
+
       // Wave, that holds some packs.
       temporary_wave.frequency = 2000;
       temporary_wave.enemies.push_back(temporary_enemy_pack);
@@ -27,13 +34,16 @@ void Model::SetGameModel(int level_id) {
       // Put wave to rounds[round_number][road_number]
       rounds_[0][0] = temporary_wave;
       rounds_[0][1] = temporary_wave;
+      temporary_wave.frequency = 100;
+      temporary_wave.enemies.push_back(temporary_enemy_pack2);
       rounds_[1][1] = temporary_wave;
 
+      nodes = {{800, 1000},{600,800},{760,760}};
       roads_.resize(roads_count_);
-      nodes = {{400, 400}, {500, 700}};
       temporary_road.SetRoad(nodes);
       roads_[0] = temporary_road;
-      nodes = {{700, 500}, {400, 340}};
+      nodes = {{100, 150}, {400, 150},{500,500},{760,760}};
+
       temporary_road.SetRoad(nodes);
       roads_[1] = temporary_road;
 
@@ -57,7 +67,7 @@ void Model::SetGameModel(int level_id) {
       rounds_[0][0] = temporary_wave;
 
       roads_.resize(roads_count_);
-      nodes = {{100, 100}, {100, 102}, {100, 103}};
+      nodes = {{100, 100}, {100, 101}, {100, 103}};
       temporary_road.SetRoad(nodes);
       roads_[0] = temporary_road;
 
@@ -110,7 +120,6 @@ int Model::GetRoadsCount() const {
 void Model::AddEnemyFromInstance(const Enemy& enemy_instance,
                                  int current_time) {
   enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
-  enemies_.back()->SetStartLiveTime(current_time);
 }
 
 void Model::ClearGameModel() {

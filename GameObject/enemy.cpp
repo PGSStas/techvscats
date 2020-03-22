@@ -1,7 +1,6 @@
 #include "enemy.h"
 
-void Enemy::Tick(int current_time) {
-  SetCurrentTime(current_time);
+void Enemy::Tick() {
   Move();
 }
 
@@ -68,7 +67,6 @@ void Enemy::Move() {
       return;
     }
     SetDestination(road_->GetNode(node_number_));
-    qDebug()<<"dest : "<<GetDestination().x<<" "<<GetDestination().y;
 
     Move();
   }
