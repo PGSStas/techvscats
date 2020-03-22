@@ -23,7 +23,7 @@ Enemy::Enemy(Enemy* enemy_instance) {
 }
 
 Enemy& Enemy::operator=(const Enemy& enemy_instance) {
-  if(this == &enemy_instance) {
+  if (this == &enemy_instance) {
     return *this;
   }
 
@@ -40,5 +40,4 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
 }
 
 void Enemy::Move() {
-
 }
