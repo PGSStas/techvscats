@@ -2,6 +2,9 @@
 #define CONTROLLER_ABSTRACT_CONTROLLER_H_
 
 #include <QObject>
+#include <list>
+#include <vector>
+#include <memory>
 #include "GameObject/enemy.h"
 #include "GameObject/active_tower.h"
 #include "GameObject/passive_tower.h"

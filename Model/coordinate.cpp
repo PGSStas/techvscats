@@ -43,6 +43,6 @@ Coordinate Coordinate::VectorTo(const Coordinate& right) {
 }
 
 Coordinate::Coordinate(double position_x, double position_y) {
-  x=position_x;
-  y=position_y;
+  x = position_x;
+  y = position_y;
 }
