@@ -13,7 +13,7 @@ struct EnemyPack {
 
 struct Wave {
   int frequency;
-  std::vector<EnemyPack> enemies;
+  std::list<EnemyPack> enemies;
 };
 
 #endif  // MODEL_WAVE_H_
