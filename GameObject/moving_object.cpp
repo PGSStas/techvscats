@@ -16,8 +16,8 @@ bool MovingObject::GetIsReached() const {
   return has_reached_;
 }
 
-void MovingObject::SetHasReached(bool is_reached) {
-  has_reached_ = is_readned;
+void MovingObject::SetHasReached(bool has_reached) {
+  has_reached_ = has_reached;
 }
 
 void MovingObject::SetDestination(const Coordinate& destination) {
