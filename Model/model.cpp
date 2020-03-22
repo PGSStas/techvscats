@@ -38,11 +38,11 @@ void Model::SetGameModel(int level_id) {
       temporary_wave.enemies.push_back(temporary_enemy_pack2);
       rounds_[1][1] = temporary_wave;
 
-      nodes = {{800, 1000}, {600, 800}, {760, 760}};
+      nodes = {{800, 1000}, {600, 800}, {1060, 660}};
       roads_.resize(roads_count_);
       temporary_road.SetRoad(nodes);
       roads_[0] = temporary_road;
-      nodes = {{100, 150}, {400, 150}, {500, 500}, {760, 760}};
+      nodes = {{100, 150}, {400, 150}, {500, 500}, {1060, 660}};
 
       temporary_road.SetRoad(nodes);
       roads_[1] = temporary_road;

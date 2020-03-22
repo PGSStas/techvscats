@@ -1,11 +1,11 @@
 
 #include "coordinate.h"
 
-Coordinate Coordinate::operator+(const Coordinate& right) {
+Coordinate Coordinate::operator+(const Coordinate& right) const {
   return Coordinate({x + right.x, y + right.y});
 }
 
-Coordinate Coordinate::operator-(const Coordinate& right) {
+Coordinate Coordinate::operator-(const Coordinate& right) const {
   return Coordinate({x - right.x, y - right.y});
 }
 
@@ -15,11 +15,11 @@ Coordinate& Coordinate::operator+=(const Coordinate& right) {
   return *this;
 }
 
-bool Coordinate::operator==(const Coordinate& right) {
+bool Coordinate::operator==(const Coordinate& right) const {
   return x == right.x && y == right.y;
 }
 
-double Coordinate::Lentgth() {
+double Coordinate::GetLength() const {
   return std::sqrt(x * x + y * y);
 }
 
@@ -29,7 +29,7 @@ Coordinate& Coordinate::operator*=(double right) {
   return *this;
 }
 
-Coordinate& Coordinate::operator/=(const double right) {
+Coordinate& Coordinate::operator/=(double right) {
   x /= right;
   y /= right;
   return *this;
@@ -42,7 +42,5 @@ Coordinate Coordinate::VectorTo(const Coordinate& right) {
   return tmp;
 }
 
-Coordinate::Coordinate(double position_x, double position_y) {
-  x = position_x;
-  y = position_y;
-}
+Coordinate::Coordinate(double position_x, double position_y)
+    : x(position_x), y(position_y) {}

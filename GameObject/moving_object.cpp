@@ -12,7 +12,7 @@ Coordinate MovingObject::GetDestination() const {
   return destination_;
 }
 
-bool MovingObject::GetIsReached() const {
+bool MovingObject::HasReached() const {
   return has_reached_;
 }
 

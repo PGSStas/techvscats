@@ -9,13 +9,13 @@ void Enemy::Move() {
     return;
   }
   Coordinate move_direction = position_.VectorTo(destination_);
-  if (abs(move_direction.Lentgth()) > 0.0001) {
-    move_direction /= move_direction.Lentgth();
+  if (abs(move_direction.GetLength()) > 0.0001) {
+    move_direction /= move_direction.GetLength();
     move_direction *= speed_ * speed_coefficient_;
   }
 
-  if ((position_ + move_direction).VectorTo(destination_).Lentgth()
-      >= (position_).VectorTo(destination_).Lentgth()) {
+  if ((position_ + move_direction).VectorTo(destination_).GetLength()
+      >= (position_).VectorTo(destination_).GetLength()) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
       SetHasReached(true);
@@ -28,10 +28,12 @@ void Enemy::Move() {
 
 void Enemy::Draw(QPainter* painter) const {
   const Coordinate& position = GetPosition();
-  // painter->save();
+  painter->save();
+
   painter->setPen(QColor("black"));
   painter->drawRect(position.x - 15, position.y - 15, 30, 30);
-  // painter->load();
+
+  painter->restore();
 }
 
 Enemy& Enemy::operator=(const Enemy& enemy_instance) {

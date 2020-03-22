@@ -10,15 +10,15 @@ struct Coordinate {
   Coordinate() = default;
   Coordinate(double position_x, double position_y);
 
-  double Lentgth();
+  double GetLength() const;
   Coordinate VectorTo(const Coordinate& right);
 
-  Coordinate operator+(const Coordinate& right);
-  Coordinate operator-(const Coordinate& right);
+  Coordinate operator+(const Coordinate& right) const;
+  Coordinate operator-(const Coordinate& right) const;
   Coordinate& operator+=(const Coordinate& right);
   Coordinate& operator*=(double right);
   Coordinate& operator/=(double right);
-  bool operator==(const Coordinate& right);
+  bool operator==(const Coordinate& right)const;
 };
 
 #endif  // MODEL_COORDINATE_H_

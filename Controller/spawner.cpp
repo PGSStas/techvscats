@@ -2,12 +2,12 @@
 
 #include <utility>
 
-Spawner::Spawner(const Road& road_,
+Spawner::Spawner(const Road& road,
                  Wave wave_to_spawn,
                  int current_time)
     : last_time_spawn_(current_time),
       wave_to_spawn_(std::move(wave_to_spawn)),
-      road_to_spawn_(road_) {
+      road_to_spawn_(road) {
   if (wave_to_spawn_.enemies.empty()) {
     is_dead_ = true;
     return;

@@ -11,7 +11,7 @@
 // The Spawner is installed on the road, and creates enemies from wave.
 class Spawner {
  public:
-  Spawner(const Road& road_, Wave wave, int current_time);
+  Spawner(const Road& road, Wave wave, int current_time);
   ~Spawner() = default;
 
   // int GetRoadNumber() const;

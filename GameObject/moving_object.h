@@ -14,7 +14,7 @@ class MovingObject : public GameObject {
   void SetSpeed(double speed);
   void SetHasReached(bool is_readned);
 
-  bool GetIsReached() const;
+  bool HasReached() const;
   double GetSpeed() const;
 
  protected:

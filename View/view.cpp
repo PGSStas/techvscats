@@ -88,7 +88,8 @@ void View::DrawBackground(QPainter* p) {
   for (const auto& road : roads) {
     for (int i = 0; !road.IsEnd(i + 1); i++) {
       p->drawLine(road.GetNode(i).x, road.GetNode(i).y,
-                  road.GetNode(i+1).x, road.GetNode(i+1).y);
+                  road.GetNode(i + 1).x,
+                  road.GetNode(i + 1).y);
     }
   }
 
