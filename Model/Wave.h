@@ -5,15 +5,15 @@
 #include <utility>
 #include "GameObject/enemy.h"
 
+// Times in EnemyPack should be >0.
 struct EnemyPack {
   Enemy enemy;
-  int number;
+  int times;
 };
 
-struct Wave {  // to be updated
+struct Wave {
   int frequency;
-  int road_count;
-  EnemyPack enemies;
+  std::vector<EnemyPack> enemies;
 };
 
 #endif  // MODEL_WAVE_H_

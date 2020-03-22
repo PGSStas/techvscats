@@ -14,17 +14,19 @@ Spawner::Spawner(const Road& road_to_spawn,
 }
 
 void Spawner::Tick(int current_time) {
-  if (current_time - last_time_enemy_spawn_ < wave_to_spawn_.frequency) {
+  if (current_time - last_time_spawn_ < wave_to_spawn_.frequency) {
     return;
   }
   qDebug() << &road_to_spawn_ << "this road";
 
   is_ready_to_spawn_ = true;
-  last_time_enemy_spawn_ = current_time;
+  last_time_spawn_ = current_time;
   enemy_to_spawn_ = wave_to_spawn_.enemies.begin()->enemy;
   if (--wave_to_spawn_.enemies.begin()->times != 0) {
     return;
   }
+
+  // Start spawning from next pack
   wave_to_spawn_.enemies.pop_front();
   if (wave_to_spawn_.enemies.empty()) {
     is_dead_ = true;

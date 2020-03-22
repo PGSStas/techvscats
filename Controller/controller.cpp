@@ -1,8 +1,8 @@
 #include "controller.h"
 #include <QDebug>
+
 Controller::Controller() : model_(std::make_unique<Model>()),
-                           view_(std::make_unique<View>(this)) {
-}
+                           view_(std::make_unique<View>(this)) {}
 
 void Controller::StartGame(int level_id) {
   qDebug() << "Game Start!";
@@ -36,8 +36,7 @@ void Controller::Tick(int current_time) {
   MenuProcess();
 }
 
-void Controller::MenuProcess() {
-}
+void Controller::MenuProcess() {}
 
 void Controller::GameProcess() {
   CreateNextWave();
@@ -45,7 +44,7 @@ void Controller::GameProcess() {
 }
 
 void Controller::CreateNextWave() {
-  // Checks if Wave can be created
+  // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
   if (is_rounds_end_ || current_time_ - last_round_start_time_
       < model_->GetTimeBetweenWaves()) {
@@ -59,8 +58,8 @@ void Controller::CreateNextWave() {
     return;
   }
 
-  int roads_number = model_->GetRoadsCount();
-  for (int i = 0; i < roads_number; i++) {
+  int roads_count = model_->GetRoadsCount();
+  for (int i = 0; i < roads_count; i++) {
     const Wave& temporary_wave = model_->GetWave(current_round_number, i);
     model_->AddSpawner(i, temporary_wave, current_time_);
   }
@@ -74,7 +73,7 @@ void Controller::CreateNextWave() {
 
 void Controller::TickSpawners() {
   std::list<Spawner>* spawners = model_->GetSpawners();
-  spawners->remove_if([&](Spawner& i) { return i.IsDead(); });
+  spawners->remove_if([&](const Spawner& sp) { return sp.IsDead(); });
   for (auto& spawner : *spawners) {
     spawner.Tick(current_time_);
     if (spawner.IsReadyToSpawn()) {

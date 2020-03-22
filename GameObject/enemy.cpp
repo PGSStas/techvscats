@@ -23,6 +23,10 @@ Enemy::Enemy(Enemy* enemy_instance) {
 }
 
 Enemy& Enemy::operator=(const Enemy& enemy_instance) {
+  if (this == &enemy_instance) {
+    return *this;
+  }
+
   is_dead_ = enemy_instance.is_dead_;
   damage_ = enemy_instance.damage_;
   armor_ = enemy_instance.armor_;
@@ -34,4 +38,7 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   node_number_ = 0;
   SetPosition(road_->GetNode(node_number_));
   return *this;
+}
+
+void Enemy::Move() {
 }
