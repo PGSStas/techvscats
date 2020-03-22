@@ -41,13 +41,12 @@ void View::paintEvent(QPaintEvent* event) {
   if (is_menu_window_enabled) {
     painter.setBrush(Qt::green);
     painter.drawRect(20, 20, 40, 40);
-    return;
-  }
-  painter.setBrush(Qt::red);
-  painter.drawRect(20, 20, 40, 40);
-  auto enemyes_list = controller_->GetEnemies();
-  for (auto& enemy : enemyes_list) {
-    enemy->Draw(&painter);
+  } else {
+    DrawBackground(&painter);
+    auto enemies_list = controller_->GetEnemies();
+    for (auto& enemy : enemies_list) {
+      enemy->Draw(&painter);
+    }
   }
 }
 
@@ -75,5 +74,24 @@ void View::UpdateRounds(int current_round_nubmer, int rounds_size) {
   wave_status_label_->setText(
       "Rounds " + QString::number(current_round_nubmer) + "/"
           + QString::number(rounds_size));
+}
+
+void View::DrawBackground(QPainter* p) {
+  // Test realization. Will be changed.
+  p->save();
+
+  p->setBrush(QColor("#53a661"));
+  p->drawRect(0, 0, width(), height());
+
+  p->setPen(QPen(Qt::black, 5));
+  const auto& roads = controller_->GetRoads();
+  for (const auto& road : roads) {
+    for (int i = 0; !road.IsEnd(i + 1); i++) {
+      p->drawLine(road.GetNode(i).x, road.GetNode(i).y,
+          road.GetNode(i+1).x, road.GetNode(i+1).y);
+    }
+  }
+
+  p->restore();
 }
 

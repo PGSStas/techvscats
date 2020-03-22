@@ -5,6 +5,8 @@
 
 class MovingObject : public GameObject {
  public:
+  MovingObject() = default;
+
   virtual void Move() = 0;
   Coordinate GetDestination() const;
 

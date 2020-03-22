@@ -35,6 +35,8 @@ class View : public QMainWindow {
   QLabel* wave_status_label_;
   QPushButton* start_game_button_;
 
+  void DrawBackground(QPainter* p);
+
   // Menu window
   QPushButton* return_menu_button_;
   int timer_controller_id_;

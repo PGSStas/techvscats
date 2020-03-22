@@ -35,6 +35,7 @@ class Model {
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   const Wave& GetWave(int round_number, int road_number) const;
   const Road& GetRoad(int i) const;
+  const std::vector<Road>& GetRoads() const;
 
  private:
   // Database which is updated by Controller all time
