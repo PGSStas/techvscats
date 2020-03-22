@@ -11,6 +11,10 @@ class Enemy : public MovingObject {
   explicit Enemy(Enemy* enemy_instance);
   Enemy& operator=(const Enemy& enemy_instance);
 
+  double GetSpeed() const;
+  void SetSpeed(double speed);
+  void SetDestination(Coordinate direction) const;
+
   void Tick() override;
   void Move() override;
   void Draw(QPainter* painter) const override;
