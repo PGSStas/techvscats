@@ -13,10 +13,10 @@ class Spawner {
   Spawner(int road_, Wave wave, int current_time);
   ~Spawner() = default;
 
+  int GetRoadNumber() const;
   bool IsReadyToSpawn() const;
   bool IsDead() const;
-  const Enemy& GetEnemy() const;
-  int GetRoadNumber() const;
+  const Enemy& GetEnemy();
 
   void Tick(int current_time);
 

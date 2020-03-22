@@ -29,10 +29,10 @@ void Enemy::Move() {
 
 void Enemy::Draw(QPainter* painter) const {
   const Coordinate& position = GetPosition();
-  //painter->save();
+  // painter->save();
   painter->setPen(QColor("black"));
   painter->drawRect(position.x, position.y, 30, 30);
-  //painter->load();
+  // painter->load();
 }
 
 Enemy& Enemy::operator=(const Enemy& enemy_instance) {

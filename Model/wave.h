@@ -1,7 +1,7 @@
 #ifndef MODEL_WAVE_H_
 #define MODEL_WAVE_H_
 
-#include <vector>
+#include <list>
 #include <utility>
 #include "GameObject/enemy.h"
 

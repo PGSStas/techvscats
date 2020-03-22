@@ -3,7 +3,7 @@
 #include <utility>
 
 Spawner::Spawner(int road_number_,
-                 Wave  wave_to_spawn,
+                 Wave wave_to_spawn,
                  int current_time)
     : last_time_spawn_(current_time),
       wave_to_spawn_(std::move(wave_to_spawn)),
@@ -41,7 +41,7 @@ bool Spawner::IsReadyToSpawn() const {
   return is_ready_to_spawn_;
 }
 
-const Enemy& Spawner::GetEnemy() const{
+const Enemy& Spawner::GetEnemy() {
   is_ready_to_spawn_ = false;
   return enemy_to_spawn_;
 }
