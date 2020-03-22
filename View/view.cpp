@@ -1,13 +1,12 @@
 #include "view.h"
-#include <QPushButton>
-#include "QDebug"
+
 View::View(AbstractController* controller)
     : controller_(controller) {
 
   start_game_button_ = new QPushButton(this);
   start_game_button_->setText(tr("Начать"));
   auto start_game_button_click = [&]() {
-    controller_->StartGame(0);
+    controller_->StartGame(1);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
@@ -46,6 +45,10 @@ void View::paintEvent(QPaintEvent* event) {
   }
   painter.setBrush(Qt::red);
   painter.drawRect(20, 20, 40, 40);
+  auto* enemyes_list = controller_->GetEnemyes();
+  for (auto& enemy : *enemyes_list) {
+    enemy->Draw(&painter);
+  }
 }
 
 void View::EnableGameUi() {

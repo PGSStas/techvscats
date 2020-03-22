@@ -5,8 +5,7 @@ Spawner::Spawner(int road_number_,
                  int current_time)
     : last_time_spawn_(current_time),
       wave_to_spawn_(wave_to_spawn),
-      road_to_spawn_number_(road_number_),
-      enemy_to_spawn_(){
+      road_to_spawn_number_(road_number_){
   if (wave_to_spawn_.enemies.empty()) {
     is_dead_ = true;
     return;

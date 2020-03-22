@@ -1,9 +1,16 @@
 #include "enemy.h"
 
-void Enemy::Tick() {
+void Enemy::Tick(int current_time) {
+  SetCurrentTime(current_time);
+  Move();
 }
 
 void Enemy::Draw(QPainter* painter) const {
+  const Coordinate& position = GetPosition();
+  //painter->save();
+  painter->setPen(QColor("black"));
+  painter->drawRect(position.x, position.y, 30, 30);
+  //painter->load();
 }
 
 void Enemy::SetRoad(const Road& road) {
@@ -37,7 +44,35 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
     SetPosition(road_->GetNode(node_number_));
     SetDestination(road_->GetNode(node_number_));
   }
+  return *this;
 }
 
+
 void Enemy::Move() {
+  if (GetIsReached()) {
+    return;
+  }
+
+  Coordinate destination = GetDestination();
+  Coordinate position = GetPosition();
+  Coordinate move_direction = position.VectorTo(destination);
+  if (abs(move_direction.Lentgth()) > 0.0001) {
+    move_direction /= move_direction.Lentgth();
+    move_direction *= GetSpeed();
+  }
+
+  if ((position + move_direction).VectorTo(destination).Lentgth()
+      >= (position).VectorTo(destination).Lentgth()) {
+    if (road_->IsEnd(++node_number_)) {
+      SetIsReached(true);
+      return;
+    }
+    SetDestination(road_->GetNode(node_number_));
+    qDebug()<<"dest : "<<GetDestination().x<<" "<<GetDestination().y;
+
+    Move();
+  }
+  SetPosition(position + move_direction);
 }
+
+

@@ -25,13 +25,14 @@ class Model {
   void ClearGameModel();
 
   void AddSpawner(int road_number, const Wave& wave, int current_time);
-  void AddEnemyFromInstance(const Enemy& enemy_instance);
+  void AddEnemyFromInstance(const Enemy& enemy_instance, int current_time);
   int GetTimeBetweenWaves() const;
   int GetRoundsCount() const;
   int GetRoadsCount() const;
   int GetCurrentRoundNumber() const;
   void IncrementCurrentRoundNumber();
   std::list<Spawner>* GetSpawners();
+  std::list<std::shared_ptr<Enemy>>* GetEnemies();
   const Wave& GetWave(int round_number, int road_number) const;
   const Road& GetRoad(int i) const;
 

@@ -14,7 +14,7 @@ class Controller : public AbstractController {
  public:
   Controller();
   ~Controller() override = default;
-
+  const std::list<std::shared_ptr<Enemy>>* GetEnemyes() const override ;
   void Tick(int current_time) override;
   void StartGame(int level) override;
   void EndGame(Exit exit) override;
@@ -30,6 +30,7 @@ class Controller : public AbstractController {
   bool CanCreateNextWave();
   void CreateEnemy(const Enemy& enemy) const;
   void TickSpawners();
+  void TickEnemies();
 
   bool is_game_now_ = false;
   bool is_rounds_end_ = false;

@@ -7,8 +7,9 @@
 class GameObject {
  public:
   GameObject() = default;
+
   virtual void Draw(QPainter*) const = 0;
-  virtual void Tick() = 0;
+  virtual void Tick(int current_time) = 0;
   Coordinate GetPosition() const;
   void SetPosition(const Coordinate& position);
 

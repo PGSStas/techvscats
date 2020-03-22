@@ -11,7 +11,7 @@ void Model::SetGameModel(int level_id) {
   switch (level_id) {
     case 0:
       // To be changed. All this is need to be downloaded form file.
-      //temporary_enemy.SetSpeed(1);
+      temporary_enemy.SetSpeed(1);
       gold_ = 100;
       score_ = 0;
       // Pack with enemies
@@ -43,8 +43,7 @@ void Model::SetGameModel(int level_id) {
       // 1 round 2 enemies on each road
       // 2 round 2 enemies on the second road
       break;
-    case 1://
-      // temporary_enemy.SetSpeed(1);
+    case 1:temporary_enemy.SetSpeed(1);
       temporary_enemy_pack.enemy = temporary_enemy;
       temporary_enemy_pack.times = 1;
       // Wave, that holds some packs.
@@ -61,6 +60,7 @@ void Model::SetGameModel(int level_id) {
       nodes = {{100, 100}, {100, 102}, {100, 103}};
       temporary_road.SetRoad(nodes);
       roads_[0] = temporary_road;
+
 
       time_between_ronds_ = 1000;
       break;
@@ -99,12 +99,18 @@ std::list<Spawner>* Model::GetSpawners() {
   return &spawners_;
 }
 
+std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
+  return &enemies_;
+}
+
 int Model::GetRoadsCount() const {
   return roads_count_;
 }
 
-void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
+void Model::AddEnemyFromInstance(const Enemy& enemy_instance,
+                                 int current_time) {
   enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
+  enemies_.back()->SetStartLiveTime(current_time);
 }
 
 void Model::ClearGameModel() {

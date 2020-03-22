@@ -43,6 +43,7 @@ void Controller::GameProcess() {
     CreateNextWave();
   }
   TickSpawners();
+  TickEnemies();
 }
 
 bool Controller::CanCreateNextWave() {
@@ -90,9 +91,22 @@ void Controller::TickSpawners() {
   }
 }
 
+void Controller::TickEnemies() {
+  std::list<std::shared_ptr<Enemy>>* enemies = model_->GetEnemies();
+  //enemies->remove_if([&](Enemy& i) { return i.IsDead(); });
+  for (auto &enemy : *enemies) {
+    enemy->Tick(current_time_);
+  }
+}
+
 void Controller::CreateEnemy(const Enemy& enemy) const {
-  model_->AddEnemyFromInstance(enemy);
+  model_->AddEnemyFromInstance(enemy,current_time_);
   qDebug() << "new enemy";
 }
+
+const std::list<std::shared_ptr<Enemy>>* Controller::GetEnemyes() const {
+  return model_->GetEnemies();
+}
+
 
 
