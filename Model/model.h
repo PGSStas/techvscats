@@ -25,7 +25,7 @@ class Model {
   void ClearGameModel();
 
   void AddSpawner(int road_number, const Wave& wave, int current_time);
-  void AddEnemyFromInstance(const Enemy& enemy_instance, int current_time);
+  void AddEnemyFromInstance(const Enemy& enemy_instance);
   int GetTimeBetweenWaves() const;
   int GetRoundsCount() const;
   int GetRoadsCount() const;

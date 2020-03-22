@@ -1,7 +1,6 @@
 #ifndef GAMEOBJECT_ACTIVE_TOWER_H_
 #define GAMEOBJECT_ACTIVE_TOWER_H_
 
-class ActiveTower {
-};
+class ActiveTower {};
 
 #endif  // GAMEOBJECT_ACTIVE_TOWER_H_

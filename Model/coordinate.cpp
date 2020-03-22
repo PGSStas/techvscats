@@ -34,6 +34,7 @@ Coordinate& Coordinate::operator/=(const double right) {
   y /= right;
   return *this;
 }
+
 Coordinate Coordinate::VectorTo(const Coordinate& right) {
   Coordinate tmp = *this;
   tmp.x = right.x - tmp.x;

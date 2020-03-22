@@ -38,11 +38,11 @@ void Model::SetGameModel(int level_id) {
       temporary_wave.enemies.push_back(temporary_enemy_pack2);
       rounds_[1][1] = temporary_wave;
 
-      nodes = {{800, 1000},{600,800},{760,760}};
+      nodes = {{800, 1000}, {600, 800}, {760, 760}};
       roads_.resize(roads_count_);
       temporary_road.SetRoad(nodes);
       roads_[0] = temporary_road;
-      nodes = {{100, 150}, {400, 150},{500,500},{760,760}};
+      nodes = {{100, 150}, {400, 150}, {500, 500}, {760, 760}};
 
       temporary_road.SetRoad(nodes);
       roads_[1] = temporary_road;
@@ -70,7 +70,6 @@ void Model::SetGameModel(int level_id) {
       nodes = {{100, 100}, {100, 101}, {100, 103}};
       temporary_road.SetRoad(nodes);
       roads_[0] = temporary_road;
-
 
       time_between_ronds_ = 1000;
       break;
@@ -117,8 +116,7 @@ int Model::GetRoadsCount() const {
   return roads_count_;
 }
 
-void Model::AddEnemyFromInstance(const Enemy& enemy_instance,
-                                 int current_time) {
+void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
   enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
 }
 

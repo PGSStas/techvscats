@@ -93,19 +93,20 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   std::list<std::shared_ptr<Enemy>>* enemies = model_->GetEnemies();
-  //enemies->remove_if([&](Enemy& i) { return i.IsDead(); });
+  // Delete enemies code here
+
   for (auto &enemy : *enemies) {
     enemy->Tick();
   }
 }
 
 void Controller::CreateEnemy(const Enemy& enemy) const {
-  model_->AddEnemyFromInstance(enemy,current_time_);
+  model_->AddEnemyFromInstance(enemy);
   qDebug() << "new enemy";
 }
 
-const std::list<std::shared_ptr<Enemy>>* Controller::GetEnemies() const {
-  return model_->GetEnemies();
+const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
+  return *model_->GetEnemies();
 }
 
 

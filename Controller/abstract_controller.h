@@ -20,7 +20,7 @@ class AbstractController {
   virtual void Tick(int current_time) = 0;
   virtual void StartGame(int level) = 0;
   virtual void EndGame(Exit exit) = 0;
-  virtual const std::list<std::shared_ptr<Enemy>>* GetEnemies() const = 0;
+  virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
 
   virtual ~AbstractController() = default;
 };

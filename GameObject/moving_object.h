@@ -19,7 +19,7 @@ class MovingObject : public GameObject {
   bool is_reached_destination_ = false;
   Coordinate destination_;
   double speed_;
-  double speed_coefficient_;
+  double speed_coefficient_ = 1;
 };
 
 #endif  // GAMEOBJECT_MOVING_OBJECT_H_
