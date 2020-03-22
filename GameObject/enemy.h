@@ -3,6 +3,7 @@
 
 #include "moving_object.h"
 #include "Model/road.h"
+
 class Enemy : public MovingObject {
  public:
   Enemy() = default;
@@ -11,6 +12,7 @@ class Enemy : public MovingObject {
   Enemy& operator=(const Enemy& enemy_instance);
 
   void Tick() override;
+  void Move() override;
   void Draw(QPainter* painter) const override;
   void SetRoad(const Road& road);
   bool IsDead() const;
@@ -22,7 +24,7 @@ class Enemy : public MovingObject {
   int reward_ = 0;
   double current_health_ = 0;
   double max_health_ = 0;
-  bool is_dead_ = 0;
+  bool is_dead_ = false;
 
   const Road* road_ = nullptr;
   int node_number_ = 0;

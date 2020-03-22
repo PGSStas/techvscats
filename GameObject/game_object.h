@@ -10,7 +10,7 @@ class GameObject {
   virtual void Tick() = 0;
   Coordinate GetPosition() const;
   void SetPosition(Coordinate position);
- private:
+ protected:
   Coordinate position_;
 };
 

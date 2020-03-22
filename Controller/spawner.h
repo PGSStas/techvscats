@@ -7,26 +7,32 @@
 #include "Model/wave.h"
 #include "Model/road.h"
 #include "GameObject/enemy.h"
-// The Spawner is installed on the road, and creates enemies from wave.
+
+// The Spawner is installed on the road, and creates enemies from Wave.
 class Spawner {
  public:
   Spawner() = default;
   Spawner(const Road& road_to_spawn_, const Wave& wave, int current_time);
   ~Spawner() = default;
+
   bool IsReadyToSpawn() const;
   bool IsDead() const;
-  void Tick(int current_time);
   const Enemy& GetEnemy();
 
+  void Tick(int current_time);
+
  private:
-  int last_time_enemy_spawn_;
+  int last_time_spawn_;
+
   bool is_ready_to_spawn_ = false;
   bool is_dead_ = false;
+
   Enemy enemy_to_spawn_;
   Wave wave_to_spawn_;
   Road road_to_spawn_;
+
   int current_pack_number = 0;
-  int current_enemy_number = 0;
+  int current_enemy_count = 0;
 };
 
 #endif  // CONTROLLER_SPAWNER_H_
