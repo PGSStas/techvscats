@@ -13,11 +13,11 @@ Coordinate MovingObject::GetDestination() const {
 }
 
 bool MovingObject::GetIsReached() const {
-  return is_reached_destination_;
+  return has_reached_;
 }
 
-void MovingObject::SetIsReached(bool is_reached) {
-  is_reached_destination_ = is_reached;
+void MovingObject::SetHasReached(bool is_reached) {
+  has_reached_ = is_readned;
 }
 
 void MovingObject::SetDestination(const Coordinate& destination) {

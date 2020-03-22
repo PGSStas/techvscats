@@ -10,13 +10,13 @@ class MovingObject : public GameObject {
 
   void SetDestination(const Coordinate& destination);
   void SetSpeed(double speed);
-  void SetIsReached(bool is_readned);
+  void SetHasReached(bool is_readned);
 
   bool GetIsReached() const;
   double GetSpeed() const;
 
  protected:
-  bool is_reached_destination_ = false;
+  bool has_reached_ = false;
   Coordinate destination_;
   double speed_;
   double speed_coefficient_ = 1;

@@ -5,19 +5,20 @@ void Enemy::Tick() {
 }
 
 void Enemy::Move() {
-  if (GetIsReached()) {
+  if (has_reached_) {
     return;
   }
   Coordinate move_direction = position_.VectorTo(destination_);
   if (abs(move_direction.Lentgth()) > 0.0001) {
     move_direction /= move_direction.Lentgth();
-    move_direction *= speed_ * speed_;
+    move_direction *= speed_ * speed_coefficient_;
   }
 
   if ((position_ + move_direction).VectorTo(destination_).Lentgth()
       >= (position_).VectorTo(destination_).Lentgth()) {
-    if (road_->IsEnd(++node_number_)) {
-      SetIsReached(true);
+    node_number_++;
+    if (road_->IsEnd(node_number_)) {
+      SetHasReached(true);
       return;
     }
     destination_ = (road_->GetNode(node_number_));
@@ -52,7 +53,7 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   node_number_ = 0;
   if (road_ != nullptr) {
     position_ = road_->GetNode(node_number_);
-    road_->GetNode(node_number_);
+    destination_ = road_->GetNode(node_number_);
   }
   return *this;
 }

@@ -45,8 +45,8 @@ void View::paintEvent(QPaintEvent* event) {
   }
   painter.setBrush(Qt::red);
   painter.drawRect(20, 20, 40, 40);
-  auto enemyes_list = controller_->GetEnemies();
-  for (auto& enemy : enemyes_list) {
+  auto enemies_list = controller_->GetEnemies();
+  for (auto& enemy : enemies_list) {
     enemy->Draw(&painter);
   }
 }

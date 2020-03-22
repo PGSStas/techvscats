@@ -95,7 +95,7 @@ void Controller::TickEnemies() {
   std::list<std::shared_ptr<Enemy>>* enemies = model_->GetEnemies();
   // Delete enemies code here
 
-  for (auto &enemy : *enemies) {
+  for (auto& enemy : *enemies) {
     enemy->Tick();
   }
 }
