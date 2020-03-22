@@ -1,6 +1,9 @@
 #ifndef CONTROLLER_CONTROLLER_H_
 #define CONTROLLER_CONTROLLER_H_
 
+#include <list>
+#include <vector>
+#include <memory>
 #include "abstract_controller.h"
 #include "View/view.h"
 #include "Model/model.h"
