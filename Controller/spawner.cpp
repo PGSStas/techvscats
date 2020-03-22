@@ -3,7 +3,7 @@
 Spawner::Spawner(const Road& road_to_spawn,
                  const Wave& wave_to_spawn,
                  int current_time)
-    : last_time_enemy_spawn_(current_time),
+    : last_time_spawn_(current_time),
       wave_to_spawn_(wave_to_spawn),
       road_to_spawn_(road_to_spawn) {
   if (wave_to_spawn_.enemies.empty()) {
