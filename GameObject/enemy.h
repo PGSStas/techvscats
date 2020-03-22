@@ -27,7 +27,7 @@ class Enemy : public MovingObject {
   double max_health_ = 0;
   bool is_dead_ = false;
 
-  const Road* road_ = nullptr;
+  std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
 };
 

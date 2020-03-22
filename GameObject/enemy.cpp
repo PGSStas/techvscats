@@ -7,7 +7,7 @@ void Enemy::Draw(QPainter* painter) const {
 }
 
 void Enemy::SetRoad(const Road& road) {
-  road_ = &road;
+  road_ = std::make_shared<const Road>(road);
 }
 
 bool Enemy::IsDead() const {
