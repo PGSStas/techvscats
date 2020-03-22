@@ -10,10 +10,12 @@ class Controller : public AbstractController {
  public:
   Controller();
   ~Controller() override = default;
-  const std::list<std::shared_ptr< Enemy>>& GetEnemies() const override;
   void Tick(int current_time) override;
   void StartGame(int level) override;
   void EndGame(Exit exit) override;
+
+  const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
+  const std::vector<Road>& GetRoads() const override;
 
  private:
   std::unique_ptr<Model> model_;

@@ -41,13 +41,12 @@ void View::paintEvent(QPaintEvent* event) {
   if (is_menu_window_enabled) {
     painter.setBrush(Qt::green);
     painter.drawRect(20, 20, 40, 40);
-    return;
-  }
-  painter.setBrush(Qt::red);
-  painter.drawRect(20, 20, 40, 40);
-  auto enemies_list = controller_->GetEnemies();
-  for (auto& enemy : enemies_list) {
-    enemy->Draw(&painter);
+  } else {
+    DrawBackground(&painter);
+    auto enemies_list = controller_->GetEnemies();
+    for (auto& enemy : enemies_list) {
+      enemy->Draw(&painter);
+    }
   }
 }
 

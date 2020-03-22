@@ -24,6 +24,7 @@ class AbstractController {
   virtual void StartGame(int level) = 0;
   virtual void EndGame(Exit exit) = 0;
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
+  virtual const std::vector<Road>& GetRoads() const = 0;
 
   virtual ~AbstractController() = default;
 };

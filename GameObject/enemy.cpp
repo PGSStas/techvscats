@@ -22,8 +22,6 @@ void Enemy::Move() {
       return;
     }
     destination_ = (road_->GetNode(node_number_));
-
-    Move();
   }
   SetPosition(position_ + move_direction);
 }
@@ -32,7 +30,7 @@ void Enemy::Draw(QPainter* painter) const {
   const Coordinate& position = GetPosition();
   // painter->save();
   painter->setPen(QColor("black"));
-  painter->drawRect(position.x, position.y, 30, 30);
+  painter->drawRect(position.x - 15, position.y - 15, 30, 30);
   // painter->load();
 }
 
@@ -60,6 +58,7 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
 
 void Enemy::SetRoad(const Road& road) {
   road_ = std::make_shared<const Road>(road);
+  destination_ = road_->GetNode(0);
 }
 
 bool Enemy::IsDead() const {
@@ -68,4 +67,10 @@ bool Enemy::IsDead() const {
 
 Enemy::Enemy(const Enemy& enemy_instance) {
   *this = enemy_instance;
+}
+
+Enemy::Enemy(const Road& road) : MovingObject() {
+  road_ = std::make_shared<const Road>(road);
+  destination_ = road_->GetNode(0);
+  node_number_ = 0;
 }

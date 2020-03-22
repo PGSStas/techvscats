@@ -9,6 +9,7 @@ class Enemy : public MovingObject {
  public:
   Enemy() = default;
   Enemy(const Enemy& enemy_instance);
+  explicit Enemy(const Road& road);
   explicit Enemy(Enemy* enemy_instance);
   Enemy& operator=(const Enemy& enemy_instance);
 

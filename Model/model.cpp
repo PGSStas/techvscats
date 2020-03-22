@@ -53,7 +53,8 @@ void Model::SetGameModel(int level_id) {
       // 1 round 2 enemies on each road
       // 2 round 2 enemies on the second road
       break;
-    case 1:temporary_enemy.SetSpeed(1);
+    case 1:
+      temporary_enemy.SetSpeed(1);
       temporary_enemy_pack.enemy = temporary_enemy;
       temporary_enemy_pack.times = 1;
       // Wave, that holds some packs.
@@ -93,11 +94,15 @@ void Model::IncrementCurrentRoundNumber() {
 }
 
 void Model::AddSpawner(int road_number, const Wave& wave, int current_time) {
-  spawners_.emplace_back(road_number, wave, current_time);
+  spawners_.emplace_back(GetRoad(road_number), wave, current_time);
 }
 
 const Road& Model::GetRoad(int i) const {
   return roads_[i];
+}
+
+const std::vector<Road>& Model::GetRoads() const {
+  return roads_;
 }
 
 const Wave& Model::GetWave(int round_number, int road_number) const {
@@ -119,7 +124,6 @@ int Model::GetRoadsCount() const {
 void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
   enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
 }
-
 void Model::ClearGameModel() {
   qDebug() << "Clear Model";
   // will this part of the code correctly destroy shared ptr?
