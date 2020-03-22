@@ -85,7 +85,7 @@ void Controller::TickSpawners() {
     spawner.Tick(current_time_);
     if (spawner.IsReadyToSpawn()) {
       Enemy enemy_to_spawn = spawner.GetEnemy();
-      //enemy_to_spawn.SetRoad(model_->GetRoad(spawner.GetRoadNumber()));
+      // enemy_to_spawn.SetRoad(model_->GetRoad(spawner.GetRoadNumber()));
       CreateEnemy(enemy_to_spawn);
     }
   }

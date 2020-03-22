@@ -68,8 +68,7 @@ Enemy::Enemy(const Enemy& enemy_instance) {
   *this = enemy_instance;
 }
 
-Enemy::Enemy(const Road& road) : MovingObject() {
-  road_ = std::make_shared<const Road>(road);
+Enemy::Enemy(const Road& road)
+    : MovingObject(), road_(std::make_shared<const Road>(road)) {
   destination_ = road_->GetNode(0);
-  node_number_ = 0;
 }

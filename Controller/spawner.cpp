@@ -18,7 +18,7 @@ void Spawner::Tick(int current_time) {
   if (current_time - last_time_spawn_ < wave_to_spawn_.frequency) {
     return;
   }
-  //qDebug() << "road" << road_to_spawn_number_;
+  // qDebug() << "road" << road_to_spawn_number_;
 
   is_ready_to_spawn_ = true;
   last_time_spawn_ = current_time;
