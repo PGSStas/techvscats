@@ -17,7 +17,7 @@ class Controller : public AbstractController {
 
   void Tick(int current_time) override;
   void StartGame(int level) override;
-  void EndGame(int end_code) override;
+  void EndGame(Exit exit) override;
 
  private:
   std::unique_ptr<Model> model_;
@@ -27,6 +27,7 @@ class Controller : public AbstractController {
   void MenuProcess();
 
   void CreateNextWave();
+  bool CanCreateNextWave();
   void CreateEnemy(const Enemy& enemy) const;
   void TickSpawners();
 

@@ -18,11 +18,11 @@ Enemy::Enemy(const Enemy& enemy_instance) {
   *this = enemy_instance;
 }
 
-Enemy::Enemy(Enemy* enemy_instance) {
-  *this = *enemy_instance;
-}
-
 Enemy& Enemy::operator=(const Enemy& enemy_instance) {
+  if (this == &enemy_instance) {
+    return *this;
+  }
+
   is_dead_ = enemy_instance.is_dead_;
   damage_ = enemy_instance.damage_;
   armor_ = enemy_instance.armor_;
@@ -32,5 +32,12 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   current_health_ = enemy_instance.max_health_;
   road_ = enemy_instance.road_;
   node_number_ = 0;
-  return *this;
+  SetSpeed(enemy_instance.GetSpeed());
+  if (road_ != nullptr) {
+    SetPosition(road_->GetNode(node_number_));
+    SetDestination(road_->GetNode(node_number_));
+  }
+}
+
+void Enemy::Move() {
 }

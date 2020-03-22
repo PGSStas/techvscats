@@ -4,8 +4,15 @@
 #include "game_object.h"
 
 class MovingObject : public GameObject {
-  void Move();
- private:
+ public:
+  MovingObject() = default;
+  virtual void Move() = 0;
+
+  double GetSpeed() const;
+  void SetSpeed(double speed);
+  void SetDestination(const Coordinate& direction);
+
+ protected:
   Coordinate destination_;
   double speed_;
   double speed_coefficient_;

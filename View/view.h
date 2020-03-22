@@ -27,16 +27,20 @@ class View : public QMainWindow {
  private:
   bool is_menu_window_enabled;
   AbstractController* controller_;
-  void paintEvent(QPaintEvent* event);
-  void timerEvent(QTimerEvent* event);
   QElapsedTimer game_time_;
+
   // Game window
   QLabel* wave_status_label_;
   QPushButton* start_game_button_;
+
   // Menu window
   QPushButton* return_menu_button_;
   int timer_controller_id_;
   const int time_between_ticks_ = 10;
+
+ private:
+  void paintEvent(QPaintEvent* event) override;
+  void timerEvent(QTimerEvent* event) override;
 };
 
 #endif  // VIEW_VIEW_H_
