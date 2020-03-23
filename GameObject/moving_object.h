@@ -6,6 +6,8 @@
 class MovingObject : public GameObject {
  public:
   MovingObject() = default;
+  MovingObject(const Coordinate& start_position, const Coordinate& destination,
+               double speed, double speed_coefficient);
 
   virtual void Move() = 0;
   Coordinate GetDestination() const;

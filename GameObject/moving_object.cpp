@@ -24,3 +24,9 @@ void MovingObject::SetDestination(const Coordinate& destination) {
   destination_ = destination;
 }
 
+MovingObject::MovingObject(const Coordinate& start_position,
+                           const Coordinate& destination,
+                           double speed, double speed_coefficient)
+    : GameObject(start_position), destination_(destination),
+      speed_(speed), speed_coefficient_(speed_coefficient) {}
+
