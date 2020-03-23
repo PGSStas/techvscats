@@ -1,4 +1,3 @@
-
 #include "coordinate.h"
 
 Coordinate Coordinate::operator+(const Coordinate& right) const {

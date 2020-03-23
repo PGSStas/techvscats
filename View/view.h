@@ -12,8 +12,12 @@
 #include <list>
 #include "Controller/abstract_controller.h"
 
+enum class WindowType {
+  kMainMenu,
+  kGame
+};
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -24,10 +28,10 @@ class View : public QMainWindow {
   void EnableMenuUi();
   void DisableMenuWindow();
 
-  void UpdateRounds(int current_round_number, int rounds_count);
+  void UpdateRounds(int current_round_number, int number_of_rounds);
 
  private:
-  bool is_menu_window_enabled;
+  WindowType window_type;
   AbstractController* controller_;
   QElapsedTimer game_time_;
 

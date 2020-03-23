@@ -38,10 +38,12 @@ void View::timerEvent(QTimerEvent* event) {
 void View::paintEvent(QPaintEvent* event) {
   QPainter painter(this);
   // Example of work
-  if (is_menu_window_enabled) {
+  if (window_type == WindowType::kMainMenu) {
     painter.setBrush(Qt::green);
     painter.drawRect(20, 20, 40, 40);
-  } else {
+  }
+
+  if (window_type == WindowType::kGame) {
     DrawBackground(&painter);
     auto enemies_list = controller_->GetEnemies();
     for (auto& enemy : enemies_list) {
@@ -61,19 +63,19 @@ void View::DisableGameUi() {
 }
 
 void View::EnableMenuUi() {
-  is_menu_window_enabled = true;
+  window_type = WindowType::kMainMenu;
   start_game_button_->show();
 }
 
 void View::DisableMenuWindow() {
-  is_menu_window_enabled = false;
+  window_type = WindowType::kGame;
   start_game_button_->hide();
 }
 
-void View::UpdateRounds(int current_round_nubmer, int rounds_size) {
+void View::UpdateRounds(int current_round_nubmer, int number_of_rounds) {
   wave_status_label_->setText(
       "Rounds " + QString::number(current_round_nubmer) + "/"
-          + QString::number(rounds_size));
+          + QString::number(number_of_rounds));
 }
 
 void View::DrawBackground(QPainter* p) {

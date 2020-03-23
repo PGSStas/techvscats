@@ -7,7 +7,7 @@ void Model::SetGameModel(int level_id) {
   Enemy temporary_enemy;
   Wave temporary_wave;
   Road temporary_road;
-  std::vector<Coordinate> nodes = {{0, 0}, {100, 100}};
+  std::vector<Coordinate> nodes;
 
   switch (level_id) {
     case 0:
@@ -53,8 +53,7 @@ void Model::SetGameModel(int level_id) {
       // 1 round 2 enemies on each road
       // 2 round 2 enemies on the second road
       break;
-    case 1:
-      temporary_enemy.SetSpeed(1);
+    case 1:temporary_enemy.SetSpeed(1);
       temporary_enemy_pack.enemy = temporary_enemy;
       temporary_enemy_pack.times = 1;
       // Wave, that holds some packs.

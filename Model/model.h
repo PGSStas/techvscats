@@ -7,13 +7,11 @@
 #include <QDebug>
 
 #include "GameObject/enemy.h"
-#include "GameObject/active_tower.h"
 #include "GameObject/building.h"
-
 #include "GameObject/projectile.h"
+
 #include "Controller/spawner.h"
 #include "wave.h"
-
 #include "road.h"
 
 class Model {
