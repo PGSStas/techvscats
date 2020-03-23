@@ -20,7 +20,7 @@ void Spawner::Tick(int current_time) {
   }
   // qDebug() << "road" << road_to_spawn_number_;
 
-  is_ready_to_spawn_ = true;
+  unit_pending_ = true;
   last_time_spawn_ = current_time;
   enemy_to_spawn_ = wave_to_spawn_.enemies.begin()->enemy;
   enemy_to_spawn_.SetRoad(road_to_spawn_);
@@ -40,11 +40,11 @@ bool Spawner::IsDead() const {
 }
 
 bool Spawner::IsReadyToSpawn() const {
-  return is_ready_to_spawn_;
+  return unit_pending_;
 }
 
 const Enemy& Spawner::GetEnemy() {
-  is_ready_to_spawn_ = false;
+  unit_pending_ = false;
   return enemy_to_spawn_;
 }
 

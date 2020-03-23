@@ -24,7 +24,7 @@ class Spawner {
  private:
   int last_time_spawn_;
 
-  bool is_ready_to_spawn_ = false;
+  bool unit_pending_ = false;
   bool is_dead_ = false;
 
   Wave wave_to_spawn_;
