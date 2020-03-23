@@ -12,7 +12,7 @@ struct EnemyPack {
 };
 
 struct Wave {
-  int frequency;
+  int period;
   std::list<EnemyPack> enemies;
 };
 

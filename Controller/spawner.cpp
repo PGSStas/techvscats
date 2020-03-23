@@ -15,7 +15,7 @@ Spawner::Spawner(const Road& road,
 }
 
 void Spawner::Tick(int current_time) {
-  if (current_time - last_time_spawn_ < wave_to_spawn_.frequency) {
+  if (current_time - last_time_spawn_ < wave_to_spawn_.period) {
     return;
   }
   // qDebug() << "road" << road_to_spawn_number_;

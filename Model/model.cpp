@@ -25,7 +25,7 @@ void Model::SetGameModel(int level_id) {
 
 
       // Wave, that holds some packs.
-      temporary_wave.frequency = 2000;
+      temporary_wave.period = 2000;
       temporary_wave.enemies.push_back(temporary_enemy_pack);
       // Set roads and rounds
       roads_count_ = 2;
@@ -34,7 +34,7 @@ void Model::SetGameModel(int level_id) {
       // Put wave to rounds[round_number][road_number]
       rounds_[0][0] = temporary_wave;
       rounds_[0][1] = temporary_wave;
-      temporary_wave.frequency = 100;
+      temporary_wave.period = 100;
       temporary_wave.enemies.push_back(temporary_enemy_pack2);
       rounds_[1][1] = temporary_wave;
 
@@ -57,7 +57,7 @@ void Model::SetGameModel(int level_id) {
       temporary_enemy_pack.enemy = temporary_enemy;
       temporary_enemy_pack.times = 1;
       // Wave, that holds some packs.
-      temporary_wave.frequency = 2000;
+      temporary_wave.period = 2000;
       temporary_wave.enemies.push_back(temporary_enemy_pack);
       // Set roads and rounds
       roads_count_ = 1;

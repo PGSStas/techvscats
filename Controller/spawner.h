@@ -31,7 +31,6 @@ class Spawner {
   const Road& spawning_road_;
   Enemy enemy_to_spawn_;
 
-  int current_pack_number_ = 0;
 };
 
 #endif  // CONTROLLER_SPAWNER_H_
