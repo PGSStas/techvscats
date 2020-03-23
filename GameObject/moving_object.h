@@ -5,18 +5,22 @@
 
 class MovingObject : public GameObject {
  public:
+  MovingObject() = default;
+  MovingObject(const Coordinate& start_position, const Coordinate& destination,
+               double speed, double speed_coefficient);
+
   virtual void Move() = 0;
   Coordinate GetDestination() const;
 
   void SetDestination(const Coordinate& destination);
   void SetSpeed(double speed);
-  void SetIsReached(bool is_readned);
+  void SetHasReached(bool is_readned);
 
-  bool GetIsReached() const;
+  bool HasReached() const;
   double GetSpeed() const;
 
  protected:
-  bool is_reached_destination_ = false;
+  bool has_reached_ = false;
   Coordinate destination_;
   double speed_;
   double speed_coefficient_ = 1;

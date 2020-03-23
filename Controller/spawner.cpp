@@ -2,12 +2,12 @@
 
 #include <utility>
 
-Spawner::Spawner(int road_number_,
+Spawner::Spawner(const Road& road,
                  Wave wave_to_spawn,
                  int current_time)
     : last_time_spawn_(current_time),
       wave_to_spawn_(std::move(wave_to_spawn)),
-      road_to_spawn_number_(road_number_) {
+      spawning_road_(road) {
   if (wave_to_spawn_.enemies.empty()) {
     is_dead_ = true;
     return;
@@ -15,15 +15,17 @@ Spawner::Spawner(int road_number_,
 }
 
 void Spawner::Tick(int current_time) {
-  if (current_time - last_time_spawn_ < wave_to_spawn_.frequency) {
+  if (current_time - last_time_spawn_ < wave_to_spawn_.period) {
     return;
   }
-  qDebug() << "road" << road_to_spawn_number_;
+  // qDebug() << "road" << road_to_spawn_number_;
 
-  is_ready_to_spawn_ = true;
+  unit_pending_ = true;
   last_time_spawn_ = current_time;
   enemy_to_spawn_ = wave_to_spawn_.enemies.begin()->enemy;
-  if (--wave_to_spawn_.enemies.begin()->times != 0) {
+  enemy_to_spawn_.SetRoad(spawning_road_);
+  wave_to_spawn_.enemies.begin()->times--;
+  if (wave_to_spawn_.enemies.begin()->times != 0) {
     return;
   }
   // Start spawning from next pack
@@ -38,17 +40,17 @@ bool Spawner::IsDead() const {
 }
 
 bool Spawner::IsReadyToSpawn() const {
-  return is_ready_to_spawn_;
+  return unit_pending_;
 }
 
 const Enemy& Spawner::GetEnemy() {
-  is_ready_to_spawn_ = false;
+  unit_pending_ = false;
   return enemy_to_spawn_;
 }
 
-int Spawner::GetRoadNumber() const {
-  return road_to_spawn_number_;
-}
+/*int Spawner::GetRoadNumber() const {
+  return spawning_road_;
+}*/
 
 
 

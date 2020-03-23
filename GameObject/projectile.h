@@ -13,7 +13,7 @@ class Projectile : public MovingObject {
   ~Projectile() = default;
  private:
   const std::shared_ptr<GameObject> aim_;
-  bool is_target_hit_;
+  bool is_aim_achived_;
   int damage_;
 };
 

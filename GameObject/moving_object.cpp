@@ -12,15 +12,21 @@ Coordinate MovingObject::GetDestination() const {
   return destination_;
 }
 
-bool MovingObject::GetIsReached() const {
-  return is_reached_destination_;
+bool MovingObject::HasReached() const {
+  return has_reached_;
 }
 
-void MovingObject::SetIsReached(bool is_reached) {
-  is_reached_destination_ = is_reached;
+void MovingObject::SetHasReached(bool has_reached) {
+  has_reached_ = has_reached;
 }
 
 void MovingObject::SetDestination(const Coordinate& destination) {
   destination_ = destination;
 }
+
+MovingObject::MovingObject(const Coordinate& start_position,
+                           const Coordinate& destination,
+                           double speed, double speed_coefficient)
+    : GameObject(start_position), destination_(destination),
+      speed_(speed), speed_coefficient_(speed_coefficient) {}
 

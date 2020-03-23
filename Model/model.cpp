@@ -7,7 +7,7 @@ void Model::SetGameModel(int level_id) {
   Enemy temporary_enemy;
   Wave temporary_wave;
   Road temporary_road;
-  std::vector<Coordinate> nodes = {{0, 0}, {100, 100}};
+  std::vector<Coordinate> nodes;
 
   switch (level_id) {
     case 0:
@@ -25,7 +25,7 @@ void Model::SetGameModel(int level_id) {
 
 
       // Wave, that holds some packs.
-      temporary_wave.frequency = 2000;
+      temporary_wave.period = 2000;
       temporary_wave.enemies.push_back(temporary_enemy_pack);
       // Set roads and rounds
       roads_count_ = 2;
@@ -34,15 +34,15 @@ void Model::SetGameModel(int level_id) {
       // Put wave to rounds[round_number][road_number]
       rounds_[0][0] = temporary_wave;
       rounds_[0][1] = temporary_wave;
-      temporary_wave.frequency = 100;
+      temporary_wave.period = 100;
       temporary_wave.enemies.push_back(temporary_enemy_pack2);
       rounds_[1][1] = temporary_wave;
 
-      nodes = {{800, 1000}, {600, 800}, {760, 760}};
+      nodes = {{800, 1000}, {600, 800}, {1060, 660}};
       roads_.resize(roads_count_);
       temporary_road.SetRoad(nodes);
       roads_[0] = temporary_road;
-      nodes = {{100, 150}, {400, 150}, {500, 500}, {760, 760}};
+      nodes = {{100, 150}, {400, 150}, {500, 500}, {1060, 660}};
 
       temporary_road.SetRoad(nodes);
       roads_[1] = temporary_road;
@@ -57,7 +57,7 @@ void Model::SetGameModel(int level_id) {
       temporary_enemy_pack.enemy = temporary_enemy;
       temporary_enemy_pack.times = 1;
       // Wave, that holds some packs.
-      temporary_wave.frequency = 2000;
+      temporary_wave.period = 2000;
       temporary_wave.enemies.push_back(temporary_enemy_pack);
       // Set roads and rounds
       roads_count_ = 1;
@@ -88,16 +88,20 @@ int Model::GetCurrentRoundNumber() const {
   return current_round_number_;
 }
 
-void Model::IncrementCurrentRoundNumber() {
+void Model::IncreaseCurrentRoundNumber() {
   current_round_number_++;
 }
 
 void Model::AddSpawner(int road_number, const Wave& wave, int current_time) {
-  spawners_.emplace_back(road_number, wave, current_time);
+  spawners_.emplace_back(GetRoad(road_number), wave, current_time);
 }
 
 const Road& Model::GetRoad(int i) const {
   return roads_[i];
+}
+
+const std::vector<Road>& Model::GetRoads() const {
+  return roads_;
 }
 
 const Wave& Model::GetWave(int round_number, int road_number) const {

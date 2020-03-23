@@ -1,6 +1,9 @@
 #ifndef CONTROLLER_CONTROLLER_H_
 #define CONTROLLER_CONTROLLER_H_
 
+#include <list>
+#include <vector>
+#include <memory>
 #include "abstract_controller.h"
 #include "View/view.h"
 #include "Model/model.h"
@@ -10,10 +13,12 @@ class Controller : public AbstractController {
  public:
   Controller();
   ~Controller() override = default;
-  const std::list<std::shared_ptr< Enemy>>& GetEnemies() const override;
   void Tick(int current_time) override;
   void StartGame(int level) override;
   void EndGame(Exit exit) override;
+
+  const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
+  const std::vector<Road>& GetRoads() const override;
 
  private:
   std::unique_ptr<Model> model_;
@@ -29,7 +34,7 @@ class Controller : public AbstractController {
   void TickEnemies();
 
   bool is_game_now_ = false;
-  bool is_rounds_end_ = false;
+  bool have_unprocces_rounds_  = true;
   int current_time_ = 0;
   int last_round_start_time_ = 0;
 };

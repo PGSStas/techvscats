@@ -7,13 +7,11 @@
 #include <QDebug>
 
 #include "GameObject/enemy.h"
-#include "GameObject/active_tower.h"
 #include "GameObject/building.h"
-
 #include "GameObject/projectile.h"
+
 #include "Controller/spawner.h"
 #include "wave.h"
-
 #include "road.h"
 
 class Model {
@@ -30,11 +28,12 @@ class Model {
   int GetRoundsCount() const;
   int GetRoadsCount() const;
   int GetCurrentRoundNumber() const;
-  void IncrementCurrentRoundNumber();
+  void IncreaseCurrentRoundNumber();
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   const Wave& GetWave(int round_number, int road_number) const;
   const Road& GetRoad(int i) const;
+  const std::vector<Road>& GetRoads() const;
 
  private:
   // Database which is updated by Controller all time
