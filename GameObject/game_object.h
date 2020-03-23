@@ -7,6 +7,7 @@
 class GameObject {
  public:
   GameObject() = default;
+  explicit GameObject(Coordinate pos);
 
   virtual void Draw(QPainter*) const = 0;
   virtual void Tick() = 0;

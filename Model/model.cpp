@@ -1,3 +1,6 @@
+#include <GameObject/tower_slot.h>
+#include <GameObject/fast_tower.h>
+#include <GameObject/slow_tower.h>
 #include "model.h"
 
 void Model::SetGameModel(int level_id) {
@@ -48,31 +51,17 @@ void Model::SetGameModel(int level_id) {
       roads_[1] = temporary_road;
 
       time_between_ronds_ = 5000;
+
+      tower_slots_ = {{100, 100}, {200, 100}, {500, 100}};
+      InitialiseTowerSlots();
+
+      id_to_building_ =
+          {new FastTower(Coordinate(0, 0)), new SlowTower(Coordinate(0, 0))};
+
       // At the end we have : 2 roads , 2 rounds
       // 5 sec between rounds, 2 sec between enemy spawn in each wave.
       // 1 round 2 enemies on each road
       // 2 round 2 enemies on the second road
-      break;
-    case 1:
-      temporary_enemy.SetSpeed(1);
-      temporary_enemy_pack.enemy = temporary_enemy;
-      temporary_enemy_pack.times = 1;
-      // Wave, that holds some packs.
-      temporary_wave.frequency = 2000;
-      temporary_wave.enemies.push_back(temporary_enemy_pack);
-      // Set roads and rounds
-      roads_count_ = 1;
-      rounds_count_ = 1;
-      rounds_.resize(rounds_count_, std::vector<Wave>(roads_count_));
-      // Put wave to rounds[round_number][road_number]
-      rounds_[0][0] = temporary_wave;
-
-      roads_.resize(roads_count_);
-      nodes = {{100, 100}, {100, 101}, {100, 103}};
-      temporary_road.SetRoad(nodes);
-      roads_[0] = temporary_road;
-
-      time_between_ronds_ = 1000;
       break;
   }
 }
@@ -136,4 +125,18 @@ void Model::ClearGameModel() {
   spawners_.clear();
   rounds_.clear();
   roads_.clear();
+}
+const std::vector<Coordinate>& Model::GetTowerSlots() const {
+  return tower_slots_;
+}
+void Model::InitialiseTowerSlots() {
+  for (Coordinate c : tower_slots_) {
+    buildings_.push_back(std::make_shared<TowerSlot>(TowerSlot(c)));
+  }
+}
+const std::list<std::shared_ptr<Building>>& Model::GetBuildings() const {
+  return buildings_;
+}
+const std::vector<Building*>& Model::GetBuildingDatabase() const {
+  return id_to_building_;
 }

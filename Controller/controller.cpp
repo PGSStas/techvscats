@@ -1,5 +1,6 @@
 #include "controller.h"
 #include <QDebug>
+#include <View/build_option.h>
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)) {}
@@ -20,7 +21,6 @@ void Controller::StartGame(int level_id) {
 }
 
 void Controller::EndGame(Exit exit) {
-  // if end_code == 0 - win, 1 - return menu clicked
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMenuUi();
@@ -110,6 +110,30 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
 
 const std::vector<Road>& Controller::GetRoads() const {
   return model_->GetRoads();
+}
+
+const std::vector<Coordinate>& Controller::GetTowerSlots() const {
+  return model_->GetTowerSlots();
+}
+
+const std::list<std::shared_ptr<Building>>& Controller::GetBuildings() const {
+  return model_->GetBuildings();
+}
+
+void Controller::MousePress(Coordinate pos) {
+  for (const auto& building : model_->GetBuildings()) {
+    if (building->IsInside(pos)) {
+      std::vector<std::shared_ptr<TowerMenuOption>> options;
+      for(size_t i = 0; i < model_->GetBuildingDatabase().size(); i++) {
+        options.push_back(std::make_shared<BuildOption>(*model_->GetBuildingDatabase()[i]));
+      }
+      auto menu = std::make_shared<TowerMenu>(building->GetPosition(),
+                                              building->GetRadius(),
+                                              options);
+      view_->ShowTowerMenu(menu);
+      break;
+    }
+  }
 }
 
 

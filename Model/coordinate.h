@@ -8,7 +8,7 @@ struct Coordinate {
   double y;
 
   Coordinate() = default;
-  Coordinate(double position_x, double position_y);
+  Coordinate(double x, double y);
 
   double GetLength() const;
   Coordinate VectorTo(const Coordinate& right);
