@@ -123,6 +123,7 @@ int Model::GetRoadsCount() const {
 void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
   enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
 }
+
 void Model::ClearGameModel() {
   qDebug() << "Clear Model";
   // will this part of the code correctly destroy shared ptr?

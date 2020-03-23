@@ -49,10 +49,9 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   current_health_ = enemy_instance.max_health_;
 
   speed_ = enemy_instance.speed_;
-  road_ = enemy_instance.road_;
   node_number_ = 0;
-  if (road_ != nullptr) {
-    SetRoad(*road_);
+  if (enemy_instance.road_ != nullptr) {
+    SetRoad(*enemy_instance.road_);
   }
   return *this;
 }
