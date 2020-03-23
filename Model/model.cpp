@@ -89,7 +89,7 @@ int Model::GetCurrentRoundNumber() const {
   return current_round_number_;
 }
 
-void Model::IncrementCurrentRoundNumber() {
+void Model::IncreaseCurrentRoundNumber() {
   current_round_number_++;
 }
 

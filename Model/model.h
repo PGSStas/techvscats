@@ -30,7 +30,7 @@ class Model {
   int GetRoundsCount() const;
   int GetRoadsCount() const;
   int GetCurrentRoundNumber() const;
-  void IncrementCurrentRoundNumber();
+  void IncreaseCurrentRoundNumber();
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   const Wave& GetWave(int round_number, int road_number) const;

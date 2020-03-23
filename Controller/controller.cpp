@@ -71,7 +71,7 @@ void Controller::CreateNextWave() {
     model_->AddSpawner(i, temporary_wave, current_time_);
   }
 
-  model_->IncrementCurrentRoundNumber();
+  model_->IncreaseCurrentRoundNumber();
 
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
