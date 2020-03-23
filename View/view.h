@@ -32,7 +32,7 @@ class View : public QMainWindow {
 
  private:
   WindowType window_type;
-  AbstractController* controller_;
+  AbstractController* controller_timer_id_;
   QElapsedTimer game_time_;
 
   // Game window

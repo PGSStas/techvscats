@@ -1,19 +1,19 @@
 #include "view.h"
 
 View::View(AbstractController* controller)
-    : controller_(controller) {
+    : controller_timer_id_(controller) {
 
   start_game_button_ = new QPushButton(this);
   start_game_button_->setText(tr("Начать"));
   auto start_game_button_click = [&]() {
-    controller_->StartGame(0);
+    controller_timer_id_->StartGame(0);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
   return_menu_button_ = new QPushButton(this);
   return_menu_button_->setText(tr("Вернуться"));
   auto return_menu_button_click = [&]() {
-    controller_->EndGame(Exit::kLose);
+    controller_timer_id_->EndGame(Exit::kLose);
   };
   connect(return_menu_button_, &QPushButton::clicked, return_menu_button_click);
 
@@ -30,7 +30,7 @@ View::View(AbstractController* controller)
 
 void View::timerEvent(QTimerEvent* event) {
   if (event->timerId() == timer_controller_id_) {
-    controller_->Tick(game_time_.elapsed());
+    controller_timer_id_->Tick(game_time_.elapsed());
     repaint();
   }
 }
@@ -45,7 +45,7 @@ void View::paintEvent(QPaintEvent* event) {
 
   if (window_type == WindowType::kGame) {
     DrawBackground(&painter);
-    auto enemies_list = controller_->GetEnemies();
+    auto enemies_list = controller_timer_id_->GetEnemies();
     for (auto& enemy : enemies_list) {
       enemy->Draw(&painter);
     }
@@ -86,7 +86,7 @@ void View::DrawBackground(QPainter* p) {
   p->drawRect(0, 0, width(), height());
 
   p->setPen(QPen(Qt::black, 5));
-  const auto& roads = controller_->GetRoads();
+  const auto& roads = controller_timer_id_->GetRoads();
   for (const auto& road : roads) {
     for (int i = 0; !road.IsEnd(i + 1); i++) {
       p->drawLine(road.GetNode(i).x, road.GetNode(i).y,

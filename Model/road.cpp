@@ -7,10 +7,6 @@ Coordinate Road::GetNode(int node_number) const {
   return nodes_[node_number];
 }
 
-void Road::SetRoad(const std::vector<Coordinate>& nodes) {
-  nodes_ = nodes;
-}
-
 bool Road::IsEnd(int node_number) const {
   return (node_number == static_cast<int>(nodes_.size()));
 }
