@@ -1,7 +1,8 @@
 #include "view.h"
 
 View::View(AbstractController* controller)
-    : controller_(controller), size_handler_(std::make_unique<SizeHandler>(this)) {
+    : controller_(controller),
+      size_handler_(std::make_unique<SizeHandler>(this)) {
   start_game_button_ = new QPushButton(this);
   start_game_button_->setText(tr("Начать"));
   auto start_game_button_click = [&]() {
@@ -38,10 +39,21 @@ void View::paintEvent(QPaintEvent* event) {
   QPainter painter(this);
   // Example of work
   if (window_type == WindowType::kMainMenu) {
+    painter.setBrush(QColor("#000080"));
+    painter.drawRect(0, 0, width(), height());
+    painter.setBrush(QColor("#ffffff"));
+    Coordinate top_corner = size_handler_->ToWindow(0, 0);
+    Coordinate size = size_handler_->SizeToWindowSize(1920, 1080);
+    painter.drawRect(top_corner.x,
+                     top_corner.y,
+                     size.x,
+                     size.y);
     painter.setBrush(Qt::green);
-    painter.drawRect(20, 20, 40, 40);
+    painter.drawRect(size_handler_->ToWindow(20, 20).x,
+                     size_handler_->ToWindow(20, 20).y,
+                     size_handler_->SizeToWindowSize(20, 20).x,
+                     size_handler_->SizeToWindowSize(20, 20).y);
   }
-
   if (window_type == WindowType::kGame) {
     DrawBackground(&painter);
     auto enemies_list = controller_->GetEnemies();
@@ -49,6 +61,14 @@ void View::paintEvent(QPaintEvent* event) {
       enemy->Draw(&painter, size_handler_);
     }
   }
+  // // test part
+  // painter.setBrush(QColor("#fde910"));
+  // Coordinate top_corner = size_handler_->ToWindow(100, 100);
+  // Coordinate bottom_corner = size_handler_->ToWindow(300, 300);
+  // painter.drawRect(top_corner.x,
+  //                  top_corner.y,
+  //                  bottom_corner.x - top_corner.x,
+  //                  bottom_corner.y - top_corner.y);
 }
 
 void View::EnableGameUi() {
@@ -85,8 +105,8 @@ void View::DrawBackground(QPainter* p) {
   p->drawRect(0, 0, width(), height());
   p->setBrush(QColor("#53a661"));
   Coordinate top_corner = size_handler_->ToWindow(Coordinate(0, 0));
-  Coordinate bottom_corner = size_handler_->ToWindow(Coordinate(1920, 1080));
-  p->drawRect(top_corner.x, top_corner.y, bottom_corner.x, bottom_corner.y);
+  Coordinate rect_size = size_handler_->SizeToWindowSize(1920, 1080);
+  p->drawRect(top_corner.x, top_corner.y, rect_size.x, rect_size.y);
 
   p->setPen(QPen(Qt::black, 5));
   const auto& roads = controller_->GetRoads();
@@ -100,7 +120,15 @@ void View::DrawBackground(QPainter* p) {
 
   p->restore();
 }
+
 void View::resizeEvent(QResizeEvent* event) {
   size_handler_->ChangeSystem();
   this->repaint();
+}
+
+void View::mousePressEvent(QMouseEvent* event) {
+  resize(940, 360);
+  qDebug() << event->x() << " " << event->y();
+  qDebug() << size_handler_->ToGame(event->x(), event->y()).x << " "
+             << size_handler_->ToGame(event->x(), event->y()).y;
 }

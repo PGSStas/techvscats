@@ -25,12 +25,15 @@ void Enemy::Move() {
   SetPosition(position_ + move_direction);
 }
 
-void Enemy::Draw(QPainter* painter, std::shared_ptr<SizeHandler> size_handler) const {
+void Enemy::Draw(QPainter* painter,
+                 std::shared_ptr<SizeHandler> size_handler) const {
   painter->save();
 
   painter->setPen(QColor("black"));
   painter->drawRect(size_handler->ToWindow(position_).x - 15,
-      size_handler->ToWindow(position_).y - 15, 30, 30);
+                    size_handler->ToWindow(position_).y - 15,
+                    size_handler->SizeToWindowSize(30, 30).x,
+                    size_handler->SizeToWindowSize(30, 30).y);
 
   painter->restore();
 }

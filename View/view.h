@@ -13,6 +13,7 @@
 #include "Controller/abstract_controller.h"
 #include "size_handler.h"
 
+#include <QMouseEvent>
 enum class WindowType {
   kMainMenu,
   kGame
@@ -53,6 +54,7 @@ class View : public QMainWindow {
   void paintEvent(QPaintEvent* event) override;
   void timerEvent(QTimerEvent* event) override;
   void resizeEvent(QResizeEvent *event) override;
+  void mousePressEvent(QMouseEvent* event) override;
 };
 
 #endif  // VIEW_VIEW_H_

@@ -11,7 +11,11 @@ class SizeHandler {
   void ChangeSystem();
 
   Coordinate ToGame(const Coordinate& window_coord);
+  Coordinate ToGame(double position_x, double position_y);
   Coordinate ToWindow(const Coordinate& game_coord);
+  Coordinate ToWindow(double position_x, double position_y);
+  Coordinate SizeToWindowSize(double width, double height);
+  Coordinate SizeToGameSize(double width, double height);
 
  private:
   QMainWindow* view_;
