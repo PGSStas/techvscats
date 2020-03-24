@@ -17,7 +17,7 @@ enum class WindowType {
   kGame
 };
 class View : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -32,7 +32,7 @@ class View : public QMainWindow {
 
  private:
   WindowType window_type;
-  AbstractController* controller_timer_id_;
+  AbstractController* controller_;
   QElapsedTimer game_time_;
 
   // Game window
@@ -43,7 +43,7 @@ class View : public QMainWindow {
 
   // Menu window
   QPushButton* return_menu_button_;
-  int timer_controller_id_;
+  int controller_timer_id_;
   const int time_between_ticks_ = 10;
 
  private:

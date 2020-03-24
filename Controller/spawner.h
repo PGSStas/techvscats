@@ -10,7 +10,7 @@
 
 // The Spawner is installed on the road, and creates enemies from wave.
 // It does not process or edit the Game data it received, working only with
-// time and Model/Wave.h, Model/Road.h, which are also available to the controller
+// time and Wave/Road, which are also available to the controller
 class Spawner {
  public:
   Spawner(const Road& road, Wave wave, int current_time);
@@ -32,7 +32,6 @@ class Spawner {
   Wave wave_to_spawn_;
   const Road& spawning_road_;
   Enemy enemy_to_spawn_;
-
 };
 
 #endif  // CONTROLLER_SPAWNER_H_
