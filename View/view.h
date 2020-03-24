@@ -24,9 +24,9 @@ class View : public QMainWindow {
   ~View() = default;
 
   void EnableGameUi();
-  void DisableGameUi() const;
+  void DisableGameUi();
   void EnableMenuUi();
-  void DisableMenuWindow() const;
+  void DisableMenuWindow();
 
   void UpdateRounds(int current_round_number, int number_of_rounds);
 
