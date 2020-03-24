@@ -111,6 +111,3 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
 const std::vector<Road>& Controller::GetRoads() const {
   return model_->GetRoads();
 }
-
-
-

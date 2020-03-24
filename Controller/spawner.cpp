@@ -48,9 +48,4 @@ const Enemy& Spawner::GetEnemy() {
   return enemy_to_spawn_;
 }
 
-/*int Spawner::GetRoadNumber() const {
-  return spawning_road_;
-}*/
-
-
 
