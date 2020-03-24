@@ -6,12 +6,12 @@
 
 class Road {
  public:
-  // Returns the next vertex for the coordinate_num.
-  // If the vertex is the last, it returns null.
-  Coordinate GetNode(int node_number);
+  explicit Road(const std::vector<Coordinate>& nodes);
+  Coordinate GetNode(int node_number) const;
+  bool IsEnd(int node_number) const;
 
  private:
-  std::vector<Coordinate> nodes;
+  std::vector<Coordinate> nodes_;
 };
 
 #endif  // MODEL_ROAD_H_

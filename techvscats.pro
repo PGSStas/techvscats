@@ -17,14 +17,31 @@ CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 
 SOURCES += \
-        Controller/controller.cpp \
-        Model/model.cpp \
-        main.cpp \
-        View/view.cpp
+         main.cpp \
+         Controller/controller.cpp \
+         Controller/spawner.cpp \
+         GameObject/passive_tower.cpp \
+         GameObject/active_tower.cpp \
+         GameObject/projectile.cpp \
+         GameObject/enemy.cpp \
+         GameObject/game_object.cpp \
+         GameObject/moving_object.cpp \
+         Model/model.cpp \
+         Model/road.cpp \
+         Model/coordinate.cpp \
+         View/view.cpp \
 
 HEADERS += \
-        Controller/gameobject.h \
-        Controller/controller.h \
-        Controller/Mo.h \
-        Model/model.h \
-        View/view.h \
+         Controller/controller.h \
+         Controller/spawner.h \
+         GameObject/passive_tower.h \
+         GameObject/active_tower.h \
+         GameObject/projectile.h \
+         GameObject/enemy.h \
+         GameObject/game_object.h \
+         GameObject/moving_object.h \
+         Model/model.h \
+         Model/road.h \
+         Model/coordinate.h \
+         Model/wave.h \
+         View/view.h \

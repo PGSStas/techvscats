@@ -1,19 +1,19 @@
 #ifndef MODEL_WAVE_H_
 #define MODEL_WAVE_H_
 
-#include <vector>
+#include <list>
 #include <utility>
 #include "GameObject/enemy.h"
 
+// Times in EnemyPack should be >0.
 struct EnemyPack {
   Enemy enemy;
-  int number;
+  int times;
 };
 
-struct Wave {  // to be updated
-  int frequency;
-  int road_count;
-  EnemyPack enemies;
+struct Wave {
+  int period;
+  std::list<EnemyPack> enemies;
 };
 
 #endif  // MODEL_WAVE_H_

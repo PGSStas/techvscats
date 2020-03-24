@@ -6,8 +6,12 @@
 
 class GameObject {
  public:
-  virtual void Draw(QPainter*) = 0;
+  GameObject() = default;
+
+  virtual void Draw(QPainter*) const = 0;
   virtual void Tick() = 0;
+
+  Coordinate GetPosition() const;
 
  protected:
   Coordinate position_;
