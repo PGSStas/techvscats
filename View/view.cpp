@@ -18,7 +18,6 @@ View::View(AbstractController* controller)
   connect(return_menu_button_, &QPushButton::clicked, return_menu_button_click);
 
   wave_status_label_ = new QLabel(this);
-  wave_status_label_->move(100, 10);
   wave_status_label_->setText(tr("Rounds 0 / 0"));
   show();
 
@@ -36,11 +35,20 @@ void View::timerEvent(QTimerEvent* event) {
 }
 
 void View::paintEvent(QPaintEvent* event) {
-  QPainter painter(this);
   // Example of work
+  QPainter painter(this);
+
+  Coordinate label_pos = size_handler_->ToWindow(300, 10);
+  wave_status_label_->move(label_pos.x, label_pos.y);
+
   if (window_type == WindowType::kMainMenu) {
+
+    Coordinate start_game_button_pos = size_handler_->ToWindow(0, 0);
+    start_game_button_->move(start_game_button_pos.x, start_game_button_pos.y);
+
     painter.setBrush(QColor("#000080"));
     painter.drawRect(0, 0, width(), height());
+
     painter.setBrush(QColor("#ffffff"));
     Coordinate top_corner = size_handler_->ToWindow(0, 0);
     Coordinate size = size_handler_->SizeToWindowSize(1920, 1080);
@@ -48,6 +56,7 @@ void View::paintEvent(QPaintEvent* event) {
                      top_corner.y,
                      size.x,
                      size.y);
+
     painter.setBrush(Qt::green);
     painter.drawRect(size_handler_->ToWindow(20, 20).x,
                      size_handler_->ToWindow(20, 20).y,
@@ -55,20 +64,18 @@ void View::paintEvent(QPaintEvent* event) {
                      size_handler_->SizeToWindowSize(20, 20).y);
   }
   if (window_type == WindowType::kGame) {
+
+    Coordinate return_menu_button_pos = size_handler_->ToWindow(0, 0);
+    return_menu_button_->move(return_menu_button_pos.x,
+                              return_menu_button_pos.y);
+
     DrawBackground(&painter);
+
     auto enemies_list = controller_->GetEnemies();
     for (auto& enemy : enemies_list) {
       enemy->Draw(&painter, size_handler_);
     }
   }
-  // // test part
-  // painter.setBrush(QColor("#fde910"));
-  // Coordinate top_corner = size_handler_->ToWindow(100, 100);
-  // Coordinate bottom_corner = size_handler_->ToWindow(300, 300);
-  // painter.drawRect(top_corner.x,
-  //                  top_corner.y,
-  //                  bottom_corner.x - top_corner.x,
-  //                  bottom_corner.y - top_corner.y);
 }
 
 void View::EnableGameUi() {
@@ -117,18 +124,10 @@ void View::DrawBackground(QPainter* p) {
       p->drawLine(point_1.x, point_1.y, point_2.x, point_2.y);
     }
   }
-
   p->restore();
 }
 
 void View::resizeEvent(QResizeEvent* event) {
   size_handler_->ChangeSystem();
   this->repaint();
-}
-
-void View::mousePressEvent(QMouseEvent* event) {
-  resize(940, 360);
-  qDebug() << event->x() << " " << event->y();
-  qDebug() << size_handler_->ToGame(event->x(), event->y()).x << " "
-             << size_handler_->ToGame(event->x(), event->y()).y;
 }

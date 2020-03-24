@@ -4,11 +4,13 @@
 #include <QMainWindow>
 #include <QDebug>
 #include "Model/coordinate.h"
+
 class SizeHandler {
  public:
   explicit SizeHandler(QMainWindow* view);
 
   void ChangeSystem();
+  void SetPlayingFieldSize(double width, double height);
 
   Coordinate ToGame(const Coordinate& window_coord);
   Coordinate ToGame(double position_x, double position_y);
@@ -21,6 +23,8 @@ class SizeHandler {
   QMainWindow* view_;
   Coordinate zero_coordinate_;
   double change_coefficient_;
+  double playing_field_width_ = 1920;
+  double playing_field_height_ = 1080;
 };
 
 #endif  // VIEW_GAME_HANDLER_H_
