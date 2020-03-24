@@ -13,7 +13,6 @@ void Enemy::Move() {
     move_direction /= move_direction.GetLength();
     move_direction *= speed_ * speed_coefficient_;
   }
-
   if ((position_ + move_direction).VectorTo(destination_).GetLength()
       >= (position_).VectorTo(destination_).GetLength()) {
     node_number_++;
@@ -26,12 +25,12 @@ void Enemy::Move() {
   SetPosition(position_ + move_direction);
 }
 
-void Enemy::Draw(QPainter* painter) const {
-  const Coordinate& position = GetPosition();
+void Enemy::Draw(QPainter* painter, std::shared_ptr<SizeHandler> size_handler) const {
   painter->save();
 
   painter->setPen(QColor("black"));
-  painter->drawRect(position.x - 15, position.y - 15, 30, 30);
+  painter->drawRect(size_handler->ToWindow(position_).x - 15,
+      size_handler->ToWindow(position_).y - 15, 30, 30);
 
   painter->restore();
 }

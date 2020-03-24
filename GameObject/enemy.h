@@ -13,7 +13,7 @@ class Enemy : public MovingObject {
 
   void Tick() override;
   void Move() override;
-  void Draw(QPainter* painter) const override;
+  void Draw(QPainter* painter, std::shared_ptr<SizeHandler> size_handler) const override;
   void SetRoad(const Road& road);
   bool IsDead() const;
 

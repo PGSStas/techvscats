@@ -11,11 +11,13 @@
 #include <QDebug>
 #include <list>
 #include "Controller/abstract_controller.h"
+#include "size_handler.h"
 
 enum class WindowType {
   kMainMenu,
   kGame
 };
+
 class View : public QMainWindow {
  Q_OBJECT
 
@@ -33,6 +35,7 @@ class View : public QMainWindow {
  private:
   WindowType window_type;
   AbstractController* controller_;
+  std::shared_ptr<SizeHandler> size_handler_;
   QElapsedTimer game_time_;
 
   // Game window
@@ -49,6 +52,7 @@ class View : public QMainWindow {
  private:
   void paintEvent(QPaintEvent* event) override;
   void timerEvent(QTimerEvent* event) override;
+  void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif  // VIEW_VIEW_H_

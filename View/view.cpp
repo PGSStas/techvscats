@@ -1,8 +1,7 @@
 #include "view.h"
 
 View::View(AbstractController* controller)
-    : controller_(controller) {
-
+    : controller_(controller), size_handler_(std::make_unique<SizeHandler>(this)) {
   start_game_button_ = new QPushButton(this);
   start_game_button_->setText(tr("Начать"));
   auto start_game_button_click = [&]() {
@@ -47,7 +46,7 @@ void View::paintEvent(QPaintEvent* event) {
     DrawBackground(&painter);
     auto enemies_list = controller_->GetEnemies();
     for (auto& enemy : enemies_list) {
-      enemy->Draw(&painter);
+      enemy->Draw(&painter, size_handler_);
     }
   }
 }
@@ -82,18 +81,26 @@ void View::DrawBackground(QPainter* p) {
   // Test realization. Will be changed.
   p->save();
 
-  p->setBrush(QColor("#53a661"));
+  p->setBrush(QColor("#000080"));
   p->drawRect(0, 0, width(), height());
+  p->setBrush(QColor("#53a661"));
+  Coordinate top_corner = size_handler_->ToWindow(Coordinate(0, 0));
+  Coordinate bottom_corner = size_handler_->ToWindow(Coordinate(1920, 1080));
+  p->drawRect(top_corner.x, top_corner.y, bottom_corner.x, bottom_corner.y);
 
   p->setPen(QPen(Qt::black, 5));
   const auto& roads = controller_->GetRoads();
   for (const auto& road : roads) {
     for (int i = 0; !road.IsEnd(i + 1); i++) {
-      p->drawLine(road.GetNode(i).x, road.GetNode(i).y,
-                  road.GetNode(i + 1).x,
-                  road.GetNode(i + 1).y);
+      Coordinate point_1 = size_handler_->ToWindow(road.GetNode(i));
+      Coordinate point_2 = size_handler_->ToWindow(road.GetNode(i + 1));
+      p->drawLine(point_1.x, point_1.y, point_2.x, point_2.y);
     }
   }
 
   p->restore();
+}
+void View::resizeEvent(QResizeEvent* event) {
+  size_handler_->ChangeSystem();
+  this->repaint();
 }
