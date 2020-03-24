@@ -76,7 +76,7 @@ void Model::AddSpawner(int road_number, const Wave& wave, int current_time) {
 }
 
 const Road& Model::GetRoad(int i) const {
-  return roads_[i];
+  return roads_.at(i);
 }
 
 const std::vector<Road>& Model::GetRoads() const {

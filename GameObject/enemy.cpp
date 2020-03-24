@@ -8,14 +8,14 @@ void Enemy::Move() {
   if (has_reached_) {
     return;
   }
-  Coordinate move_direction = position_.VectorTo(destination_);
+  Coordinate move_direction = position_.GetBetween(destination_);
   if (abs(move_direction.GetLength()) > 0.0001) {
     move_direction /= move_direction.GetLength();
     move_direction *= speed_ * speed_coefficient_;
   }
 
-  if ((position_ + move_direction).VectorTo(destination_).GetLength()
-      >= (position_).VectorTo(destination_).GetLength()) {
+  if ((position_ + move_direction).GetBetween(destination_).GetLength()
+      >= (position_).GetBetween(destination_).GetLength()) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
       has_reached_ = true;

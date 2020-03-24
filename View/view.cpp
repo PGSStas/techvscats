@@ -52,12 +52,12 @@ void View::paintEvent(QPaintEvent* event) {
   }
 }
 
-void View::EnableGameUi() {
+void View::EnableGameUi() const{
   return_menu_button_->show();
   wave_status_label_->show();
 }
 
-void View::DisableGameUi() {
+void View::DisableGameUi() const{
   return_menu_button_->hide();
   wave_status_label_->hide();
 }

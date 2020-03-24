@@ -7,5 +7,5 @@ Coordinate Road::GetNode(int node_number) const {
 }
 
 bool Road::IsEnd(int node_number) const {
-  return (node_number == static_cast<int>(nodes_.size()));
+  return node_number == static_cast<int>(nodes_.size());
 }

@@ -9,7 +9,7 @@ void Controller::StartGame(int level_id) {
   is_game_now_ = true;
 
   last_round_start_time_ = current_time_;
-  have_unprocces_rounds_ = true;
+  have_unprocess_rounds_ = true;
 
   model_->SetGameModel(level_id);
 
@@ -49,14 +49,14 @@ void Controller::MenuProcess() {}
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
-  if (!have_unprocces_rounds_ || current_time_ - last_round_start_time_
+  if (!have_unprocess_rounds_ || current_time_ - last_round_start_time_
       < model_->GetTimeBetweenWaves()) {
     return false;
   }
 
   last_round_start_time_ = current_time_;
   if (current_round_number == model_->GetRoundsCount()) {
-    have_unprocces_rounds_ = false;
+    have_unprocess_rounds_ = false;
     qDebug() << "Rounds end.";
     return false;
   }

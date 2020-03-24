@@ -13,7 +13,7 @@
 // time and Wave/Road, which are also available to the controller
 class Spawner {
  public:
-  Spawner(const Road& road, Wave wave, int current_time);
+  Spawner(const Road& road, const Wave& wave, int current_time);
   ~Spawner() = default;
 
   // int GetRoadNumber() const;
