@@ -12,14 +12,14 @@ void Model::SetGameModel(int level_id) {
   switch (level_id) {
     case 0:
       // To be changed. All this is need to be downloaded form file.
-      temporary_enemy.SetSpeed(1);
+      temporary_enemy.SetParametres(1);
       gold_ = 100;
       score_ = 0;
       // Pack with enemies
       temporary_enemy_pack.enemy = temporary_enemy;
       temporary_enemy_pack.times = 2;
 
-      temporary_enemy.SetSpeed(4);
+      temporary_enemy.SetParametres(4);
       temporary_enemy_pack2.enemy = temporary_enemy;
       temporary_enemy_pack2.times = 7;
 
