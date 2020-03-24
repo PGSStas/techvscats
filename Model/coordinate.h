@@ -11,7 +11,7 @@ struct Coordinate {
   Coordinate(double position_x, double position_y);
 
   double GetLength() const;
-  Coordinate VectorTo(const Coordinate& right);
+  Coordinate GetBetween(const Coordinate& right);
 
   Coordinate operator+(const Coordinate& right) const;
   Coordinate operator-(const Coordinate& right) const;

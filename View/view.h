@@ -20,7 +20,7 @@ enum class WindowType {
 };
 
 class View : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -47,7 +47,7 @@ class View : public QMainWindow {
 
   // Menu window
   QPushButton* return_menu_button_;
-  int timer_controller_id_;
+  int controller_timer_id_;
   const int time_between_ticks_ = 10;
 
  private:

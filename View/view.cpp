@@ -22,13 +22,13 @@ View::View(AbstractController* controller)
   show();
 
   game_time_.start();
-  timer_controller_id_ = startTimer(time_between_ticks_);
+  controller_timer_id_ = startTimer(time_between_ticks_);
   EnableMenuUi();
   DisableGameUi();
 }
 
 void View::timerEvent(QTimerEvent* event) {
-  if (event->timerId() == timer_controller_id_) {
+  if (event->timerId() == controller_timer_id_) {
     controller_->Tick(game_time_.elapsed());
     repaint();
   }
@@ -78,12 +78,12 @@ void View::paintEvent(QPaintEvent* event) {
   }
 }
 
-void View::EnableGameUi() {
+void View::EnableGameUi()   {
   return_menu_button_->show();
   wave_status_label_->show();
 }
 
-void View::DisableGameUi() {
+void View::DisableGameUi()   {
   return_menu_button_->hide();
   wave_status_label_->hide();
 }

@@ -10,8 +10,9 @@ class Enemy : public MovingObject {
   Enemy() = default;
   Enemy(const Enemy& enemy_instance);
   Enemy& operator=(const Enemy& enemy_instance);
-
   void Tick() override;
+
+  void SetParametres(double speed);
   void Move() override;
   void Draw(QPainter* painter, std::shared_ptr<SizeHandler> size_handler) const override;
   void SetRoad(const Road& road);

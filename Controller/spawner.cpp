@@ -3,10 +3,10 @@
 #include <utility>
 
 Spawner::Spawner(const Road& road,
-                 Wave wave_to_spawn,
+                 const Wave& wave_to_spawn,
                  int current_time)
     : last_time_spawn_(current_time),
-      wave_to_spawn_(std::move(wave_to_spawn)),
+      wave_to_spawn_(wave_to_spawn),
       spawning_road_(road) {
   if (wave_to_spawn_.enemies.empty()) {
     is_dead_ = true;
@@ -47,10 +47,5 @@ const Enemy& Spawner::GetEnemy() {
   unit_pending_ = false;
   return enemy_to_spawn_;
 }
-
-/*int Spawner::GetRoadNumber() const {
-  return spawning_road_;
-}*/
-
 
 

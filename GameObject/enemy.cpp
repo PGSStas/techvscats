@@ -8,21 +8,21 @@ void Enemy::Move() {
   if (has_reached_) {
     return;
   }
-  Coordinate move_direction = position_.VectorTo(destination_);
+  Coordinate move_direction = position_.GetBetween(destination_);
   if (abs(move_direction.GetLength()) > 0.0001) {
     move_direction /= move_direction.GetLength();
     move_direction *= speed_ * speed_coefficient_;
   }
-  if ((position_ + move_direction).VectorTo(destination_).GetLength()
-      >= (position_).VectorTo(destination_).GetLength()) {
+  if ((position_ + move_direction).GetBetween(destination_).GetLength()
+      >= (position_).GetBetween(destination_).GetLength()) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
-      SetHasReached(true);
+      has_reached_ = true;
       return;
     }
     destination_ = (road_->GetNode(node_number_));
   }
-  SetPosition(position_ + move_direction);
+  position_ += move_direction;
 }
 
 void Enemy::Draw(QPainter* painter,
@@ -70,4 +70,8 @@ bool Enemy::IsDead() const {
 
 Enemy::Enemy(const Enemy& enemy_instance) {
   *this = enemy_instance;
+}
+
+void Enemy::SetParametres(double speed) {
+  speed_ = speed;
 }
