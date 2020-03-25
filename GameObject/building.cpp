@@ -14,7 +14,7 @@ int Building::GetRadius() const {
 }
 
 bool Building::IsInside(Coordinate point) const {
-  return point.VectorTo(position_).GetLength() <= kRadius_;
+  return point.GetBetween(position_).GetLength() <= kRadius_;
 }
 
 void Building::Upgrade() {
