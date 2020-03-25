@@ -1,9 +1,7 @@
-#include <GameObject/tower_slot.h>
-#include <GameObject/fast_tower.h>
-#include <GameObject/slow_tower.h>
 #include "model.h"
 
 void Model::SetGameModel(int level_id) {
+  // To be changed. All this is need to be downloaded form file.
   current_round_number_ = 0;
   EnemyPack temporary_enemy_pack;
   EnemyPack temporary_enemy_pack2;
@@ -12,63 +10,58 @@ void Model::SetGameModel(int level_id) {
   Road temporary_road;
   std::vector<Coordinate> nodes = {{0, 0}, {100, 100}};
 
-  switch (level_id) {
-    case 0:
-      // To be changed. All this is need to be downloaded form file.
-      temporary_enemy.SetSpeed(1);
-      gold_ = 100;
-      score_ = 0;
-      // Pack with enemies
-      temporary_enemy_pack.enemy = temporary_enemy;
-      temporary_enemy_pack.times = 2;
+  temporary_enemy.SetSpeed(1);
+  gold_ = 100;
+  score_ = 0;
+  // Pack with enemies
+  temporary_enemy_pack.enemy = temporary_enemy;
+  temporary_enemy_pack.times = 2;
 
-      temporary_enemy.SetSpeed(4);
-      temporary_enemy_pack2.enemy = temporary_enemy;
-      temporary_enemy_pack2.times = 7;
+  temporary_enemy.SetSpeed(4);
+  temporary_enemy_pack2.enemy = temporary_enemy;
+  temporary_enemy_pack2.times = 7;
 
+  // Wave, that holds some packs.
+  temporary_wave.frequency = 2000;
+  temporary_wave.enemies.push_back(temporary_enemy_pack);
+  // Set roads and rounds
+  roads_count_ = 2;
+  rounds_count_ = 2;
+  rounds_.resize(rounds_count_, std::vector<Wave>(roads_count_));
+  // Put wave to rounds[round_number][road_number]
+  rounds_[0][0] = temporary_wave;
+  rounds_[0][1] = temporary_wave;
+  temporary_wave.frequency = 100;
+  temporary_wave.enemies.push_back(temporary_enemy_pack2);
+  rounds_[1][1] = temporary_wave;
 
-      // Wave, that holds some packs.
-      temporary_wave.frequency = 2000;
-      temporary_wave.enemies.push_back(temporary_enemy_pack);
-      // Set roads and rounds
-      roads_count_ = 2;
-      rounds_count_ = 2;
-      rounds_.resize(rounds_count_, std::vector<Wave>(roads_count_));
-      // Put wave to rounds[round_number][road_number]
-      rounds_[0][0] = temporary_wave;
-      rounds_[0][1] = temporary_wave;
-      temporary_wave.frequency = 100;
-      temporary_wave.enemies.push_back(temporary_enemy_pack2);
-      rounds_[1][1] = temporary_wave;
+  nodes = {{800, 1000}, {600, 800}, {1060, 660}};
+  roads_.resize(roads_count_);
+  temporary_road.SetRoad(nodes);
+  roads_[0] = temporary_road;
+  nodes = {{100, 150}, {400, 150}, {500, 500}, {1060, 660}};
 
-      nodes = {{800, 1000}, {600, 800}, {1060, 660}};
-      roads_.resize(roads_count_);
-      temporary_road.SetRoad(nodes);
-      roads_[0] = temporary_road;
-      nodes = {{100, 150}, {400, 150}, {500, 500}, {1060, 660}};
+  temporary_road.SetRoad(nodes);
+  roads_[1] = temporary_road;
 
-      temporary_road.SetRoad(nodes);
-      roads_[1] = temporary_road;
+  time_between_rounds_ = 5000;
 
-      time_between_ronds_ = 5000;
+  tower_slots_ = {{100, 100}, {200, 100}, {500, 100}};
+  InitialiseTowerSlots();
 
-      tower_slots_ = {{100, 100}, {200, 100}, {500, 100}};
-      InitialiseTowerSlots();
+  id_to_building_ =
+      {std::make_shared<TowerSlot>(Coordinate(0, 0)),
+       std::make_shared<FastTower>(Coordinate(0, 0)),
+       std::make_shared<SlowTower>(Coordinate(0, 0))};
 
-      id_to_building_ =
-          {new TowerSlot(Coordinate(0, 0)), new FastTower(Coordinate(0, 0)),
-           new SlowTower(Coordinate(0, 0))};
-
-      // At the end we have : 2 roads , 2 rounds
-      // 5 sec between rounds, 2 sec between enemy spawn in each wave.
-      // 1 round 2 enemies on each road
-      // 2 round 2 enemies on the second road
-      break;
-  }
+  // At the end we have : 2 roads , 2 rounds
+  // 5 sec between rounds, 2 sec between enemy spawn in each wave.
+  // 1 round 2 enemies on each road
+  // 2 round 2 enemies on the second road
 }
 
 int Model::GetTimeBetweenWaves() const {
-  return time_between_ronds_;
+  return time_between_rounds_;
 }
 
 int Model::GetRoundsCount() const {
@@ -114,6 +107,7 @@ int Model::GetRoadsCount() const {
 void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
   enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
 }
+
 void Model::ClearGameModel() {
   qDebug() << "Clear Model";
   // will this part of the code correctly destroy shared ptr?
@@ -126,38 +120,50 @@ void Model::ClearGameModel() {
   spawners_.clear();
   rounds_.clear();
   roads_.clear();
+  tower_slots_.clear();
 }
+
 const std::vector<Coordinate>& Model::GetTowerSlots() const {
   return tower_slots_;
 }
+
 void Model::InitialiseTowerSlots() {
   for (Coordinate c : tower_slots_) {
-    buildings_.push_back(std::make_shared<TowerSlot>(TowerSlot(c)));
+    buildings_.push_back(std::make_shared<TowerSlot>(c));
   }
 }
+
 const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
   return buildings_;
 }
-const std::vector<Building*>& Model::GetBuildingDatabase() const {
+
+const std::vector<std::shared_ptr<Building>>& Model::
+  GetBuildingDatabase() const {
   return id_to_building_;
 }
+
 void Model::SetBuildingAt(int i, int id) {
   qDebug() << "set b" << i << " " << id;
+
+  // See: problem with vector id_to_building_ in Model
   switch (id) {
     case 0:
-      buildings_[i] = std::make_shared<TowerSlot>(buildings_[i]->GetPosition());
+      buildings_[i] =
+          std::make_shared<TowerSlot>(buildings_[i]->GetPosition());
       break;
 
     case 1:
-      buildings_[i] = std::make_shared<FastTower>(buildings_[i]->GetPosition());
-      qDebug() << buildings_[i]->GetId();
+      buildings_[i] =
+          std::make_shared<FastTower>(buildings_[i]->GetPosition());
       break;
 
     case 2:
-      buildings_[i] = std::make_shared<SlowTower>(buildings_[i]->GetPosition());
+      buildings_[i] =
+          std::make_shared<SlowTower>(buildings_[i]->GetPosition());
       break;
   }
 }
+
 void Model::UpgradeBuildingAt(int i) {
   buildings_[i]->Upgrade();
 }

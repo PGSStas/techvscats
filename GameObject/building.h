@@ -1,22 +1,23 @@
 #ifndef GAMEOBJECT_BUILDING_H_
 #define GAMEOBJECT_BUILDING_H_
 
-#include "game_object.h"
 #include <memory>
+
+#include "game_object.h"
 
 class Building : public GameObject {
  public:
   Building(int id, Coordinate pos);
 
-  // Determines whether the point is inside the building
-  // Is used to check whether mouse press was on the building
+  // Determines whether the point is inside the building;
+  // Is used to check whether mouse press was on the building;
+  // Default realization is for circle-shaped buildings.
   virtual bool IsInside(Coordinate point) const;
 
   virtual void Upgrade();
-  //virtual Building* Copy() = 0;
 
-  virtual void Draw(QPainter* p, Coordinate pos) const = 0;
-  void Draw(QPainter* p) const override;
+  // See: problem with vector id_to_building_ in Model
+  // virtual Building* Copy() = 0;
 
   int GetId() const;
   int GetRadius() const;

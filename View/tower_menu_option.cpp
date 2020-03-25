@@ -28,3 +28,7 @@ void TowerMenuOption::Action() {
 TowerMenuOption::TowerMenuOption(int id, const std::function<void()>& action)
     : id_(id), action_(action) {}
 
+int TowerMenuOption::GetId() const {
+  return id_;
+}
+

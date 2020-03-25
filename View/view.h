@@ -31,7 +31,7 @@ class View : public QMainWindow {
   void UpdateRounds(int current_round_number, int rounds_count);
 
   void ShowTowerMenu(std::shared_ptr<TowerMenu> menu);
-  TowerMenu* GetTowerMenu();
+  std::shared_ptr<TowerMenu> GetTowerMenu();
   bool IsTowerMenuEnabled();
   void DisableTowerMenu();
 
@@ -60,6 +60,7 @@ class View : public QMainWindow {
   // Game window
   void DrawBackground(QPainter* p);
   void DrawTowers(QPainter* p);
+  void DrawEnemies(QPainter* p);
 };
 
 #endif  // VIEW_VIEW_H_

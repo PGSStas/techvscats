@@ -44,14 +44,9 @@ void View::paintEvent(QPaintEvent* event) {
   } else {
     DrawBackground(&painter);
     DrawTowers(&painter);
+    DrawEnemies(&painter);
     if(is_tower_menu_enabled) {
       tower_menu_->Draw(&painter);
-    }
-
-    ///////////////////////////// to method
-    auto enemies_list = controller_->GetEnemies();
-    for (auto& enemy : enemies_list) {
-      enemy->Draw(&painter);
     }
   }
 }
@@ -108,19 +103,31 @@ void View::DrawTowers(QPainter* p) {
   }
 }
 
+void View::DrawEnemies(QPainter* p) {
+  auto enemies_list = controller_->GetEnemies();
+  for (auto& enemy : enemies_list) {
+    enemy->Draw(p);
+  }
+}
+
 void View::mousePressEvent(QMouseEvent* event) {
   controller_->MousePress(Coordinate(event->x(), event->y()));
 }
+
 void View::ShowTowerMenu(std::shared_ptr<TowerMenu> menu) {
   tower_menu_ = menu;
   is_tower_menu_enabled = true;
 }
+
 bool View::IsTowerMenuEnabled() {
   return is_tower_menu_enabled;
 }
+
 void View::DisableTowerMenu() {
   is_tower_menu_enabled = false;
 }
-TowerMenu* View::GetTowerMenu() {
-  return tower_menu_.get();
+
+std::shared_ptr<TowerMenu> View::GetTowerMenu() {
+  return tower_menu_;
 }
+

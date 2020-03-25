@@ -59,6 +59,7 @@ bool Controller::CanCreateNextWave() {
     qDebug() << "Rounds end.";
     return false;
   }
+
   return true;
 }
 
@@ -91,8 +92,6 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   std::list<std::shared_ptr<Enemy>>* enemies = model_->GetEnemies();
-  // Delete enemies code here
-
   for (auto& enemy : *enemies) {
     enemy->Tick();
   }
@@ -100,7 +99,6 @@ void Controller::TickEnemies() {
 
 void Controller::CreateEnemy(const Enemy& enemy) const {
   model_->AddEnemyFromInstance(enemy);
-  qDebug() << "new enemy";
 }
 
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
@@ -120,29 +118,39 @@ const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
 }
 
 void Controller::MousePress(Coordinate pos) {
+  // Check if some tower was pressed
   for (size_t i = 0; i < model_->GetBuildings().size(); i++) {
     auto building = model_->GetBuildings()[i];
     if (building->IsInside(pos)) {
+      // Check if that's the same building on which menu was already open
+      // (which means now we should close it)
       if (view_->IsTowerMenuEnabled()
           && view_->GetTowerMenu()->GetTowerPos() == building->GetPosition()) {
         view_->DisableTowerMenu();
         return;
       }
+
+      // Create the appropriate menu
       std::vector<std::shared_ptr<TowerMenuOption>> options;
       if (building->GetId() == 0) {
         for (size_t j = 1; j < model_->GetBuildingDatabase().size(); j++) {
+          // Tower building options
           options.push_back(std::make_shared<TowerMenuOption>(j, [&, i, j]() {
             model_->SetBuildingAt(i, j);
+            // Some manipulations with gold should be added here
           }));
         }
       } else {
-        // upgrade option
-        options.push_back(std::make_shared<TowerMenuOption>(model_->GetBuildingDatabase().size(), [&, i]() {
-          model_->UpgradeBuildingAt(i);
-        }));
-        // delete option
+        // Upgrade option
+        options.push_back(std::make_shared<TowerMenuOption>(
+            model_->GetBuildingDatabase().size(), [&, i]() {
+              model_->UpgradeBuildingAt(i);
+              // Some manipulations with gold should be added here
+            }));
+        // Delete option
         options.push_back(std::make_shared<TowerMenuOption>(0, [&, i]() {
           model_->SetBuildingAt(i, 0);
+          // Some manipulations with gold should be added here
         }));
       }
       auto menu = std::make_shared<TowerMenu>(building->GetPosition(),
@@ -153,11 +161,14 @@ void Controller::MousePress(Coordinate pos) {
     }
   }
 
-  TowerMenuOption* pressed = view_->GetTowerMenu()->GetPressedOption(pos);
+  // Check if tower menu element was pressed
+  auto pressed = view_->GetTowerMenu()->GetPressedOption(pos);
   if (pressed != nullptr) {
     pressed->Action();
-    qDebug() << pressed << " action";
+    qDebug() << pressed->GetId() << " action";
   }
+
+  // Disables menu after some action or if random point on the map was pressed
   view_->DisableTowerMenu();
 }
 

@@ -4,18 +4,20 @@
 #include <list>
 #include <vector>
 #include <memory>
+
 #include <QDebug>
 
 #include "GameObject/enemy.h"
 #include "GameObject/active_tower.h"
 #include "GameObject/building.h"
-
 #include "GameObject/projectile.h"
 #include "Controller/spawner.h"
+#include <GameObject/tower_slot.h>
+#include <GameObject/fast_tower.h>
+#include <GameObject/slow_tower.h>
 #include "wave.h"
-
 #include "road.h"
-// todo: add tower slot to buildings
+
 class Model {
  public:
   Model() = default;
@@ -38,10 +40,10 @@ class Model {
   const Wave& GetWave(int round_number, int road_number) const;
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
+
   const std::vector<Coordinate>& GetTowerSlots() const;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
-
-  const std::vector<Building*>& GetBuildingDatabase() const;
+  const std::vector<std::shared_ptr<Building>>& GetBuildingDatabase() const;
 
   void SetBuildingAt(int i, int id);
   void UpgradeBuildingAt(int i);
@@ -60,13 +62,14 @@ class Model {
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;
   std::vector<Coordinate> tower_slots_;
-  int time_between_ronds_;
+
+  int time_between_rounds_;
   int rounds_count_;
   int roads_count_;
 
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
-  std::vector<Building*> id_to_building_;
+  std::vector<std::shared_ptr<Building>> id_to_building_;
 
  private:
   // Helping functions

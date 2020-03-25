@@ -1,10 +1,10 @@
 #include "tower_slot.h"
 
-void TowerSlot::Draw(QPainter* p, Coordinate pos) const {
+void TowerSlot::Draw(QPainter* p) const {
   p->save();
 
   p->setBrush(Qt::gray);
-  p->drawEllipse(QPoint(pos.x, pos.y), kRadius_, kRadius_);
+  p->drawEllipse(QPoint(position_.x, position_.y), kRadius_, kRadius_);
 
   p->restore();
 }

@@ -1,5 +1,6 @@
-#include "building.h"
 #include <QDebug>
+
+#include "building.h"
 
 Building::Building(int id, Coordinate pos)
     : GameObject(pos), kBuildingId_(id) {}
@@ -14,10 +15,6 @@ int Building::GetRadius() const {
 
 bool Building::IsInside(Coordinate point) const {
   return point.VectorTo(position_).GetLength() <= kRadius_;
-}
-
-void Building::Draw(QPainter* p) const {
-  Draw(p, position_);
 }
 
 void Building::Upgrade() {

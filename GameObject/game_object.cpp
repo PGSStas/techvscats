@@ -7,4 +7,5 @@ Coordinate GameObject::GetPosition() const {
 void GameObject::SetPosition(Coordinate position) {
   position_ = position;
 }
+
 GameObject::GameObject(Coordinate pos) : position_(pos) {}
