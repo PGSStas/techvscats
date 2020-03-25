@@ -20,3 +20,5 @@ bool Building::IsInside(Coordinate point) const {
 void Building::Upgrade() {
   qDebug() << "building #" << kBuildingId_ << " upgraded";
 }
+
+Building::Building(int id) : Building(id, Coordinate(0, 0)) {}

@@ -8,6 +8,7 @@
 class Building : public GameObject {
  public:
   Building(int id, Coordinate pos);
+  explicit Building(int id);
 
   // Determines whether the point is inside the building;
   // Is used to check whether mouse press was on the building;

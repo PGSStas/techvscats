@@ -12,3 +12,5 @@ void TowerSlot::Draw(QPainter* p) const {
 void TowerSlot::Tick() {}
 
 TowerSlot::TowerSlot(Coordinate pos) : Building(0, pos) {}
+
+TowerSlot::TowerSlot() : Building(0) {}

@@ -93,7 +93,6 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto* enemies = model_->GetEnemies();
-  // Delete enemies code here
 
   for (auto& enemy : *enemies) {
     enemy->Tick();
@@ -136,7 +135,7 @@ void Controller::MousePress(Coordinate pos) {
       // Create the appropriate menu
       std::vector<std::shared_ptr<TowerMenuOption>> options;
       if (building->GetId() == 0) {
-        for (size_t j = 1; j < model_->GetBuildingDatabase().size(); j++) {
+        for (int j = 1; j < model_->GetBuildingCount(); j++) {
           // Tower building options
           options.push_back(std::make_shared<TowerMenuOption>(j, [&, i, j]() {
             model_->SetBuildingAt(i, j);
@@ -146,7 +145,7 @@ void Controller::MousePress(Coordinate pos) {
       } else {
         // Upgrade option
         options.push_back(std::make_shared<TowerMenuOption>(
-            model_->GetBuildingDatabase().size(), [&, i]() {
+            model_->GetBuildingCount(), [&, i]() {
               model_->UpgradeBuildingAt(i);
               // Some manipulations with gold should be added here
             }));

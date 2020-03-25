@@ -12,3 +12,5 @@ void SlowTower::Draw(QPainter* p) const {
 void SlowTower::Tick() {}
 
 SlowTower::SlowTower(Coordinate pos) : ActiveTower(2, pos) {}
+
+SlowTower::SlowTower() : ActiveTower(2) {}

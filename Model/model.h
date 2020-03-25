@@ -43,8 +43,9 @@ class Model {
 
   const std::vector<Coordinate>& GetTowerSlots() const;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
-  const std::vector<std::shared_ptr<Building>>& GetBuildingDatabase() const;
 
+  std::shared_ptr<Building> GetBuildingById(int id);
+  int GetBuildingCount();
   void SetBuildingAt(int i, int id);
   void UpgradeBuildingAt(int i);
 
@@ -69,7 +70,9 @@ class Model {
 
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
-  std::vector<std::shared_ptr<Building>> id_to_building_;
+  int building_count_;
+  // See: problem with vector id_to_building_ in Model
+  // std::vector<std::shared_ptr<Building>> id_to_building_;
 
  private:
   // Helping functions

@@ -13,6 +13,7 @@ class GameObject {
   virtual void Tick() = 0;
 
   Coordinate GetPosition() const;
+  void SetPosition(Coordinate pos);
 
  protected:
   Coordinate position_;
