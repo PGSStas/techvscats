@@ -10,6 +10,7 @@
 class FastTower : public ActiveTower {
  public:
   explicit FastTower(Coordinate pos);
+  FastTower();
   void Draw(QPainter* p) const override;
   void Tick() override;
 };

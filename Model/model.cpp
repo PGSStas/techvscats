@@ -47,11 +47,12 @@ void Model::SetGameModel(int level_id) {
 
   tower_slots_ = {{100, 100}, {200, 100}, {500, 100}};
   InitialiseTowerSlots();
+  building_count_ = 3;
 
-  id_to_building_ =
+  /* id_to_building_ =
       {std::make_shared<TowerSlot>(Coordinate(0, 0)),
        std::make_shared<FastTower>(Coordinate(0, 0)),
-       std::make_shared<SlowTower>(Coordinate(0, 0))};
+       std::make_shared<SlowTower>(Coordinate(0, 0))}; */
 
   // At the end we have : 2 roads , 2 rounds
   // 5 sec between rounds, 2 sec between enemy spawn in each wave.
@@ -136,34 +137,32 @@ const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
   return buildings_;
 }
 
-const std::vector<std::shared_ptr<Building>>& Model::
-  GetBuildingDatabase() const {
-  return id_to_building_;
-}
-
 void Model::SetBuildingAt(int i, int id) {
   qDebug() << "set b" << i << " " << id;
-
-  // See: problem with vector id_to_building_ in Model
-  switch (id) {
-    case 0:
-      buildings_[i] =
-          std::make_shared<TowerSlot>(buildings_[i]->GetPosition());
-      break;
-
-    case 1:
-      buildings_[i] =
-          std::make_shared<FastTower>(buildings_[i]->GetPosition());
-      break;
-
-    case 2:
-      buildings_[i] =
-          std::make_shared<SlowTower>(buildings_[i]->GetPosition());
-      break;
-  }
+  Coordinate pos = buildings_[i]->GetPosition();
+  buildings_[i] = GetBuildingById(id);
+  buildings_[i]->SetPosition(pos);
 }
 
 void Model::UpgradeBuildingAt(int i) {
   buildings_[i]->Upgrade();
+}
+
+std::shared_ptr<Building> Model::GetBuildingById(int id) {
+  // See: problem with vector id_to_building_ in Model
+  switch (id) {
+    case 0:
+      return std::make_shared<TowerSlot>();
+
+    case 1:
+      return std::make_shared<FastTower>();
+
+    case 2:
+      return std::make_shared<SlowTower>();
+  }
+}
+
+int Model::GetBuildingCount() {
+  return building_count_;
 }
 

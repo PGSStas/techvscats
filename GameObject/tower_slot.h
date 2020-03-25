@@ -7,6 +7,7 @@
 class TowerSlot : public Building {
  public:
   explicit TowerSlot(Coordinate pos);
+  TowerSlot();
   void Draw(QPainter* p) const override;
   void Tick() override;
 };

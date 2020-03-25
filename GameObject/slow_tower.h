@@ -10,6 +10,7 @@
 class SlowTower : public ActiveTower {
  public:
   explicit SlowTower(Coordinate pos);
+  SlowTower();
   void Draw(QPainter* p) const override;
   void Tick() override;
 };
