@@ -2,6 +2,7 @@
 #define GAMEOBJECT_ENEMY_H_
 
 #include <memory>
+#include <qrandom.h>
 #include "moving_object.h"
 #include "Model/road.h"
 

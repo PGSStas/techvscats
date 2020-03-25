@@ -22,11 +22,11 @@ class Model {
   void SetGameModel(int level);
   void ClearGameModel();
 
-  void AddSpawner(int road_number, const Wave& wave, int current_time);
+  void AddSpawner(const Wave& wave, int current_time);
   void AddEnemyFromInstance(const Enemy& enemy_instance);
   int GetTimeBetweenWaves() const;
   int GetRoundsCount() const;
-  int GetRoadsCount() const;
+  int GetWavesCount(int round_number) const;
   int GetCurrentRoundNumber() const;
   void IncreaseCurrentRoundNumber();
   std::list<Spawner>* GetSpawners();

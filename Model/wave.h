@@ -13,6 +13,7 @@ struct EnemyPack {
 
 struct Wave {
   int period;
+  int road_number;
   std::list<EnemyPack> enemies;
 };
 

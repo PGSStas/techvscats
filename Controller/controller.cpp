@@ -65,10 +65,10 @@ bool Controller::CanCreateNextWave() {
 
 void Controller::CreateNextWave() {
   int current_round_number = model_->GetCurrentRoundNumber();
-  int roads_count = model_->GetRoadsCount();
-  for (int i = 0; i < roads_count; i++) {
+  int waves_count = model_->GetWavesCount(current_round_number);
+  for (int i = 0; i < waves_count; i++) {
     const Wave& temporary_wave = model_->GetWave(current_round_number, i);
-    model_->AddSpawner(i, temporary_wave, current_time_);
+    model_->AddSpawner(temporary_wave, current_time_);
   }
 
   model_->IncreaseCurrentRoundNumber();
