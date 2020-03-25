@@ -4,6 +4,7 @@
 #include <list>
 #include <vector>
 #include <memory>
+
 #include "abstract_controller.h"
 #include "View/view.h"
 #include "Model/model.h"
@@ -13,12 +14,17 @@ class Controller : public AbstractController {
  public:
   Controller();
   ~Controller() override = default;
+
   void Tick(int current_time) override;
   void StartGame(int level) override;
   void EndGame(Exit exit) override;
 
+  void MousePress(Coordinate pos) override;
+
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<Road>& GetRoads() const override;
+  const std::vector<Coordinate>& GetTowerSlots() const override;
+  const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
 
  private:
   std::unique_ptr<Model> model_;

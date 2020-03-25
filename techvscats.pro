@@ -30,10 +30,17 @@ SOURCES += \
          Model/road.cpp \
          Model/coordinate.cpp \
          View/view.cpp \
+         GameObject/tower_slot.cpp \
+         View/tower_menu.cpp \
+         GameObject/fast_tower.cpp \
+         GameObject/slow_tower.cpp \
+         View/tower_menu_option.cpp \
+         GameObject/building.cpp \
 
 HEADERS += \
          Controller/controller.h \
          Controller/spawner.h \
+         GameObject/building.h \
          GameObject/passive_tower.h \
          GameObject/active_tower.h \
          GameObject/projectile.h \
@@ -45,3 +52,8 @@ HEADERS += \
          Model/coordinate.h \
          Model/wave.h \
          View/view.h \
+         GameObject/tower_slot.h \
+         View/tower_menu.h \
+         GameObject/fast_tower.h \
+         GameObject/slow_tower.h \
+         View/tower_menu_option.h \

@@ -1,6 +1,7 @@
 #include "model.h"
 
 void Model::SetGameModel(int level_id) {
+  // To be changed. All this is need to be downloaded form file.
   current_round_number_ = 0;
   EnemyPack temporary_enemy_pack;
   EnemyPack temporary_enemy_pack2;
@@ -50,13 +51,27 @@ void Model::SetGameModel(int level_id) {
       Road temporary_road2(nodes);
       roads_.push_back(temporary_road2);
 
-      time_between_ronds_ = 4000;
+      time_between_rounds_ = 4000;
       break;
   }
+  time_between_rounds_ = 5000;
+
+  tower_slots_ = {{100, 100}, {200, 100}, {500, 100}};
+  InitialiseTowerSlots();
+
+  id_to_building_ =
+      {std::make_shared<TowerSlot>(Coordinate(0, 0)),
+       std::make_shared<FastTower>(Coordinate(0, 0)),
+       std::make_shared<SlowTower>(Coordinate(0, 0))};
+
+  // At the end we have : 2 roads , 2 rounds
+  // 5 sec between rounds, 2 sec between enemy spawn in each wave.
+  // 1 round 2 enemies on each road
+  // 2 round 2 enemies on the second road
 }
 
 int Model::GetTimeBetweenWaves() const {
-  return time_between_ronds_;
+  return time_between_rounds_;
 }
 
 int Model::GetRoundsCount() const {
@@ -115,4 +130,51 @@ void Model::ClearGameModel() {
   spawners_.clear();
   rounds_.clear();
   roads_.clear();
+  tower_slots_.clear();
 }
+
+const std::vector<Coordinate>& Model::GetTowerSlots() const {
+  return tower_slots_;
+}
+
+void Model::InitialiseTowerSlots() {
+  for (Coordinate c : tower_slots_) {
+    buildings_.push_back(std::make_shared<TowerSlot>(c));
+  }
+}
+
+const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
+  return buildings_;
+}
+
+const std::vector<std::shared_ptr<Building>>& Model::
+  GetBuildingDatabase() const {
+  return id_to_building_;
+}
+
+void Model::SetBuildingAt(int i, int id) {
+  qDebug() << "set b" << i << " " << id;
+
+  // See: problem with vector id_to_building_ in Model
+  switch (id) {
+    case 0:
+      buildings_[i] =
+          std::make_shared<TowerSlot>(buildings_[i]->GetPosition());
+      break;
+
+    case 1:
+      buildings_[i] =
+          std::make_shared<FastTower>(buildings_[i]->GetPosition());
+      break;
+
+    case 2:
+      buildings_[i] =
+          std::make_shared<SlowTower>(buildings_[i]->GetPosition());
+      break;
+  }
+}
+
+void Model::UpgradeBuildingAt(int i) {
+  buildings_[i]->Upgrade();
+}
+

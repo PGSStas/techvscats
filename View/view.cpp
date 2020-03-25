@@ -45,9 +45,10 @@ void View::paintEvent(QPaintEvent* event) {
 
   if (window_type == WindowType::kGame) {
     DrawBackground(&painter);
-    auto enemies_list = controller_->GetEnemies();
-    for (auto& enemy : enemies_list) {
-      enemy->Draw(&painter);
+    DrawTowers(&painter);
+    DrawEnemies(&painter);
+    if (is_tower_menu_enabled) {
+      tower_menu_->Draw(&painter);
     }
   }
 }
@@ -97,3 +98,38 @@ void View::DrawBackground(QPainter* p) {
 
   p->restore();
 }
+
+void View::DrawTowers(QPainter* p) {
+  for (const auto& b : controller_->GetBuildings()) {
+    b->Draw(p);
+  }
+}
+
+void View::DrawEnemies(QPainter* p) {
+  auto enemies_list = controller_->GetEnemies();
+  for (auto& enemy : enemies_list) {
+    enemy->Draw(p);
+  }
+}
+
+void View::mousePressEvent(QMouseEvent* event) {
+  controller_->MousePress(Coordinate(event->x(), event->y()));
+}
+
+void View::ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu) {
+  tower_menu_ = menu;
+  is_tower_menu_enabled = true;
+}
+
+bool View::IsTowerMenuEnabled() {
+  return is_tower_menu_enabled;
+}
+
+void View::DisableTowerMenu() {
+  is_tower_menu_enabled = false;
+}
+
+std::shared_ptr<TowerMenu> View::GetTowerMenu() {
+  return tower_menu_;
+}
+
