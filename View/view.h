@@ -17,6 +17,10 @@
 #include "Controller/abstract_controller.h"
 #include "tower_menu.h"
 
+enum class WindowType {
+  kMainMenu,
+  kGame
+};
 class View : public QMainWindow {
   Q_OBJECT
 
@@ -29,7 +33,7 @@ class View : public QMainWindow {
   void EnableMenuUi();
   void DisableMenuWindow();
 
-  void UpdateRounds(int current_round_number, int rounds_count);
+  void UpdateRounds(int current_round_number, int number_of_rounds);
 
   void ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu);
   std::shared_ptr<TowerMenu> GetTowerMenu();
@@ -37,7 +41,7 @@ class View : public QMainWindow {
   void DisableTowerMenu();
 
  private:
-  bool is_menu_window_enabled;
+  WindowType window_type;
   AbstractController* controller_;
   QElapsedTimer game_time_;
 
@@ -50,7 +54,7 @@ class View : public QMainWindow {
 
   // Menu window
   QPushButton* return_menu_button_;
-  int timer_controller_id_;
+  int controller_timer_id_;
   const int time_between_ticks_ = 10;
 
  private:

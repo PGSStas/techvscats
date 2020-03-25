@@ -9,11 +9,10 @@ class Enemy : public MovingObject {
  public:
   Enemy() = default;
   Enemy(const Enemy& enemy_instance);
-  explicit Enemy(const Road& road);
-  explicit Enemy(Enemy* enemy_instance);
   Enemy& operator=(const Enemy& enemy_instance);
-
   void Tick() override;
+
+  void SetParametres(double speed);
   void Move() override;
   void Draw(QPainter* painter) const override;
   void SetRoad(const Road& road);

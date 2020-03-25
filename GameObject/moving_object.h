@@ -8,14 +8,8 @@ class MovingObject : public GameObject {
   MovingObject() = default;
 
   virtual void Move() = 0;
-  Coordinate GetDestination() const;
-
-  void SetDestination(const Coordinate& destination);
-  void SetSpeed(double speed);
-  void SetHasReached(bool is_readned);
-
+  void SetSpeedCoefficient(double speed_coefficient);
   bool HasReached() const;
-  double GetSpeed() const;
 
  protected:
   bool has_reached_ = false;

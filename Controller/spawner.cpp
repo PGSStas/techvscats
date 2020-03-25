@@ -3,11 +3,11 @@
 #include <utility>
 
 Spawner::Spawner(const Road& road,
-                 Wave wave_to_spawn,
+                 const Wave& wave_to_spawn,
                  int current_time)
     : last_time_spawn_(current_time),
-      wave_to_spawn_(std::move(wave_to_spawn)),
-      road_to_spawn_(road) {
+      wave_to_spawn_(wave_to_spawn),
+      spawning_road_(road) {
   if (wave_to_spawn_.enemies.empty()) {
     is_dead_ = true;
     return;
@@ -15,7 +15,7 @@ Spawner::Spawner(const Road& road,
 }
 
 void Spawner::Tick(int current_time) {
-  if (current_time - last_time_spawn_ < wave_to_spawn_.frequency) {
+  if (current_time - last_time_spawn_ < wave_to_spawn_.period) {
     return;
   }
   // qDebug() << "road" << road_to_spawn_number_;
@@ -23,7 +23,7 @@ void Spawner::Tick(int current_time) {
   unit_pending_ = true;
   last_time_spawn_ = current_time;
   enemy_to_spawn_ = wave_to_spawn_.enemies.begin()->enemy;
-  enemy_to_spawn_.SetRoad(road_to_spawn_);
+  enemy_to_spawn_.SetRoad(spawning_road_);
   wave_to_spawn_.enemies.begin()->times--;
   if (wave_to_spawn_.enemies.begin()->times != 0) {
     return;
@@ -47,10 +47,5 @@ const Enemy& Spawner::GetEnemy() {
   unit_pending_ = false;
   return enemy_to_spawn_;
 }
-
-/*int Spawner::GetRoadNumber() const {
-  return road_to_spawn_;
-}*/
-
 
 

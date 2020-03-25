@@ -9,9 +9,11 @@
 #include "GameObject/enemy.h"
 
 // The Spawner is installed on the road, and creates enemies from wave.
+// It does not process or edit the Game data it received, working only with
+// time and Wave/Road, which are also available to the controller
 class Spawner {
  public:
-  Spawner(const Road& road, Wave wave, int current_time);
+  Spawner(const Road& road, const Wave& wave, int current_time);
   ~Spawner() = default;
 
   // int GetRoadNumber() const;
@@ -28,10 +30,8 @@ class Spawner {
   bool is_dead_ = false;
 
   Wave wave_to_spawn_;
-  const Road& road_to_spawn_;
+  const Road& spawning_road_;
   Enemy enemy_to_spawn_;
-
-  int current_pack_number_ = 0;
 };
 
 #endif  // CONTROLLER_SPAWNER_H_

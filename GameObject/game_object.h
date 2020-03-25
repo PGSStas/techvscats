@@ -14,7 +14,6 @@ class GameObject {
   virtual void Tick() = 0;
 
   Coordinate GetPosition() const;
-  void SetPosition(Coordinate position);
 
  protected:
   Coordinate position_;

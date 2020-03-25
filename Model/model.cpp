@@ -7,22 +7,22 @@ void Model::SetGameModel(int level_id) {
   EnemyPack temporary_enemy_pack2;
   Enemy temporary_enemy;
   Wave temporary_wave;
-  Road temporary_road;
-  std::vector<Coordinate> nodes = {{0, 0}, {100, 100}};
 
-  temporary_enemy.SetSpeed(1);
+  std::vector<Coordinate> nodes;
+
+  temporary_enemy.SetParametres(1);
   gold_ = 100;
   score_ = 0;
   // Pack with enemies
   temporary_enemy_pack.enemy = temporary_enemy;
   temporary_enemy_pack.times = 2;
 
-  temporary_enemy.SetSpeed(4);
+  temporary_enemy.SetParametres(4);
   temporary_enemy_pack2.enemy = temporary_enemy;
   temporary_enemy_pack2.times = 7;
 
   // Wave, that holds some packs.
-  temporary_wave.frequency = 2000;
+  temporary_wave.period = 2000;
   temporary_wave.enemies.push_back(temporary_enemy_pack);
   // Set roads and rounds
   roads_count_ = 2;
@@ -31,18 +31,17 @@ void Model::SetGameModel(int level_id) {
   // Put wave to rounds[round_number][road_number]
   rounds_[0][0] = temporary_wave;
   rounds_[0][1] = temporary_wave;
-  temporary_wave.frequency = 100;
+  temporary_wave.period = 100;
   temporary_wave.enemies.push_back(temporary_enemy_pack2);
   rounds_[1][1] = temporary_wave;
 
   nodes = {{800, 1000}, {600, 800}, {1060, 660}};
-  roads_.resize(roads_count_);
-  temporary_road.SetRoad(nodes);
-  roads_[0] = temporary_road;
+  Road temporary_road(nodes);
+  roads_.push_back(temporary_road);
   nodes = {{100, 150}, {400, 150}, {500, 500}, {1060, 660}};
 
-  temporary_road.SetRoad(nodes);
-  roads_[1] = temporary_road;
+  Road temporary_road2(nodes);
+  roads_.push_back(temporary_road2);
 
   time_between_rounds_ = 5000;
 
@@ -81,7 +80,7 @@ void Model::AddSpawner(int road_number, const Wave& wave, int current_time) {
 }
 
 const Road& Model::GetRoad(int i) const {
-  return roads_[i];
+  return roads_.at(i);
 }
 
 const std::vector<Road>& Model::GetRoads() const {

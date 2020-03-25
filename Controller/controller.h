@@ -40,7 +40,7 @@ class Controller : public AbstractController {
   void TickEnemies();
 
   bool is_game_now_ = false;
-  bool is_rounds_end_ = false;
+  bool have_unprocess_rounds_  = true;
   int current_time_ = 0;
   int last_round_start_time_ = 0;
 };

@@ -20,6 +20,8 @@ enum class Exit {
 // All public methods of controller should also be written here
 class AbstractController {
  public:
+  virtual ~AbstractController() = default;
+
   virtual void Tick(int current_time) = 0;
   virtual void StartGame(int level) = 0;
   virtual void EndGame(Exit exit) = 0;
@@ -32,8 +34,6 @@ class AbstractController {
   virtual const std::vector<Coordinate>& GetTowerSlots() const = 0;
   virtual const std::vector<std::shared_ptr<Building>>&
     GetBuildings() const = 0;
-
-  virtual ~AbstractController() = default;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_
