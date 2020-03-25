@@ -35,10 +35,12 @@ SOURCES += \
          GameObject/fast_tower.cpp \
          GameObject/slow_tower.cpp \
          View/tower_menu_option.cpp \
+         GameObject/building.cpp \
 
 HEADERS += \
          Controller/controller.h \
          Controller/spawner.h \
+         GameObject/building.h \
          GameObject/passive_tower.h \
          GameObject/active_tower.h \
          GameObject/projectile.h \

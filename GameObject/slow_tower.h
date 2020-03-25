@@ -14,4 +14,4 @@ class SlowTower : public ActiveTower {
   void Tick() override;
 };
 
-#endif  //GAMEOBJECT_SLOW_TOWER_H_
+#endif  // GAMEOBJECT_SLOW_TOWER_H_
