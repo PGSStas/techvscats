@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_TOWER_SLOT_H
-#define GAMEOBJECT_TOWER_SLOT_H
+#ifndef GAMEOBJECT_TOWER_SLOT_H_
+#define GAMEOBJECT_TOWER_SLOT_H_
 
 #include "building.h"
 
@@ -11,4 +11,4 @@ class TowerSlot : public Building {
   void Tick() override;
 };
 
-#endif //TOWER_SLOT_H
+#endif  // TOWER_SLOT_H

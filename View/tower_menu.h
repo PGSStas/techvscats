@@ -1,7 +1,8 @@
-#ifndef VIEW_TOWER_MENU_H
-#define VIEW_TOWER_MENU_H
+#ifndef VIEW_TOWER_MENU_H_
+#define VIEW_TOWER_MENU_H_
 
 #include <memory>
+#include <vector>
 
 #include <QPainter>
 
@@ -35,4 +36,4 @@ class TowerMenu {
   Coordinate GetCoordinateByI(int i);
 };
 
-#endif // VIEW_TOWER_MENU_H
+#endif  // VIEW_TOWER_MENU_H_

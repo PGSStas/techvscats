@@ -1,5 +1,5 @@
-#ifndef TOWER_MENU_OPTION_H
-#define TOWER_MENU_OPTION_H
+#ifndef VIEW_TOWER_MENU_OPTION_H_
+#define VIEW_TOWER_MENU_OPTION_H_
 
 #include <functional>
 #include <QPainter>
@@ -23,7 +23,6 @@ class TowerMenuOption {
   const int kSize_ = 36;
   int id_;
   std::function<void()> action_;
-
 };
 
-#endif //TOWER_MENU_OPTION_H
+#endif  // VIEW_TOWER_MENU_OPTION_H_

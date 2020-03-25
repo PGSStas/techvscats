@@ -11,6 +11,7 @@
 #include <QLabel>
 #include <QDebug>
 
+#include <memory>
 #include <list>
 
 #include "Controller/abstract_controller.h"
@@ -30,7 +31,7 @@ class View : public QMainWindow {
 
   void UpdateRounds(int current_round_number, int rounds_count);
 
-  void ShowTowerMenu(std::shared_ptr<TowerMenu> menu);
+  void ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu);
   std::shared_ptr<TowerMenu> GetTowerMenu();
   bool IsTowerMenuEnabled();
   void DisableTowerMenu();

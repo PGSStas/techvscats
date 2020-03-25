@@ -26,8 +26,8 @@ Coordinate TowerMenu::GetTowerPos() const {
 }
 
 std::shared_ptr<TowerMenuOption> TowerMenu::GetPressedOption(Coordinate pos) {
-  for(size_t i = 0; i < options_.size(); i++) {
-    if(options_[i]->IsPressed(GetCoordinateByI(i), pos)) {
+  for (size_t i = 0; i < options_.size(); i++) {
+    if (options_[i]->IsPressed(GetCoordinateByI(i), pos)) {
       return options_[i];
     }
   }

@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_FAST_TOWER_H
-#define GAMEOBJECT_FAST_TOWER_H
+#ifndef GAMEOBJECT_FAST_TOWER_H_
+#define GAMEOBJECT_FAST_TOWER_H_
 
 #include <QPainter>
 
@@ -14,4 +14,4 @@ class FastTower : public ActiveTower {
   void Tick() override;
 };
 
-#endif //GAMEOBJECT_FAST_TOWER_H
+#endif  // GAMEOBJECT_FAST_TOWER_H_
