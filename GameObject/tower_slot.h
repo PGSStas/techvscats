@@ -11,4 +11,4 @@ class TowerSlot : public Building {
   void Tick() override;
 };
 
-#endif  // TOWER_SLOT_H_
+#endif  // GAMEOBJECT_TOWER_SLOT_H_
