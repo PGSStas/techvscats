@@ -15,7 +15,7 @@
 #include "wave.h"
 
 #include "road.h"
-
+// todo: add tower slot to buildings
 class Model {
  public:
   Model() = default;
@@ -39,13 +39,17 @@ class Model {
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
   const std::vector<Coordinate>& GetTowerSlots() const;
-  const std::list<std::shared_ptr<Building>>& GetBuildings() const;
+  const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
+
   const std::vector<Building*>& GetBuildingDatabase() const;
+
+  void SetBuildingAt(int i, int id);
+  void UpgradeBuildingAt(int i);
 
  private:
   // Database which is updated by Controller all time
   std::list<std::shared_ptr<Projectile>> projectiles_;
-  std::list<std::shared_ptr<Building>> buildings_;
+  std::vector<std::shared_ptr<Building>> buildings_;
   std::list<std::shared_ptr<Enemy>> enemies_;
   int current_round_number_;
   int gold_;

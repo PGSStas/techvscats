@@ -121,3 +121,6 @@ bool View::IsTowerMenuEnabled() {
 void View::DisableTowerMenu() {
   is_tower_menu_enabled = false;
 }
+TowerMenu* View::GetTowerMenu() {
+  return tower_menu_.get();
+}

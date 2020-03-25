@@ -2,6 +2,7 @@
 #define GAMEOBJECT_BUILDING_H_
 
 #include "game_object.h"
+#include <memory>
 
 class Building : public GameObject {
  public:
@@ -10,6 +11,9 @@ class Building : public GameObject {
   // Determines whether the point is inside the building
   // Is used to check whether mouse press was on the building
   virtual bool IsInside(Coordinate point) const;
+
+  virtual void Upgrade();
+  //virtual Building* Copy() = 0;
 
   virtual void Draw(QPainter* p, Coordinate pos) const = 0;
   void Draw(QPainter* p) const override;

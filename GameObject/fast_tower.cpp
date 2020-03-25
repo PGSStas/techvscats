@@ -10,5 +10,4 @@ void FastTower::Draw(QPainter* p, Coordinate pos) const {
 
 void FastTower::Tick() {}
 
-FastTower::FastTower(Coordinate pos) : ActiveTower(1, pos) {
-}
+FastTower::FastTower(Coordinate pos) : ActiveTower(1, pos) {}

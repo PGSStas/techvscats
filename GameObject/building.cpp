@@ -1,4 +1,5 @@
 #include "building.h"
+#include <QDebug>
 
 Building::Building(int id, Coordinate pos)
     : GameObject(pos), kBuildingId_(id) {}
@@ -17,4 +18,8 @@ bool Building::IsInside(Coordinate point) const {
 
 void Building::Draw(QPainter* p) const {
   Draw(p, position_);
+}
+
+void Building::Upgrade() {
+  qDebug() << "building #" << kBuildingId_ << " upgraded";
 }

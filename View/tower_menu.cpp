@@ -3,12 +3,8 @@
 void TowerMenu::Draw(QPainter* p) {
   p->save();
 
-  int length =
-      options_[0]->GetSize() * options_.size() + 10 * (options_.size() - 1);
   for (size_t i = 0; i < options_.size(); i++) {
-    int x = tower_pos_.x - length / 2 + i * options_[i]->GetSize() + i * 10;
-    int y = tower_pos_.y + tower_radius_ + 5;
-    options_[i]->Draw(p, Coordinate(x, y));
+    options_[i]->Draw(p, GetCoordinateByI(i));
   }
 
   p->restore();
@@ -27,3 +23,19 @@ int TowerMenu::GetTowerRadius() const {
 Coordinate TowerMenu::GetTowerPos() const {
   return tower_pos_;
 }
+TowerMenuOption* TowerMenu::GetPressedOption(Coordinate pos) {
+  for(size_t i = 0; i < options_.size(); i++) {
+    if(options_[i]->IsPressed(GetCoordinateByI(i), pos)) {
+      return options_[i].get();
+    }
+  }
+  return nullptr;
+}
+Coordinate TowerMenu::GetCoordinateByI(int i) {
+  int length =
+      options_[0]->GetSize() * options_.size() + 10 * (options_.size() - 1);
+  int x = tower_pos_.x - length / 2 + i * options_[i]->GetSize() + i * 10;
+  int y = tower_pos_.y + tower_radius_ + 5;
+  return Coordinate(x, y);
+}
+

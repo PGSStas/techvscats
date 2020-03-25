@@ -1,6 +1,5 @@
 #include "controller.h"
 #include <QDebug>
-#include <View/build_option.h>
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)) {}
@@ -116,24 +115,50 @@ const std::vector<Coordinate>& Controller::GetTowerSlots() const {
   return model_->GetTowerSlots();
 }
 
-const std::list<std::shared_ptr<Building>>& Controller::GetBuildings() const {
+const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
   return model_->GetBuildings();
 }
 
 void Controller::MousePress(Coordinate pos) {
-  for (const auto& building : model_->GetBuildings()) {
+  for (size_t i = 0; i < model_->GetBuildings().size(); i++) {
+    auto building = model_->GetBuildings()[i];
     if (building->IsInside(pos)) {
+      if (view_->IsTowerMenuEnabled()
+          && view_->GetTowerMenu()->GetTowerPos() == building->GetPosition()) {
+        view_->DisableTowerMenu();
+        return;
+      }
       std::vector<std::shared_ptr<TowerMenuOption>> options;
-      for(size_t i = 0; i < model_->GetBuildingDatabase().size(); i++) {
-        options.push_back(std::make_shared<BuildOption>(*model_->GetBuildingDatabase()[i]));
+      if (building->GetId() == 0) {
+        for (size_t j = 1; j < model_->GetBuildingDatabase().size(); j++) {
+          options.push_back(std::make_shared<TowerMenuOption>(j, [&, i, j]() {
+            model_->SetBuildingAt(i, j);
+          }));
+        }
+      } else {
+        // upgrade option
+        options.push_back(std::make_shared<TowerMenuOption>(model_->GetBuildingDatabase().size(), [&, i]() {
+          model_->UpgradeBuildingAt(i);
+        }));
+        // delete option
+        options.push_back(std::make_shared<TowerMenuOption>(0, [&, i]() {
+          model_->SetBuildingAt(i, 0);
+        }));
       }
       auto menu = std::make_shared<TowerMenu>(building->GetPosition(),
                                               building->GetRadius(),
                                               options);
       view_->ShowTowerMenu(menu);
-      break;
+      return;
     }
   }
+
+  TowerMenuOption* pressed = view_->GetTowerMenu()->GetPressedOption(pos);
+  if (pressed != nullptr) {
+    pressed->Action();
+    qDebug() << pressed << " action";
+  }
+  view_->DisableTowerMenu();
 }
 
 

@@ -2,19 +2,24 @@
 #define TOWER_MENU_OPTION_H
 
 #include <QPainter>
+#include <functional>
 #include "Model/coordinate.h"
 
 class TowerMenuOption {
  public:
+  TowerMenuOption(int id, const std::function<void()>& action);
+
   int GetSize() const;
-  virtual void Draw(QPainter* p, Coordinate pos) = 0;
+  bool IsPressed(Coordinate option_pos, Coordinate press_pos);
 
- protected:
+  void Draw(QPainter* p, Coordinate pos);
+  void Action();
+
+ private:
   const int kSize_ = 36;
-  const int kId_;
+  int id_;
+  std::function<void()> action_;
 
- protected:
-  explicit TowerMenuOption(int id);
 };
 
 #endif //TOWER_MENU_OPTION_H

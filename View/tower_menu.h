@@ -16,6 +16,7 @@ class TowerMenu {
 
   Coordinate GetTowerPos() const;
   int GetTowerRadius() const;
+  TowerMenuOption* GetPressedOption(Coordinate pos);
 
   void Draw(QPainter* p);
 
@@ -23,6 +24,9 @@ class TowerMenu {
   Coordinate tower_pos_;
   int tower_radius_;
   std::vector<std::shared_ptr<TowerMenuOption>> options_;
+
+ private:
+  Coordinate GetCoordinateByI(int i);
 };
 
 #endif // VIEW_TOWER_MENU_H
