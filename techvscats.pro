@@ -30,6 +30,7 @@ SOURCES += \
          Model/road.cpp \
          Model/coordinate.cpp \
          View/view.cpp \
+         View/size_handler.cpp \
 
 HEADERS += \
          Controller/controller.h \
@@ -45,3 +46,4 @@ HEADERS += \
          Model/coordinate.h \
          Model/wave.h \
          View/view.h \
+         View/size_handler.h \
