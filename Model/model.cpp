@@ -51,8 +51,6 @@ void Model::SetGameModel(int level_id) {
 
   time_between_rounds_ = 4000;
 
-  time_between_rounds_ = 5000;
-
   tower_slots_ = {{100, 100}, {200, 100}, {500, 100}};
   InitialiseTowerSlots();
   building_count_ = 3;

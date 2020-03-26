@@ -173,6 +173,3 @@ void Controller::MousePress(Coordinate pos) {
   // Disables menu after some action or if random point on the map was pressed
   view_->DisableTowerMenu();
 }
-
-
-

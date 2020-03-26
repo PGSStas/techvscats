@@ -27,14 +27,15 @@ add_executable(techvscats
         GameObject/moving_object.cpp
         GameObject/building.cpp
         GameObject/tower_slot.cpp
+        GameObject/slow_tower.cpp
+        GameObject/fast_tower.cpp
         Model/model.cpp
         Model/road.cpp
         Model/coordinate.cpp
         View/view.cpp
         View/tower_menu.cpp
-        GameObject/fast_tower.cpp
-        GameObject/slow_tower.cpp
-        View/tower_menu_option.cpp)
+        View/tower_menu_option.cpp
+        )
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)
