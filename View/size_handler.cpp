@@ -1,7 +1,6 @@
 #include "size_handler.h"
 
 SizeHandler::SizeHandler(QMainWindow* view) : view_(view) {
-
   view_->setMinimumSize(playing_field_width_ / 3, playing_field_height_ / 3);
   zero_coordinate_ = Coordinate(0, 0);
   change_coefficient_ = 3;

@@ -1,8 +1,9 @@
-#ifndef  VIEW_GAME_HANDLER_H_
-#define  VIEW_GAME_HANDLER_H_
+#ifndef  VIEW_SIZE_HANDLER_H_
+#define  VIEW_SIZE_HANDLER_H_
 
 #include <QMainWindow>
 #include <QDebug>
+#include <algorithm>
 #include "Model/coordinate.h"
 
 class SizeHandler {
@@ -27,4 +28,4 @@ class SizeHandler {
   double playing_field_height_ = 1080;
 };
 
-#endif  // VIEW_GAME_HANDLER_H_
+#endif  // VIEW_SIZE_HANDLER_H_

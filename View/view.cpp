@@ -2,7 +2,7 @@
 
 View::View(AbstractController* controller)
     : controller_(controller),
-      size_handler_(std::make_unique<SizeHandler>(this)) {
+      size_handler_(std::make_shared<SizeHandler>(this)) {
   start_game_button_ = new QPushButton(this);
   start_game_button_->setText(tr("Начать"));
   auto start_game_button_click = [&]() {
@@ -42,7 +42,6 @@ void View::paintEvent(QPaintEvent* event) {
   wave_status_label_->move(label_pos.x, label_pos.y);
 
   if (window_type == WindowType::kMainMenu) {
-
     Coordinate start_game_button_pos = size_handler_->ToWindow(0, 0);
     start_game_button_->move(start_game_button_pos.x, start_game_button_pos.y);
 
@@ -64,7 +63,6 @@ void View::paintEvent(QPaintEvent* event) {
                      size_handler_->SizeToWindowSize(20, 20).y);
   }
   if (window_type == WindowType::kGame) {
-
     Coordinate return_menu_button_pos = size_handler_->ToWindow(0, 0);
     return_menu_button_->move(return_menu_button_pos.x,
                               return_menu_button_pos.y);

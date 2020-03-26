@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QString>
 #include <QLabel>
+#include <memory>
 #include <QDebug>
 #include <list>
 #include "Controller/abstract_controller.h"
