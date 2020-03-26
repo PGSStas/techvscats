@@ -22,7 +22,7 @@ enum class WindowType {
   kGame
 };
 class View : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
