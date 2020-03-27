@@ -79,7 +79,6 @@ void Model::SetGameModel(int level_id) {
   // 5 sec between rounds, 2 sec between enemy spawn in each wave.
   // 1 round 2 enemies on each road
   // 2 round 2 enemies on the second road
-
 }
 
 int Model::GetTimeBetweenWaves() const {
@@ -191,4 +190,3 @@ int Model::GetBuildingCount() {
 const std::vector<std::vector<int>>& Model::GetBuildingsTree() const {
   return buildings_tree_;
 }
-

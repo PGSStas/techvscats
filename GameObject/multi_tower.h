@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_SLOW_TOWER_H_
-#define GAMEOBJECT_SLOW_TOWER_H_
+#ifndef GAMEOBJECT_MULTI_TOWER_H_
+#define GAMEOBJECT_MULTI_TOWER_H_
 
 #include <QPainter>
 #include <memory>
@@ -12,7 +12,6 @@ class MultiTower : public ActiveTower {
  public:
   MultiTower();
   explicit MultiTower(const std::shared_ptr<Building>& other);
-
 };
 
-#endif  // GAMEOBJECT_SLOW_TOWER_H_
+#endif  // GAMEOBJECT_MULTI_TOWER_H_

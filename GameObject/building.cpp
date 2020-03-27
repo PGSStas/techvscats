@@ -21,7 +21,6 @@ void Building::Upgrade() {
 
 Building::Building(int tower_type) :
     kTowerType(tower_type) {
-
 }
 
 void Building::SetParameters(int id, const QColor& draw_color, int max_level) {

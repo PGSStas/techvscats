@@ -6,7 +6,7 @@
 
 class ActiveTower : public Building {
  public:
-  ActiveTower(int tower_type);
+  explicit ActiveTower(int tower_type);
   explicit ActiveTower(const std::shared_ptr<Building>& other);
 };
 

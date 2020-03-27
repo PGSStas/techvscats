@@ -136,7 +136,7 @@ void Controller::MousePress(Coordinate position) {
     std::vector<std::shared_ptr<TowerMenuOption>> options;
     const auto& building_tree = model_->GetBuildingsTree();
     int building_id = buildings[i]->GetId();
-    for (const auto& to_upgrade_id:building_tree[building_id]) {
+    for (const auto& to_upgrade_id : building_tree[building_id]) {
       // Tower building options
       options.push_back(std::make_shared<TowerMenuOption>(
           to_upgrade_id, [&, i, to_upgrade_id]() {
@@ -182,5 +182,4 @@ void Controller::ChangeBuildingAttempt(int building_number, int building_id) {
     return;
   }
   model_->SetBuildingAt(building_number, building_id);
-
 }

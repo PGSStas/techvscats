@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_FAST_TOWER_H_
-#define GAMEOBJECT_FAST_TOWER_H_
+#ifndef GAMEOBJECT_DEFAULT_TOWER_H_
+#define GAMEOBJECT_DEFAULT_TOWER_H_
 
 #include <QPainter>
 
@@ -12,7 +12,6 @@ class DefaultTower : public ActiveTower {
  public:
   DefaultTower();
   explicit DefaultTower(const std::shared_ptr<Building>& other);
-
 };
 
-#endif  // GAMEOBJECT_FAST_TOWER_H_
+#endif  // GAMEOBJECT_DEFAULT_TOWER_H_
