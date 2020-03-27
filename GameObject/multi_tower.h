@@ -8,12 +8,11 @@
 
 // Just a class for tests. Doesn't do anything useful
 // except drawing a red circle
-class SlowTower : public ActiveTower {
+class MultiTower : public ActiveTower {
  public:
-  SlowTower(int id, Coordinate position);
-  explicit SlowTower(const std::shared_ptr<Building>& other);
+  MultiTower();
+  explicit MultiTower(const std::shared_ptr<Building>& other);
 
-  void Draw(QPainter* painter) const override;
 };
 
 #endif  // GAMEOBJECT_SLOW_TOWER_H_

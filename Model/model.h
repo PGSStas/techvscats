@@ -12,9 +12,8 @@
 #include "GameObject/projectile.h"
 
 #include "Controller/spawner.h"
-#include <GameObject/empty_tower.h>
-#include <GameObject/fast_tower.h>
-#include <GameObject/slow_tower.h>
+#include <GameObject/default_tower.h>
+#include <GameObject/multi_tower.h>
 #include "wave.h"
 #include "road.h"
 

@@ -7,7 +7,7 @@
 
 class Building : public GameObject {
  public:
-  Building(int tower_type, int id, Coordinate position);
+  explicit Building(int tower_type = 0);
   explicit Building(const std::shared_ptr<Building>& other);
 
   // Determines whether the point is inside the building;
@@ -23,8 +23,11 @@ class Building : public GameObject {
   int GetTowerType() const;
   int GetRadius() const;
 
+  void SetParameters(int id, const QColor& draw_color);
  protected:
   int id_;
+  // later her should be imgs to draw
+  QColor draw_color_;
   const int kTowerType;
   const int kRadius_ = 15;
 };

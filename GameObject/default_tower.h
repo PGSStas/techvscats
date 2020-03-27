@@ -8,12 +8,11 @@
 
 // Just a class for tests. Doesn't do anything useful
 // except drawing a blue circle
-class FastTower : public ActiveTower {
+class DefaultTower : public ActiveTower {
  public:
-  FastTower(int id, Coordinate position);
-  explicit FastTower(const std::shared_ptr<Building>& other);
+  DefaultTower();
+  explicit DefaultTower(const std::shared_ptr<Building>& other);
 
-  void Draw(QPainter* painter) const override;
 };
 
 #endif  // GAMEOBJECT_FAST_TOWER_H_

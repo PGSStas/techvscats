@@ -74,6 +74,6 @@ Enemy::Enemy(const Enemy& enemy_instance) {
   *this = enemy_instance;
 }
 
-void Enemy::SetParametres(double speed) {
+void Enemy::SetParameters(double speed) {
   speed_ = speed;
 }

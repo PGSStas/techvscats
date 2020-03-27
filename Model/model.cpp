@@ -12,14 +12,14 @@ void Model::SetGameModel(int level_id) {
   std::vector<Coordinate> nodes;
 
   // To be changed. All this is need to be downloaded form file.
-  temporary_enemy.SetParametres(1);
+  temporary_enemy.SetParameters(1);
   gold_ = 100;
   score_ = 0;
   // Pack with enemies
   temporary_enemy_pack.enemy = temporary_enemy;
   temporary_enemy_pack.times = 6;
 
-  temporary_enemy.SetParametres(3);
+  temporary_enemy.SetParameters(3);
   temporary_enemy_pack2.enemy = temporary_enemy;
   temporary_enemy_pack2.times = 7;
 
@@ -52,14 +52,26 @@ void Model::SetGameModel(int level_id) {
   time_between_rounds_ = 4000;
 
   empty_towers_ = {{100, 100}, {200, 100}, {500, 100}};
-  InitialiseTowerSlots();
   building_count_ = 3;
+  Building temporary_building_instance;
+  temporary_building_instance.SetParameters(0, QColor(Qt::gray));
+
+  MultiTower temporary_multi_tower_instance1;
+  temporary_multi_tower_instance1.SetParameters(1, Qt::white);
+
+  DefaultTower temporary_multi_tower_instance2;
+  temporary_multi_tower_instance2.SetParameters(2, Qt::darkRed);
+
+  DefaultTower temporary_default_tower_instance1;
+  temporary_multi_tower_instance2.SetParameters(3, Qt::darkBlue);
 
   id_to_building_ =
-      {std::make_shared<EmptyTower>(Coordinate(0, 0)),
-       std::make_shared<FastTower>(1, Coordinate(0, 0)),
-       std::make_shared<SlowTower>(2, Coordinate(0, 0))};
+      {std::make_shared<Building>(temporary_building_instance),
+       std::make_shared<MultiTower>(temporary_multi_tower_instance1),
+       std::make_shared<DefaultTower>(temporary_multi_tower_instance2),
+       std::make_shared<DefaultTower>(temporary_default_tower_instance1)};
 
+  InitialiseTowerSlots();
   // At the end we have : 2 roads , 2 rounds
   // 5 sec between rounds, 2 sec between enemy spawn in each wave.
   // 1 round 2 enemies on each road
@@ -115,8 +127,6 @@ void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
 }
 
 void Model::ClearGameModel() {
-  qDebug() << "Clear Model";
-  // will this part of the code correctly destroy shared ptr?
   current_round_number_ = 0;
   roads_count_ = 0;
   rounds_count_ = 0;
@@ -127,6 +137,7 @@ void Model::ClearGameModel() {
   rounds_.clear();
   roads_.clear();
   empty_towers_.clear();
+  qDebug() << "Clear Model";
 }
 
 const std::vector<Coordinate>& Model::GetTowerSlots() const {
@@ -135,7 +146,9 @@ const std::vector<Coordinate>& Model::GetTowerSlots() const {
 
 void Model::InitialiseTowerSlots() {
   for (Coordinate coordinate : empty_towers_) {
-    buildings_.push_back(std::make_shared<EmptyTower>(coordinate));
+    Building empty_place(id_to_building_[0]);
+    empty_place.SetPosition(coordinate);
+    buildings_.push_back(std::make_shared<Building>(empty_place));
   }
 }
 
@@ -157,17 +170,13 @@ void Model::UpgradeBuildingAt(int i) {
 std::shared_ptr<Building> Model::GetBuildingById(int id) {
   auto instance = id_to_building_[id];
   switch (instance->GetTowerType()) {
-    case 0:
-      return std::make_shared<EmptyTower>(instance);
+    case 0:return std::make_shared<Building>(instance);
 
-    case 1:
-      return std::make_shared<FastTower>(instance);
+    case 1:return std::make_shared<DefaultTower>(instance);
 
-    case 2:
-      return std::make_shared<SlowTower>(instance);
+    case 2:return std::make_shared<MultiTower>(instance);
 
-    default:
-      return nullptr;
+    default:return nullptr;
   }
 }
 
