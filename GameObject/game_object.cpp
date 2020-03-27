@@ -8,4 +8,4 @@ void GameObject::SetPosition(Coordinate position) {
   position_ = position;
 }
 
-GameObject::GameObject(Coordinate pos) : position_(pos) {}
+GameObject::GameObject(Coordinate position) : position_(position) {}

@@ -9,10 +9,10 @@
 // except drawing a blue circle
 class FastTower : public ActiveTower {
  public:
-  explicit FastTower(Coordinate pos);
-  FastTower();
-  void Draw(QPainter* p) const override;
-  void Tick() override;
+  FastTower(int id, Coordinate position);
+  FastTower(std::shared_ptr<Building> other);
+
+  void Draw(QPainter* painter) const override;
 };
 
 #endif  // GAMEOBJECT_FAST_TOWER_H_

@@ -45,14 +45,14 @@ void Model::SetGameModel(int level_id) {
 
   time_between_rounds_ = 5000;
 
-  tower_slots_ = {{100, 100}, {200, 100}, {500, 100}};
+  empty_towers_ = {{100, 100}, {200, 100}, {500, 100}};
   InitialiseTowerSlots();
   building_count_ = 3;
 
-  /* id_to_building_ =
-      {std::make_shared<TowerSlot>(Coordinate(0, 0)),
-       std::make_shared<FastTower>(Coordinate(0, 0)),
-       std::make_shared<SlowTower>(Coordinate(0, 0))}; */
+  id_to_building_ =
+      {std::make_shared<EmptyTower>(Coordinate(0, 0)),
+       std::make_shared<FastTower>(1, Coordinate(0, 0)),
+       std::make_shared<SlowTower>(2, Coordinate(0, 0))};
 
   // At the end we have : 2 roads , 2 rounds
   // 5 sec between rounds, 2 sec between enemy spawn in each wave.
@@ -120,16 +120,16 @@ void Model::ClearGameModel() {
   spawners_.clear();
   rounds_.clear();
   roads_.clear();
-  tower_slots_.clear();
+  empty_towers_.clear();
 }
 
 const std::vector<Coordinate>& Model::GetTowerSlots() const {
-  return tower_slots_;
+  return empty_towers_;
 }
 
 void Model::InitialiseTowerSlots() {
-  for (Coordinate c : tower_slots_) {
-    buildings_.push_back(std::make_shared<TowerSlot>(c));
+  for (Coordinate coordinate : empty_towers_) {
+    buildings_.push_back(std::make_shared<EmptyTower>(coordinate));
   }
 }
 
@@ -139,9 +139,9 @@ const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
 
 void Model::SetBuildingAt(int i, int id) {
   qDebug() << "set b" << i << " " << id;
-  Coordinate pos = buildings_[i]->GetPosition();
+  Coordinate position = buildings_[i]->GetPosition();
   buildings_[i] = GetBuildingById(id);
-  buildings_[i]->SetPosition(pos);
+  buildings_[i]->SetPosition(position);
 }
 
 void Model::UpgradeBuildingAt(int i) {
@@ -149,16 +149,19 @@ void Model::UpgradeBuildingAt(int i) {
 }
 
 std::shared_ptr<Building> Model::GetBuildingById(int id) {
-  // See: problem with vector id_to_building_ in Model
-  switch (id) {
+  auto instance = id_to_building_[id];
+  switch (instance->GetTowerType()) {
     case 0:
-      return std::make_shared<TowerSlot>();
+      return std::make_shared<EmptyTower>(instance);
 
     case 1:
-      return std::make_shared<FastTower>();
+      return std::make_shared<FastTower>(instance);
 
     case 2:
-      return std::make_shared<SlowTower>();
+      return std::make_shared<SlowTower>(instance);
+
+    default:
+      return nullptr;
   }
 }
 

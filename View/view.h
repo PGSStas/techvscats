@@ -63,9 +63,9 @@ class View : public QMainWindow {
   void mousePressEvent(QMouseEvent* event) override;
 
   // Game window
-  void DrawBackground(QPainter* p);
-  void DrawTowers(QPainter* p);
-  void DrawEnemies(QPainter* p);
+  void DrawBackground(QPainter* painter);
+  void DrawTowers(QPainter* painter);
+  void DrawEnemies(QPainter* painter);
 };
 
 #endif  // VIEW_VIEW_H_

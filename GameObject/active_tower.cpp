@@ -1,5 +1,8 @@
 #include "active_tower.h"
 
-ActiveTower::ActiveTower(int id, Coordinate pos) : Building(id, pos) {}
+ActiveTower::ActiveTower(int tower_type, int id, Coordinate position) :
+  Building(tower_type, id, position) {}
 
-ActiveTower::ActiveTower(int id) : Building(id) {}
+ActiveTower::ActiveTower(std::shared_ptr<Building> other) : Building(other) {
+
+}

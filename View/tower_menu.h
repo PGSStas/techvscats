@@ -12,19 +12,19 @@
 class TowerMenu {
  public:
   // Note: options are expected to be not empty
-  TowerMenu(Coordinate tower_pos,
+  TowerMenu(Coordinate tower_position,
             int tower_radius,
             const std::vector<std::shared_ptr<TowerMenuOption>>& options);
 
-  Coordinate GetTowerPos() const;
+  Coordinate GetTowerPosition() const;
   int GetTowerRadius() const;
   // Returns nullptr if none was pressed
-  std::shared_ptr<TowerMenuOption> GetPressedOption(Coordinate pos);
+  std::shared_ptr<TowerMenuOption> GetPressedOption(Coordinate position);
 
-  void Draw(QPainter* p);
+  void Draw(QPainter* painter);
 
  private:
-  Coordinate tower_pos_;
+  Coordinate tower_position_;
   int tower_radius_;
   std::vector<std::shared_ptr<TowerMenuOption>> options_;
 
@@ -33,7 +33,7 @@ class TowerMenu {
 
  private:
   // Calculates the position of ith button
-  Coordinate GetCoordinateByI(int i);
+  Coordinate GetCoordinateByIndex(int i);
 };
 
 #endif  // VIEW_TOWER_MENU_H_

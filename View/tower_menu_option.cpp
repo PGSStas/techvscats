@@ -4,21 +4,23 @@ int TowerMenuOption::GetSize() const {
   return kSize_;
 }
 
-bool TowerMenuOption::IsPressed(Coordinate option_pos, Coordinate press_pos) {
-  return press_pos.x >= option_pos.x && press_pos.y >= option_pos.y
-      && press_pos.x <= option_pos.x + kSize_
-      && press_pos.y <= option_pos.y + kSize_;
+bool TowerMenuOption::IsPressed(Coordinate option_position,
+    Coordinate press_position) {
+  return press_position.x >= option_position.x
+      && press_position.y >= option_position.y
+      && press_position.x <= option_position.x + kSize_
+      && press_position.y <= option_position.y + kSize_;
 }
 
-void TowerMenuOption::Draw(QPainter* p, Coordinate pos) {
-  p->save();
+void TowerMenuOption::Draw(QPainter* painter, Coordinate position) {
+  painter->save();
 
   // to be drawn from picture, e. g. "menubutton_id_.png"
-  p->setBrush(Qt::lightGray);
-  p->drawRect(pos.x, pos.y, kSize_, kSize_);
-  p->drawText(pos.x, pos.y, QString::number(id_));
+  painter->setBrush(Qt::lightGray);
+  painter->drawRect(position.x, position.y, kSize_, kSize_);
+  painter->drawText(position.x, position.y, QString::number(id_));
 
-  p->restore();
+  painter->restore();
 }
 
 void TowerMenuOption::Action() {

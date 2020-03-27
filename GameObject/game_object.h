@@ -8,13 +8,13 @@
 class GameObject {
  public:
   GameObject() = default;
-  explicit GameObject(Coordinate pos);
+  explicit GameObject(Coordinate position);
 
-  virtual void Draw(QPainter* p) const = 0;
+  virtual void Draw(QPainter* painter) const = 0;
   virtual void Tick() = 0;
 
   Coordinate GetPosition() const;
-  void SetPosition(Coordinate pos);
+  void SetPosition(Coordinate position);
 
  protected:
   Coordinate position_;

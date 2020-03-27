@@ -12,11 +12,11 @@ class TowerMenuOption {
 
   int GetSize() const;
   int GetId() const;
-  // Determines if press_pos is inside a button
-  // with left top angle in option_pos
-  bool IsPressed(Coordinate option_pos, Coordinate press_pos);
+  // Determines if press_position is inside a button
+  // with left top angle in option_position
+  bool IsPressed(Coordinate option_position, Coordinate press_position);
 
-  void Draw(QPainter* p, Coordinate pos);
+  void Draw(QPainter* painter, Coordinate position);
   void Action();
 
  private:

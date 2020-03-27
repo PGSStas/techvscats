@@ -41,5 +41,5 @@ Coordinate Coordinate::GetBetween(const Coordinate& right) {
   return tmp;
 }
 
-Coordinate::Coordinate(double position_x, double position_y)
-    : x(position_x), y(position_y) {}
+Coordinate::Coordinate(double x, double y)
+    : x(x), y(y) {}

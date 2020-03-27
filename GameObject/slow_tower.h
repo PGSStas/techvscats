@@ -9,10 +9,10 @@
 // except drawing a red circle
 class SlowTower : public ActiveTower {
  public:
-  explicit SlowTower(Coordinate pos);
-  SlowTower();
-  void Draw(QPainter* p) const override;
-  void Tick() override;
+  SlowTower(int id, Coordinate position);
+  SlowTower(std::shared_ptr<Building> other);
+
+  void Draw(QPainter* painter) const override;
 };
 
 #endif  // GAMEOBJECT_SLOW_TOWER_H_

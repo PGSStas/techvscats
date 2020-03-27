@@ -7,24 +7,25 @@
 
 class Building : public GameObject {
  public:
-  Building(int id, Coordinate pos);
-  explicit Building(int id);
+  Building(int tower_type, int id, Coordinate position);
+  Building(std::shared_ptr<Building> other);
 
   // Determines whether the point is inside the building;
   // Is used to check whether mouse press was on the building;
   // Default realization is for circle-shaped buildings.
   virtual bool IsInside(Coordinate point) const;
-
   virtual void Upgrade();
 
-  // See: problem with vector id_to_building_ in Model
-  // virtual Building* Copy() = 0;
+  void Tick() override;
+  void Draw(QPainter* painter) const override;
 
   int GetId() const;
+  int GetTowerType() const;
   int GetRadius() const;
 
  protected:
-  const int kBuildingId_;
+  int id_;
+  const int kTowerType;
   const int kRadius_ = 15;
 };
 

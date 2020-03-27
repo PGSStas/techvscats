@@ -1,16 +1,15 @@
 #include "fast_tower.h"
 
-void FastTower::Draw(QPainter* p) const {
-  p->save();
+void FastTower::Draw(QPainter* painter) const {
+  painter->save();
 
-  p->setBrush(Qt::blue);
-  p->drawEllipse(QPoint(position_.x, position_.y), kRadius_, kRadius_);
+  painter->setBrush(Qt::blue);
+  painter->drawEllipse(QPoint(position_.x, position_.y), kRadius_, kRadius_);
 
-  p->restore();
+  painter->restore();
 }
 
-void FastTower::Tick() {}
+FastTower::FastTower(int id, Coordinate position) :
+  ActiveTower(1, id, position) {}
 
-FastTower::FastTower(Coordinate pos) : ActiveTower(1, pos) {}
-
-FastTower::FastTower() : ActiveTower(1) {}
+FastTower::FastTower(std::shared_ptr<Building> other) : ActiveTower(other) {}

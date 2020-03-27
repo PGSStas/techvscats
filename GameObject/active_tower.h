@@ -5,8 +5,8 @@
 
 class ActiveTower : public Building {
  public:
-  ActiveTower(int id, Coordinate pos);
-  explicit ActiveTower(int id);
+  ActiveTower(int tower_type, int id, Coordinate position);
+  ActiveTower(std::shared_ptr<Building> other);
 };
 
 #endif  // GAMEOBJECT_ACTIVE_TOWER_H_

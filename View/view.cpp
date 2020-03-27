@@ -79,36 +79,37 @@ void View::UpdateRounds(int current_round_nubmer, int number_of_rounds) {
           + QString::number(number_of_rounds));
 }
 
-void View::DrawBackground(QPainter* p) {
+void View::DrawBackground(QPainter* painter) {
   // Test realization. Will be changed.
-  p->save();
+  painter->save();
 
-  p->setBrush(QColor("#53a661"));
-  p->drawRect(0, 0, width(), height());
+  painter->setBrush(QColor("#53a661"));
+  painter->drawRect(0, 0, width(), height());
 
-  p->setPen(QPen(Qt::black, 5));
+  painter->setPen(QPen(Qt::black, 5));
   const auto& roads = controller_->GetRoads();
   for (const auto& road : roads) {
     for (int i = 0; !road.IsEnd(i + 1); i++) {
-      p->drawLine(road.GetNode(i).x, road.GetNode(i).y,
-                  road.GetNode(i + 1).x,
-                  road.GetNode(i + 1).y);
+      painter->drawLine(road.GetNode(i).x, road.GetNode(i).y,
+                        road.GetNode(i + 1).x,
+                        road.GetNode(i + 1).y);
     }
   }
 
-  p->restore();
+  painter->restore();
 }
 
-void View::DrawTowers(QPainter* p) {
-  for (const auto& b : controller_->GetBuildings()) {
-    b->Draw(p);
+void View::DrawTowers(QPainter* painter) {
+  const auto& buildings = controller_->GetBuildings();
+  for (const auto& building : buildings) {
+    building->Draw(painter);
   }
 }
 
-void View::DrawEnemies(QPainter* p) {
+void View::DrawEnemies(QPainter* painter) {
   auto enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
-    enemy->Draw(p);
+    enemy->Draw(painter);
   }
 }
 

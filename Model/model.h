@@ -12,7 +12,7 @@
 #include "GameObject/projectile.h"
 
 #include "Controller/spawner.h"
-#include <GameObject/tower_slot.h>
+#include <GameObject/empty_tower.h>
 #include <GameObject/fast_tower.h>
 #include <GameObject/slow_tower.h>
 #include "wave.h"
@@ -62,7 +62,7 @@ class Model {
   std::vector<std::vector<Wave>> rounds_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;
-  std::vector<Coordinate> tower_slots_;
+  std::vector<Coordinate> empty_towers_;
 
   int time_between_rounds_;
   int rounds_count_;
@@ -71,14 +71,13 @@ class Model {
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
   int building_count_;
-  // See: problem with vector id_to_building_ in Model
-  // std::vector<std::shared_ptr<Building>> id_to_building_;
+  std::vector<std::shared_ptr<Building>> id_to_building_;
 
  private:
   // Helping functions
 
-  // Creates TowerSlot classes from tower_slots_ vector
-  // Should be called on load of tower_slots_
+  // Creates EmptyTower classes from empty_towers_ vector
+  // Should be called on load of empty_towers_
   void InitialiseTowerSlots();
 };
 

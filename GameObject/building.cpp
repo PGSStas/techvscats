@@ -2,11 +2,8 @@
 
 #include "building.h"
 
-Building::Building(int id, Coordinate pos)
-    : GameObject(pos), kBuildingId_(id) {}
-
 int Building::GetId() const {
-  return kBuildingId_;
+  return id_;
 }
 
 int Building::GetRadius() const {
@@ -18,7 +15,26 @@ bool Building::IsInside(Coordinate point) const {
 }
 
 void Building::Upgrade() {
-  qDebug() << "building #" << kBuildingId_ << " upgraded";
+  qDebug() << "building #" << id_ << " upgraded";
 }
 
-Building::Building(int id) : Building(id, Coordinate(0, 0)) {}
+Building::Building(int tower_type, int id, Coordinate position) :
+    GameObject(position), id_(id), kTowerType(tower_type) {}
+
+int Building::GetTowerType() const {
+  return kTowerType;
+}
+
+Building::Building(std::shared_ptr<Building> other) :
+  Building(other->kTowerType, other->id_, other->position_) {}
+
+void Building::Tick() {}
+
+void Building::Draw(QPainter* painter) const {
+  painter->save();
+
+  painter->setBrush(Qt::gray);
+  painter->drawEllipse(QPoint(position_.x, position_.y), kRadius_, kRadius_);
+
+  painter->restore();
+}

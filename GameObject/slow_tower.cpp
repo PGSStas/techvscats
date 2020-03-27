@@ -1,16 +1,15 @@
 #include "slow_tower.h"
 
-void SlowTower::Draw(QPainter* p) const {
-  p->save();
+void SlowTower::Draw(QPainter* painter) const {
+  painter->save();
 
-  p->setBrush(Qt::red);
-  p->drawEllipse(QPoint(position_.x, position_.y), kRadius_, kRadius_);
+  painter->setBrush(Qt::red);
+  painter->drawEllipse(QPoint(position_.x, position_.y), kRadius_, kRadius_);
 
-  p->restore();
+  painter->restore();
 }
 
-void SlowTower::Tick() {}
+SlowTower::SlowTower(int id, Coordinate position) :
+  ActiveTower(2, id, position) {}
 
-SlowTower::SlowTower(Coordinate pos) : ActiveTower(2, pos) {}
-
-SlowTower::SlowTower() : ActiveTower(2) {}
+SlowTower::SlowTower(std::shared_ptr<Building> other) : ActiveTower(other) {}
