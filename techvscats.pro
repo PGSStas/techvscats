@@ -26,16 +26,16 @@ SOURCES += \
          GameObject/enemy.cpp \
          GameObject/game_object.cpp \
          GameObject/moving_object.cpp \
+         GameObject/building.cpp \
+         GameObject/slow_tower.cpp \
+         GameObject/fast_tower.cpp \
          Model/model.cpp \
          Model/road.cpp \
          Model/coordinate.cpp \
          View/view.cpp \
          GameObject/empty_tower.cpp \
          View/tower_menu.cpp \
-         GameObject/fast_tower.cpp \
-         GameObject/slow_tower.cpp \
          View/tower_menu_option.cpp \
-         GameObject/building.cpp \
 
 HEADERS += \
          Controller/controller.h \
@@ -47,6 +47,8 @@ HEADERS += \
          GameObject/enemy.h \
          GameObject/game_object.h \
          GameObject/moving_object.h \
+         GameObject/fast_tower.h \
+         GameObject/slow_tower.h \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \
@@ -54,6 +56,4 @@ HEADERS += \
          View/view.h \
          GameObject/empty_tower.h \
          View/tower_menu.h \
-         GameObject/fast_tower.h \
-         GameObject/slow_tower.h \
          View/tower_menu_option.h \

@@ -34,7 +34,8 @@ add_executable(techvscats
         Model/coordinate.cpp
         View/view.cpp
         View/tower_menu.cpp
-        View/tower_menu_option.cpp)
+        View/tower_menu_option.cpp
+        )
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

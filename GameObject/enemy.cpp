@@ -22,6 +22,10 @@ void Enemy::Move() {
       return;
     }
     destination_ = (road_->GetNode(node_number_));
+    if (!road_->IsEnd(node_number_ + 1)) {
+      destination_.x += qrand() % 50 - 25;
+      destination_.y += qrand() % 50 - 25;
+    }
   }
   position_ += move_direction;
 }

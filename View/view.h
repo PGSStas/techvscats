@@ -37,11 +37,11 @@ class View : public QMainWindow {
 
   void ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu);
   std::shared_ptr<TowerMenu> GetTowerMenu();
-  bool IsTowerMenuEnabled();
+  bool IsTowerMenuEnabled() const;
   void DisableTowerMenu();
 
  private:
-  WindowType window_type;
+  WindowType window_type_;
   AbstractController* controller_;
   QElapsedTimer game_time_;
 
@@ -49,13 +49,13 @@ class View : public QMainWindow {
   QLabel* wave_status_label_;
   QPushButton* start_game_button_;
 
-  bool is_tower_menu_enabled = false;
+  bool is_tower_menu_enabled_ = false;
   std::shared_ptr<TowerMenu> tower_menu_ = nullptr;
 
   // Menu window
   QPushButton* return_menu_button_;
   int controller_timer_id_;
-  const int time_between_ticks_ = 10;
+  const int kTime_between_ticks_ = 10;
 
  private:
   void paintEvent(QPaintEvent* event) override;

@@ -9,3 +9,4 @@ void GameObject::SetPosition(Coordinate position) {
 }
 
 GameObject::GameObject(Coordinate position) : position_(position) {}
+

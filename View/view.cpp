@@ -23,7 +23,7 @@ View::View(AbstractController* controller)
   show();
 
   game_time_.start();
-  controller_timer_id_ = startTimer(time_between_ticks_);
+  controller_timer_id_ = startTimer(kTime_between_ticks_);
   EnableMenuUi();
   DisableGameUi();
 }
@@ -38,38 +38,38 @@ void View::timerEvent(QTimerEvent* event) {
 void View::paintEvent(QPaintEvent* event) {
   QPainter painter(this);
   // Example of work
-  if (window_type == WindowType::kMainMenu) {
+  if (window_type_ == WindowType::kMainMenu) {
     painter.setBrush(Qt::green);
     painter.drawRect(20, 20, 40, 40);
   }
 
-  if (window_type == WindowType::kGame) {
+  if (window_type_ == WindowType::kGame) {
     DrawBackground(&painter);
     DrawTowers(&painter);
     DrawEnemies(&painter);
-    if (is_tower_menu_enabled) {
+    if (is_tower_menu_enabled_) {
       tower_menu_->Draw(&painter);
     }
   }
 }
 
-void View::EnableGameUi()   {
+void View::EnableGameUi() {
   return_menu_button_->show();
   wave_status_label_->show();
 }
 
-void View::DisableGameUi()   {
+void View::DisableGameUi() {
   return_menu_button_->hide();
   wave_status_label_->hide();
 }
 
 void View::EnableMenuUi() {
-  window_type = WindowType::kMainMenu;
+  window_type_ = WindowType::kMainMenu;
   start_game_button_->show();
 }
 
 void View::DisableMenuWindow() {
-  window_type = WindowType::kGame;
+  window_type_ = WindowType::kGame;
   start_game_button_->hide();
 }
 
@@ -119,15 +119,15 @@ void View::mousePressEvent(QMouseEvent* event) {
 
 void View::ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu) {
   tower_menu_ = menu;
-  is_tower_menu_enabled = true;
+  is_tower_menu_enabled_ = true;
 }
 
-bool View::IsTowerMenuEnabled() {
-  return is_tower_menu_enabled;
+bool View::IsTowerMenuEnabled() const {
+  return is_tower_menu_enabled_;
 }
 
 void View::DisableTowerMenu() {
-  is_tower_menu_enabled = false;
+  is_tower_menu_enabled_ = false;
 }
 
 std::shared_ptr<TowerMenu> View::GetTowerMenu() {

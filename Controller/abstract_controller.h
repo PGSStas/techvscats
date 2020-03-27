@@ -30,6 +30,7 @@ class AbstractController {
   virtual void MousePress(Coordinate position) = 0;
 
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
+
   virtual const std::vector<Road>& GetRoads() const = 0;
   virtual const std::vector<std::shared_ptr<Building>>&
     GetBuildings() const = 0;
