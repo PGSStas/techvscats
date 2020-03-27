@@ -162,6 +162,10 @@ void Controller::MousePress(Coordinate position) {
     return;
   }
 
+  if(view_->GetTowerMenu() == nullptr) {
+    return;
+  }
+  
   // Check if tower menu element was pressed
   auto pressed = view_->GetTowerMenu()->GetPressedOption(position);
   if (pressed != nullptr) {
