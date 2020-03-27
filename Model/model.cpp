@@ -54,28 +54,32 @@ void Model::SetGameModel(int level_id) {
   empty_towers_ = {{100, 100}, {200, 100}, {500, 100}};
   building_count_ = 3;
   Building temporary_building_instance;
-  temporary_building_instance.SetParameters(0, QColor(Qt::gray));
+  temporary_building_instance.SetParameters(0, QColor(Qt::gray), 0);
+  buildings_tree_.push_back({1, 2});
 
   MultiTower temporary_multi_tower_instance1;
-  temporary_multi_tower_instance1.SetParameters(1, Qt::white);
-
-  DefaultTower temporary_multi_tower_instance2;
-  temporary_multi_tower_instance2.SetParameters(2, Qt::darkRed);
+  temporary_multi_tower_instance1.SetParameters(1, Qt::white, 2);
+  buildings_tree_.push_back({3, 0});
 
   DefaultTower temporary_default_tower_instance1;
-  temporary_multi_tower_instance2.SetParameters(3, Qt::darkBlue);
+  temporary_default_tower_instance1.SetParameters(2, Qt::darkRed, 3);
+  buildings_tree_.push_back({1, 3, 0});
+
+  DefaultTower temporary_default_tower_instance2;
+  temporary_default_tower_instance2.SetParameters(3, Qt::darkBlue, 4);
+  buildings_tree_.push_back({0});
 
   id_to_building_ =
       {std::make_shared<Building>(temporary_building_instance),
        std::make_shared<MultiTower>(temporary_multi_tower_instance1),
-       std::make_shared<DefaultTower>(temporary_multi_tower_instance2),
-       std::make_shared<DefaultTower>(temporary_default_tower_instance1)};
-
+       std::make_shared<DefaultTower>(temporary_default_tower_instance1),
+       std::make_shared<DefaultTower>(temporary_default_tower_instance2)};
   InitialiseTowerSlots();
   // At the end we have : 2 roads , 2 rounds
   // 5 sec between rounds, 2 sec between enemy spawn in each wave.
   // 1 round 2 enemies on each road
   // 2 round 2 enemies on the second road
+
 }
 
 int Model::GetTimeBetweenWaves() const {
@@ -182,5 +186,9 @@ std::shared_ptr<Building> Model::GetBuildingById(int id) {
 
 int Model::GetBuildingCount() {
   return building_count_;
+}
+
+const std::vector<std::vector<int>>& Model::GetBuildingsTree() const {
+  return buildings_tree_;
 }
 

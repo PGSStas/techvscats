@@ -42,7 +42,7 @@ class Model {
 
   const std::vector<Coordinate>& GetTowerSlots() const;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
-
+  const std::vector<std::vector<int>>& GetBuildingsTree() const;
   std::shared_ptr<Building> GetBuildingById(int id);
   int GetBuildingCount();
   void SetBuildingAt(int i, int id);
@@ -71,6 +71,7 @@ class Model {
   std::vector<Enemy> id_to_enemy_;
   int building_count_;
   std::vector<std::shared_ptr<Building>> id_to_building_;
+  std::vector<std::vector<int>> buildings_tree_;
 
  private:
   // Helping functions

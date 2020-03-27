@@ -22,12 +22,16 @@ class Building : public GameObject {
   int GetId() const;
   int GetTowerType() const;
   int GetRadius() const;
+  int GetMaxLevel() const;
+  int GetCurrentLevel() const;
 
-  void SetParameters(int id, const QColor& draw_color);
+  void SetParameters(int id, const QColor& draw_color, int max_level);
  protected:
   int id_;
   // later her should be imgs to draw
   QColor draw_color_;
+  int max_level_;
+  int current_level_;
   const int kTowerType;
   const int kRadius_ = 15;
 };

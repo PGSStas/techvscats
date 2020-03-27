@@ -20,6 +20,7 @@ class Controller : public AbstractController {
   void EndGame(Exit exit) override;
 
   void MousePress(Coordinate position) override;
+  void ChangeBuildingAttempt(int building_number, int building_id );
 
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<Road>& GetRoads() const override;

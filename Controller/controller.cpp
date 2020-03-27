@@ -117,43 +117,39 @@ const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
 
 void Controller::MousePress(Coordinate position) {
   // Check if some tower was pressed
-  size_t buildings_count = model_->GetBuildings().size();
-  for (size_t i = 0; i < buildings_count; i++) {
-    auto building = model_->GetBuildings()[i];
+  const auto& buildings = model_->GetBuildings();
+  for (size_t i = 0; i < buildings.size(); i++) {
+    const auto& building = buildings[i];
     if (!building->IsInside(position)) {
       continue;
     }
     // Check if that's the same building on which menu was already open
     // (which means now we should close it)
     if (view_->IsTowerMenuEnabled()
-    && view_->GetTowerMenu()->GetTowerPosition()
-    == building->GetPosition()) {
+        && view_->GetTowerMenu()->GetTowerPosition()
+            == building->GetPosition()) {
       view_->DisableTowerMenu();
       return;
     }
 
     // Create the appropriate menu
     std::vector<std::shared_ptr<TowerMenuOption>> options;
-    if (building->GetId() == 0) {
-      for (int j = 1; j < model_->GetBuildingCount(); j++) {
-        // Tower building options
-        options.push_back(std::make_shared<TowerMenuOption>(j, [&, i, j]() {
-          model_->SetBuildingAt(i, j);
-          // Some manipulations with gold should be added here
-        }));
-      }
-    } else {
-      // Upgrade option
+    const auto& building_tree = model_->GetBuildingsTree();
+    int building_id = buildings[i]->GetId();
+    for (const auto& to_upgrade_id:building_tree[building_id]) {
+      // Tower building options
       options.push_back(std::make_shared<TowerMenuOption>(
-          model_->GetBuildingCount(), [&, i]() {
-            model_->UpgradeBuildingAt(i);
-            // Some manipulations with gold should be added here
+          to_upgrade_id, [&, i, to_upgrade_id]() {
+            ChangeBuildingAttempt(i, to_upgrade_id);
           }));
-      // Delete option
-      options.push_back(std::make_shared<TowerMenuOption>(0, [&, i]() {
-        model_->SetBuildingAt(i, 0);
-        // Some manipulations with gold should be added here
-      }));
+    }
+
+    // Upgrade option
+    if (building->GetMaxLevel() > building->GetCurrentLevel()) {
+      options.push_back(std::make_shared<TowerMenuOption>(
+          building_id, [&, i, building_id]() {
+            ChangeBuildingAttempt(i, building_id);
+          }));
     }
     auto menu = std::make_shared<TowerMenu>(building->GetPosition(),
                                             building->GetRadius(),
@@ -166,13 +162,25 @@ void Controller::MousePress(Coordinate position) {
     return;
   }
 
-  // Check if tower menu element was pressed
+// Check if tower menu element was pressed
   auto pressed = view_->GetTowerMenu()->GetPressedOption(position);
   if (pressed != nullptr) {
     pressed->Action();
     qDebug() << pressed->GetId() << " action";
   }
 
-  // Disables menu after some action or if random point on the map was pressed
+// Disables menu after some action or if random point on the map was pressed
   view_->DisableTowerMenu();
+}
+
+void Controller::ChangeBuildingAttempt(int building_number, int building_id) {
+  auto buildings = model_->GetBuildings();
+
+  // Some manipulations with gold should be added here
+  if (buildings[building_number]->GetId() == building_id) {
+    model_->UpgradeBuildingAt(building_number);
+    return;
+  }
+  model_->SetBuildingAt(building_number, building_id);
+
 }
