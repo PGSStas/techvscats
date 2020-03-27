@@ -2,6 +2,7 @@
 #define GAMEOBJECT_SLOW_TOWER_H_
 
 #include <QPainter>
+#include <memory>
 
 #include "active_tower.h"
 
@@ -10,7 +11,7 @@
 class SlowTower : public ActiveTower {
  public:
   SlowTower(int id, Coordinate position);
-  SlowTower(std::shared_ptr<Building> other);
+  explicit SlowTower(const std::shared_ptr<Building>& other);
 
   void Draw(QPainter* painter) const override;
 };

@@ -3,6 +3,7 @@
 
 #include <QPainter>
 
+#include <memory>
 #include "active_tower.h"
 
 // Just a class for tests. Doesn't do anything useful
@@ -10,7 +11,7 @@
 class FastTower : public ActiveTower {
  public:
   FastTower(int id, Coordinate position);
-  FastTower(std::shared_ptr<Building> other);
+  explicit FastTower(const std::shared_ptr<Building>& other);
 
   void Draw(QPainter* painter) const override;
 };

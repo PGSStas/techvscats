@@ -25,7 +25,7 @@ int Building::GetTowerType() const {
   return kTowerType;
 }
 
-Building::Building(std::shared_ptr<Building> other) :
+Building::Building(const std::shared_ptr<Building>& other) :
   Building(other->kTowerType, other->id_, other->position_) {}
 
 void Building::Tick() {}

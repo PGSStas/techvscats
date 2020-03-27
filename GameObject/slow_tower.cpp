@@ -12,4 +12,5 @@ void SlowTower::Draw(QPainter* painter) const {
 SlowTower::SlowTower(int id, Coordinate position) :
   ActiveTower(2, id, position) {}
 
-SlowTower::SlowTower(std::shared_ptr<Building> other) : ActiveTower(other) {}
+SlowTower::SlowTower(const std::shared_ptr<Building>& other) :
+  ActiveTower(other) {}

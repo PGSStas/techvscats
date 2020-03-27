@@ -12,4 +12,5 @@ void FastTower::Draw(QPainter* painter) const {
 FastTower::FastTower(int id, Coordinate position) :
   ActiveTower(1, id, position) {}
 
-FastTower::FastTower(std::shared_ptr<Building> other) : ActiveTower(other) {}
+FastTower::FastTower(const std::shared_ptr<Building>& other) :
+  ActiveTower(other) {}

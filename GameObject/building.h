@@ -8,7 +8,7 @@
 class Building : public GameObject {
  public:
   Building(int tower_type, int id, Coordinate position);
-  Building(std::shared_ptr<Building> other);
+  Building(const std::shared_ptr<Building>& other);
 
   // Determines whether the point is inside the building;
   // Is used to check whether mouse press was on the building;
