@@ -159,7 +159,7 @@ void Controller::MousePress(Coordinate position) {
           }));
     }
     auto menu = std::make_shared<TowerMenu>(building->GetPosition(),
-                                            building->GetRadius(),
+                                            building->GetInteractionRadius(),
                                             options);
     view_->ShowTowerMenu(menu);
     return;
