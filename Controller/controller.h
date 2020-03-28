@@ -38,6 +38,7 @@ class Controller : public AbstractController {
   void CreateEnemy(const Enemy& enemy) const;
   void TickSpawners();
   void TickEnemies();
+  void TickBuildings();
 
   bool is_game_now_ = false;
   bool have_unprocess_rounds_  = true;

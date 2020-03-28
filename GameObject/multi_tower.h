@@ -10,7 +10,7 @@
 // except drawing a red circle
 class MultiTower : public ActiveTower {
  public:
-  MultiTower();
+  MultiTower(const std::list<std::shared_ptr<Enemy>>& enemies);
   explicit MultiTower(const std::shared_ptr<Building>& other);
 };
 

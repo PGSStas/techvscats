@@ -6,7 +6,7 @@
 
 class ActiveTower : public Building {
  public:
-  explicit ActiveTower(int tower_type);
+  explicit ActiveTower(const std::list<std::shared_ptr<Enemy>>& enemies,int tower_type);
   explicit ActiveTower(const std::shared_ptr<Building>& other);
 };
 

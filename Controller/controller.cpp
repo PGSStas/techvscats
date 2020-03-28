@@ -42,6 +42,7 @@ void Controller::GameProcess() {
   }
   TickSpawners();
   TickEnemies();
+  TickBuildings();
 }
 
 void Controller::MenuProcess() {}
@@ -93,9 +94,15 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto* enemies = model_->GetEnemies();
-
   for (auto& enemy : *enemies) {
     enemy->Tick();
+  }
+}
+
+void Controller::TickBuildings() {
+  auto* buildings = &model_->GetBuildings();
+  for(auto& building:*buildings){
+      building->Tick();
   }
 }
 
@@ -183,3 +190,4 @@ void Controller::ChangeBuildingAttempt(int building_number, int building_id) {
   }
   model_->SetBuildingAt(building_number, building_id);
 }
+

@@ -10,7 +10,7 @@
 // except drawing a blue circle
 class DefaultTower : public ActiveTower {
  public:
-  DefaultTower();
+  DefaultTower(const std::list<std::shared_ptr<Enemy>>& enemies);
   explicit DefaultTower(const std::shared_ptr<Building>& other);
 };
 

@@ -3,13 +3,17 @@
 
 #include <memory>
 
+#include "enemy.h"
 #include "game_object.h"
 
 class Building : public GameObject {
  public:
-  explicit Building(int tower_type = 0);
+  explicit Building(const std::list<std::shared_ptr<Enemy>>& enemies,
+                    int tower_type = 0);
   explicit Building(const std::shared_ptr<Building>& other);
-  void SetParameters(int id, const QColor& draw_color, int max_level);
+  void SetParameters(int id,
+                     const QColor& draw_color,
+                     int max_level);
 
   // Determines whether the point is inside the building;
   // Is used to check whether mouse press was on the building;
@@ -33,6 +37,8 @@ class Building : public GameObject {
   QColor draw_color_ = QColor("black");
   int max_level_ = 0;
   int current_level_ = 0;
+  std::shared_ptr<const Enemy> aim;
+  const std::list<std::shared_ptr<Enemy>>& enemies_;
   const int kTowerType;
   const int kRadius_ = 15;
 };

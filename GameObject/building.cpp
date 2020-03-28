@@ -19,11 +19,15 @@ void Building::Upgrade() {
   qDebug() << "building #" << id_ << " upgraded to" << current_level_;
 }
 
-Building::Building(int tower_type) :
-    kTowerType(tower_type) {
+Building::Building(const std::list<std::shared_ptr<Enemy>>& enemies,
+                   int tower_type) :
+    enemies_(enemies), kTowerType(tower_type) {
+
 }
 
-void Building::SetParameters(int id, const QColor& draw_color, int max_level) {
+void Building::SetParameters(int id,
+                             const QColor& draw_color,
+                             int max_level) {
   id_ = id;
   draw_color_ = draw_color;
   max_level_ = max_level;
@@ -35,11 +39,8 @@ int Building::GetTowerType() const {
 }
 
 Building::Building(const std::shared_ptr<Building>& other) :
-    Building(other->kTowerType) {
-  id_ = other->id_;
-  draw_color_ = other->draw_color_;
-  max_level_ = other->max_level_;
-  current_level_ = 0;
+    Building(other->enemies_, other->kTowerType) {
+  SetParameters(other->id_, other->draw_color_, max_level_ = other->max_level_);
 }
 
 void Building::Tick() {}
@@ -48,7 +49,6 @@ void Building::Draw(QPainter* painter) const {
   painter->save();
   painter->setBrush(draw_color_);
   painter->drawEllipse(QPoint(position_.x, position_.y), kRadius_, kRadius_);
-
   painter->restore();
 }
 
