@@ -22,7 +22,7 @@ class Building : public GameObject {
   void Draw(QPainter* painter) const override;
   int GetId() const;
   int GetTowerType() const;
-  int GetRadius() const;
+  int GetInteractionRadius() const;
   int GetMaxLevel() const;
 
   int GetCurrentLevel() const;
@@ -34,7 +34,7 @@ class Building : public GameObject {
   int max_level_ = 0;
   int current_level_ = 0;
   const int kTowerType;
-  const int kRadius_ = 15;
+  const int kInteractionRadius = 15;
 };
 
 #endif  // GAMEOBJECT_BUILDING_H_

@@ -6,12 +6,12 @@ int Building::GetId() const {
   return id_;
 }
 
-int Building::GetRadius() const {
-  return kRadius_;
+int Building::GetInteractionRadius() const {
+  return kInteractionRadius;
 }
 
 bool Building::IsInside(Coordinate point) const {
-  return point.GetBetween(position_).GetLength() <= kRadius_;
+  return point.GetBetween(position_).GetLength() <= kInteractionRadius;
 }
 
 void Building::Upgrade() {
@@ -47,7 +47,7 @@ void Building::Tick() {}
 void Building::Draw(QPainter* painter) const {
   painter->save();
   painter->setBrush(draw_color_);
-  painter->drawEllipse(QPoint(position_.x, position_.y), kRadius_, kRadius_);
+  painter->drawEllipse(QPoint(position_.x, position_.y), kInteractionRadius, kInteractionRadius);
 
   painter->restore();
 }
