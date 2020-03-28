@@ -31,7 +31,6 @@ class TowerMenu {
   // Won't be needed if we change buttons so that they circle around the tower
   int container_length_;
 
- private:
   // Calculates the position of ith button
   Coordinate GetCoordinateByIndex(int i);
 };

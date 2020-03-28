@@ -30,10 +30,6 @@ void Building::SetParameters(int id, const QColor& draw_color, int max_level) {
   current_level_ = 0;
 }
 
-int Building::GetTowerType() const {
-  return kTowerType;
-}
-
 Building::Building(const std::shared_ptr<Building>& other) :
     Building(other->kTowerType) {
   id_ = other->id_;
@@ -42,15 +38,17 @@ Building::Building(const std::shared_ptr<Building>& other) :
   current_level_ = 0;
 }
 
-void Building::Tick() {}
-
 void Building::Draw(QPainter* painter) const {
   painter->save();
   painter->setBrush(draw_color_);
-  painter->drawEllipse(QPoint(position_.x, position_.y), kInteractionRadius, kInteractionRadius);
+  painter->drawEllipse(QPoint(position_.x, position_.y),
+                       kInteractionRadius,
+                       kInteractionRadius);
 
   painter->restore();
 }
+
+void Building::Tick() {}
 
 int Building::GetMaxLevel() const {
   return max_level_;
@@ -58,4 +56,8 @@ int Building::GetMaxLevel() const {
 
 int Building::GetCurrentLevel() const {
   return current_level_;
+}
+
+int Building::GetTowerType() const {
+  return kTowerType;
 }
