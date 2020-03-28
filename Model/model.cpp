@@ -157,7 +157,6 @@ void Model::LoadLevelFromJson(int level) {
       rounds_.push_back(std::move(groups));
     }
   }
-
 }
 
 void Model::LoadDatabaseFromJson() {
@@ -170,7 +169,7 @@ void Model::LoadDatabaseFromJson() {
     qDebug() << "ERROR! Missing database file";
     return;
   }
-  // TODO Write parser from json, after buildings and enemies will be written
+  // TODO(PGSStas) Parser from json, after buildings and enemies will be written
   // QJsonDocument document(QJsonDocument::fromJson(level_file.readAll()));
   //
   // QJsonObject json_object = document.object();

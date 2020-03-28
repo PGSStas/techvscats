@@ -14,7 +14,7 @@
 // time and Wave/Road, which are also available to the controller
 class Spawner {
  public:
-  Spawner(const EnemyGroup& wave);
+  explicit Spawner(const EnemyGroup& wave);
   ~Spawner() = default;
 
   // int GetRoadNumber() const;

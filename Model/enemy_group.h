@@ -6,11 +6,11 @@
 #include "GameObject/enemy.h"
 
 struct EnemyGroup {
-   EnemyGroup(int spawn_frequency,
-                      int enemy_id,
-                      int time_of_next_spawn,
-                      int group_size,
-                      int road_to_spawn)
+  EnemyGroup(int spawn_frequency,
+             int enemy_id,
+             int time_of_next_spawn,
+             int group_size,
+             int road_to_spawn)
       : spawn_frequency(spawn_frequency),
         enemy_id(enemy_id),
         time_of_next_spawn(time_of_next_spawn),
