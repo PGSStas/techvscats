@@ -79,7 +79,6 @@ void Controller::TickSpawners() {
   auto* spawners = model_->GetSpawners();
   spawners->remove_if([&](const Spawner& sp) { return sp.IsDead(); });
   for (auto& spawner : *spawners) {
-    qDebug() << current_time_ - last_round_start_time_;
     spawner.Tick(current_time_ - last_round_start_time_);
     if (spawner.IsReadyToSpawn()) {
       Enemy enemy = model_->GetEnemyById(spawner.GetEnemyId());

@@ -43,5 +43,5 @@ HEADERS += \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \
-         Model/wave.h \
+         Model/enemy_group.h \
          View/view.h \
