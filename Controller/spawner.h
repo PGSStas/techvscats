@@ -2,9 +2,10 @@
 #define CONTROLLER_SPAWNER_H_
 
 #include <memory>
+#include <queue>
 #include <QDebug>
 
-#include "Model/wave.h"
+#include "Model/enemy_group.h"
 #include "Model/road.h"
 #include "GameObject/enemy.h"
 
@@ -13,25 +14,22 @@
 // time and Wave/Road, which are also available to the controller
 class Spawner {
  public:
-  Spawner(const Road& road, const Wave& wave, int current_time);
+  Spawner(const EnemyGroup& wave);
   ~Spawner() = default;
 
   // int GetRoadNumber() const;
   bool IsReadyToSpawn() const;
   bool IsDead() const;
-  const Enemy& GetEnemy();
+  int GetEnemyId();
+  int GetRoad() const;
 
   void Tick(int current_time);
 
  private:
-  int last_time_spawn_;
-
   bool unit_pending_ = false;
   bool is_dead_ = false;
 
-  Wave wave_to_spawn_;
-  const Road& spawning_road_;
-  Enemy enemy_to_spawn_;
+  EnemyGroup group_to_spawn_;
 };
 
 #endif  // CONTROLLER_SPAWNER_H_

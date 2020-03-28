@@ -11,7 +11,7 @@ void Controller::StartGame(int level_id) {
   last_round_start_time_ = current_time_;
   have_unprocess_rounds_ = true;
 
-  model_->SetGameModel(level_id);
+  model_->SetGameLevel(level_id);
 
   view_->DisableMenuWindow();
   view_->EnableGameUi();
@@ -64,15 +64,12 @@ bool Controller::CanCreateNextWave() {
 }
 
 void Controller::CreateNextWave() {
-  int current_round_number = model_->GetCurrentRoundNumber();
-  int roads_count = model_->GetRoadsCount();
-  for (int i = 0; i < roads_count; i++) {
-    const Wave& temporary_wave = model_->GetWave(current_round_number, i);
-    model_->AddSpawner(i, temporary_wave, current_time_);
+  auto& round = model_->GetRound(model_->GetCurrentRoundNumber());
+  for (auto& enemy_group : round) {
+    model_->AddSpawner(enemy_group);
   }
 
   model_->IncreaseCurrentRoundNumber();
-
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
   qDebug() << "Round!";
@@ -82,10 +79,13 @@ void Controller::TickSpawners() {
   auto* spawners = model_->GetSpawners();
   spawners->remove_if([&](const Spawner& sp) { return sp.IsDead(); });
   for (auto& spawner : *spawners) {
-    spawner.Tick(current_time_);
+    qDebug() << current_time_ - last_round_start_time_;
+    spawner.Tick(current_time_ - last_round_start_time_);
     if (spawner.IsReadyToSpawn()) {
-      Enemy enemy_to_spawn = spawner.GetEnemy();
-      CreateEnemy(enemy_to_spawn);
+      Enemy enemy = model_->GetEnemyById(spawner.GetEnemyId());
+      qDebug() << spawner.GetEnemyId();
+      enemy.SetRoad(model_->GetRoad(spawner.GetRoad()));
+      CreateEnemy(enemy);
     }
   }
 }

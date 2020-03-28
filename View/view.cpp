@@ -6,7 +6,7 @@ View::View(AbstractController* controller)
   start_game_button_ = new QPushButton(this);
   start_game_button_->setText(tr("Начать"));
   auto start_game_button_click = [&]() {
-    controller_->StartGame(0);
+    controller_->StartGame(1);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 

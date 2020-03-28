@@ -1,56 +1,20 @@
 #include "model.h"
 
-void Model::SetGameModel(int level_id) {
-  current_round_number_ = 0;
-  EnemyPack temporary_enemy_pack;
-  EnemyPack temporary_enemy_pack2;
+void Model::SetGameModel() {
+  LoadDatabaseFromJson();
+}
+
+void Model::SetGameLevel(int level_id) {
   Enemy temporary_enemy;
-  Wave temporary_wave;
-
-  std::vector<Coordinate> nodes;
-
+  temporary_enemy.SetParametres(1);
+  id_to_enemy_.push_back(temporary_enemy);
+  temporary_enemy.SetParametres(4);
+  id_to_enemy_.push_back(temporary_enemy);
   switch (level_id) {
-    case 0:
-      // To be changed. All this is need to be downloaded form file.
-      temporary_enemy.SetParametres(1);
-      gold_ = 100;
-      score_ = 0;
-      // Pack with enemies
-      temporary_enemy_pack.enemy = temporary_enemy;
-      temporary_enemy_pack.times = 2;
-
-      temporary_enemy.SetParametres(4);
-      temporary_enemy_pack2.enemy = temporary_enemy;
-      temporary_enemy_pack2.times = 7;
-
-
-      // Wave, that holds some packs.
-      temporary_wave.period = 2000;
-      temporary_wave.enemies.push_back(temporary_enemy_pack);
-      // Set roads and rounds
-      roads_count_ = 2;
-      rounds_count_ = 2;
-      rounds_.resize(rounds_count_, std::vector<Wave>(roads_count_));
-      // Put wave to rounds[round_number][road_number]
-      rounds_[0][0] = temporary_wave;
-      rounds_[0][1] = temporary_wave;
-      temporary_wave.period = 100;
-      temporary_wave.enemies.push_back(temporary_enemy_pack2);
-      rounds_[1][1] = temporary_wave;
-
-      nodes = {{800, 1000}, {600, 800}, {1060, 660}};
-      Road temporary_road(nodes);
-      roads_.push_back(temporary_road);
-      nodes = {{100, 150}, {400, 150}, {500, 500}, {1060, 660}};
-
-      Road temporary_road2(nodes);
-      roads_.push_back(temporary_road2);
-
-      time_between_ronds_ = 5000;
-      // At the end we have : 2 roads , 2 rounds
-      // 5 sec between rounds, 2 sec between enemy spawn in each wave.
-      // 1 round 2 enemies on each road
-      // 2 round 2 enemies on the second road
+    case 1:
+      LoadLevelFromJson(1);
+      break;
+    default:
       break;
   }
 }
@@ -71,8 +35,8 @@ void Model::IncreaseCurrentRoundNumber() {
   current_round_number_++;
 }
 
-void Model::AddSpawner(int road_number, const Wave& wave, int current_time) {
-  spawners_.emplace_back(GetRoad(road_number), wave, current_time);
+void Model::AddSpawner(const EnemyGroup& enemy_group) {
+  spawners_.emplace_back(enemy_group);
 }
 
 const Road& Model::GetRoad(int i) const {
@@ -83,16 +47,20 @@ const std::vector<Road>& Model::GetRoads() const {
   return roads_;
 }
 
-const Wave& Model::GetWave(int round_number, int road_number) const {
-  return rounds_[round_number][road_number];
-}
-
 std::list<Spawner>* Model::GetSpawners() {
   return &spawners_;
 }
 
 std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
   return &enemies_;
+}
+
+Enemy Model::GetEnemyById(int id) const {
+  return id_to_enemy_.at(id);
+}
+
+const std::vector<EnemyGroup>& Model::GetRound(int i) const {
+  return rounds_.at(i);
 }
 
 int Model::GetRoadsCount() const {
@@ -115,4 +83,108 @@ void Model::ClearGameModel() {
   spawners_.clear();
   rounds_.clear();
   roads_.clear();
+}
+
+void Model::LoadLevelFromJson(int level) {
+  QDir level_directory = QCoreApplication::applicationDirPath();
+  level_directory.cd("../Model/bin/levels");
+  qDebug() << level_directory.path();
+
+  QFile level_file(level_directory.path() +
+      "/level_" + QString::number(level) + ".json");
+  if (!level_file.open(QFile::ReadOnly)) {
+    qDebug() << "ERROR! Missing level file";
+    return;
+  }
+  QJsonObject json_object =
+      QJsonDocument::fromJson(level_file.readAll()).object();
+
+  if (json_object.contains("time_between_rounds")) {
+    time_between_ronds_ = json_object["time_between_rounds"].toInt();
+  }
+  if (json_object.contains("gold")) {
+    gold_ = json_object["gold"].toInt();
+  }
+  if (json_object.contains("score")) {
+    score_ = json_object["score"].toInt();
+  }
+
+  if (json_object.contains("roads")) {
+    QJsonArray json_roads = json_object["roads"].toArray();
+    QJsonArray json_road_nodes;
+    QJsonObject json_node;
+
+    roads_count_ = json_roads.size();
+    roads_.clear();
+    roads_.reserve(roads_count_);
+    for (int i = 0; i < roads_count_; i++) {
+      json_road_nodes = json_roads[i].toObject()["road"].toArray();
+
+      int node_count = json_road_nodes.size();
+      std::vector<Coordinate> nodes;
+      nodes.reserve(node_count);
+      for (int j = 0; j < node_count; j++) {
+        json_node = json_road_nodes[j].toObject();
+        nodes.emplace_back(json_node["x"].toDouble(),
+                           json_node["y"].toDouble());
+      }
+      roads_.emplace_back(nodes);
+    }
+  }
+
+  if (json_object.contains("rounds")) {
+    QJsonArray json_rounds = json_object["rounds"].toArray();
+    QJsonArray json_enemy_groups;
+    QJsonObject json_enemy_group;
+
+    rounds_count_ = json_rounds.size();
+    rounds_.clear();
+    rounds_.reserve(rounds_count_);
+    for (int i = 0; i < rounds_count_; i++) {
+      json_enemy_groups = json_rounds[i].toObject()["round"].toArray();
+
+      int group_count = json_enemy_groups.size();
+      std::vector<EnemyGroup> groups;
+      groups.reserve(group_count);
+      for (int j = 0; j < group_count; j++) {
+        json_enemy_group = json_enemy_groups[j].toObject();
+        groups.emplace_back(json_enemy_group["spawn_frequency"].toInt(),
+                            json_enemy_group["enemy_id"].toInt(),
+                            json_enemy_group["time_of_next_spawn"].toInt(),
+                            json_enemy_group["group_size"].toInt(),
+                            json_enemy_group["road_to_spawn"].toInt());
+      }
+      rounds_.push_back(std::move(groups));
+    }
+  }
+
+}
+
+void Model::LoadDatabaseFromJson() {
+  QDir level_directory = QCoreApplication::applicationDirPath();
+  level_directory.cd("../Model/bin/database");
+  qDebug() << level_directory.path();
+
+  QFile level_file(level_directory.path() + "/database.json");
+  if (!level_file.open(QFile::ReadOnly)) {
+    qDebug() << "ERROR! Missing database file";
+    return;
+  }
+  // TODO Write parser from json, after buildings and enemies will be written
+  // QJsonDocument document(QJsonDocument::fromJson(level_file.readAll()));
+  //
+  // QJsonObject json_object = document.object();
+  // if (json_object.contains("enemies")) {
+  //   QJsonArray enemies = json_object["enemies"].toArray();
+  //   QJsonObject enemy;
+  //
+  //   int n = enemies.size();
+  //   std::vector<Enemy> enemies_instances;
+  //   enemies_instances.reserve(n);
+  //   for (int i = 0; i < n; i++) {
+  //     enemy = enemies[i].toObject();
+  //
+  //
+  //   }
+  // }
 }
