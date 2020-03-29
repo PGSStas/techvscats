@@ -173,13 +173,17 @@ void Model::UpgradeBuildingAt(int i) {
 std::shared_ptr<Building> Model::GetBuildingById(int id) {
   auto instance = id_to_building_[id];
   switch (instance->GetTowerType()) {
-    case 0:return std::make_shared<Building>(instance);
+    case 0:
+      return std::make_shared<Building>(instance);
 
-    case 1:return std::make_shared<DefaultTower>(instance);
+    case 1:
+      return std::make_shared<DefaultTower>(instance);
 
-    case 2:return std::make_shared<MultiTower>(instance);
+    case 2:
+      return std::make_shared<MultiTower>(instance);
 
-    default:return nullptr;
+    default:
+      return nullptr;
   }
 }
 

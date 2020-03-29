@@ -35,7 +35,7 @@ Building::Building(const std::shared_ptr<Building>& other) :
   id_ = other->id_;
   draw_color_ = other->draw_color_;
   max_level_ = other->max_level_;
-  current_level_ = 0;
+  current_level_ = other->current_level_;
 }
 
 void Building::Draw(QPainter* painter) const {

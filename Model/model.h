@@ -71,6 +71,8 @@ class Model {
   std::vector<Enemy> id_to_enemy_;
   int building_count_;
   std::vector<std::shared_ptr<Building>> id_to_building_;
+  // buildings_tree[i] is a vector of towers to which
+  // ith tower can be evolved or changed
   std::vector<std::vector<int>> buildings_tree_;
 
  private:

@@ -136,15 +136,15 @@ void Controller::MousePress(Coordinate position) {
     std::vector<std::shared_ptr<TowerMenuOption>> options;
     const auto& building_tree = model_->GetBuildingsTree();
     int building_id = buildings[i]->GetId();
-    for (const auto& to_upgrade_id : building_tree[building_id]) {
-      // Tower building options
+    // Tower building & evolve & delete options (will affects the type of tower)
+    for (const auto& to_change_id : building_tree[building_id]) {
       options.push_back(std::make_shared<TowerMenuOption>(
-          to_upgrade_id, [&, i, to_upgrade_id]() {
-            ChangeBuildingAttempt(i, to_upgrade_id);
+          to_change_id, [&, i, to_change_id]() {
+            ChangeBuildingAttempt(i, to_change_id);
           }));
     }
 
-    // Upgrade option
+    // Upgrade option (will only affect level of tower, but not the type)
     if (building->GetMaxLevel() > building->GetCurrentLevel()) {
       options.push_back(std::make_shared<TowerMenuOption>(
           building_id, [&, i, building_id]() {
@@ -174,12 +174,11 @@ void Controller::MousePress(Coordinate position) {
 }
 
 void Controller::ChangeBuildingAttempt(int building_number, int building_id) {
-  auto buildings = model_->GetBuildings();
+  const auto& buildings = model_->GetBuildings();
 
-  // Some manipulations with gold should be added here
   if (buildings[building_number]->GetId() == building_id) {
     model_->UpgradeBuildingAt(building_number);
-    return;
+  } else {
+    model_->SetBuildingAt(building_number, building_id);
   }
-  model_->SetBuildingAt(building_number, building_id);
 }
