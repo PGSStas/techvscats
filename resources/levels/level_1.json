@@ -1,0 +1,82 @@
+{
+  "time_between_rounds": 5000,
+  "gold": 100,
+  "score": 0,
+  "roads": [
+    [
+      {
+        "x": 800,
+        "y": 1000
+      },
+      {
+        "x": 600,
+        "y": 800
+      },
+      {
+        "x": 1060,
+        "y": 660
+      }
+    ],
+    [
+      {
+        "x": 100,
+        "y": 150
+      },
+      {
+        "x": 400,
+        "y": 150
+      },
+      {
+        "x": 500,
+        "y": 500
+      },
+      {
+        "x": 1060,
+        "y": 660
+      }
+    ],
+    [
+      {
+        "x": 1500,
+        "y": 700
+      },
+      {
+        "x": 1600,
+        "y": 300
+      },
+      {
+        "x": 1200,
+        "y": 300
+      },
+      {
+        "x": 1060,
+        "y": 660
+      }
+    ]
+  ],
+  "rounds": [
+    [
+      {
+        "spawn_period": 400,
+        "enemy_id": 0,
+        "time_of_next_spawn": 15,
+        "group_size": 10,
+        "road_to_spawn": 0
+      },
+      {
+        "spawn_period": 500,
+        "enemy_id": 1,
+        "time_of_next_spawn": 20,
+        "group_size": 4,
+        "road_to_spawn": 1
+      },
+      {
+        "spawn_period": 500,
+        "enemy_id": 1,
+        "time_of_next_spawn": 20,
+        "group_size": 4,
+        "road_to_spawn": 2
+      }
+    ]
+  ]
+}

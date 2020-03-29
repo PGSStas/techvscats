@@ -9,7 +9,7 @@ void Enemy::Move() {
     return;
   }
   Coordinate move_direction = position_.GetBetween(destination_);
-  if (abs(move_direction.GetLength()) > 0.0001) {
+  if (std::abs(move_direction.GetLength()) > 0.0001) {
     move_direction /= move_direction.GetLength();
     move_direction *= speed_ * speed_coefficient_;
   }
@@ -66,10 +66,10 @@ bool Enemy::IsDead() const {
   return is_dead_;
 }
 
-Enemy::Enemy(const Enemy& enemy_instance) {
+Enemy::Enemy(const Enemy& enemy_instance) : MovingObject(enemy_instance) {
   *this = enemy_instance;
 }
 
-void Enemy::SetParametres(double speed) {
+void Enemy::SetParameters(double speed) {
   speed_ = speed;
 }
