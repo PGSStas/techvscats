@@ -27,8 +27,8 @@ SOURCES += \
          GameObject/game_object.cpp \
          GameObject/moving_object.cpp \
          GameObject/building.cpp \
-         GameObject/slow_tower.cpp \
-         GameObject/fast_tower.cpp \
+         GameObject/default_tower.cpp \
+         GameObject/multi_tower.cpp \
          Model/model.cpp \
          Model/road.cpp \
          Model/coordinate.cpp \
@@ -47,8 +47,8 @@ HEADERS += \
          GameObject/enemy.h \
          GameObject/game_object.h \
          GameObject/moving_object.h \
-         GameObject/fast_tower.h \
-         GameObject/slow_tower.h \
+         GameObject/default_tower.h \
+         GameObject/multi_tower.h \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \
