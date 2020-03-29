@@ -1,7 +1,6 @@
 #ifndef MODEL_MODEL_H_
 #define MODEL_MODEL_H_
 
-#include <cassert>
 #include <iostream>
 #include <list>
 #include <memory>

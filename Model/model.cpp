@@ -2,9 +2,9 @@
 
 void Model::SetGameLevel(int level_id) {
   Enemy temporary_enemy;
-  temporary_enemy.SetParameteres(1);
+  temporary_enemy.SetParameters(1);
   id_to_enemy_.push_back(temporary_enemy);
-  temporary_enemy.SetParameteres(4);
+  temporary_enemy.SetParameters(4);
   id_to_enemy_.push_back(temporary_enemy);
   LoadLevelFromJson(1);
 }
@@ -49,8 +49,8 @@ Enemy Model::GetEnemyById(int id) const {
   return id_to_enemy_[id];
 }
 
-const std::vector<EnemyGroup>& Model::GetEnemyGroupsPerRound(int i) const {
-  return enemy_groups_[i];
+const std::vector<EnemyGroup>& Model::GetEnemyGroupsPerRound(int round) const {
+  return enemy_groups_[round];
 }
 
 int Model::GetRoadsCount() const {

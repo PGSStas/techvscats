@@ -2,7 +2,6 @@
 #define CONTROLLER_SPAWNER_H_
 
 #include <memory>
-#include <queue>
 #include <QDebug>
 
 #include "Model/enemy_group.h"
