@@ -76,7 +76,7 @@ void Model::ClearGameModel() {
 }
 
 void Model::LoadLevelFromJson(int level) {
-  QFile level_file(":Model/bin/levels/level_"
+  QFile level_file(":resources/levels/level_"
                        + QString::number(level) + ".json");
   if (!level_file.open(QFile::ReadOnly)) {
     qDebug() << "ERROR! Missing level file";
