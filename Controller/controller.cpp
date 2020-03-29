@@ -132,7 +132,7 @@ void Controller::MousePress(Coordinate position) {
       return;
     }
 
-    CreateTowerMenu();
+    CreateTowerMenu(i);
     return;
   }
 

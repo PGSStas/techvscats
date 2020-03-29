@@ -14,7 +14,7 @@ class Building : public GameObject {
   // Determines whether the point is inside the building;
   // Is used to check whether mouse press was on the building;
   // Default realization is for circle-shaped buildings.
-  virtual bool IsInside(Coordinate point) const;
+  bool IsInside(Coordinate point) const;
 
   virtual void Upgrade();
   void Tick() override;
