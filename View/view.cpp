@@ -35,7 +35,7 @@ void View::timerEvent(QTimerEvent* event) {
   }
 }
 
-void View::paintEvent(QPaintEvent* event) {
+void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   // Example of work
   if (window_type == WindowType::kMainMenu) {

@@ -6,7 +6,7 @@ void Model::SetGameLevel(int level_id) {
   id_to_enemy_.push_back(temporary_enemy);
   temporary_enemy.SetParameters(4);
   id_to_enemy_.push_back(temporary_enemy);
-  LoadLevelFromJson(1);
+  LoadLevelFromJson(level_id);
 }
 
 int Model::GetTimeBetweenWaves() const {
