@@ -20,7 +20,6 @@ SOURCES += \
          main.cpp \
          Controller/controller.cpp \
          Controller/spawner.cpp \
-         GameObject/passive_tower.cpp \
          GameObject/active_tower.cpp \
          GameObject/projectile.cpp \
          GameObject/enemy.cpp \
@@ -33,7 +32,6 @@ SOURCES += \
          Model/road.cpp \
          Model/coordinate.cpp \
          View/view.cpp \
-         GameObject/empty_tower.cpp \
          View/tower_menu.cpp \
          View/tower_menu_option.cpp \
 
@@ -41,7 +39,6 @@ HEADERS += \
          Controller/controller.h \
          Controller/spawner.h \
          GameObject/building.h \
-         GameObject/passive_tower.h \
          GameObject/active_tower.h \
          GameObject/projectile.h \
          GameObject/enemy.h \
@@ -54,6 +51,5 @@ HEADERS += \
          Model/coordinate.h \
          Model/wave.h \
          View/view.h \
-         GameObject/empty_tower.h \
          View/tower_menu.h \
          View/tower_menu_option.h \
