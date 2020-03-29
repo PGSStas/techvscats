@@ -1,6 +1,7 @@
 #ifndef MODEL_MODEL_H_
 #define MODEL_MODEL_H_
 
+#include <cassert>
 #include <iostream>
 #include <list>
 #include <memory>
@@ -28,7 +29,6 @@ class Model {
   Model() = default;
   ~Model() = default;
 
-  void SetGameModel();
   void SetGameLevel(int level);
   void ClearGameModel();
 
@@ -42,13 +42,12 @@ class Model {
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   Enemy GetEnemyById(int id) const;
-  const std::vector<EnemyGroup>& GetRound(int i) const;
+  const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
 
  private:
   void LoadLevelFromJson(int level);
-  void LoadDatabaseFromJson();
 
   // Database which is updated by Controller all time
   std::list<std::shared_ptr<Projectile>> projectiles_;
@@ -59,7 +58,7 @@ class Model {
   int score_;
 
   // Database which is loaded in SetGameLevel once
-  std::vector<std::vector<EnemyGroup>> rounds_;
+  std::vector<std::vector<EnemyGroup>> enemy_groups_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;
   int time_between_ronds_;

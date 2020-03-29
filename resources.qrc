@@ -1,0 +1,6 @@
+<RCC>
+<qresource>
+    <file>Model/bin/levels/level_1.json</file>
+    <file>Model/bin/database/database.json</file>
+</qresource>
+</RCC>

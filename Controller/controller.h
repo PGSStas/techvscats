@@ -29,7 +29,7 @@ class Controller : public AbstractController {
 
   void CreateNextWave();
   bool CanCreateNextWave();
-  void CreateEnemy(const Enemy& enemy) const;
+  void AddEnemyToModel(const Enemy& enemy) const;
   void TickSpawners();
   void TickEnemies();
 

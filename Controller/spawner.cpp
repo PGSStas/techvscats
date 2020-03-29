@@ -11,7 +11,7 @@ void Spawner::Tick(int current_time) {
   }
 
   unit_pending_ = true;
-  group_to_spawn_.time_of_next_spawn += group_to_spawn_.spawn_frequency;
+  group_to_spawn_.time_of_next_spawn += group_to_spawn_.spawn_period;
   group_to_spawn_.group_size--;
   if (group_to_spawn_.group_size == 0) {
     is_dead_ = true;
@@ -26,7 +26,7 @@ bool Spawner::IsReadyToSpawn() const {
   return unit_pending_;
 }
 
-int Spawner::GetEnemyId() {
+int Spawner::PrepareNextEnemyId() {
   unit_pending_ = false;
   return group_to_spawn_.enemy_id;
 }

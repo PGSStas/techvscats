@@ -20,7 +20,7 @@ class Spawner {
   // int GetRoadNumber() const;
   bool IsReadyToSpawn() const;
   bool IsDead() const;
-  int GetEnemyId();
+  int PrepareNextEnemyId();
   int GetRoad() const;
 
   void Tick(int current_time);

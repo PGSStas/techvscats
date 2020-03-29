@@ -64,8 +64,9 @@ bool Controller::CanCreateNextWave() {
 }
 
 void Controller::CreateNextWave() {
-  auto& round = model_->GetRound(model_->GetCurrentRoundNumber());
-  for (auto& enemy_group : round) {
+  auto&& enemy_groups =
+      model_->GetEnemyGroupsPerRound(model_->GetCurrentRoundNumber());
+  for (const auto& enemy_group : enemy_groups) {
     model_->AddSpawner(enemy_group);
   }
 
@@ -76,15 +77,14 @@ void Controller::CreateNextWave() {
 }
 
 void Controller::TickSpawners() {
-  auto* spawners = model_->GetSpawners();
+  auto spawners = model_->GetSpawners();
   spawners->remove_if([&](const Spawner& sp) { return sp.IsDead(); });
   for (auto& spawner : *spawners) {
     spawner.Tick(current_time_ - last_round_start_time_);
     if (spawner.IsReadyToSpawn()) {
-      Enemy enemy = model_->GetEnemyById(spawner.GetEnemyId());
-      qDebug() << spawner.GetEnemyId();
+      Enemy enemy = model_->GetEnemyById(spawner.PrepareNextEnemyId());
       enemy.SetRoad(model_->GetRoad(spawner.GetRoad()));
-      CreateEnemy(enemy);
+      AddEnemyToModel(enemy);
     }
   }
 }
@@ -98,7 +98,7 @@ void Controller::TickEnemies() {
   }
 }
 
-void Controller::CreateEnemy(const Enemy& enemy) const {
+void Controller::AddEnemyToModel(const Enemy& enemy) const {
   model_->AddEnemyFromInstance(enemy);
   qDebug() << "new enemy";
 }
