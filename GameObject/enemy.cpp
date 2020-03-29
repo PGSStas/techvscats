@@ -1,6 +1,6 @@
 #include "enemy.h"
 
-void Enemy::Tick() {
+void Enemy::Tick(int current_time) {
   Move();
 }
 

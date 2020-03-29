@@ -57,39 +57,39 @@ void Model::SetGameModel(int level_id) {
 
   Building temporary_building_instance(enemies_);
   temporary_building_instance.SetParameters(0);
-  temporary_building_instance.SetActions(Qt::gray,
-                                         1000);
+  temporary_building_instance.SetAnimationParameters(Qt::gray,
+                                                     1000);
 
   buildings_tree_.push_back({1, 2});
 
   MultiTower temporary_multi_tower_instance1(enemies_);
   temporary_multi_tower_instance1.SetParameters(1, 4, 10, 24, 100, 40);
-  temporary_multi_tower_instance1.SetActions(Qt::blue,
-                                             1000,
-                                             Qt::red,
-                                             300,
-                                             Qt::darkBlue,
-                                             100);
+  temporary_multi_tower_instance1.SetAnimationParameters(Qt::blue,
+                                                         1000,
+                                                         Qt::red,
+                                                         300,
+                                                         Qt::darkBlue,
+                                                         100);
   buildings_tree_.push_back({3, 0});
 
   DefaultTower temporary_default_tower_instance1(enemies_);
   temporary_default_tower_instance1.SetParameters(1, 4, 10, 24, 100, 40);
-  temporary_default_tower_instance1.SetActions(Qt::yellow,
-                                               1000,
-                                               Qt::red,
-                                               300,
-                                               Qt::darkYellow,
-                                               100);
+  temporary_default_tower_instance1.SetAnimationParameters(Qt::yellow,
+                                                           1000,
+                                                           Qt::red,
+                                                           300,
+                                                           Qt::darkYellow,
+                                                           100);
   buildings_tree_.push_back({1, 3, 0});
 
   DefaultTower temporary_default_tower_instance2(enemies_);
   temporary_default_tower_instance2.SetParameters(1, 4, 10, 24, 100, 40);
-  temporary_default_tower_instance2.SetActions(Qt::green,
-                                               1000,
-                                               Qt::red,
-                                               300,
-                                               Qt::darkGreen,
-                                               100);
+  temporary_default_tower_instance2.SetAnimationParameters(Qt::green,
+                                                           1000,
+                                                           Qt::red,
+                                                           300,
+                                                           Qt::darkGreen,
+                                                           100);
   buildings_tree_.push_back({0});
 
   id_to_building_ =

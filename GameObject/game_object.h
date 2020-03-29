@@ -11,12 +11,13 @@ class GameObject {
   explicit GameObject(Coordinate position);
 
   virtual void Draw(QPainter* painter) const = 0;
-  virtual void Tick() = 0;
+  virtual void Tick(int current_time) = 0;
 
   Coordinate GetPosition() const;
   void SetPosition(Coordinate position);
 
  protected:
+  int object_current_time_ = 0;
   Coordinate position_;
 };
 

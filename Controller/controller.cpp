@@ -95,14 +95,14 @@ void Controller::TickSpawners() {
 void Controller::TickEnemies() {
   auto* enemies = model_->GetEnemies();
   for (auto& enemy : *enemies) {
-    enemy->Tick();
+    enemy->Tick(current_time_);
   }
 }
 
 void Controller::TickBuildings() {
   auto* buildings = &model_->GetBuildings();
   for(auto& building:*buildings){
-      building->Tick();
+      building->Tick(current_time_);
   }
 }
 

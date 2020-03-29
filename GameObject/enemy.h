@@ -11,7 +11,7 @@ class Enemy : public MovingObject {
   Enemy() = default;
   Enemy(const Enemy& enemy_instance);
   Enemy& operator=(const Enemy& enemy_instance);
-  void Tick() override;
+  void Tick(int current_time) override;
 
   void SetParameters(double speed);
   void Move() override;

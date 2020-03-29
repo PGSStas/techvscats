@@ -33,16 +33,15 @@ Building::Building(const std::shared_ptr<Building>& other) :
   SetParameters(other->id_, other->max_level_,
                 other->settle_cost_, other->upgrade_cost_,
                 other->action_range_, other->action_power_);
-  SetActions(other->wait_color_, other->wait_time_,
-             other->pre_fire_color_, other->pre_fire_time_,
-             other->post_fire_color_, other->post_fire_time_);
+  SetAnimationParameters(other->reload_color_, other->reload_time_,
+                         other->pre_fire_color_, other->pre_fire_time_,
+                         other->post_fire_color_, other->post_fire_time_);
 }
 
-void Building::Tick() {}
 
 void Building::Draw(QPainter* painter) const {
   painter->save();
-  painter->setBrush(wait_color_);
+  painter->setBrush(reload_color_);
   painter->drawEllipse(QPoint(position_.x, position_.y),
                        kInteractionRadius,
                        kInteractionRadius);
@@ -71,16 +70,20 @@ void Building::SetParameters(int id,
   action_power_ = action_power;
 }
 
-void Building::SetActions(QColor wait_color,
-                          int wait_time,
-                          QColor pre_color,
-                          int pre_fire_time,
-                          QColor post_color,
-                          int post_fire_time) {
-  wait_color_ = wait_color;
-  wait_time_ = wait_time;
+void Building::SetAnimationParameters(QColor wait_color,
+                                      int wait_time,
+                                      QColor pre_color,
+                                      int pre_fire_time,
+                                      QColor post_color,
+                                      int post_fire_time) {
+  reload_color_ = wait_color;
+  reload_time_ = wait_time;
   pre_fire_color_ = pre_color;
   pre_fire_time_ = pre_fire_time;
   post_fire_color_ = post_color;
   post_fire_time_ = post_fire_time;
 }
+
+void Building::Tick(int controller_current_time) {}
+void Building::UpdateAim() {}
+void Building::DoAction(){};
