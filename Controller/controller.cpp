@@ -81,8 +81,8 @@ void Controller::CreateNextWave() {
 }
 
 void Controller::TickSpawners() {
-  auto* spawners = model_->GetSpawners();
-  spawners->remove_if([&](const Spawner& sp) { return sp.IsDead(); });
+  auto spawners = model_->GetSpawners();
+  spawners->remove_if([&](const Spawner& spawner) { return spawner.IsDead(); });
   for (auto& spawner : *spawners) {
     spawner.Tick(current_time_);
     if (spawner.IsReadyToSpawn()) {
@@ -93,16 +93,18 @@ void Controller::TickSpawners() {
 }
 
 void Controller::TickEnemies() {
-  auto* enemies = model_->GetEnemies();
+  auto enemies = model_->GetEnemies();
+  enemies->remove_if([&](auto& enemy) { return enemy->IsDead(); });
+
   for (auto& enemy : *enemies) {
     enemy->Tick(current_time_);
   }
 }
 
 void Controller::TickBuildings() {
-  auto* buildings = &model_->GetBuildings();
-  for(auto& building:*buildings){
-      building->Tick(current_time_);
+  auto buildings = &model_->GetBuildings();
+  for (auto& building:*buildings) {
+    building->Tick(current_time_);
   }
 }
 

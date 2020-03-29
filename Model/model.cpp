@@ -73,11 +73,11 @@ void Model::SetGameModel(int level_id) {
   buildings_tree_.push_back({3, 0});
 
   DefaultTower temporary_default_tower_instance1(enemies_);
-  temporary_default_tower_instance1.SetParameters(1, 4, 10, 24, 100, 40);
+  temporary_default_tower_instance1.SetParameters(1, 4, 10, 24, 220, 40);
   temporary_default_tower_instance1.SetAnimationParameters(Qt::yellow,
-                                                           1000,
+                                                           400,
                                                            Qt::red,
-                                                           300,
+                                                           100,
                                                            Qt::darkYellow,
                                                            100);
   buildings_tree_.push_back({1, 3, 0});

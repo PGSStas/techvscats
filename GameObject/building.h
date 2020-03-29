@@ -49,8 +49,8 @@ class Building : public GameObject {
  protected:
   virtual void UpdateAim();
   virtual void DoAction();
-  bool have_possible_to_shoot = false;
-  std::shared_ptr<const Enemy> enemy_aim;
+  bool have_possible_to_shoot_ = false;
+  std::shared_ptr<const Enemy> enemy_aim_;
   // parameters
   int id_ = 0;
   int max_level_ = 0;
@@ -62,7 +62,7 @@ class Building : public GameObject {
   int action_power_coefficient_ = 1;
 
   // action part
-  Action action = Action::post_fire;
+  Action action = Action::reload;
   int wait_time_ = 0;
   int reload_time_ = 0;
   int pre_fire_time_ = 0;

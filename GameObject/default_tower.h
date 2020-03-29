@@ -13,8 +13,8 @@ class DefaultTower : public ActiveTower {
   DefaultTower(const std::list<std::shared_ptr<Enemy>>& enemies);
   explicit DefaultTower(const std::shared_ptr<Building>& other);
   void Tick(int controller_current_time) override;
-  virtual void UpdateAim();
-  virtual void DoAction();
+  void UpdateAim() override;
+  void DoAction() override;
 };
 
 #endif  // GAMEOBJECT_DEFAULT_TOWER_H_

@@ -2,6 +2,9 @@
 
 void Enemy::Tick(int current_time) {
   Move();
+  if (current_health_ <= 0) {
+    is_dead_ = true;
+  }
 }
 
 void Enemy::Move() {

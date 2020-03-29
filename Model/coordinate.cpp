@@ -34,7 +34,7 @@ Coordinate& Coordinate::operator/=(double right) {
   return *this;
 }
 
-Coordinate Coordinate::GetBetween(const Coordinate& right) {
+Coordinate Coordinate::GetBetween(const Coordinate& right) const{
   Coordinate tmp = *this;
   tmp.x = right.x - tmp.x;
   tmp.y = right.y - tmp.y;

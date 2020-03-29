@@ -38,10 +38,17 @@ Building::Building(const std::shared_ptr<Building>& other) :
                          other->post_fire_color_, other->post_fire_time_);
 }
 
-
 void Building::Draw(QPainter* painter) const {
   painter->save();
-  painter->setBrush(reload_color_);
+  switch (action) {
+    case Action::reload: painter->setBrush(reload_color_);
+      break;
+    case Action::pre_fire: painter->setBrush(pre_fire_color_);
+      break;
+    case Action::post_fire: painter->setBrush(post_fire_color_);
+      break;
+  }
+
   painter->drawEllipse(QPoint(position_.x, position_.y),
                        kInteractionRadius,
                        kInteractionRadius);
@@ -86,4 +93,4 @@ void Building::SetAnimationParameters(QColor wait_color,
 
 void Building::Tick(int controller_current_time) {}
 void Building::UpdateAim() {}
-void Building::DoAction(){};
+void Building::DoAction() {};
