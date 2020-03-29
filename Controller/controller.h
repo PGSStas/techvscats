@@ -30,6 +30,12 @@ class Controller : public AbstractController {
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
 
+  bool is_game_now_ = false;
+  bool have_unprocess_rounds_ = true;
+  int current_time_ = 0;
+  int last_round_start_time_ = 0;
+
+ private:
   void GameProcess();
   void MenuProcess();
 
@@ -39,10 +45,7 @@ class Controller : public AbstractController {
   void TickSpawners();
   void TickEnemies();
 
-  bool is_game_now_ = false;
-  bool have_unprocess_rounds_ = true;
-  int current_time_ = 0;
-  int last_round_start_time_ = 0;
+  void CreateTowerMenu(int tower_to_process);
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

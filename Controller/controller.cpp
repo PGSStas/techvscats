@@ -132,29 +132,7 @@ void Controller::MousePress(Coordinate position) {
       return;
     }
 
-    // Create the appropriate menu
-    std::vector<std::shared_ptr<TowerMenuOption>> options;
-    const auto& building_tree = model_->GetBuildingsTree();
-    int building_id = buildings[i]->GetId();
-    // Tower building & evolve & delete options (will affects the type of tower)
-    for (const auto& to_change_id : building_tree[building_id]) {
-      options.push_back(std::make_shared<TowerMenuOption>(
-          to_change_id, [&, i, to_change_id]() {
-            ChangeBuildingAttempt(i, to_change_id);
-          }));
-    }
-
-    // Upgrade option (will only affect level of tower, but not the type)
-    if (building->GetMaxLevel() > building->GetCurrentLevel()) {
-      options.push_back(std::make_shared<TowerMenuOption>(
-          building_id, [&, i, building_id]() {
-            ChangeBuildingAttempt(i, building_id);
-          }));
-    }
-    auto menu = std::make_shared<TowerMenu>(building->GetPosition(),
-                                            building->GetInteractionRadius(),
-                                            options);
-    view_->ShowTowerMenu(menu);
+    CreateTowerMenu();
     return;
   }
 
@@ -162,14 +140,14 @@ void Controller::MousePress(Coordinate position) {
     return;
   }
 
-// Check if tower menu element was pressed
+  // Check if tower menu element was pressed
   auto pressed = view_->GetTowerMenu()->GetPressedOption(position);
   if (pressed != nullptr) {
     pressed->Action();
     qDebug() << pressed->GetId() << " action";
   }
 
-// Disables menu after some action or if random point on the map was pressed
+  // Disables menu after some action or if random point on the map was pressed
   view_->DisableTowerMenu();
 }
 
@@ -181,4 +159,32 @@ void Controller::ChangeBuildingAttempt(int building_number, int building_id) {
   } else {
     model_->SetBuildingAt(building_number, building_id);
   }
+}
+
+void Controller::CreateTowerMenu(int tower_to_process) {
+  std::vector<std::shared_ptr<TowerMenuOption>> options;
+  const auto& buildings = model_->GetBuildings();
+  const auto& building = buildings[tower_to_process];
+  const auto& building_tree = model_->GetBuildingsTree();
+  int building_id = buildings[tower_to_process]->GetId();
+
+  // Tower building & evolve & delete options (will affects the type of tower)
+  for (const auto& to_change_id : building_tree[building_id]) {
+    options.push_back(std::make_shared<TowerMenuOption>(
+        to_change_id, [&, tower_to_process, to_change_id]() {
+          ChangeBuildingAttempt(tower_to_process, to_change_id);
+        }));
+  }
+
+  // Upgrade option (will only affect level of tower, but not the type)
+  if (building->GetMaxLevel() > building->GetCurrentLevel()) {
+    options.push_back(std::make_shared<TowerMenuOption>(
+        building_id, [&, tower_to_process, building_id]() {
+          ChangeBuildingAttempt(tower_to_process, building_id);
+        }));
+  }
+  auto menu = std::make_shared<TowerMenu>(building->GetPosition(),
+                                          building->GetInteractionRadius(),
+                                          options);
+  view_->ShowTowerMenu(menu);
 }
