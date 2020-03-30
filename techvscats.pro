@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2020-03-17T13:53:49
-#
-#-------------------------------------------------
-
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -26,8 +20,7 @@ SOURCES += \
          GameObject/game_object.cpp \
          GameObject/moving_object.cpp \
          GameObject/building.cpp \
-         GameObject/default_tower.cpp \
-         GameObject/multi_tower.cpp \
+         GameObject/lazer_projectile.cpp \
          Model/model.cpp \
          Model/road.cpp \
          Model/coordinate.cpp \
@@ -44,8 +37,7 @@ HEADERS += \
          GameObject/enemy.h \
          GameObject/game_object.h \
          GameObject/moving_object.h \
-         GameObject/default_tower.h \
-         GameObject/multi_tower.h \
+         GameObject/lazer_projectile.h \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \

@@ -6,6 +6,10 @@ int Building::GetId() const {
   return id_;
 }
 
+int Building::GetProjectileId() const {
+  return projectile_id_;
+}
+
 bool Building::IsInside(Coordinate point) const {
   return point.GetBetween(position_).GetLength() <= kInteractionRadius;
 }
@@ -16,8 +20,10 @@ void Building::Upgrade() {
 }
 
 Building::Building(const std::list<std::shared_ptr<Enemy>>& enemies,
+                   const std::vector<std::shared_ptr<Building>>& buildings,
                    int tower_type) :
-    enemies_(enemies), kTowerType(tower_type) {
+    enemies_(enemies), buildings_(buildings), kTowerType(tower_type) {
+  qDebug() << &enemies_;
 }
 
 int Building::GetInteractionRadius() const {
@@ -28,14 +34,15 @@ int Building::GetTowerType() const {
   return kTowerType;
 }
 
-Building::Building(const std::shared_ptr<Building>& other) :
-    Building(other->enemies_, other->kTowerType) {
-  SetParameters(other->id_, other->max_level_,
+Building::Building(const std::shared_ptr<const Building>& other) :
+    Building(other->enemies_, other->buildings_, other->kTowerType) {
+  SetParameters(other->id_, other->projectile_id_, other->max_level_,
                 other->settle_cost_, other->upgrade_cost_,
                 other->action_range_, other->action_power_);
   SetAnimationParameters(other->reload_color_, other->reload_time_,
                          other->pre_fire_color_, other->pre_fire_time_,
                          other->post_fire_color_, other->post_fire_time_);
+
 }
 
 void Building::Draw(QPainter* painter) const {
@@ -62,13 +69,14 @@ int Building::GetMaxLevel() const {
 int Building::GetCurrentLevel() const {
   return current_level_;
 }
-void Building::SetParameters(int id,
+void Building::SetParameters(int id, int projectile_id,
                              int max_level,
                              int settle_cost,
                              int upgrade_cost,
                              int action_range,
                              int action_power) {
   id_ = id;
+  projectile_id_ = projectile_id;
   max_level_ = max_level;
   current_level_ = 0;
   settle_cost_ = settle_cost;
@@ -93,4 +101,23 @@ void Building::SetAnimationParameters(QColor wait_color,
 
 void Building::Tick(int controller_current_time) {}
 void Building::UpdateAim() {}
-void Building::DoAction() {};
+void Building::DoAction() {}
+
+std::vector<std::shared_ptr<Projectile>> Building::PrepareProjectile(const std::shared_ptr<
+    Projectile>& projectile_instence) {
+  is_ready_to_create_projectile_ = false;
+
+  std::vector<std::shared_ptr<Projectile>> projectiles;
+  for (auto& aim:aims_) {
+    auto projectile = std::make_shared<Projectile>(projectile_instence);
+    projectile->SetParameters(projectile_id_,
+                              action_power_ * action_power_coefficient_,
+                              projectile_instence->GetSpeed(), aim);
+    projectile->SetPosition(position_);
+    projectiles.push_back(projectile);
+  };
+  return projectiles;
+}
+bool Building::IsReadyToCreateProjectile() const {
+  return is_ready_to_create_projectile_;
+}

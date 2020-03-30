@@ -69,10 +69,6 @@ void Enemy::SetRoad(const Road& road) {
   destination_ = road_->GetNode(node_number_);
 }
 
-bool Enemy::IsDead() const {
-  return is_dead_;
-}
-
 Enemy::Enemy(const Enemy& enemy_instance) {
   *this = enemy_instance;
 }

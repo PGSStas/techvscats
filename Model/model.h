@@ -8,12 +8,10 @@
 #include <QDebug>
 
 #include "GameObject/enemy.h"
-#include "GameObject/building.h"
+#include "GameObject/active_tower.h"
 #include "GameObject/projectile.h"
 
 #include "Controller/spawner.h"
-#include <GameObject/default_tower.h>
-#include <GameObject/multi_tower.h>
 #include "wave.h"
 #include "road.h"
 
@@ -36,16 +34,19 @@ class Model {
   int GetCurrentRoundNumber() const;
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
+  std::vector<std::shared_ptr<Building>>* GetBuildings();
+  std::list<std::shared_ptr<Projectile>>* GetProjectiles();
+
   const Wave& GetWave(int round_number, int road_number) const;
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
 
-  const std::vector<Coordinate>& GetTowerSlots() const;
-  const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
   const std::vector<std::vector<int>>& GetBuildingsTree() const;
   std::shared_ptr<Building> GetBuildingById(int id);
+    std::shared_ptr<Projectile> GetProjectileById(int id);
   int GetBuildingCount();
   void SetBuildingAt(int i, int id);
+  void CreateProjectiles(std::vector<std::shared_ptr<Projectile>> projectiles);
   void UpgradeBuildingAt(int i);
 
  private:
@@ -68,16 +69,14 @@ class Model {
   int roads_count_;
 
   // Database of GameObject's instances, that is used to create GameObjects.
-  std::vector<Enemy> id_to_enemy_;
+  std::vector<std::shared_ptr<Enemy>> id_to_enemy_;
+  std::vector<std::shared_ptr<Projectile>> id_to_projectile_;
   int building_count_;
   std::vector<std::shared_ptr<Building>> id_to_building_;
   std::vector<std::vector<int>> buildings_tree_;
 
  private:
   // Helping functions
-
-  // Creates EmptyTower classes from empty_towers_ vector
-  // Should be called on load of empty_towers_
   void InitialiseTowerSlots();
 };
 

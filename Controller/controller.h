@@ -20,11 +20,12 @@ class Controller : public AbstractController {
   void EndGame(Exit exit) override;
 
   void MousePress(Coordinate position) override;
-  void ChangeBuildingAttempt(int building_number, int building_id );
+  void ChangeBuildingAttempt(int building_number, int building_id);
 
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<Road>& GetRoads() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
+  const std::list<std::shared_ptr<Projectile>>& GetProjectiles() const;
 
  private:
   std::unique_ptr<Model> model_;
@@ -39,9 +40,10 @@ class Controller : public AbstractController {
   void TickSpawners();
   void TickEnemies();
   void TickBuildings();
+  void TickProjectiles();
 
   bool is_game_now_ = false;
-  bool have_unprocess_rounds_  = true;
+  bool have_unprocess_rounds_ = true;
   int current_time_ = 0;
   int last_round_start_time_ = 0;
 };

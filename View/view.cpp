@@ -47,6 +47,7 @@ void View::paintEvent(QPaintEvent* event) {
     DrawBackground(&painter);
     DrawTowers(&painter);
     DrawEnemies(&painter);
+    DrawProjectiles(&painter);
     if (is_tower_menu_enabled_) {
       tower_menu_->Draw(&painter);
     }
@@ -110,6 +111,13 @@ void View::DrawEnemies(QPainter* painter) {
   auto enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
     enemy->Draw(painter);
+  }
+}
+
+void View::DrawProjectiles(QPainter* painter) {
+  auto projectiles_list = controller_->GetProjectiles();
+  for (auto& projectile : projectiles_list) {
+    projectile->Draw(painter);
   }
 }
 

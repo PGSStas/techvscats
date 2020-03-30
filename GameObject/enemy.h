@@ -17,7 +17,6 @@ class Enemy : public MovingObject {
   void Move() override;
   void Draw(QPainter* painter) const override;
   void SetRoad(const Road& road);
-  bool IsDead() const;
 
  private:
   double damage_ = 0;
@@ -26,7 +25,6 @@ class Enemy : public MovingObject {
   int reward_ = 0;
   double current_health_ = 0;
   double max_health_ = 1;
-  bool is_dead_ = false;
 
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;

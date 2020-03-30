@@ -43,6 +43,7 @@ void Controller::GameProcess() {
   TickSpawners();
   TickEnemies();
   TickBuildings();
+  TickProjectiles();
 }
 
 void Controller::MenuProcess() {}
@@ -95,16 +96,28 @@ void Controller::TickSpawners() {
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
   enemies->remove_if([&](auto& enemy) { return enemy->IsDead(); });
-
   for (auto& enemy : *enemies) {
     enemy->Tick(current_time_);
   }
 }
 
 void Controller::TickBuildings() {
-  auto buildings = &model_->GetBuildings();
+  auto buildings = model_->GetBuildings();
   for (auto& building:*buildings) {
     building->Tick(current_time_);
+    if(building->IsReadyToCreateProjectile()) {
+      model_->CreateProjectiles(building->PrepareProjectile(
+          model_->GetProjectileById(building->GetProjectileId())));
+    }
+  }
+}
+
+void Controller::TickProjectiles() {
+  auto projectiles = model_->GetProjectiles();
+  projectiles->remove_if([&](auto& projectile) { return projectile->IsDead(); });
+
+  for (auto& projectile : *projectiles) {
+    projectile->Tick(current_time_);
   }
 }
 
@@ -116,17 +129,21 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
   return *model_->GetEnemies();
 }
 
+const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
+  return *model_->GetBuildings();
+}
+
+const std::list<std::shared_ptr<Projectile>>& Controller::GetProjectiles() const {
+  return *model_->GetProjectiles();
+}
+
 const std::vector<Road>& Controller::GetRoads() const {
   return model_->GetRoads();
 }
 
-const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
-  return model_->GetBuildings();
-}
-
 void Controller::MousePress(Coordinate position) {
   // Check if some tower was pressed
-  const auto& buildings = model_->GetBuildings();
+  const auto& buildings = *model_->GetBuildings();
   for (size_t i = 0; i < buildings.size(); i++) {
     const auto& building = buildings[i];
     if (!building->IsInside(position)) {
@@ -183,7 +200,7 @@ void Controller::MousePress(Coordinate position) {
 }
 
 void Controller::ChangeBuildingAttempt(int building_number, int building_id) {
-  auto buildings = model_->GetBuildings();
+  const auto& buildings = *model_->GetBuildings();
 
   // Some manipulations with gold should be added here
   if (buildings[building_number]->GetId() == building_id) {

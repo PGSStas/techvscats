@@ -5,6 +5,7 @@
 
 #include "enemy.h"
 #include "game_object.h"
+#include "projectile.h"
 
 enum class Action {
   reload,
@@ -15,10 +16,10 @@ enum class Action {
 class Building : public GameObject {
  public:
   explicit Building(const std::list<std::shared_ptr<Enemy>>& enemies,
+                    const std::vector<std::shared_ptr<Building>>& buildings,
                     int tower_type = 0);
-  explicit Building(const std::shared_ptr<Building>& other);
-
-  void SetParameters(int id,
+  explicit Building(const std::shared_ptr<const Building>& other);
+  void SetParameters(int id, int projectile_id = 0,
                      int max_level = 0,
                      int settle_cost = 0,
                      int upgrade_cost = 0,
@@ -33,6 +34,8 @@ class Building : public GameObject {
                               QColor post_color = Qt::black,
                               int post_fire_time = 0);
 
+  virtual std::vector<std::shared_ptr<Projectile>> PrepareProjectile( const
+      std::shared_ptr<Projectile>& projectile_instence);
   virtual void Upgrade();
 
   void Tick(int controller_current_time) override;
@@ -41,16 +44,17 @@ class Building : public GameObject {
   bool IsInside(Coordinate point) const;
 
   int GetId() const;
+  int GetProjectileId() const;
   int GetInteractionRadius() const;
   int GetTowerType() const;
   int GetMaxLevel() const;
   int GetCurrentLevel() const;
+  bool IsReadyToCreateProjectile() const;
 
  protected:
   virtual void UpdateAim();
   virtual void DoAction();
-  bool have_possible_to_shoot_ = false;
-  std::shared_ptr<const Enemy> enemy_aim_;
+  bool have_possible_to_action_ = false;
   // parameters
   int id_ = 0;
   int max_level_ = 0;
@@ -73,9 +77,13 @@ class Building : public GameObject {
   QColor pre_fire_color_ = QColor("black");
   QColor post_fire_color_ = QColor("black");
 
-  std::shared_ptr<const Enemy> aim;
+  int projectile_id_ = 0;
+  bool is_ready_to_create_projectile_ = false;
 
+  std::list<std::shared_ptr<GameObject>> aims_;
   const std::list<std::shared_ptr<Enemy>>& enemies_;
+  const std::vector<std::shared_ptr<Building>>& buildings_;
+
   const int kTowerType;
   const int kInteractionRadius = 15;
 };
