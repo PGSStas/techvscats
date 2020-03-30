@@ -1,55 +1,139 @@
 #include "model.h"
 
-void Model::SetGameModel(int level_id) {
-  // To be changed. All this is need to be downloaded form file.
-  current_round_number_ = 0;
-  EnemyPack temporary_enemy_pack;
-  EnemyPack temporary_enemy_pack2;
+void Model::SetGameLevel(int level_id) {
   Enemy temporary_enemy;
-  Wave temporary_wave;
-  Wave temporary_wave2;
-
-  std::vector<Coordinate> nodes;
-
-  // To be changed. All this is need to be downloaded form file.
   temporary_enemy.SetParameters(1);
-  gold_ = 100;
-  score_ = 0;
-  // Pack with enemies
-  temporary_enemy_pack.enemy = temporary_enemy;
-  temporary_enemy_pack.times = 6;
+  id_to_enemy_.push_back(temporary_enemy);
+  temporary_enemy.SetParameters(4);
+  id_to_enemy_.push_back(temporary_enemy);
+  LoadLevelFromJson(level_id);
+}
 
-  temporary_enemy.SetParameters(3);
-  temporary_enemy_pack2.enemy = temporary_enemy;
-  temporary_enemy_pack2.times = 7;
+int Model::GetTimeBetweenWaves() const {
+  return time_between_rounds_;
+}
 
-  // Wave, that holds some packs.
-  temporary_wave.enemies.push_back(temporary_enemy_pack);
-  // Set roads and rounds
-  roads_count_ = 2;
-  rounds_count_ = 2;
-  rounds_.resize(rounds_count_);
-  // Put wave to rounds[round_number][waves_count]
-  temporary_wave.period = 2400;
-  temporary_wave.road_number = 0;
-  rounds_[0].push_back(temporary_wave);
-  temporary_wave.period = 1000;
-  temporary_wave.road_number = 1;
-  rounds_[1].push_back(temporary_wave);
-  temporary_wave2.period = 600;
-  temporary_wave2.road_number = 1;
-  temporary_wave2.enemies.push_back(temporary_enemy_pack2);
-  rounds_[1].push_back(temporary_wave2);
+int Model::GetRoundsCount() const {
+  return rounds_count_;
+}
 
-  nodes = {{800, 1000}, {570, 840}, {600, 800}, {1500, 660}};
-  Road temporary_road(nodes);
-  roads_.push_back(temporary_road);
-  nodes = {{100, 150}, {400, 300}, {500, 500}, {1500, 660}};
+int Model::GetCurrentRoundNumber() const {
+  return current_round_number_;
+}
 
-  Road temporary_road2(nodes);
-  roads_.push_back(temporary_road2);
+void Model::IncreaseCurrentRoundNumber() {
+  current_round_number_++;
+}
 
-  time_between_rounds_ = 4000;
+void Model::AddSpawner(const EnemyGroup& enemy_group) {
+  spawners_.emplace_back(enemy_group);
+}
+
+const Road& Model::GetRoad(int i) const {
+  return roads_.at(i);
+}
+
+const std::vector<Road>& Model::GetRoads() const {
+  return roads_;
+}
+
+std::list<Spawner>* Model::GetSpawners() {
+  return &spawners_;
+}
+
+std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
+  return &enemies_;
+}
+
+Enemy Model::GetEnemyById(int id) const {
+  return id_to_enemy_[id];
+}
+
+const std::vector<EnemyGroup>& Model::GetEnemyGroupsPerRound(int round) const {
+  return enemy_groups_[round];
+}
+
+int Model::GetRoadsCount() const {
+  return roads_count_;
+}
+
+void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
+  enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
+}
+
+void Model::ClearGameModel() {
+  current_round_number_ = 0;
+  roads_count_ = 0;
+  rounds_count_ = 0;
+  enemies_.clear();
+  buildings_.clear();
+  projectiles_.clear();
+  spawners_.clear();
+  enemy_groups_.clear();
+  roads_.clear();
+  empty_towers_.clear();
+  qDebug() << "Clear Model";
+}
+
+void Model::LoadLevelFromJson(int level) {
+  QFile level_file(":resources/levels/level_"
+                       + QString::number(level) + ".json");
+  if (!level_file.open(QFile::ReadOnly)) {
+    qDebug() << "ERROR! Missing level file";
+    return;
+  }
+  QJsonObject json_object =
+      QJsonDocument::fromJson(level_file.readAll()).object();
+
+  time_between_ronds_ = json_object["time_between_rounds"].toInt();
+  gold_ = json_object["gold"].toInt();
+  score_ = json_object["score"].toInt();
+
+  roads_.clear();
+  QJsonArray json_roads = json_object["roads"].toArray();
+  roads_count_ = json_roads.size();
+  roads_.reserve(roads_count_);
+
+  QJsonArray json_road_nodes;
+  QJsonObject json_node;
+  for (int i = 0; i < roads_count_; i++) {
+    json_road_nodes = json_roads[i].toArray();
+
+    int node_count = json_road_nodes.size();
+    std::vector<Coordinate> nodes;
+    nodes.reserve(node_count);
+    for (int j = 0; j < node_count; j++) {
+      json_node = json_road_nodes[j].toObject();
+      nodes.emplace_back(json_node["x"].toDouble(),
+                         json_node["y"].toDouble());
+    }
+    roads_.emplace_back(nodes);
+  }
+
+  enemy_groups_.clear();
+  QJsonArray json_rounds = json_object["rounds"].toArray();
+  rounds_count_ = json_rounds.size();
+  enemy_groups_.reserve(rounds_count_);
+
+  QJsonArray json_enemy_groups;
+  QJsonObject json_enemy_group;
+  for (int i = 0; i < rounds_count_; i++) {
+    json_enemy_groups = json_rounds[i].toArray();
+
+    int group_count = json_enemy_groups.size();
+    std::vector<EnemyGroup> groups;
+    groups.reserve(group_count);
+    for (int j = 0; j < group_count; j++) {
+      json_enemy_group = json_enemy_groups[j].toObject();
+      groups.emplace_back(json_enemy_group["spawn_period"].toInt(),
+                          json_enemy_group["enemy_id"].toInt(),
+                          json_enemy_group["time_of_next_spawn"].toInt(),
+                          json_enemy_group["group_size"].toInt(),
+                          json_enemy_group["road_to_spawn"].toInt());
+    }
+    enemy_groups_.push_back(std::move(groups));
+  }
+
 
   empty_towers_ = {{100, 100}, {200, 300}, {900, 700}};
 
@@ -101,73 +185,8 @@ void Model::SetGameModel(int level_id) {
        std::make_shared<ActiveTower>(temporary_default_tower_instance1),
        std::make_shared<ActiveTower>(temporary_default_tower_instance2)};
   InitialiseTowerSlots();
-  // At the end we have : 2 roads , 2 rounds
-  // 5 sec between rounds, 2 sec between enemy spawn in each wave.
-  // 1 round 2 enemies on each road
-  // 2 round 2 enemies on the second road
 }
 
-int Model::GetTimeBetweenWaves() const {
-  return time_between_rounds_;
-}
-
-int Model::GetRoundsCount() const {
-  return rounds_count_;
-}
-
-int Model::GetCurrentRoundNumber() const {
-  return current_round_number_;
-}
-
-void Model::IncreaseCurrentRoundNumber() {
-  current_round_number_++;
-}
-
-void Model::AddSpawner(const Wave& wave, int current_time) {
-  spawners_.emplace_back(GetRoad(wave.road_number), wave, current_time);
-}
-
-const Road& Model::GetRoad(int i) const {
-  return roads_.at(i);
-}
-
-const std::vector<Road>& Model::GetRoads() const {
-  return roads_;
-}
-
-const Wave& Model::GetWave(int round_number, int road_number) const {
-  return rounds_[round_number][road_number];
-}
-
-std::list<Spawner>* Model::GetSpawners() {
-  return &spawners_;
-}
-
-std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
-  return &enemies_;
-}
-
-int Model::GetWavesCount(int round_number) const {
-  return rounds_[round_number].size();
-}
-
-void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
-  enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
-}
-
-void Model::ClearGameModel() {
-  current_round_number_ = 0;
-  roads_count_ = 0;
-  rounds_count_ = 0;
-  enemies_.clear();
-  buildings_.clear();
-  projectiles_.clear();
-  spawners_.clear();
-  rounds_.clear();
-  roads_.clear();
-  empty_towers_.clear();
-  qDebug() << "Clear Model";
-}
 
 void Model::InitialiseTowerSlots() {
   for (Coordinate coordinate : empty_towers_) {
@@ -203,7 +222,7 @@ std::shared_ptr<Building> Model::GetBuildingById(int id) {
   }
 }
 
- std::shared_ptr<Projectile> Model::GetProjectileById(int id) {
+std::shared_ptr<Projectile> Model::GetProjectileById(int id) {
   auto instance = id_to_projectile_[id];
   switch (instance->GetProjectileType()) {
     case ProjectileType::kDefault:return std::make_shared<Projectile>(instance);

@@ -12,7 +12,7 @@ void Enemy::Move() {
     return;
   }
   Coordinate move_direction = position_.GetBetween(destination_);
-  if (abs(move_direction.GetLength()) > 0.0001) {
+  if (std::abs(move_direction.GetLength()) > 0.0001) {
     move_direction /= move_direction.GetLength();
     move_direction *= speed_ * speed_coefficient_;
   }

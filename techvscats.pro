@@ -10,6 +10,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 
+RESOURCES += resources.qrc
+
 SOURCES += \
          main.cpp \
          Controller/controller.cpp \
@@ -41,7 +43,7 @@ HEADERS += \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \
-         Model/wave.h \
+         Model/enemy_group.h \
          View/view.h \
          View/tower_menu.h \
          View/tower_menu_option.h \
