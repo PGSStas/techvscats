@@ -23,11 +23,13 @@ Building::Building(int tower_type) :
     kTowerType(tower_type) {
 }
 
-void Building::SetParameters(int id, const QColor& draw_color, int max_level) {
+void Building::SetParameters(int id, const QColor& draw_color, int max_level,
+    int action_range) {
   id_ = id;
   draw_color_ = draw_color;
   max_level_ = max_level;
   current_level_ = 0;
+  action_range_ = action_range;
 }
 
 Building::Building(const std::shared_ptr<Building>& other) :
@@ -36,6 +38,7 @@ Building::Building(const std::shared_ptr<Building>& other) :
   draw_color_ = other->draw_color_;
   max_level_ = other->max_level_;
   current_level_ = other->current_level_;
+  action_range_ = other->action_range_;
 }
 
 void Building::Draw(QPainter* painter) const {
@@ -60,4 +63,8 @@ int Building::GetCurrentLevel() const {
 
 int Building::GetTowerType() const {
   return kTowerType;
+}
+
+int Building::GetActionRange() const {
+  return action_range_;
 }

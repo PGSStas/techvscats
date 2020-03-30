@@ -21,6 +21,7 @@ enum class WindowType {
   kMainMenu,
   kGame
 };
+
 class View : public QMainWindow {
   Q_OBJECT
 
@@ -60,7 +61,8 @@ class View : public QMainWindow {
  private:
   void paintEvent(QPaintEvent* event) override;
   void timerEvent(QTimerEvent* event) override;
-  void mousePressEvent(QMouseEvent* event) override;
+  void mouseReleaseEvent(QMouseEvent* event) override;
+  void mouseMoveEvent(QMouseEvent* event) override;
 
   // Game window
   void DrawBackground(QPainter* painter);

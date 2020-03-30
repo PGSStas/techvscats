@@ -2,6 +2,7 @@
 
 View::View(AbstractController* controller)
     : controller_(controller) {
+  setMouseTracking(true);
 
   start_game_button_ = new QPushButton(this);
   start_game_button_->setText(tr("Начать"));
@@ -45,11 +46,11 @@ void View::paintEvent(QPaintEvent* event) {
 
   if (window_type_ == WindowType::kGame) {
     DrawBackground(&painter);
-    DrawTowers(&painter);
     DrawEnemies(&painter);
     if (is_tower_menu_enabled_) {
-      tower_menu_->Draw(&painter);
+      tower_menu_->Draw(&painter, controller_->GetCurrentTime());
     }
+    DrawTowers(&painter);
   }
 }
 
@@ -113,7 +114,7 @@ void View::DrawEnemies(QPainter* painter) {
   }
 }
 
-void View::mousePressEvent(QMouseEvent* event) {
+void View::mouseReleaseEvent(QMouseEvent* event) {
   controller_->MousePress(Coordinate(event->x(), event->y()));
 }
 
@@ -134,3 +135,8 @@ std::shared_ptr<TowerMenu> View::GetTowerMenu() {
   return tower_menu_;
 }
 
+void View::mouseMoveEvent(QMouseEvent* event) {
+  if (window_type_ == WindowType::kGame) {
+    controller_->MouseMove(Coordinate(event->x(), event->y()));
+  }
+}

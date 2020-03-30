@@ -2,26 +2,30 @@
 #define VIEW_TOWER_MENU_OPTION_H_
 
 #include <functional>
+#include <memory>
+
 #include <QPainter>
 
+#include "GameObject/building.h"
 #include "Model/coordinate.h"
 
 class TowerMenuOption {
  public:
-  TowerMenuOption(int id, const std::function<void()>& action);
+  TowerMenuOption(const std::shared_ptr<Building>& replacing_tower,
+      const std::function<void()>& action);
 
-  int GetSize() const;
-  int GetId() const;
+  int GetMaxSize() const;
+  std::shared_ptr<Building> GetReplacingTower() const;
   // Determines if press_position is inside a button
   // with left top angle in option_position
   bool IsPressed(Coordinate option_position, Coordinate press_position);
 
-  void Draw(QPainter* painter, Coordinate position);
+  void Draw(QPainter* painter, Coordinate position, int current_size);
   void Action();
 
  private:
-  const int kSize_ = 36;
-  int id_;
+  const int kMaxSize_ = 36;
+  std::shared_ptr<Building> replacing_tower_;
   std::function<void()> action_;
 };
 

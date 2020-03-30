@@ -126,7 +126,7 @@ void Controller::MousePress(Coordinate position) {
     // Check if that's the same building on which menu was already open
     // (which means now we should close it)
     if (view_->IsTowerMenuEnabled()
-        && view_->GetTowerMenu()->GetTowerPosition()
+        && view_->GetTowerMenu()->GetTower()->GetPosition()
             == building->GetPosition()) {
       view_->DisableTowerMenu();
       return;
@@ -144,7 +144,7 @@ void Controller::MousePress(Coordinate position) {
   auto pressed = view_->GetTowerMenu()->GetPressedOption(position);
   if (pressed != nullptr) {
     pressed->Action();
-    qDebug() << pressed->GetId() << " action";
+    qDebug() << pressed->GetReplacingTower()->GetId() << " action";
   }
 
   // Disables menu after some action or if random point on the map was pressed
@@ -171,7 +171,8 @@ void Controller::CreateTowerMenu(int tower_to_process) {
   // Tower building & evolve & delete options (will affects the type of tower)
   for (const auto& to_change_id : building_tree[building_id]) {
     options.push_back(std::make_shared<TowerMenuOption>(
-        to_change_id, [&, tower_to_process, to_change_id]() {
+        model_->GetBuildingById(to_change_id),
+        [&, tower_to_process, to_change_id]() {
           ChangeBuildingAttempt(tower_to_process, to_change_id);
         }));
   }
@@ -179,12 +180,24 @@ void Controller::CreateTowerMenu(int tower_to_process) {
   // Upgrade option (will only affect level of tower, but not the type)
   if (building->GetMaxLevel() > building->GetCurrentLevel()) {
     options.push_back(std::make_shared<TowerMenuOption>(
-        building_id, [&, tower_to_process, building_id]() {
+        model_->GetBuildingById(building_id),
+        [&, tower_to_process, building_id]() {
           ChangeBuildingAttempt(tower_to_process, building_id);
         }));
   }
-  auto menu = std::make_shared<TowerMenu>(building->GetPosition(),
-                                          building->GetInteractionRadius(),
-                                          options);
+  auto menu = std::make_shared<TowerMenu>(current_time_, building, options);
   view_->ShowTowerMenu(menu);
+}
+
+void Controller::MouseMove(Coordinate position) {
+  if (!view_->IsTowerMenuEnabled()) {
+    return;
+  }
+
+  auto pressed = view_->GetTowerMenu()->GetPressedOption(position);
+  view_->GetTowerMenu()->Hover(pressed);
+}
+
+int Controller::GetCurrentTime() const {
+  return current_time_;
 }

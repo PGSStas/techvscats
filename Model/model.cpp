@@ -54,19 +54,19 @@ void Model::SetGameModel(int level_id) {
   empty_towers_ = {{100, 100}, {200, 100}, {500, 100}};
   building_count_ = 3;
   Building temporary_building_instance;
-  temporary_building_instance.SetParameters(0, QColor(Qt::gray), 0);
+  temporary_building_instance.SetParameters(0, QColor(Qt::gray), 0, 0);
   buildings_tree_.push_back({1, 2});
 
   MultiTower temporary_multi_tower_instance1;
-  temporary_multi_tower_instance1.SetParameters(1, Qt::white, 2);
+  temporary_multi_tower_instance1.SetParameters(1, Qt::white, 2, 75);
   buildings_tree_.push_back({3, 0});
 
   DefaultTower temporary_default_tower_instance1;
-  temporary_default_tower_instance1.SetParameters(2, Qt::darkRed, 3);
+  temporary_default_tower_instance1.SetParameters(2, Qt::darkRed, 3, 100);
   buildings_tree_.push_back({1, 3, 0});
 
   DefaultTower temporary_default_tower_instance2;
-  temporary_default_tower_instance2.SetParameters(3, Qt::darkBlue, 4);
+  temporary_default_tower_instance2.SetParameters(3, Qt::darkBlue, 4, 150);
   buildings_tree_.push_back({0});
 
   id_to_building_ =
