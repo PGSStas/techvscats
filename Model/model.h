@@ -41,13 +41,13 @@ class Model {
   int GetRoundsCount() const;
   int GetRoadsCount() const;
   int GetCurrentRoundNumber() const;
-  void IncreaseCurrentRoundNumber();
+
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   std::vector<std::shared_ptr<Building>>* GetBuildings();
   std::list<std::shared_ptr<Projectile>>* GetProjectiles();
 
-  Enemy GetEnemyById(int id) const;
+  std::shared_ptr<Enemy> GetEnemyById(int id) const;
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;

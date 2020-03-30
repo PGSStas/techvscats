@@ -85,7 +85,7 @@ void Controller::TickSpawners() {
   for (auto& spawner : *spawners) {
     spawner.Tick(current_time_ - last_round_start_time_);
     if (spawner.IsReadyToSpawn()) {
-      Enemy enemy = model_->GetEnemyById(spawner.PrepareNextEnemyId());
+      Enemy enemy = *model_->GetEnemyById(spawner.PrepareNextEnemyId());
       enemy.SetRoad(model_->GetRoad(spawner.GetRoad()));
       AddEnemyToModel(enemy);
     }
@@ -122,6 +122,7 @@ void Controller::TickProjectiles() {
 
 void Controller::AddEnemyToModel(const Enemy& enemy) const {
   model_->AddEnemyFromInstance(enemy);
+  qDebug() << "new enemy";
 }
 
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {

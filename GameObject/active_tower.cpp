@@ -56,7 +56,7 @@ void ActiveTower::UpdateAim() {
   aims_.remove_if([&](const auto& object) {
     return (object->IsDead() ||
         object->GetPosition().GetBetween(position_).GetLength()
-            < action_range_);
+            > action_range_);
   });
 
   if (static_cast<int>(aims_.size()) == max_aims_) {
@@ -70,7 +70,7 @@ void ActiveTower::UpdateAim() {
       break;
     }
     bool can_add = true;
-    std::shared_ptr<GameObject> new_aim = enemies_.back();
+    std::shared_ptr<GameObject> new_aim = enemy;
     if (new_aim->GetPosition().GetBetween(position_).GetLength()
         > action_range_) {
       continue;

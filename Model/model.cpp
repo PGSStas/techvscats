@@ -3,10 +3,62 @@
 void Model::SetGameLevel(int level_id) {
   Enemy temporary_enemy;
   temporary_enemy.SetParameters(1);
-  id_to_enemy_.push_back(temporary_enemy);
+  id_to_enemy_.push_back(std::make_shared<Enemy>(temporary_enemy));
   temporary_enemy.SetParameters(4);
-  id_to_enemy_.push_back(temporary_enemy);
+  id_to_enemy_.push_back(std::make_shared<Enemy>(temporary_enemy));
   LoadLevelFromJson(level_id);
+
+  empty_towers_ = {{100, 100}, {200, 300}, {900, 700}};
+
+  building_count_ = 3;
+
+  Building temporary_building_instance(enemies_, buildings_);
+  temporary_building_instance.SetParameters(0);
+  temporary_building_instance.SetAnimationParameters(Qt::gray,
+                                                     1000);
+
+  buildings_tree_.push_back({1, 2});
+
+  ActiveTower temporary_active_tower1(enemies_, 1);
+  temporary_active_tower1.SetParameters(1, 0, 4, 10, 24, 100, 40);
+  temporary_active_tower1.SetAnimationParameters(Qt::blue,
+                                                 1000,
+                                                 Qt::red,
+                                                 300,
+                                                 Qt::darkBlue,
+                                                 100);
+  buildings_tree_.push_back({3, 0});
+
+  ActiveTower temporary_active_tower2(enemies_, 1);
+  temporary_active_tower2.SetParameters(1, 0, 4, 10, 24, 220, 40);
+  temporary_active_tower2.SetAnimationParameters(Qt::yellow,
+                                                 400,
+                                                 Qt::red,
+                                                 100,
+                                                 Qt::darkYellow,
+                                                 100);
+  buildings_tree_.push_back({1, 3, 0});
+
+  ActiveTower temporary_active_tower3(enemies_, 3);
+  temporary_active_tower3.SetParameters(1, 0, 4, 10, 24, 100, 40);
+  temporary_active_tower3.SetAnimationParameters(Qt::green,
+                                                 1000,
+                                                 Qt::red,
+                                                 300,
+                                                 Qt::darkGreen,
+                                                 100);
+  buildings_tree_.push_back({0});
+
+  Projectile default_projectile(3);
+  default_projectile.SetAnimationParameters(Qt::darkYellow, 3);
+  id_to_projectile_.push_back(std::make_shared<Projectile>(default_projectile));
+
+  id_to_building_ =
+      {std::make_shared<Building>(temporary_building_instance),
+       std::make_shared<ActiveTower>(temporary_active_tower1),
+       std::make_shared<ActiveTower>(temporary_active_tower2),
+       std::make_shared<ActiveTower>(temporary_active_tower3)};
+  InitialiseTowerSlots();
 }
 
 int Model::GetTimeBetweenWaves() const {
@@ -45,7 +97,7 @@ std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
   return &enemies_;
 }
 
-Enemy Model::GetEnemyById(int id) const {
+std::shared_ptr<Enemy> Model::GetEnemyById(int id) const {
   return id_to_enemy_[id];
 }
 
@@ -84,8 +136,7 @@ void Model::LoadLevelFromJson(int level) {
   }
   QJsonObject json_object =
       QJsonDocument::fromJson(level_file.readAll()).object();
-
-  time_between_ronds_ = json_object["time_between_rounds"].toInt();
+  time_between_rounds_ = json_object["time_between_rounds"].toInt();
   gold_ = json_object["gold"].toInt();
   score_ = json_object["score"].toInt();
 
@@ -134,59 +185,7 @@ void Model::LoadLevelFromJson(int level) {
     enemy_groups_.push_back(std::move(groups));
   }
 
-
-  empty_towers_ = {{100, 100}, {200, 300}, {900, 700}};
-
-  building_count_ = 3;
-
-  Building temporary_building_instance(enemies_, buildings_);
-  temporary_building_instance.SetParameters(0);
-  temporary_building_instance.SetAnimationParameters(Qt::gray,
-                                                     1000);
-
-  buildings_tree_.push_back({1, 2});
-
-  ActiveTower temporary_active_tower(enemies_, 1);
-  temporary_active_tower.SetParameters(1, 0, 4, 10, 24, 100, 40);
-  temporary_active_tower.SetAnimationParameters(Qt::blue,
-                                                1000,
-                                                Qt::red,
-                                                300,
-                                                Qt::darkBlue,
-                                                100);
-  buildings_tree_.push_back({3, 0});
-
-  ActiveTower temporary_default_tower_instance1(enemies_, 1);
-  temporary_default_tower_instance1.SetParameters(1, 0, 4, 10, 24, 220, 40);
-  temporary_default_tower_instance1.SetAnimationParameters(Qt::yellow,
-                                                           400,
-                                                           Qt::red,
-                                                           100,
-                                                           Qt::darkYellow,
-                                                           100);
-  buildings_tree_.push_back({1, 3, 0});
-
-  ActiveTower temporary_default_tower_instance2(enemies_, 3);
-  temporary_default_tower_instance2.SetParameters(1, 0, 4, 10, 24, 100, 40);
-  temporary_default_tower_instance2.SetAnimationParameters(Qt::green,
-                                                           1000,
-                                                           Qt::red,
-                                                           300,
-                                                           Qt::darkGreen,
-                                                           100);
-  buildings_tree_.push_back({0});
-
-  Projectile default_projectile(10);
-  default_projectile.SetAnimationParameters(Qt::darkYellow, 3);
-  id_to_projectile_.push_back(std::make_shared<Projectile>(default_projectile));
-
-  id_to_building_ =
-      {std::make_shared<Building>(temporary_building_instance),
-       std::make_shared<ActiveTower>(temporary_default_tower_instance1),
-       std::make_shared<ActiveTower>(temporary_default_tower_instance2)};
-  InitialiseTowerSlots();
 }
-
 
 void Model::InitialiseTowerSlots() {
   for (Coordinate coordinate : empty_towers_) {
