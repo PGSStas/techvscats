@@ -1,6 +1,7 @@
 #include "tower_menu.h"
 
-TowerMenu::TowerMenu(int creation_time, const std::shared_ptr<Building>& tower,
+TowerMenu::TowerMenu(int creation_time,
+    const std::shared_ptr<const Building>& tower,
     const std::vector<std::shared_ptr<TowerMenuOption>>& options) :
     creation_time_(creation_time),
     tower_(tower),
@@ -35,7 +36,7 @@ void TowerMenu::Draw(QPainter* painter, int current_time) {
   painter->restore();
 }
 
-std::shared_ptr<Building> TowerMenu::GetTower() const {
+std::shared_ptr<const Building> TowerMenu::GetTower() const {
   return tower_;
 }
 
@@ -59,7 +60,7 @@ Coordinate TowerMenu::GetCoordinate(int i, int size) {
   return Coordinate(x, y);
 }
 
-void TowerMenu::Hover(const std::shared_ptr<TowerMenuOption> option) {
+void TowerMenu::Hover(const std::shared_ptr<TowerMenuOption>& option) {
   hovered_ = option;
 }
 

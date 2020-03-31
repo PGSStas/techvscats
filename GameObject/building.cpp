@@ -28,7 +28,7 @@ void Building::SetParameters(int id, const QColor& draw_color, int max_level,
   id_ = id;
   draw_color_ = draw_color;
   max_level_ = max_level;
-  current_level_ = 0;
+  current_level_ = 1;
   action_range_ = action_range;
 }
 

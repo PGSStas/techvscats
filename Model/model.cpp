@@ -159,18 +159,18 @@ const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
   return buildings_;
 }
 
-void Model::SetBuildingAt(int i, int id) {
+void Model::SetBuildingAtIndex(int i, int id) {
   qDebug() << "set b" << i << " " << id;
   Coordinate position = buildings_[i]->GetPosition();
   buildings_[i] = GetBuildingById(id);
   buildings_[i]->SetPosition(position);
 }
 
-void Model::UpgradeBuildingAt(int i) {
+void Model::UpgradeBuildingAtIndex(int i) {
   buildings_[i]->Upgrade();
 }
 
-std::shared_ptr<Building> Model::GetBuildingById(int id) {
+std::shared_ptr<Building> Model::GetBuildingById(int id) const {
   auto instance = id_to_building_[id];
   switch (instance->GetTowerType()) {
     case 0:
@@ -185,10 +185,6 @@ std::shared_ptr<Building> Model::GetBuildingById(int id) {
     default:
       return nullptr;
   }
-}
-
-int Model::GetBuildingCount() {
-  return building_count_;
 }
 
 const std::vector<std::vector<int>>& Model::GetBuildingsTree() const {

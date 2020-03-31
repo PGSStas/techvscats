@@ -11,11 +11,11 @@
 
 class TowerMenuOption {
  public:
-  TowerMenuOption(const std::shared_ptr<Building>& replacing_tower,
+  TowerMenuOption(const std::shared_ptr<const Building>& replacing_tower,
       const std::function<void()>& action);
 
   int GetMaxSize() const;
-  std::shared_ptr<Building> GetReplacingTower() const;
+  std::shared_ptr<const Building> GetReplacingTower() const;
   // Determines if press_position is inside a button
   // with left top angle in option_position
   bool IsPressed(Coordinate option_position, Coordinate press_position);
@@ -25,7 +25,7 @@ class TowerMenuOption {
 
  private:
   const int kMaxSize_ = 36;
-  std::shared_ptr<Building> replacing_tower_;
+  std::shared_ptr<const Building> replacing_tower_;
   std::function<void()> action_;
 };
 

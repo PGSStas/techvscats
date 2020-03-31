@@ -14,13 +14,13 @@
 class TowerMenu {
  public:
   // Note: options are expected to be not empty
-  TowerMenu(int creation_time, const std::shared_ptr<Building>& tower,
+  TowerMenu(int creation_time, const std::shared_ptr<const Building>& tower,
             const std::vector<std::shared_ptr<TowerMenuOption>>& options);
 
-  std::shared_ptr<Building> GetTower() const;
+  std::shared_ptr<const Building> GetTower() const;
   // Returns nullptr if none was pressed
   std::shared_ptr<TowerMenuOption> GetPressedOption(Coordinate position);
-  void Hover(const std::shared_ptr<TowerMenuOption> option);
+  void Hover(const std::shared_ptr<TowerMenuOption>& option);
   void Unhover();
 
   void Draw(QPainter* painter, int current_time);
@@ -28,7 +28,7 @@ class TowerMenu {
  private:
   int creation_time_;
 
-  std::shared_ptr<Building> tower_;
+  std::shared_ptr<const Building> tower_;
   std::vector<std::shared_ptr<TowerMenuOption>> options_;
   std::shared_ptr<TowerMenuOption> hovered_;
 

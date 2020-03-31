@@ -56,7 +56,7 @@ class View : public QMainWindow {
   // Menu window
   QPushButton* return_menu_button_;
   int controller_timer_id_;
-  const int kTime_between_ticks_ = 10;
+  const int kTimeBetweenTicks_ = 10;
 
  private:
   void paintEvent(QPaintEvent* event) override;

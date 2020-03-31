@@ -30,10 +30,10 @@ void TowerMenuOption::Action() {
 }
 
 TowerMenuOption::TowerMenuOption(
-    const std::shared_ptr<Building>& replacing_tower,
+    const std::shared_ptr<const Building>& replacing_tower,
     const std::function<void()>& action)
     : replacing_tower_(replacing_tower), action_(action) {}
 
-std::shared_ptr<Building> TowerMenuOption::GetReplacingTower() const {
+std::shared_ptr<const Building> TowerMenuOption::GetReplacingTower() const {
   return replacing_tower_;
 }

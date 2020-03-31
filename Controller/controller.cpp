@@ -6,10 +6,10 @@ Controller::Controller() : model_(std::make_unique<Model>()),
 
 void Controller::StartGame(int level_id) {
   qDebug() << "Game Start!";
-  is_game_now_ = true;
+  game_mode_ = WindowType::kGame;
 
   last_round_start_time_ = current_time_;
-  have_unprocess_rounds_ = true;
+  has_unprocessed_rounds_ = true;
 
   model_->SetGameModel(level_id);
 
@@ -19,21 +19,20 @@ void Controller::StartGame(int level_id) {
                       model_->GetRoundsCount());
 }
 
-void Controller::EndGame(Exit exit) {
-  // if end_code == 0 - win, 1 - return menu clicked
+void Controller::EndGame(Exit exit_code) {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMenuUi();
-  is_game_now_ = false;
+  game_mode_ = WindowType::kMainMenu;
 }
 
 void Controller::Tick(int current_time) {
   current_time_ = current_time;
-  if (is_game_now_) {
+  if (game_mode_ == WindowType::kGame) {
     GameProcess();
-    return;
+  } else {
+    MenuProcess();
   }
-  MenuProcess();
 }
 
 void Controller::GameProcess() {
@@ -49,14 +48,14 @@ void Controller::MenuProcess() {}
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
-  if (!have_unprocess_rounds_ || current_time_ - last_round_start_time_
+  if (!has_unprocessed_rounds_ || current_time_ - last_round_start_time_
       < model_->GetTimeBetweenWaves()) {
     return false;
   }
 
   last_round_start_time_ = current_time_;
   if (current_round_number == model_->GetRoundsCount()) {
-    have_unprocess_rounds_ = false;
+    has_unprocessed_rounds_ = false;
     qDebug() << "Rounds end.";
     return false;
   }
@@ -151,13 +150,12 @@ void Controller::MousePress(Coordinate position) {
   view_->DisableTowerMenu();
 }
 
-void Controller::ChangeBuildingAttempt(int building_number, int building_id) {
+void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   const auto& buildings = model_->GetBuildings();
-
-  if (buildings[building_number]->GetId() == building_id) {
-    model_->UpgradeBuildingAt(building_number);
+  if (buildings[index_in_buildings]->GetId() == replacing_id) {
+    model_->UpgradeBuildingAtIndex(index_in_buildings);
   } else {
-    model_->SetBuildingAt(building_number, building_id);
+    model_->SetBuildingAtIndex(index_in_buildings, replacing_id);
   }
 }
 
@@ -173,7 +171,7 @@ void Controller::CreateTowerMenu(int tower_to_process) {
     options.push_back(std::make_shared<TowerMenuOption>(
         model_->GetBuildingById(to_change_id),
         [&, tower_to_process, to_change_id]() {
-          ChangeBuildingAttempt(tower_to_process, to_change_id);
+          SetBuilding(tower_to_process, to_change_id);
         }));
   }
 
@@ -182,7 +180,7 @@ void Controller::CreateTowerMenu(int tower_to_process) {
     options.push_back(std::make_shared<TowerMenuOption>(
         model_->GetBuildingById(building_id),
         [&, tower_to_process, building_id]() {
-          ChangeBuildingAttempt(tower_to_process, building_id);
+          SetBuilding(tower_to_process, building_id);
         }));
   }
   auto menu = std::make_shared<TowerMenu>(current_time_, building, options);

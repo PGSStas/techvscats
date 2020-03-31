@@ -43,10 +43,10 @@ class Model {
   const std::vector<Coordinate>& GetTowerSlots() const;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
   const std::vector<std::vector<int>>& GetBuildingsTree() const;
-  std::shared_ptr<Building> GetBuildingById(int id);
-  int GetBuildingCount();
-  void SetBuildingAt(int i, int id);
-  void UpgradeBuildingAt(int i);
+  std::shared_ptr<Building> GetBuildingById(int id) const;
+
+  void SetBuildingAtIndex(int i, int id);
+  void UpgradeBuildingAtIndex(int i);
 
  private:
   // Database which is updated by Controller all time

@@ -24,7 +24,7 @@ View::View(AbstractController* controller)
   show();
 
   game_time_.start();
-  controller_timer_id_ = startTimer(kTime_between_ticks_);
+  controller_timer_id_ = startTimer(kTimeBetweenTicks_);
   EnableMenuUi();
   DisableGameUi();
 }
@@ -108,14 +108,16 @@ void View::DrawTowers(QPainter* painter) {
 }
 
 void View::DrawEnemies(QPainter* painter) {
-  auto enemies_list = controller_->GetEnemies();
-  for (auto& enemy : enemies_list) {
+  const auto enemies_list = controller_->GetEnemies();
+  for (const auto& enemy : enemies_list) {
     enemy->Draw(painter);
   }
 }
 
 void View::mouseReleaseEvent(QMouseEvent* event) {
-  controller_->MousePress(Coordinate(event->x(), event->y()));
+  if (event->button() == Qt::LeftButton) {
+    controller_->MousePress(Coordinate(event->x(), event->y()));
+  }
 }
 
 void View::ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu) {
