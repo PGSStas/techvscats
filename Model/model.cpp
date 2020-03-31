@@ -49,8 +49,8 @@ void Model::SetGameLevel(int level_id) {
                                                  100);
   buildings_tree_.push_back({0});
 
-  Projectile default_projectile(3);
-  default_projectile.SetAnimationParameters(Qt::darkYellow, 3);
+  Projectile default_projectile(5);
+  default_projectile.SetAnimationParameters(Qt::darkRed, 5);
   id_to_projectile_.push_back(std::make_shared<Projectile>(default_projectile));
 
   id_to_building_ =
