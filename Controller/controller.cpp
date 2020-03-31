@@ -136,7 +136,7 @@ void Controller::MousePress(Coordinate position) {
     return;
   }
 
-  if (view_->GetTowerMenu() == nullptr) {
+  if (!view_->IsTowerMenuEnabled()) {
     return;
   }
 
