@@ -8,7 +8,7 @@
 
 class SizeHandler {
  public:
-  explicit SizeHandler();
+  SizeHandler();
 
   void ChangeSystem(double window_width, double window_height);
 
