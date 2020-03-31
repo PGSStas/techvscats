@@ -19,9 +19,9 @@ class SizeHandler {
 
  private:
   Coordinate zero_coordinate_;
-  double change_coefficient_;
-  double playing_field_width_ = 1920;
-  double playing_field_height_ = 1080;
+  double change_coefficient_; //  The ratio of game coordinates to real
+  const double playing_field_width_ = 1920;
+  const double playing_field_height_ = 1080;
 };
 
 #endif  // VIEW_SIZE_HANDLER_H_

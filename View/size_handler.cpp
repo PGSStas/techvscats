@@ -12,7 +12,7 @@ void SizeHandler::ChangeSystem(double window_width, double window_height) {
   QSize real_size = QSize(playing_field_width_ / change_coefficient_,
                           playing_field_height_ / change_coefficient_);
 
-  zero_coordinate_ = {0, 0};
+  zero_coordinate_ = Coordinate(0, 0);
   double indent;
   if (window_width > real_size.width()) {
     indent = (window_width - real_size.width()) / 2.;
