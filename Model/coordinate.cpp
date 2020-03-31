@@ -43,3 +43,10 @@ Coordinate Coordinate::GetBetween(const Coordinate& right) {
 
 Coordinate::Coordinate(double position_x, double position_y)
     : x(position_x), y(position_y) {}
+
+Coordinate Coordinate::operator*(double right) const {
+  return Coordinate({x * right, y * right});
+}
+Coordinate Coordinate::operator/(double right) const {
+  return Coordinate({x / right, y / right});
+}

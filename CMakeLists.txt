@@ -29,9 +29,8 @@ add_executable(techvscats
         Model/road.cpp
         Model/coordinate.cpp
         View/view.cpp
-        resources.qrc
-        View/view.cpp
-        View/size_handler.cpp)
+        View/size_handler.cpp
+        resources.qrc)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

@@ -8,20 +8,16 @@
 
 class SizeHandler {
  public:
-  explicit SizeHandler(QMainWindow* view);
+  explicit SizeHandler();
 
-  void ChangeSystem();
-  void SetPlayingFieldSize(double width, double height);
+  void ChangeSystem(double window_width, double window_height);
 
-  Coordinate ToGame(const Coordinate& window_coord);
-  Coordinate ToGame(double position_x, double position_y);
-  Coordinate ToWindow(const Coordinate& game_coord);
-  Coordinate ToWindow(double position_x, double position_y);
-  Coordinate SizeToWindowSize(double width, double height);
-  Coordinate SizeToGameSize(double width, double height);
+  Coordinate ToGame(const Coordinate& window_coordinate) const;
+  Coordinate ToWindow(const Coordinate& game_coordinate) const;
+  Coordinate SizeToWindowSize(double width, double height) const;
+  Coordinate SizeToGameSize(double width, double height) const;
 
  private:
-  QMainWindow* view_;
   Coordinate zero_coordinate_;
   double change_coefficient_;
   double playing_field_width_ = 1920;

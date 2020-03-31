@@ -15,6 +15,8 @@ struct Coordinate {
 
   Coordinate operator+(const Coordinate& right) const;
   Coordinate operator-(const Coordinate& right) const;
+  Coordinate operator*(double right) const;
+  Coordinate operator/(double right) const;
   Coordinate& operator+=(const Coordinate& right);
   Coordinate& operator*=(double right);
   Coordinate& operator/=(double right);
