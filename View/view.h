@@ -52,9 +52,9 @@ class View : public QMainWindow {
   const int time_between_ticks_ = 10;
 
  private:
-  void paintEvent(QPaintEvent* event) override;
+  void paintEvent(QPaintEvent*) override;
   void timerEvent(QTimerEvent* event) override;
-  void resizeEvent(QResizeEvent* event) override;
+  void resizeEvent(QResizeEvent*) override;
 };
 
 #endif  // VIEW_VIEW_H_

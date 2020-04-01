@@ -36,7 +36,7 @@ void View::timerEvent(QTimerEvent* event) {
   }
 }
 
-void View::paintEvent(QPaintEvent* event) {
+void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   // Example of work
 
@@ -53,11 +53,6 @@ void View::paintEvent(QPaintEvent* event) {
     painter.setBrush(QColor("#ffffff"));
     Coordinate top_corner = size_handler_->ToWindow({0, 0});
     Coordinate size = size_handler_->SizeToWindowSize(1920, 1080);
-    painter.drawRect(top_corner.x, top_corner.y, size.x, size.y);
-
-    painter.setBrush(Qt::green);
-    top_corner = size_handler_->ToWindow({20, 20});
-    size = size_handler_->SizeToWindowSize(20, 20);
     painter.drawRect(top_corner.x, top_corner.y, size.x, size.y);
   }
   if (window_type == WindowType::kGame) {
@@ -123,7 +118,7 @@ void View::DrawBackground(QPainter* p) {
   p->restore();
 }
 
-void View::resizeEvent(QResizeEvent* event) {
+void View::resizeEvent(QResizeEvent*) {
   size_handler_->ChangeSystem(this->width(), this->height());
   this->repaint();
 }

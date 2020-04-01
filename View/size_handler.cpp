@@ -1,9 +1,7 @@
 #include "size_handler.h"
 
-SizeHandler::SizeHandler() {
-  zero_coordinate_ = Coordinate(0, 0);
-  change_coefficient_ = 3;
-}
+SizeHandler::SizeHandler() :
+    zero_coordinate_({0, 0}), change_coefficient_(3) {}
 
 void SizeHandler::ChangeSystem(double window_width, double window_height) {
   change_coefficient_ = std::max(playing_field_width_ / window_width,
@@ -13,14 +11,11 @@ void SizeHandler::ChangeSystem(double window_width, double window_height) {
                           playing_field_height_ / change_coefficient_);
 
   zero_coordinate_ = Coordinate(0, 0);
-  double indent;
   if (window_width > real_size.width()) {
-    indent = (window_width - real_size.width()) / 2.;
-    zero_coordinate_.x = indent;
+    zero_coordinate_.x = (window_width - real_size.width()) / 2.;
   }
   if (window_height > real_size.height()) {
-    indent = (window_height - real_size.height()) / 2.;
-    zero_coordinate_.y = indent;
+    zero_coordinate_.y = (window_height - real_size.height()) / 2.;
   }
 }
 
