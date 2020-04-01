@@ -30,9 +30,10 @@ void Enemy::Draw(QPainter* painter,
   painter->save();
 
   painter->setPen(QColor("black"));
-  Coordinate point1 = size_handler->ToWindow(position_ - Coordinate(15, 15));
-  Coordinate size = size_handler->SizeToWindowSize(30, 30);
-  painter->drawRect(point1.x, point1.y, size.x, size.y);
+  Coordinate point =
+      size_handler->GameToWindowCoordinate(position_ - Coordinate(15, 15));
+  Coordinate size = size_handler->GameToWindowSize(30, 30);
+  painter->drawRect(point.x, point.y, size.x, size.y);
 
   painter->restore();
 }

@@ -12,10 +12,10 @@ class SizeHandler {
 
   void ChangeSystem(double window_width, double window_height);
 
-  Coordinate ToGame(const Coordinate& window_coordinate) const;
-  Coordinate ToWindow(const Coordinate& game_coordinate) const;
-  Coordinate SizeToWindowSize(double width, double height) const;
-  Coordinate SizeToGameSize(double width, double height) const;
+  Coordinate WindowToGameCoordinate(const Coordinate& window_coordinate) const;
+  Coordinate GameToWindowCoordinate(const Coordinate& game_coordinate) const;
+  Coordinate WindowToGameSize(double width, double height) const;
+  Coordinate GameToWindowSize(double width, double height) const;
 
  private:
   Coordinate zero_coordinate_;

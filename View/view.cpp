@@ -40,23 +40,25 @@ void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   // Example of work
 
-  Coordinate label_pos = size_handler_->ToWindow({300, 10});
+  Coordinate label_pos = size_handler_->GameToWindowCoordinate({300, 10});
   wave_status_label_->move(label_pos.x, label_pos.y);
 
   if (window_type == WindowType::kMainMenu) {
-    Coordinate start_game_button_pos = size_handler_->ToWindow({0, 0});
+    Coordinate start_game_button_pos =
+        size_handler_->GameToWindowCoordinate({0, 0});
     start_game_button_->move(start_game_button_pos.x, start_game_button_pos.y);
 
     painter.setBrush(QColor("#000080"));
     painter.drawRect(0, 0, width(), height());
 
     painter.setBrush(QColor("#ffffff"));
-    Coordinate top_corner = size_handler_->ToWindow({0, 0});
-    Coordinate size = size_handler_->SizeToWindowSize(1920, 1080);
+    Coordinate top_corner = size_handler_->GameToWindowCoordinate({0, 0});
+    Coordinate size = size_handler_->GameToWindowSize(1920, 1080);
     painter.drawRect(top_corner.x, top_corner.y, size.x, size.y);
   }
   if (window_type == WindowType::kGame) {
-    Coordinate return_menu_button_pos = size_handler_->ToWindow({0, 0});
+    Coordinate return_menu_button_pos =
+        size_handler_->GameToWindowCoordinate({0, 0});
     return_menu_button_->move(return_menu_button_pos.x,
                               return_menu_button_pos.y);
 
@@ -102,16 +104,19 @@ void View::DrawBackground(QPainter* p) {
   p->setBrush(QColor("#000080"));
   p->drawRect(0, 0, width(), height());
   p->setBrush(QColor("#53a661"));
-  Coordinate top_corner = size_handler_->ToWindow(Coordinate(0, 0));
-  Coordinate rect_size = size_handler_->SizeToWindowSize(1920, 1080);
+  Coordinate top_corner =
+      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
+  Coordinate rect_size = size_handler_->GameToWindowSize(1920, 1080);
   p->drawRect(top_corner.x, top_corner.y, rect_size.x, rect_size.y);
 
   p->setPen(QPen(Qt::black, 5));
   const auto& roads = controller_->GetRoads();
   for (const auto& road : roads) {
     for (int i = 0; !road.IsEnd(i + 1); i++) {
-      Coordinate point_1 = size_handler_->ToWindow(road.GetNode(i));
-      Coordinate point_2 = size_handler_->ToWindow(road.GetNode(i + 1));
+      Coordinate point_1 =
+          size_handler_->GameToWindowCoordinate(road.GetNode(i));
+      Coordinate point_2 =
+          size_handler_->GameToWindowCoordinate(road.GetNode(i + 1));
       p->drawLine(point_1.x, point_1.y, point_2.x, point_2.y);
     }
   }

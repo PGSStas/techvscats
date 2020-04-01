@@ -19,22 +19,22 @@ void SizeHandler::ChangeSystem(double window_width, double window_height) {
   }
 }
 
-Coordinate SizeHandler::ToGame(const Coordinate& window_coordinate) const {
+Coordinate SizeHandler::WindowToGameCoordinate(const Coordinate& window_coordinate) const {
   Coordinate game_coordinate =
       (window_coordinate - zero_coordinate_) * change_coefficient_;
   return game_coordinate;
 }
 
-Coordinate SizeHandler::ToWindow(const Coordinate& game_coordinate) const {
+Coordinate SizeHandler::GameToWindowCoordinate(const Coordinate& game_coordinate) const {
   Coordinate window_coordinate =
       (game_coordinate / change_coefficient_) + zero_coordinate_;
   return window_coordinate;
 }
 
-Coordinate SizeHandler::SizeToWindowSize(double width, double height) const {
-  return Coordinate(width / change_coefficient_, height / change_coefficient_);
+Coordinate SizeHandler::GameToWindowSize(double width, double height) const {
+  return Coordinate(width, height) / change_coefficient_;
 }
 
-Coordinate SizeHandler::SizeToGameSize(double width, double height) const {
-  return Coordinate(width * change_coefficient_, height * change_coefficient_);
+Coordinate SizeHandler::WindowToGameSize(double width, double height) const {
+  return Coordinate(width, height) * change_coefficient_;
 }
