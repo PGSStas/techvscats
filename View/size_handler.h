@@ -18,8 +18,11 @@ class SizeHandler {
   Coordinate GameToWindowSize(double width, double height) const;
 
  private:
+  // The ratio of game coordinates to real
+  double change_coefficient_;
+
   Coordinate coordinate_origin_;
-  double change_coefficient_;  // The ratio of game coordinates to real
+
   const double playing_field_width_ = 1920;
   const double playing_field_height_ = 1080;
 };
