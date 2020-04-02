@@ -1,5 +1,5 @@
-#ifndef SIZE_H
-#define SIZE_H
+#ifndef MODEL_SIZE_H_
+#define MODEL_SIZE_H_
 
 #include <cmath>
 
@@ -22,4 +22,4 @@ struct Size {
   bool operator==(const Size& right) const;
 };
 
-#endif //SIZE_H
+#endif  // MODEL_SIZE_H_
