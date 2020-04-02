@@ -25,8 +25,8 @@ class SizeHandler {
 
   Coordinate origin_;
 
-  const double playing_field_width_ = 1920;
-  const double playing_field_height_ = 1080;
+  const double game_width_ = 1920;
+  const double game_height_ = 1080;
 };
 
 #endif  // VIEW_SIZE_HANDLER_H_
