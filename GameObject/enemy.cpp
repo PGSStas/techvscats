@@ -14,7 +14,7 @@ void Enemy::Move() {
     move_direction *= speed_ * speed_coefficient_;
   }
   if ((position_ + move_direction).GetDistanceTo(destination_).GetLength()
-      >= (position_).GetDistanceTo(destination_).GetLength()) {
+      >= position_.GetDistanceTo(destination_).GetLength()) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
       has_reached_ = true;

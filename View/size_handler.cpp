@@ -21,7 +21,7 @@ Coordinate SizeHandler::WindowToGameCoordinate(
 
 Coordinate SizeHandler::GameToWindowCoordinate(
     Coordinate game_coordinate) const {
-  return (game_coordinate / scaling_coefficient_) + origin_;;
+  return (game_coordinate / scaling_coefficient_) + origin_;
 }
 
 Size SizeHandler::GameToWindowSize(Size game_size) const {

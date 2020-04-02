@@ -44,9 +44,10 @@ void View::paintEvent(QPaintEvent*) {
   wave_status_label_->move(label_position.x, label_position.y);
 
   if (window_type == WindowType::kMainMenu) {
-    Coordinate start_game_button_pos =
+    Coordinate start_game_button_position =
         size_handler_->GameToWindowCoordinate({0, 0});
-    start_game_button_->move(start_game_button_pos.x, start_game_button_pos.y);
+    start_game_button_->move(start_game_button_position.x,
+                             start_game_button_position.y);
 
     painter.setBrush(QColor("#000080"));
     painter.drawRect(0, 0, width(), height());
@@ -113,11 +114,11 @@ void View::DrawBackground(QPainter* p) {
   const auto& roads = controller_->GetRoads();
   for (const auto& road : roads) {
     for (int i = 0; !road.IsEnd(i + 1); i++) {
-      Coordinate point_1 =
+      Coordinate start_point =
           size_handler_->GameToWindowCoordinate(road.GetNode(i));
-      Coordinate point_2 =
+      Coordinate end_point =
           size_handler_->GameToWindowCoordinate(road.GetNode(i + 1));
-      p->drawLine(point_1.x, point_1.y, point_2.x, point_2.y);
+      p->drawLine(start_point.x, start_point.y, end_point.x, end_point.y);
     }
   }
   p->restore();
