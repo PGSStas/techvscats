@@ -4,7 +4,9 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <algorithm>
+
 #include "Model/coordinate.h"
+#include "Model/size.h"
 
 class SizeHandler {
  public:
@@ -12,16 +14,16 @@ class SizeHandler {
 
   void ChangeSystem(double window_width, double window_height);
 
-  Coordinate WindowToGameCoordinate(const Coordinate& window_coordinate) const;
-  Coordinate GameToWindowCoordinate(const Coordinate& game_coordinate) const;
-  Coordinate WindowToGameSize(double width, double height) const;
-  Coordinate GameToWindowSize(double width, double height) const;
+  Coordinate WindowToGameCoordinate(Coordinate window_coordinate) const;
+  Coordinate GameToWindowCoordinate(Coordinate game_coordinate) const;
+  Size WindowToGameSize(Size window_size) const;
+  Size GameToWindowSize(Size game_size) const;
 
  private:
   // The ratio of game coordinates to real
-  double change_coefficient_;
+  double scaling_coefficient_;
 
-  Coordinate coordinate_origin_;
+  Coordinate origin_;
 
   const double playing_field_width_ = 1920;
   const double playing_field_height_ = 1080;

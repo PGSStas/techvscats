@@ -8,13 +8,13 @@ void Enemy::Move() {
   if (has_reached_) {
     return;
   }
-  Coordinate move_direction = position_.GetBetween(destination_);
+  Size move_direction = position_.GetDistanceTo(destination_);
   if (std::abs(move_direction.GetLength()) > 0.0001) {
     move_direction /= move_direction.GetLength();
     move_direction *= speed_ * speed_coefficient_;
   }
-  if ((position_ + move_direction).GetBetween(destination_).GetLength()
-      >= (position_).GetBetween(destination_).GetLength()) {
+  if ((position_ + move_direction).GetDistanceTo(destination_).GetLength()
+      >= (position_).GetDistanceTo(destination_).GetLength()) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
       has_reached_ = true;
@@ -32,8 +32,8 @@ void Enemy::Draw(QPainter* painter,
   painter->setPen(QColor("black"));
   Coordinate point =
       size_handler->GameToWindowCoordinate(position_ - Coordinate(15, 15));
-  Coordinate size = size_handler->GameToWindowSize(30, 30);
-  painter->drawRect(point.x, point.y, size.x, size.y);
+  Size size = size_handler->GameToWindowSize({30, 30});
+  painter->drawRect(point.x, point.y, size.width_, size.height_);
 
   painter->restore();
 }

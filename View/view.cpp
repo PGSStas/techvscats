@@ -3,7 +3,7 @@
 View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(std::make_shared<SizeHandler>()) {
-  setMinimumSize(1920 / 3, 1080 / 3);
+  setMinimumSize(640, 360);
 
   start_game_button_ = new QPushButton(this);
   start_game_button_->setText(tr("Начать"));
@@ -40,8 +40,8 @@ void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   // Example of work
 
-  Coordinate label_pos = size_handler_->GameToWindowCoordinate({300, 10});
-  wave_status_label_->move(label_pos.x, label_pos.y);
+  Coordinate label_position = size_handler_->GameToWindowCoordinate({300, 10});
+  wave_status_label_->move(label_position.x, label_position.y);
 
   if (window_type == WindowType::kMainMenu) {
     Coordinate start_game_button_pos =
@@ -53,14 +53,14 @@ void View::paintEvent(QPaintEvent*) {
 
     painter.setBrush(QColor("#ffffff"));
     Coordinate top_corner = size_handler_->GameToWindowCoordinate({0, 0});
-    Coordinate size = size_handler_->GameToWindowSize(1920, 1080);
-    painter.drawRect(top_corner.x, top_corner.y, size.x, size.y);
+    Size size = size_handler_->GameToWindowSize({1920, 1080});
+    painter.drawRect(top_corner.x, top_corner.y, size.width_, size.height_);
   }
   if (window_type == WindowType::kGame) {
-    Coordinate return_menu_button_pos =
+    Coordinate return_menu_button_position =
         size_handler_->GameToWindowCoordinate({0, 0});
-    return_menu_button_->move(return_menu_button_pos.x,
-                              return_menu_button_pos.y);
+    return_menu_button_->move(return_menu_button_position.x,
+                              return_menu_button_position.y);
 
     DrawBackground(&painter);
 
@@ -106,8 +106,8 @@ void View::DrawBackground(QPainter* p) {
   p->setBrush(QColor("#53a661"));
   Coordinate top_corner =
       size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
-  Coordinate rect_size = size_handler_->GameToWindowSize(1920, 1080);
-  p->drawRect(top_corner.x, top_corner.y, rect_size.x, rect_size.y);
+  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
+  p->drawRect(top_corner.x, top_corner.y, rect_size.width_, rect_size.height_);
 
   p->setPen(QPen(Qt::black, 5));
   const auto& roads = controller_->GetRoads();
@@ -125,5 +125,5 @@ void View::DrawBackground(QPainter* p) {
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_->ChangeSystem(this->width(), this->height());
-  this->repaint();
+  repaint();
 }

@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <memory>
 #include "Model/coordinate.h"
+#include "Model/size.h"
 #include "View/size_handler.h"
 
 class GameObject {
@@ -14,9 +15,11 @@ class GameObject {
   virtual void Tick() = 0;
 
   Coordinate GetPosition() const;
+  Size GetSize() const;
 
  protected:
   Coordinate position_;
+  Size size_;
 };
 
 #endif  // GAMEOBJECT_GAME_OBJECT_H_

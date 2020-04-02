@@ -1,11 +1,11 @@
 #include "coordinate.h"
 
 Coordinate Coordinate::operator+(const Coordinate& right) const {
-  return Coordinate({x + right.x, y + right.y});
+  return Coordinate(x + right.x, y + right.y);
 }
 
 Coordinate Coordinate::operator-(const Coordinate& right) const {
-  return Coordinate({x - right.x, y - right.y});
+  return Coordinate(x - right.x, y - right.y);
 }
 
 Coordinate& Coordinate::operator+=(const Coordinate& right) {
@@ -16,10 +16,6 @@ Coordinate& Coordinate::operator+=(const Coordinate& right) {
 
 bool Coordinate::operator==(const Coordinate& right) const {
   return x == right.x && y == right.y;
-}
-
-double Coordinate::GetLength() const {
-  return std::sqrt(x * x + y * y);
 }
 
 Coordinate& Coordinate::operator*=(double right) {
@@ -34,20 +30,35 @@ Coordinate& Coordinate::operator/=(double right) {
   return *this;
 }
 
-Coordinate Coordinate::GetBetween(const Coordinate& right) {
-  Coordinate tmp = *this;
-  tmp.x = right.x - tmp.x;
-  tmp.y = right.y - tmp.y;
-  return tmp;
-}
-
 Coordinate::Coordinate(double position_x, double position_y)
     : x(position_x), y(position_y) {}
 
 Coordinate Coordinate::operator*(double right) const {
-  return Coordinate({x * right, y * right});
+  return Coordinate(x * right, y * right);
 }
 
 Coordinate Coordinate::operator/(double right) const {
-  return Coordinate({x / right, y / right});
+  return Coordinate(x / right, y / right);
+}
+
+Size Coordinate::GetDistanceTo(Coordinate right) {
+  return Size(right.x - x, right.y - y);
+}
+
+Coordinate Coordinate::operator+(const Size& right) const {
+  return Coordinate(x + right.height_, y + right.width_);
+}
+
+Coordinate Coordinate::operator-(const Size& right) const {
+  return Coordinate(x - right.height_, y - right.width_);
+}
+
+Coordinate& Coordinate::operator+=(const Size& right) {
+  *this = *this + right;
+  return *this;
+}
+
+Coordinate& Coordinate::operator-=(const Size& right) {
+  *this = *this - right;
+  return *this;
 }

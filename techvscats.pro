@@ -40,6 +40,7 @@ HEADERS += \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \
+         Model/size.h \
          Model/enemy_group.h \
          View/view.h \
          View/size_handler.h \

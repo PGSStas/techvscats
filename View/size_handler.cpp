@@ -1,42 +1,33 @@
 #include "size_handler.h"
 
 SizeHandler::SizeHandler() :
-    coordinate_origin_({0, 0}), change_coefficient_(3) {}
+    scaling_coefficient_(3), origin_(0, 0) {}
 
 void SizeHandler::ChangeSystem(double window_width, double window_height) {
-  change_coefficient_ = std::max(playing_field_width_ / window_width,
-                                 playing_field_height_ / window_height);
+  scaling_coefficient_ = std::max(playing_field_width_ / window_width,
+                                  playing_field_height_ / window_height);
 
-  QSize real_size = QSize(playing_field_width_ / change_coefficient_,
-                          playing_field_height_ / change_coefficient_);
+  Size real_size = Size(playing_field_width_ / scaling_coefficient_,
+                        playing_field_height_ / scaling_coefficient_);
 
-  coordinate_origin_ = Coordinate(0, 0);
-  if (window_width > real_size.width()) {
-    coordinate_origin_.x = (window_width - real_size.width()) / 2.;
-  }
-  if (window_height > real_size.height()) {
-    coordinate_origin_.y = (window_height - real_size.height()) / 2.;
-  }
+  origin_.x = (window_width - real_size.width_) / 2;
+  origin_.y = (window_height - real_size.height_) / 2;
 }
 
 Coordinate SizeHandler::WindowToGameCoordinate(
-                              const Coordinate& window_coordinate) const {
-  Coordinate game_coordinate =
-      (window_coordinate - coordinate_origin_) * change_coefficient_;
-  return game_coordinate;
+    Coordinate window_coordinate) const {
+  return (window_coordinate - origin_) * scaling_coefficient_;
 }
 
 Coordinate SizeHandler::GameToWindowCoordinate(
-                              const Coordinate& game_coordinate) const {
-  Coordinate window_coordinate =
-      (game_coordinate / change_coefficient_) + coordinate_origin_;
-  return window_coordinate;
+    Coordinate game_coordinate) const {
+  return (game_coordinate / scaling_coefficient_) + origin_;;
 }
 
-Coordinate SizeHandler::GameToWindowSize(double width, double height) const {
-  return Coordinate(width, height) / change_coefficient_;
+Size SizeHandler::GameToWindowSize(Size game_size) const {
+  return game_size / scaling_coefficient_;
 }
 
-Coordinate SizeHandler::WindowToGameSize(double width, double height) const {
-  return Coordinate(width, height) * change_coefficient_;
+Size SizeHandler::WindowToGameSize(Size window_size) const {
+  return window_size * scaling_coefficient_;
 }
