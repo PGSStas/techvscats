@@ -25,6 +25,7 @@ SOURCES += \
          Model/model.cpp \
          Model/road.cpp \
          Model/coordinate.cpp \
+         Model/size.cpp \
          View/view.cpp \
          View/size_handler.cpp \
 
