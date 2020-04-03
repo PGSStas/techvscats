@@ -1,20 +1,6 @@
 #include "coordinate.h"
 
-Coordinate Coordinate::operator+(const Coordinate& right) const {
-  return Coordinate(x + right.x, y + right.y);
-}
-
-Coordinate Coordinate::operator-(const Coordinate& right) const {
-  return Coordinate(x - right.x, y - right.y);
-}
-
-Coordinate& Coordinate::operator+=(const Coordinate& right) {
-  x += right.x;
-  y += right.y;
-  return *this;
-}
-
-bool Coordinate::operator==(const Coordinate& right) const {
+bool Coordinate::operator==(Coordinate right) const {
   return x == right.x && y == right.y;
 }
 
@@ -45,20 +31,20 @@ Size Coordinate::GetDistanceTo(Coordinate right) {
   return Size(right.x - x, right.y - y);
 }
 
-Coordinate Coordinate::operator+(const Size& right) const {
-  return Coordinate(x + right.height_, y + right.width_);
+Coordinate Coordinate::operator+(Size right) const {
+  return Coordinate(x + right.width_, y + right.height_);
 }
 
-Coordinate Coordinate::operator-(const Size& right) const {
-  return Coordinate(x - right.height_, y - right.width_);
+Coordinate Coordinate::operator-(Size right) const {
+  return Coordinate(x - right.width_, y - right.height_);
 }
 
-Coordinate& Coordinate::operator+=(const Size& right) {
+Coordinate& Coordinate::operator+=(Size right) {
   *this = *this + right;
   return *this;
 }
 
-Coordinate& Coordinate::operator-=(const Size& right) {
+Coordinate& Coordinate::operator-=(Size right) {
   *this = *this - right;
   return *this;
 }

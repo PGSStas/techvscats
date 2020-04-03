@@ -12,14 +12,17 @@ struct Size {
 
   double GetLength() const;
 
-  Size operator+(const Size& right) const;
-  Size operator-(const Size& right) const;
   Size operator*(double right) const;
   Size operator/(double right) const;
-  Size& operator+=(const Size& right);
   Size& operator*=(double right);
   Size& operator/=(double right);
-  bool operator==(const Size& right) const;
+
+  Size operator+(Size right) const;
+  Size operator-(Size right) const;
+  Size& operator+=(Size right);
+  Size& operator-=(Size right);
+
+  bool operator==(Size right) const;
 };
 
 #endif  // MODEL_SIZE_H_

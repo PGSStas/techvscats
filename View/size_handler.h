@@ -23,7 +23,7 @@ class SizeHandler {
   // The ratio of game coordinates to real
   double scaling_coefficient_;
 
-  Coordinate origin_;
+  Size origin_offset_;
 
   const double game_width_ = 1920;
   const double game_height_ = 1080;

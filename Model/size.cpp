@@ -14,19 +14,19 @@ Size Size::operator/(double right) const {
   return Size(width_ / right, height_ / right);
 }
 
-bool Size::operator==(const Size& right) const {
+bool Size::operator==(Size right) const {
   return width_ == right.width_ && height_ == right.height_;
 }
 
-Size Size::operator+(const Size& right) const {
+Size Size::operator+(Size right) const {
   return Size(width_ + right.width_, height_ + right.height_);
 }
 
-Size Size::operator-(const Size& right) const {
+Size Size::operator-(Size right) const {
   return Size(width_ - right.width_, height_ - right.height_);
 }
 
-Size& Size::operator+=(const Size& right) {
+Size& Size::operator+=(Size right) {
   *this = *this + right;
   return *this;
 }
@@ -38,5 +38,10 @@ Size& Size::operator*=(double right) {
 
 Size& Size::operator/=(double right) {
   *this = *this / right;
+  return *this;
+}
+
+Size& Size::operator-=(Size right) {
+  *this = *this - right;
   return *this;
 }
