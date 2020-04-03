@@ -79,9 +79,9 @@ void Controller::CreateNextWave() {
 }
 
 void Controller::TickSpawners() {
-  auto* spawners = model_->GetSpawners();
-  spawners->remove_if([&](const Spawner& sp) { return sp.IsDead(); });
-  for (auto& spawner : *spawners) {
+  model_->RemoveDeadSpawners();
+  auto& spawners = model_->GetSpawners();
+  for (auto& spawner : spawners) {
     spawner.Tick(current_time_);
     if (spawner.IsReadyToSpawn()) {
       Enemy enemy_to_spawn = spawner.GetEnemy();
@@ -91,9 +91,9 @@ void Controller::TickSpawners() {
 }
 
 void Controller::TickEnemies() {
-  auto* enemies = model_->GetEnemies();
+  const auto& enemies = model_->GetEnemies();
 
-  for (auto& enemy : *enemies) {
+  for (auto& enemy : enemies) {
     enemy->Tick();
   }
 }
@@ -103,7 +103,7 @@ void Controller::CreateEnemy(const Enemy& enemy) const {
 }
 
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
-  return *model_->GetEnemies();
+  return model_->GetEnemies();
 }
 
 const std::vector<Road>& Controller::GetRoads() const {
@@ -140,10 +140,10 @@ void Controller::MousePress(Coordinate position) {
   }
 
   // Check if tower menu element was pressed
-  auto pressed = view_->GetTowerMenu()->GetPressedOption(position);
+  auto pressed = view_->GetTowerMenu()->GetButtonContaining(position);
   if (pressed != nullptr) {
     pressed->Action();
-    qDebug() << pressed->GetReplacingTower()->GetId() << " action";
+    qDebug() << pressed->GetReplacingTower().GetId() << " action";
   }
 
   // Disables menu after some action or if random point on the map was pressed
@@ -169,7 +169,7 @@ void Controller::CreateTowerMenu(int tower_to_process) {
   // Tower building & evolve & delete options (will affects the type of tower)
   for (const auto& to_change_id : building_tree[building_id]) {
     options.push_back(std::make_shared<TowerMenuOption>(
-        model_->GetBuildingById(to_change_id),
+        *model_->GetNewBuildingById(to_change_id),
         [&, tower_to_process, to_change_id]() {
           SetBuilding(tower_to_process, to_change_id);
         }));
@@ -178,7 +178,7 @@ void Controller::CreateTowerMenu(int tower_to_process) {
   // Upgrade option (will only affect level of tower, but not the type)
   if (building->GetMaxLevel() > building->GetCurrentLevel()) {
     options.push_back(std::make_shared<TowerMenuOption>(
-        model_->GetBuildingById(building_id),
+        *model_->GetNewBuildingById(building_id),
         [&, tower_to_process, building_id]() {
           SetBuilding(tower_to_process, building_id);
         }));
@@ -192,10 +192,6 @@ void Controller::MouseMove(Coordinate position) {
     return;
   }
 
-  auto pressed = view_->GetTowerMenu()->GetPressedOption(position);
-  view_->GetTowerMenu()->Hover(pressed);
-}
-
-int Controller::GetCurrentTime() const {
-  return current_time_;
+  auto button = view_->GetTowerMenu()->GetButtonContaining(position);
+  view_->GetTowerMenu()->Hover(button);
 }

@@ -3,5 +3,5 @@
 ActiveTower::ActiveTower(int tower_type) :
     Building(tower_type) {}
 
-ActiveTower::ActiveTower(const std::shared_ptr<Building>& other) :
+ActiveTower::ActiveTower(const Building& other) :
     Building(other) {}

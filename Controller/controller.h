@@ -22,7 +22,6 @@ class Controller : public AbstractController {
   void MousePress(Coordinate position) override;
   void MouseMove(Coordinate position) override;
 
-  int GetCurrentTime() const override;
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<Road>& GetRoads() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;

@@ -8,7 +8,7 @@
 class Building : public GameObject {
  public:
   explicit Building(int tower_type = 0);
-  explicit Building(const std::shared_ptr<Building>& other);
+  explicit Building(const Building& other);
   void SetParameters(int id, const QColor& draw_color, int max_level,
       int action_range);
 

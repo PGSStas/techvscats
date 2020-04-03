@@ -18,19 +18,20 @@ class TowerMenu {
             const std::vector<std::shared_ptr<TowerMenuOption>>& options);
 
   std::shared_ptr<const Building> GetTower() const;
-  // Returns nullptr if none was pressed
-  std::shared_ptr<TowerMenuOption> GetPressedOption(Coordinate position);
+  // Returns the button for which position is inside or
+  // nullptr if there is no such button
+  std::shared_ptr<TowerMenuOption> GetButtonContaining(Coordinate position) const;
   void Hover(const std::shared_ptr<TowerMenuOption>& option);
   void Unhover();
 
-  void Draw(QPainter* painter, int current_time);
+  void Draw(QPainter* painter, int current_time) const;
 
  private:
   int creation_time_;
 
   std::shared_ptr<const Building> tower_;
   std::vector<std::shared_ptr<TowerMenuOption>> options_;
-  std::shared_ptr<TowerMenuOption> hovered_;
+  std::shared_ptr<TowerMenuOption> hovered_option_;
 
   // Won't be needed if we change buttons so that they circle around the tower
   int container_length_;
@@ -38,7 +39,7 @@ class TowerMenu {
   const int kAnimationDuration = 100;
 
   // Calculates the position of ith button at current time
-  Coordinate GetCoordinate(int i, int time);
+  Coordinate GetCoordinate(int i, int time) const;
 };
 
 #endif  // VIEW_TOWER_MENU_H_

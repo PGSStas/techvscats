@@ -11,7 +11,7 @@
 class MultiTower : public ActiveTower {
  public:
   MultiTower();
-  explicit MultiTower(const std::shared_ptr<Building>& other);
+  explicit MultiTower(const Building& other);
 };
 
 #endif  // GAMEOBJECT_MULTI_TOWER_H_

@@ -52,7 +52,6 @@ void Model::SetGameModel(int level_id) {
   time_between_rounds_ = 4000;
 
   empty_towers_ = {{100, 100}, {200, 100}, {500, 100}};
-  building_count_ = 3;
   Building temporary_building_instance;
   temporary_building_instance.SetParameters(0, QColor(Qt::gray), 0, 0);
   buildings_tree_.push_back({1, 2});
@@ -69,11 +68,14 @@ void Model::SetGameModel(int level_id) {
   temporary_default_tower_instance2.SetParameters(3, Qt::darkBlue, 4, 150);
   buildings_tree_.push_back({0});
 
-  id_to_building_ =
-      {std::make_shared<Building>(temporary_building_instance),
-       std::make_shared<MultiTower>(temporary_multi_tower_instance1),
-       std::make_shared<DefaultTower>(temporary_default_tower_instance1),
-       std::make_shared<DefaultTower>(temporary_default_tower_instance2)};
+  id_to_building_.push_back(temporary_building_instance);
+  id_to_building_.push_back(temporary_multi_tower_instance1);
+  id_to_building_.push_back(temporary_default_tower_instance1);
+  id_to_building_.push_back(temporary_default_tower_instance2);
+     /* { temporary_building_instance,
+        temporary_multi_tower_instance1,
+        temporary_default_tower_instance1,
+        temporary_default_tower_instance2 };*/
   InitialiseTowerSlots();
   // At the end we have : 2 roads , 2 rounds
   // 5 sec between rounds, 2 sec between enemy spawn in each wave.
@@ -113,12 +115,12 @@ const Wave& Model::GetWave(int round_number, int road_number) const {
   return rounds_[round_number][road_number];
 }
 
-std::list<Spawner>* Model::GetSpawners() {
-  return &spawners_;
+std::list<Spawner>& Model::GetSpawners() {
+  return spawners_;
 }
 
-std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
-  return &enemies_;
+const std::list<std::shared_ptr<Enemy>>& Model::GetEnemies() {
+  return enemies_;
 }
 
 int Model::GetWavesCount(int round_number) const {
@@ -143,15 +145,11 @@ void Model::ClearGameModel() {
   qDebug() << "Clear Model";
 }
 
-const std::vector<Coordinate>& Model::GetTowerSlots() const {
-  return empty_towers_;
-}
-
 void Model::InitialiseTowerSlots() {
   for (Coordinate coordinate : empty_towers_) {
-    Building empty_place(id_to_building_[0]);
-    empty_place.SetPosition(coordinate);
-    buildings_.push_back(std::make_shared<Building>(empty_place));
+    auto empty_place = std::make_shared<Building>(id_to_building_[0]);
+    empty_place->SetPosition(coordinate);
+    buildings_.push_back(empty_place);
   }
 }
 
@@ -162,7 +160,7 @@ const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
 void Model::SetBuildingAtIndex(int i, int id) {
   qDebug() << "set b" << i << " " << id;
   Coordinate position = buildings_[i]->GetPosition();
-  buildings_[i] = GetBuildingById(id);
+  buildings_[i] = GetNewBuildingById(id);
   buildings_[i]->SetPosition(position);
 }
 
@@ -170,9 +168,9 @@ void Model::UpgradeBuildingAtIndex(int i) {
   buildings_[i]->Upgrade();
 }
 
-std::shared_ptr<Building> Model::GetBuildingById(int id) const {
-  auto instance = id_to_building_[id];
-  switch (instance->GetTowerType()) {
+std::shared_ptr<Building> Model::GetNewBuildingById(int id) const {
+  const auto& instance = id_to_building_[id];
+  switch (instance.GetTowerType()) {
     case 0:
       return std::make_shared<Building>(instance);
 
@@ -189,4 +187,8 @@ std::shared_ptr<Building> Model::GetBuildingById(int id) const {
 
 const std::vector<std::vector<int>>& Model::GetBuildingsTree() const {
   return buildings_tree_;
+}
+
+void Model::RemoveDeadSpawners() {
+  spawners_.remove_if([](const Spawner& sp) { return sp.IsDead(); });
 }

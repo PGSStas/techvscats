@@ -5,7 +5,7 @@ int TowerMenuOption::GetMaxSize() const {
 }
 
 bool TowerMenuOption::IsPressed(Coordinate option_position,
-    Coordinate press_position) {
+    Coordinate press_position) const {
   return press_position.x >= option_position.x
       && press_position.y >= option_position.y
       && press_position.x <= option_position.x + kMaxSize_
@@ -13,14 +13,14 @@ bool TowerMenuOption::IsPressed(Coordinate option_position,
 }
 
 void TowerMenuOption::Draw(QPainter* painter, Coordinate position,
-                          int current_size) {
+                          int current_size) const {
   painter->save();
 
   // to be drawn from picture, e. g. "menubutton_id_.png"
   painter->setBrush(Qt::lightGray);
   painter->drawRect(position.x, position.y, current_size, current_size);
   painter->drawText(position.x, position.y,
-      QString::number(replacing_tower_->GetId()));
+      QString::number(replacing_tower_.GetId()));
 
   painter->restore();
 }
@@ -30,10 +30,10 @@ void TowerMenuOption::Action() {
 }
 
 TowerMenuOption::TowerMenuOption(
-    const std::shared_ptr<const Building>& replacing_tower,
+    const Building& replacing_tower,
     const std::function<void()>& action)
     : replacing_tower_(replacing_tower), action_(action) {}
 
-std::shared_ptr<const Building> TowerMenuOption::GetReplacingTower() const {
+const Building& TowerMenuOption::GetReplacingTower() const {
   return replacing_tower_;
 }

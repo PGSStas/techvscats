@@ -48,7 +48,7 @@ void View::paintEvent(QPaintEvent* event) {
     DrawBackground(&painter);
     DrawEnemies(&painter);
     if (is_tower_menu_enabled_) {
-      tower_menu_->Draw(&painter, controller_->GetCurrentTime());
+      tower_menu_->Draw(&painter, game_time_.elapsed());
     }
     DrawTowers(&painter);
   }
@@ -108,7 +108,7 @@ void View::DrawTowers(QPainter* painter) {
 }
 
 void View::DrawEnemies(QPainter* painter) {
-  const auto enemies_list = controller_->GetEnemies();
+  const auto& enemies_list = controller_->GetEnemies();
   for (const auto& enemy : enemies_list) {
     enemy->Draw(painter);
   }

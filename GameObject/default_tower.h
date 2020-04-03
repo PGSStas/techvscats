@@ -11,7 +11,7 @@
 class DefaultTower : public ActiveTower {
  public:
   DefaultTower();
-  explicit DefaultTower(const std::shared_ptr<Building>& other);
+  explicit DefaultTower(const Building& other);
 };
 
 #endif  // GAMEOBJECT_DEFAULT_TOWER_H_

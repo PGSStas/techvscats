@@ -10,19 +10,19 @@ TowerMenu::TowerMenu(int creation_time,
       options_[0]->GetMaxSize() * options_.size() + 10 * (options_.size() - 1);
 }
 
-void TowerMenu::Draw(QPainter* painter, int current_time) {
+void TowerMenu::Draw(QPainter* painter, int current_time) const {
   painter->save();
 
   painter->setBrush(QColor(148, 148, 148, 0.33 * 255));
-  if (hovered_ == nullptr) {
+  if (hovered_option_ == nullptr) {
     painter->drawEllipse(QPoint(tower_->GetPosition().x,
                                 tower_->GetPosition().y),
                          tower_->GetActionRange(), tower_->GetActionRange());
   } else {
     painter->drawEllipse(QPoint(tower_->GetPosition().x,
-                                tower_->GetPosition().y),
-                         hovered_->GetReplacingTower()->GetActionRange(),
-                         hovered_->GetReplacingTower()->GetActionRange());
+            tower_->GetPosition().y),
+            hovered_option_->GetReplacingTower().GetActionRange(),
+            hovered_option_->GetReplacingTower().GetActionRange());
   }
 
   int time_delta = std::min(current_time - creation_time_, kAnimationDuration);
@@ -41,7 +41,7 @@ std::shared_ptr<const Building> TowerMenu::GetTower() const {
 }
 
 std::shared_ptr<TowerMenuOption>
-    TowerMenu::GetPressedOption(Coordinate position) {
+    TowerMenu::GetButtonContaining(Coordinate position) const {
   for (size_t i = 0; i < options_.size(); i++) {
     if (options_[i]->IsPressed(GetCoordinate(i, options_[i]->GetMaxSize()),
         position)) {
@@ -51,7 +51,7 @@ std::shared_ptr<TowerMenuOption>
   return nullptr;
 }
 
-Coordinate TowerMenu::GetCoordinate(int i, int size) {
+Coordinate TowerMenu::GetCoordinate(int i, int size) const {
   int x = tower_->GetPosition().x -
       container_length_ / 2 + i * options_[i]->GetMaxSize() + i * 10
       + (options_[i]->GetMaxSize() - size) / 2;
@@ -61,9 +61,9 @@ Coordinate TowerMenu::GetCoordinate(int i, int size) {
 }
 
 void TowerMenu::Hover(const std::shared_ptr<TowerMenuOption>& option) {
-  hovered_ = option;
+  hovered_option_ = option;
 }
 
 void TowerMenu::Unhover() {
-  hovered_ = nullptr;
+  hovered_option_ = nullptr;
 }

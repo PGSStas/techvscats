@@ -3,5 +3,5 @@
 MultiTower::MultiTower() :
   ActiveTower(2) {}
 
-MultiTower::MultiTower(const std::shared_ptr<Building>& other) :
+MultiTower::MultiTower(const Building& other) :
   ActiveTower(other) {}

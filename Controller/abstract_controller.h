@@ -35,7 +35,6 @@ class AbstractController {
   virtual const std::vector<Road>& GetRoads() const = 0;
   virtual const std::vector<std::shared_ptr<Building>>&
     GetBuildings() const = 0;
-  virtual int GetCurrentTime() const = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

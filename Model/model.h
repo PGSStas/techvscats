@@ -34,8 +34,8 @@ class Model {
   int GetRoundsCount() const;
   int GetWavesCount(int round_number) const;
   int GetCurrentRoundNumber() const;
-  std::list<Spawner>* GetSpawners();
-  std::list<std::shared_ptr<Enemy>>* GetEnemies();
+  std::list<Spawner>& GetSpawners();
+  const std::list<std::shared_ptr<Enemy>>& GetEnemies();
   const Wave& GetWave(int round_number, int road_number) const;
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
@@ -43,10 +43,11 @@ class Model {
   const std::vector<Coordinate>& GetTowerSlots() const;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
   const std::vector<std::vector<int>>& GetBuildingsTree() const;
-  std::shared_ptr<Building> GetBuildingById(int id) const;
+  std::shared_ptr<Building> GetNewBuildingById(int id) const;
 
   void SetBuildingAtIndex(int i, int id);
   void UpgradeBuildingAtIndex(int i);
+  void RemoveDeadSpawners();
 
  private:
   // Database which is updated by Controller all time
@@ -69,8 +70,7 @@ class Model {
 
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
-  int building_count_;
-  std::vector<std::shared_ptr<Building>> id_to_building_;
+  std::vector<Building> id_to_building_;
   // buildings_tree[i] is a vector of towers to which
   // ith tower can be evolved or changed
   std::vector<std::vector<int>> buildings_tree_;

@@ -3,5 +3,5 @@
 DefaultTower::DefaultTower() :
   ActiveTower(1) {}
 
-DefaultTower::DefaultTower(const std::shared_ptr<Building>& other) :
+DefaultTower::DefaultTower(const Building& other) :
   ActiveTower(other) {}
