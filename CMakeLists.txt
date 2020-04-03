@@ -33,7 +33,7 @@ add_executable(techvscats
         View/view.cpp
         View/tower_menu.cpp
         View/tower_menu_option.cpp
-        )
+        resources.qrc)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

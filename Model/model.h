@@ -1,20 +1,27 @@
 #ifndef MODEL_MODEL_H_
 #define MODEL_MODEL_H_
 
+#include <iostream>
 #include <list>
-#include <vector>
 #include <memory>
+#include <utility>
+#include <vector>
 
+#include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
+#include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "GameObject/enemy.h"
 #include "GameObject/building.h"
 #include "GameObject/projectile.h"
-
 #include "Controller/spawner.h"
-#include <GameObject/default_tower.h>
-#include <GameObject/multi_tower.h>
-#include "wave.h"
+#include "GameObject/default_tower.h"
+#include "GameObject/multi_tower.h"
+#include "enemy_group.h"
 #include "road.h"
 
 class Model {
@@ -22,10 +29,10 @@ class Model {
   Model() = default;
   ~Model() = default;
 
-  void SetGameModel(int level);
+  void SetGameLevel(int level);
   void ClearGameModel();
 
-  void AddSpawner(const Wave& wave, int current_time);
+  void AddSpawner(const EnemyGroup& enemy_group);
   void AddEnemyFromInstance(const Enemy& enemy_instance);
 
   void IncreaseCurrentRoundNumber();
@@ -34,9 +41,11 @@ class Model {
   int GetRoundsCount() const;
   int GetWavesCount(int round_number) const;
   int GetCurrentRoundNumber() const;
-  std::list<Spawner>& GetSpawners();
-  const std::list<std::shared_ptr<Enemy>>& GetEnemies();
-  const Wave& GetWave(int round_number, int road_number) const;
+  void IncreaseCurrentRoundNumber();
+  std::list<Spawner>* GetSpawners();
+  std::list<std::shared_ptr<Enemy>>* GetEnemies();
+  Enemy GetEnemyById(int id) const;
+  const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
 
@@ -50,6 +59,8 @@ class Model {
   void RemoveDeadSpawners();
 
  private:
+  void LoadLevelFromJson(int level);
+
   // Database which is updated by Controller all time
   std::list<std::shared_ptr<Projectile>> projectiles_;
   std::vector<std::shared_ptr<Building>> buildings_;
@@ -58,8 +69,8 @@ class Model {
   int gold_;
   int score_;
 
-  // Database which is loaded in SetGameModel once
-  std::vector<std::vector<Wave>> rounds_;
+  // Database which is loaded in SetGameLevel once
+  std::vector<std::vector<EnemyGroup>> enemy_groups_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;
   std::vector<Coordinate> empty_towers_;

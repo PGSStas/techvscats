@@ -1,0 +1,6 @@
+<RCC>
+<qresource>
+    <file>resources/levels/level_1.json</file>
+    <file>resources/database/database.json</file>
+</qresource>
+</RCC>

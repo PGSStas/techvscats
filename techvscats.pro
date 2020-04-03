@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2020-03-17T13:53:49
-#
-#-------------------------------------------------
-
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -15,6 +9,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
+
+RESOURCES += resources.qrc
 
 SOURCES += \
          main.cpp \
@@ -49,7 +45,7 @@ HEADERS += \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \
-         Model/wave.h \
+         Model/enemy_group.h \
          View/view.h \
          View/tower_menu.h \
          View/tower_menu_option.h \
