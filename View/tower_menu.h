@@ -20,7 +20,8 @@ class TowerMenu {
   std::shared_ptr<const Building> GetTower() const;
   // Returns the button for which position is inside or
   // nullptr if there is no such button
-  std::shared_ptr<TowerMenuOption> GetButtonContaining(Coordinate position) const;
+  std::shared_ptr<TowerMenuOption>
+    GetButtonContaining(Coordinate position) const;
   void Hover(const std::shared_ptr<TowerMenuOption>& option);
   void Unhover();
 
