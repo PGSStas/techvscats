@@ -25,7 +25,9 @@ SOURCES += \
          Model/model.cpp \
          Model/road.cpp \
          Model/coordinate.cpp \
+         Model/size.cpp \
          View/view.cpp \
+         View/size_handler.cpp \
 
 HEADERS += \
          Controller/controller.h \
@@ -39,5 +41,8 @@ HEADERS += \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \
+         Model/constants.h \
+         Model/size.h \
          Model/enemy_group.h \
          View/view.h \
+         View/size_handler.h \
