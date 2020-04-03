@@ -1,5 +1,8 @@
 #include "coordinate.h"
 
+Coordinate::Coordinate(double position_x, double position_y)
+    : x(position_x), y(position_y) {}
+
 bool Coordinate::operator==(Coordinate right) const {
   return x == right.x && y == right.y;
 }
@@ -15,9 +18,6 @@ Coordinate& Coordinate::operator/=(double right) {
   y /= right;
   return *this;
 }
-
-Coordinate::Coordinate(double position_x, double position_y)
-    : x(position_x), y(position_y) {}
 
 Coordinate Coordinate::operator*(double right) const {
   return Coordinate(x * right, y * right);
