@@ -90,9 +90,9 @@ void Controller::TickSpawners() {
 }
 
 void Controller::TickEnemies() {
-  const auto& enemies = model_->GetEnemies();
+  auto enemies = model_->GetEnemies();
 
-  for (auto& enemy : enemies) {
+  for (auto& enemy : *enemies) {
     enemy->Tick();
   }
 }
@@ -101,7 +101,7 @@ void Controller::AddEnemyToModel(const Enemy& enemy) const {
   model_->AddEnemyFromInstance(enemy);
 }
 
-const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
+std::list<std::shared_ptr<Enemy>>* Controller::GetEnemies() const {
   return model_->GetEnemies();
 }
 

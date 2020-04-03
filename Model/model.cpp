@@ -65,8 +65,8 @@ std::list<Spawner>* Model::GetSpawners() {
   return &spawners_;
 }
 
-const std::list<std::shared_ptr<Enemy>>& Model::GetEnemies() {
-  return enemies_;
+std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
+  return &enemies_;
 }
 
 Enemy Model::GetEnemyById(int id) const {
@@ -75,10 +75,6 @@ Enemy Model::GetEnemyById(int id) const {
 
 const std::vector<EnemyGroup>& Model::GetEnemyGroupsPerRound(int round) const {
   return enemy_groups_[round];
-}
-
-int Model::GetRoadsCount() const {
-  return roads_count_;
 }
 
 void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
@@ -157,7 +153,7 @@ void Model::LoadLevelFromJson(int level) {
   QJsonObject json_object =
       QJsonDocument::fromJson(level_file.readAll()).object();
 
-  time_between_ronds_ = json_object["time_between_rounds"].toInt();
+  time_between_rounds_ = json_object["time_between_rounds"].toInt();
   gold_ = json_object["gold"].toInt();
   score_ = json_object["score"].toInt();
 

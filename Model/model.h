@@ -39,9 +39,7 @@ class Model {
 
   int GetTimeBetweenWaves() const;
   int GetRoundsCount() const;
-  int GetWavesCount(int round_number) const;
   int GetCurrentRoundNumber() const;
-  void IncreaseCurrentRoundNumber();
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   Enemy GetEnemyById(int id) const;
