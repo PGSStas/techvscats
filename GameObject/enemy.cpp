@@ -9,7 +9,7 @@ void Enemy::Move() {
     return;
   }
   Size move_direction = position_.GetDistanceTo(destination_);
-  if (move_direction.GetLength() != 0) {
+  if (std::abs(move_direction.GetLength()) > kEpsilon) {
     move_direction /= move_direction.GetLength();
     move_direction *= speed_ * speed_coefficient_;
   }

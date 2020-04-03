@@ -4,7 +4,7 @@ Coordinate::Coordinate(double position_x, double position_y)
     : x(position_x), y(position_y) {}
 
 bool Coordinate::operator==(Coordinate right) const {
-  return x == right.x && y == right.y;
+  return (x - right.x < kEpsilon) && (y - right.y < kEpsilon);
 }
 
 Coordinate& Coordinate::operator*=(double right) {

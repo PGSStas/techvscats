@@ -25,8 +25,8 @@ class SizeHandler {
 
   Size origin_offset_;
 
-  const double game_width_ = 1920;
-  const double game_height_ = 1080;
+  const double game_width_ = kGameWidth;
+  const double game_height_ = kGameHeight;
 };
 
 #endif  // VIEW_SIZE_HANDLER_H_
