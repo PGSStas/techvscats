@@ -1,13 +1,6 @@
 #include "active_tower.h"
 
-ActiveTower::ActiveTower(const std::list<std::shared_ptr<Enemy>>& enemies,
-                         int max_aim_count) :
-    Building(enemies, std::vector<std::shared_ptr<Building>>{}, 1) {
-  max_aims_ = max_aim_count;
-}
 
-ActiveTower::ActiveTower(const std::shared_ptr<const Building>& other) :
-    Building(other) {}
 
 void ActiveTower::Tick(int controller_current_time) {
   wait_time_ += (controller_current_time - object_current_time_)
@@ -45,7 +38,7 @@ void ActiveTower::Tick(int controller_current_time) {
       }
   }
 }
-#include "qdebug.h"
+
 void ActiveTower::UpdateAim() {
 
   if (enemies_.size() == 0) {

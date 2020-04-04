@@ -12,14 +12,14 @@ void Model::SetGameLevel(int level_id) {
 
   building_count_ = 3;
 
-  Building temporary_building_instance(enemies_, buildings_);
+  Building temporary_building_instance;
   temporary_building_instance.SetParameters(0);
   temporary_building_instance.SetAnimationParameters(Qt::gray,
                                                      1000);
 
   buildings_tree_.push_back({1, 2});
 
-  ActiveTower temporary_active_tower1(enemies_, 1);
+  ActiveTower temporary_active_tower1(enemies_, 3);
   temporary_active_tower1.SetParameters(1, 0, 4, 10, 24, 100, 40);
   temporary_active_tower1.SetAnimationParameters(Qt::blue,
                                                  1000,
@@ -39,7 +39,7 @@ void Model::SetGameLevel(int level_id) {
                                                  100);
   buildings_tree_.push_back({1, 3, 0});
 
-  ActiveTower temporary_active_tower3(enemies_, 3);
+  ActiveTower temporary_active_tower3(enemies_, 1);
   temporary_active_tower3.SetParameters(1, 0, 4, 10, 24, 100, 40);
   temporary_active_tower3.SetAnimationParameters(Qt::green,
                                                  1000,
@@ -199,15 +199,15 @@ std::vector<std::shared_ptr<Building>>* Model::GetBuildings() {
   return &buildings_;
 }
 
+void Model::UpgradeBuildingAt(int i) {
+  buildings_[i]->Upgrade();
+}
+
 void Model::SetBuildingAt(int i, int id) {
   qDebug() << "set b" << i << " " << id;
   Coordinate position = buildings_[i]->GetPosition();
   buildings_[i] = GetBuildingById(id);
   buildings_[i]->SetPosition(position);
-}
-
-void Model::UpgradeBuildingAt(int i) {
-  buildings_[i]->Upgrade();
 }
 
 std::shared_ptr<Building> Model::GetBuildingById(int id) {

@@ -19,9 +19,10 @@ void Building::Upgrade() {
   qDebug() << "building #" << id_ << " upgraded to" << current_level_;
 }
 
-Building::Building(const std::list<std::shared_ptr<Enemy>>& enemies,
-                   const std::vector<std::shared_ptr<Building>>& buildings,
-                   int tower_type) :
+Building::Building(int tower_type,
+                   const std::list<std::shared_ptr<Enemy>>& enemies,
+                   const std::vector<std::shared_ptr<Building>>& buildings
+) :
     enemies_(enemies), buildings_(buildings), kTowerType(tower_type) {
   qDebug() << &enemies_;
 }
@@ -35,7 +36,7 @@ int Building::GetTowerType() const {
 }
 
 Building::Building(const std::shared_ptr<const Building>& other) :
-    Building(other->enemies_, other->buildings_, other->kTowerType) {
+    Building(other->kTowerType, other->enemies_, other->buildings_) {
   SetParameters(other->id_, other->projectile_id_, other->max_level_,
                 other->settle_cost_, other->upgrade_cost_,
                 other->action_range_, other->action_power_);

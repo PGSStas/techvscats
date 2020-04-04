@@ -15,9 +15,10 @@ enum class Action {
 
 class Building : public GameObject {
  public:
-  explicit Building(const std::list<std::shared_ptr<Enemy>>& enemies,
-                    const std::vector<std::shared_ptr<Building>>& buildings,
-                    int tower_type = 0);
+  explicit Building(int tower_type = 0,
+                    const std::list<std::shared_ptr<Enemy>>& enemies = {},
+                    const std::vector<std::shared_ptr<Building>>& buildings = {}
+  );
   explicit Building(const std::shared_ptr<const Building>& other);
   void SetParameters(int id, int projectile_id = 0,
                      int max_level = 0,
@@ -34,8 +35,9 @@ class Building : public GameObject {
                               QColor post_color = Qt::black,
                               int post_fire_time = 0);
 
-  virtual std::vector<std::shared_ptr<Projectile>> PrepareProjectile( const
-      std::shared_ptr<Projectile>& projectile_instence);
+  virtual std::vector<std::shared_ptr<Projectile>> PrepareProjectile(const
+                                                                     std::shared_ptr<
+                                                                         Projectile>& projectile_instence);
   virtual void Upgrade();
 
   void Tick(int controller_current_time) override;

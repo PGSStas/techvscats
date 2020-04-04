@@ -201,7 +201,6 @@ void Controller::MousePress(Coordinate position) {
 
 void Controller::ChangeBuildingAttempt(int building_number, int building_id) {
   const auto& buildings = *model_->GetBuildings();
-
   // Some manipulations with gold should be added here
   if (buildings[building_number]->GetId() == building_id) {
     model_->UpgradeBuildingAt(building_number);
