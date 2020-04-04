@@ -9,26 +9,26 @@ void Model::SetGameLevel(int level_id) {
   LoadLevelFromJson(level_id);
 
   empty_towers_ = {{100, 100}, {200, 100}, {500, 100}};
-  Building temporary_building_instance;
-  temporary_building_instance.SetParameters(0, QColor(Qt::gray), 0, 0);
+  Building building_instance;
+  building_instance.SetParameters(0, QColor(Qt::gray), 0, 0);
   buildings_tree_.push_back({1, 2});
 
-  MultiTower temporary_multi_tower_instance1;
-  temporary_multi_tower_instance1.SetParameters(1, Qt::white, 2, 75);
+  Building building_instance2;
+  building_instance2.SetParameters(1, Qt::white, 2, 75);
   buildings_tree_.push_back({3, 0});
 
-  DefaultTower temporary_default_tower_instance1;
-  temporary_default_tower_instance1.SetParameters(2, Qt::darkRed, 3, 100);
+  Building building_instance3;
+  building_instance3.SetParameters(2, Qt::darkRed, 3, 100);
   buildings_tree_.push_back({1, 3, 0});
 
-  DefaultTower temporary_default_tower_instance2;
-  temporary_default_tower_instance2.SetParameters(3, Qt::darkBlue, 4, 150);
+  Building building_instance4;
+  building_instance4.SetParameters(3, Qt::darkBlue, 4, 150);
   buildings_tree_.push_back({0});
 
-  id_to_building_.push_back(temporary_building_instance);
-  id_to_building_.push_back(temporary_multi_tower_instance1);
-  id_to_building_.push_back(temporary_default_tower_instance1);
-  id_to_building_.push_back(temporary_default_tower_instance2);
+  id_to_building_.push_back(building_instance);
+  id_to_building_.push_back(building_instance2);
+  id_to_building_.push_back(building_instance3);
+  id_to_building_.push_back(building_instance4);
 
   InitialiseTowerSlots();
 }
@@ -123,13 +123,6 @@ std::shared_ptr<Building> Model::GetNewBuildingById(int id) const {
   switch (instance.GetTowerType()) {
     case 0:
       return std::make_shared<Building>(instance);
-
-    case 1:
-      return std::make_shared<DefaultTower>(instance);
-
-    case 2:
-      return std::make_shared<MultiTower>(instance);
-
     default:
       return nullptr;
   }

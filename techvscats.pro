@@ -16,14 +16,11 @@ SOURCES += \
          main.cpp \
          Controller/controller.cpp \
          Controller/spawner.cpp \
-         GameObject/active_tower.cpp \
          GameObject/projectile.cpp \
          GameObject/enemy.cpp \
          GameObject/game_object.cpp \
          GameObject/moving_object.cpp \
          GameObject/building.cpp \
-         GameObject/default_tower.cpp \
-         GameObject/multi_tower.cpp \
          Model/model.cpp \
          Model/road.cpp \
          Model/coordinate.cpp \
@@ -35,13 +32,10 @@ HEADERS += \
          Controller/controller.h \
          Controller/spawner.h \
          GameObject/building.h \
-         GameObject/active_tower.h \
          GameObject/projectile.h \
          GameObject/enemy.h \
          GameObject/game_object.h \
          GameObject/moving_object.h \
-         GameObject/default_tower.h \
-         GameObject/multi_tower.h \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \

@@ -6,8 +6,6 @@
 #include <memory>
 
 #include "GameObject/enemy.h"
-#include "GameObject/active_tower.h"
-#include "GameObject/passive_tower.h"
 #include "GameObject/projectile.h"
 
 enum class Exit {

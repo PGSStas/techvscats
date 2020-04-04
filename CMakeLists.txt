@@ -19,14 +19,11 @@ add_executable(techvscats
         main.cpp
         Controller/controller.cpp
         Controller/spawner.cpp
-        GameObject/active_tower.cpp
         GameObject/projectile.cpp
         GameObject/enemy.cpp
         GameObject/game_object.cpp
         GameObject/moving_object.cpp
         GameObject/building.cpp
-        GameObject/default_tower.cpp
-        GameObject/multi_tower.cpp
         Model/model.cpp
         Model/road.cpp
         Model/coordinate.cpp

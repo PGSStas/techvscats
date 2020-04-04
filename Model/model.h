@@ -19,8 +19,6 @@
 #include "GameObject/building.h"
 #include "GameObject/projectile.h"
 #include "Controller/spawner.h"
-#include "GameObject/default_tower.h"
-#include "GameObject/multi_tower.h"
 #include "enemy_group.h"
 #include "road.h"
 
