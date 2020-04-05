@@ -173,3 +173,8 @@ void View::DrawWindow(QPainter* painter, const QBrush& brush) {
   painter->drawRect(top_corner.x, top_corner.y,
                     rect_size.width, rect_size.height);
 }
+
+void View::resizeEvent(QResizeEvent*) {
+  size_handler_->ChangeSystem(this->width(), this->height());
+  repaint();
+}
