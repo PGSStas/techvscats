@@ -7,12 +7,8 @@
 #include <QPushButton>
 #include <QElapsedTimer>
 #include <QLabel>
-#include <QMainWindow>
-#include <QMouseEvent>
 #include <QObject>
-#include <QPushButton>
 #include <QString>
-#include <QLabel>
 #include <QDebug>
 
 #include <memory>
