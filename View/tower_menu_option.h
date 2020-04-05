@@ -25,7 +25,7 @@ class TowerMenuOption {
 
  private:
   const int kMaxSize_ = 36;
-  const Building replacing_tower_;
+  const Building& replacing_tower_;
   std::function<void()> action_;
 };
 

@@ -7,8 +7,8 @@
 
 class Building : public GameObject {
  public:
-  explicit Building(int tower_type = 0);
-  explicit Building(const Building& other);
+  Building() = default;
+  Building(const Building& other);
   void SetParameters(int id, const QColor& draw_color, int max_level,
       int action_range);
 
@@ -23,7 +23,6 @@ class Building : public GameObject {
   void Draw(QPainter* painter) const override;
 
   int GetId() const;
-  int GetTowerType() const;
   int GetInteractionRadius() const;
   int GetMaxLevel() const;
   int GetCurrentLevel() const;
@@ -35,7 +34,6 @@ class Building : public GameObject {
   int current_level_ = 0;
   int action_range_ = 75;
 
-  const int kTowerType;
   const int kInteractionRadius = 15;
 
   // later here should be images to draw

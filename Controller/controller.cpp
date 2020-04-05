@@ -165,23 +165,24 @@ void Controller::CreateTowerMenu(int tower_to_process) {
   const auto& building_tree = model_->GetBuildingsTree();
   int building_id = buildings[tower_to_process]->GetId();
 
-  // Tower building & evolve & delete options (will affects the type of tower)
+  // Upgrade option (will only affect level of tower, but not the type)
+  if (building->GetMaxLevel() > building->GetCurrentLevel()) {
+    options.push_back(std::make_shared<TowerMenuOption>(
+        model_->GetBuildingById(building_id),
+        [&, tower_to_process, building_id]() {
+          SetBuilding(tower_to_process, building_id);
+        }));
+  }
+
+  // Tower building & evolve & delete options (will affect the type of tower)
   for (const auto& to_change_id : building_tree[building_id]) {
     options.push_back(std::make_shared<TowerMenuOption>(
-        *model_->GetNewBuildingById(to_change_id),
+        model_->GetBuildingById(to_change_id),
         [&, tower_to_process, to_change_id]() {
           SetBuilding(tower_to_process, to_change_id);
         }));
   }
 
-  // Upgrade option (will only affect level of tower, but not the type)
-  if (building->GetMaxLevel() > building->GetCurrentLevel()) {
-    options.push_back(std::make_shared<TowerMenuOption>(
-        *model_->GetNewBuildingById(building_id),
-        [&, tower_to_process, building_id]() {
-          SetBuilding(tower_to_process, building_id);
-        }));
-  }
   auto menu = std::make_shared<TowerMenu>(current_time_, building, options);
   view_->ShowTowerMenu(menu);
 }

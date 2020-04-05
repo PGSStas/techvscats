@@ -19,10 +19,6 @@ void Building::Upgrade() {
   qDebug() << "building #" << id_ << " upgraded to" << current_level_;
 }
 
-Building::Building(int tower_type) :
-    kTowerType(tower_type) {
-}
-
 void Building::SetParameters(int id, const QColor& draw_color, int max_level,
     int action_range) {
   id_ = id;
@@ -32,13 +28,10 @@ void Building::SetParameters(int id, const QColor& draw_color, int max_level,
   action_range_ = action_range;
 }
 
-Building::Building(const Building& other) :
-    Building(other.kTowerType) {
-  id_ = other.id_;
-  draw_color_ = other.draw_color_;
-  max_level_ = other.max_level_;
+Building::Building(const Building& other) {
+  SetParameters(other.id_, other.draw_color_, other.max_level_,
+      other.action_range_);
   current_level_ = other.current_level_;
-  action_range_ = other.action_range_;
 }
 
 void Building::Draw(QPainter* painter) const {
@@ -59,10 +52,6 @@ int Building::GetMaxLevel() const {
 
 int Building::GetCurrentLevel() const {
   return current_level_;
-}
-
-int Building::GetTowerType() const {
-  return kTowerType;
 }
 
 int Building::GetActionRange() const {

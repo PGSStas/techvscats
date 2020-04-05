@@ -110,7 +110,8 @@ const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
 void Model::SetBuildingAtIndex(int i, int id) {
   qDebug() << "set b" << i << " " << id;
   Coordinate position = buildings_[i]->GetPosition();
-  buildings_[i] = GetNewBuildingById(id);
+  // Create new building by id
+  buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
   buildings_[i]->SetPosition(position);
 }
 
@@ -118,22 +119,12 @@ void Model::UpgradeBuildingAtIndex(int i) {
   buildings_[i]->Upgrade();
 }
 
-std::shared_ptr<Building> Model::GetNewBuildingById(int id) const {
-  const auto& instance = id_to_building_[id];
-  switch (instance.GetTowerType()) {
-    case 0:
-      return std::make_shared<Building>(instance);
-    default:
-      return nullptr;
-  }
+const Building& Model::GetBuildingById(int id) const {
+  return id_to_building_[id];
 }
 
 const std::vector<std::vector<int>>& Model::GetBuildingsTree() const {
   return buildings_tree_;
-}
-
-void Model::RemoveDeadSpawners() {
-  spawners_.remove_if([](const Spawner& sp) { return sp.IsDead(); });
 }
 
 void Model::LoadLevelFromJson(int level) {

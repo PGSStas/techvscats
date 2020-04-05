@@ -45,14 +45,12 @@ class Model {
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
 
-  const std::vector<Coordinate>& GetTowerSlots() const;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
   const std::vector<std::vector<int>>& GetBuildingsTree() const;
-  std::shared_ptr<Building> GetNewBuildingById(int id) const;
+  const Building& GetBuildingById(int id) const;
 
   void SetBuildingAtIndex(int i, int id);
   void UpgradeBuildingAtIndex(int i);
-  void RemoveDeadSpawners();
 
  private:
   void LoadLevelFromJson(int level);
