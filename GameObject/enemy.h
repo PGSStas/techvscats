@@ -16,7 +16,7 @@ class Enemy : public MovingObject {
   void SetParameters(double speed);
   void Move() override;
   void Draw(QPainter* painter,
-            std::shared_ptr<SizeHandler> size_handler) const override;
+            const std::shared_ptr<SizeHandler>& size_handler) const override;
   void SetRoad(const Road& road);
   bool IsDead() const;
 

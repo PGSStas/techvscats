@@ -11,14 +11,16 @@
 class GameObject {
  public:
   GameObject() = default;
-  explicit GameObject(Coordinate position);
+  GameObject(Coordinate position, Size size);
 
-  virtual void Draw(QPainter* painter, std::shared_ptr<SizeHandler>) const = 0;
+  virtual void Draw(QPainter* painter,
+      const std::shared_ptr<SizeHandler>& size_handler) const = 0;
   virtual void Tick() = 0;
 
   Coordinate GetPosition() const;
   void SetPosition(Coordinate position);
   Size GetSize() const;
+  void SetSize(Size size);
 
  protected:
   Coordinate position_;

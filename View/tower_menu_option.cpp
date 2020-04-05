@@ -13,12 +13,13 @@ bool TowerMenuOption::IsPressed(Coordinate option_position,
 }
 
 void TowerMenuOption::Draw(QPainter* painter, Coordinate position,
-                          int current_size) const {
+                          Size current_size) const {
   painter->save();
 
   // to be drawn from picture, e. g. "menubutton_id_.png"
   painter->setBrush(Qt::lightGray);
-  painter->drawRect(position.x, position.y, current_size, current_size);
+  painter->drawRect(position.x, position.y,
+      current_size.width, current_size.height);
   painter->drawText(position.x, position.y,
       QString::number(replacing_tower_.GetId()));
 

@@ -7,7 +7,7 @@
 
 class Building : public GameObject {
  public:
-  Building() = default;
+  Building();
   Building(const Building& other);
   void SetParameters(int id, const QColor& draw_color, int max_level,
       int action_range);
@@ -20,10 +20,10 @@ class Building : public GameObject {
   virtual void Upgrade();
   void Tick() override;
 
-  void Draw(QPainter* painter) const override;
+  void Draw(QPainter* painter,
+      const std::shared_ptr<SizeHandler>& size_handler) const override;
 
   int GetId() const;
-  int GetInteractionRadius() const;
   int GetMaxLevel() const;
   int GetCurrentLevel() const;
   int GetActionRange() const;
@@ -33,8 +33,6 @@ class Building : public GameObject {
   int max_level_ = 0;
   int current_level_ = 0;
   int action_range_ = 75;
-
-  const int kInteractionRadius = 15;
 
   // later here should be images to draw
   QColor draw_color_ = QColor("black");

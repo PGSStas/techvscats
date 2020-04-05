@@ -12,4 +12,9 @@ Size GameObject::GetSize() const {
   return size_;
 }
 
-GameObject::GameObject(Coordinate position) : position_(position) {}
+void GameObject::SetSize(Size size) {
+  size_ = size;
+}
+
+GameObject::GameObject(Coordinate position, Size size)
+    : position_(position), size_(size) {}

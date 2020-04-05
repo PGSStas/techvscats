@@ -6,12 +6,8 @@ int Building::GetId() const {
   return id_;
 }
 
-int Building::GetInteractionRadius() const {
-  return kInteractionRadius;
-}
-
 bool Building::IsInside(Coordinate point) const {
-  return point.GetBetween(position_).GetLength() <= kInteractionRadius;
+  return point.GetDistanceTo(position_).GetLength() <= size_.width / 2;
 }
 
 void Building::Upgrade() {
@@ -31,15 +27,20 @@ void Building::SetParameters(int id, const QColor& draw_color, int max_level,
 Building::Building(const Building& other) {
   SetParameters(other.id_, other.draw_color_, other.max_level_,
       other.action_range_);
+  position_ = other.position_;
+  size_ = other.size_;
   current_level_ = other.current_level_;
 }
 
-void Building::Draw(QPainter* painter) const {
+void Building::Draw(QPainter* painter,
+    const std::shared_ptr<SizeHandler>& size_handler) const {
   painter->save();
   painter->setBrush(draw_color_);
-  painter->drawEllipse(QPoint(position_.x, position_.y),
-                       kInteractionRadius,
-                       kInteractionRadius);
+  Coordinate center = size_handler->GameToWindowCoordinate(position_);
+  Size window_size = size_handler->GameToWindowSize(size_);
+  painter->drawEllipse(QPointF(center.x, center.y),
+                       window_size.width / 2,
+                       window_size.height / 2);
 
   painter->restore();
 }
@@ -57,3 +58,5 @@ int Building::GetCurrentLevel() const {
 int Building::GetActionRange() const {
   return action_range_;
 }
+
+Building::Building() : GameObject(Coordinate(0, 0), Size(30, 30)) {}

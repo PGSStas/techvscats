@@ -50,13 +50,7 @@ void View::paintEvent(QPaintEvent*) {
     start_game_button_->move(start_game_button_position.x,
                              start_game_button_position.y);
 
-    painter.setBrush(QColor("#000080"));
-    painter.drawRect(0, 0, width(), height());
-
-    painter.setBrush(QColor("#ffffff"));
-    Coordinate top_corner = size_handler_->GameToWindowCoordinate({0, 0});
-    Size size = size_handler_->GameToWindowSize({1920, 1080});
-    painter.drawRect(top_corner.x, top_corner.y, size.width_, size.height_);
+    DrawWindow(&painter, QColor("#ffffff"));
   }
   if (window_type_ == WindowType::kGame) {
     Coordinate return_menu_button_position =
@@ -64,10 +58,11 @@ void View::paintEvent(QPaintEvent*) {
     return_menu_button_->move(return_menu_button_position.x,
                               return_menu_button_position.y);
 
+    DrawWindow(&painter, QColor("#53a661"));
     DrawBackground(&painter);
     DrawEnemies(&painter);
     if (is_tower_menu_enabled_) {
-      tower_menu_->Draw(&painter, game_time_.elapsed());
+      tower_menu_->Draw(&painter, size_handler_, game_time_.elapsed());
     }
     DrawTowers(&painter);
   }
@@ -103,14 +98,6 @@ void View::DrawBackground(QPainter* painter) {
   // Test realization. Will be changed.
   painter->save();
 
-  painter->setBrush(QColor("#000080"));
-  painter->drawRect(0, 0, width(), height());
-  painter->setBrush(QColor("#53a661"));
-  Coordinate top_corner =
-      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
-  painter->drawRect(top_corner.x, top_corner.y, rect_size.width_, rect_size.height_);
-
   painter->setPen(QPen(Qt::black, 5));
   const auto& roads = controller_->GetRoads();
   for (const auto& road : roads) {
@@ -129,20 +116,21 @@ void View::DrawBackground(QPainter* painter) {
 void View::DrawTowers(QPainter* painter) {
   const auto& buildings = controller_->GetBuildings();
   for (const auto& building : buildings) {
-    building->Draw(painter);
+    building->Draw(painter, size_handler_);
   }
 }
 
 void View::DrawEnemies(QPainter* painter) {
   auto enemies_list = controller_->GetEnemies();
   for (const auto& enemy : *enemies_list) {
-    enemy->Draw(painter);
+    enemy->Draw(painter, size_handler_);
   }
 }
 
 void View::mouseReleaseEvent(QMouseEvent* event) {
   if (event->button() == Qt::LeftButton) {
-    controller_->MousePress(Coordinate(event->x(), event->y()));
+    controller_->MousePress(size_handler_->WindowToGameCoordinate(
+        Coordinate(event->x(), event->y())));
   }
 }
 
@@ -165,11 +153,23 @@ std::shared_ptr<TowerMenu> View::GetTowerMenu() {
 
 void View::mouseMoveEvent(QMouseEvent* event) {
   if (window_type_ == WindowType::kGame) {
-    controller_->MouseMove(Coordinate(event->x(), event->y()));
+    controller_->MouseMove(size_handler_->WindowToGameCoordinate(
+        Coordinate(event->x(), event->y())));
   }
 }
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_->ChangeSystem(this->width(), this->height());
   repaint();
+}
+
+void View::DrawWindow(QPainter* painter, const QBrush& brush) {
+  painter->setBrush(QColor("#000080"));
+  painter->drawRect(0, 0, width(), height());
+  painter->setBrush(brush);
+  Coordinate top_corner =
+      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
+  painter->drawRect(top_corner.x, top_corner.y,
+                    rect_size.width, rect_size.height);
 }
