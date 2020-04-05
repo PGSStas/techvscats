@@ -11,7 +11,7 @@ TowerMenu::TowerMenu(int creation_time,
 }
 
 void TowerMenu::Draw(QPainter* painter,
-    const std::shared_ptr<SizeHandler>& size_handler,int current_time) const {
+    const std::shared_ptr<SizeHandler>& size_handler, int current_time) const {
   painter->save();
 
   painter->setBrush(QColor(148, 148, 148, 0.33 * 255));
