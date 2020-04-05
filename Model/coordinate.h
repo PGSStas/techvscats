@@ -2,6 +2,7 @@
 #define MODEL_COORDINATE_H_
 
 #include <cmath>
+#include "size.h"
 
 struct Coordinate {
   double x;
@@ -9,16 +10,19 @@ struct Coordinate {
 
   Coordinate() = default;
   Coordinate(double x, double y);
+  Size GetDistanceTo(Coordinate right);
 
-  double GetLength() const;
-  Coordinate GetBetween(const Coordinate& right);
-
-  Coordinate operator+(const Coordinate& right) const;
-  Coordinate operator-(const Coordinate& right) const;
-  Coordinate& operator+=(const Coordinate& right);
+  Coordinate operator*(double right) const;
+  Coordinate operator/(double right) const;
   Coordinate& operator*=(double right);
   Coordinate& operator/=(double right);
-  bool operator==(const Coordinate& right)const;
+
+  Coordinate operator+(Size right) const;
+  Coordinate& operator+=(Size right);
+  Coordinate operator-(Size right) const;
+  Coordinate& operator-=(Size right);
+
+  bool operator==(Coordinate right) const;
 };
 
 #endif  // MODEL_COORDINATE_H_

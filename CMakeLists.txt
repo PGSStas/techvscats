@@ -27,9 +27,11 @@ add_executable(techvscats
         Model/model.cpp
         Model/road.cpp
         Model/coordinate.cpp
+        Model/size.cpp
         View/view.cpp
         View/tower_menu.cpp
         View/tower_menu_option.cpp
+        View/size_handler.cpp
         resources.qrc)
 
 target_link_libraries(techvscats Qt5::Core)
