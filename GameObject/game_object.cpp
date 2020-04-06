@@ -1,5 +1,8 @@
 #include "game_object.h"
 
+GameObject::GameObject(Coordinate position, Size size)
+    : position_(position), size_(size) {}
+
 Coordinate GameObject::GetPosition() const {
   return position_;
 }
@@ -15,6 +18,3 @@ Size GameObject::GetSize() const {
 void GameObject::SetSize(Size size) {
   size_ = size;
 }
-
-GameObject::GameObject(Coordinate position, Size size)
-    : position_(position), size_(size) {}

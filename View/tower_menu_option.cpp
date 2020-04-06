@@ -26,7 +26,7 @@ void TowerMenuOption::Draw(QPainter* painter, Coordinate position,
   painter->restore();
 }
 
-void TowerMenuOption::Action() {
+void TowerMenuOption::MakeAction() {
   action_();
 }
 

@@ -122,7 +122,7 @@ void View::DrawTowers(QPainter* painter) {
 
 void View::DrawEnemies(QPainter* painter) {
   auto enemies_list = controller_->GetEnemies();
-  for (const auto& enemy : *enemies_list) {
+  for (const auto& enemy : enemies_list) {
     enemy->Draw(painter, size_handler_);
   }
 }
@@ -164,6 +164,8 @@ void View::resizeEvent(QResizeEvent*) {
 }
 
 void View::DrawWindow(QPainter* painter, const QBrush& brush) {
+  painter->save();
+
   painter->setBrush(QColor("#000080"));
   painter->drawRect(0, 0, width(), height());
   painter->setBrush(brush);
@@ -172,4 +174,6 @@ void View::DrawWindow(QPainter* painter, const QBrush& brush) {
   Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
   painter->drawRect(top_corner.x, top_corner.y,
                     rect_size.width, rect_size.height);
+
+  painter->restore();
 }

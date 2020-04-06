@@ -2,6 +2,8 @@
 
 #include "building.h"
 
+Building::Building() : GameObject(Coordinate(0, 0), Size(30, 30)) {}
+
 int Building::GetId() const {
   return id_;
 }
@@ -58,5 +60,3 @@ int Building::GetCurrentLevel() const {
 int Building::GetActionRange() const {
   return action_range_;
 }
-
-Building::Building() : GameObject(Coordinate(0, 0), Size(30, 30)) {}

@@ -76,16 +76,16 @@ class Model {
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
   std::vector<Building> id_to_building_;
-  // buildings_tree[i] is a vector of towers to which
+  // upgrades_tree[i] is a vector of towers to which
   // ith tower can be evolved or changed
-  std::vector<std::vector<int>> buildings_tree_;
+  std::vector<std::vector<int>> upgrades_tree_;
 
  private:
   // Helping functions
 
   // Creates EmptyTower classes from empty_towers_ vector
   // Should be called on load of empty_towers_
-  void InitialiseTowerSlots();
+  void InitializeTowerSlots();
 };
 
 #endif  // MODEL_MODEL_H_

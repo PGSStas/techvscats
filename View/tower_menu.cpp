@@ -61,10 +61,10 @@ std::shared_ptr<TowerMenuOption>
 
 Coordinate TowerMenu::GetCoordinate(int i, int size) const {
   int x = tower_->GetPosition().x -
-      container_length_ / 2 + i * options_[i]->GetMaxSize() + i * 10
-      + (options_[i]->GetMaxSize() - size) / 2;
-  int y = tower_->GetPosition().y + tower_->GetSize().height / 2 + 5
-          + (options_[i]->GetMaxSize() - size) / 2;
+      container_length_ / 2 + i * options_[i]->GetMaxSize()
+      + i * kIndentBetweenButtons + (options_[i]->GetMaxSize() - size) / 2;
+  int y = tower_->GetPosition().y + tower_->GetSize().height / 2
+      + kIndentFromTower + (options_[i]->GetMaxSize() - size) / 2;
   return Coordinate(x, y);
 }
 

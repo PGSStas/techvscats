@@ -21,7 +21,7 @@ class TowerMenuOption {
   bool IsPressed(Coordinate option_position, Coordinate press_position) const;
 
   void Draw(QPainter* painter, Coordinate position, Size current_size) const;
-  void Action();
+  void MakeAction();
 
  private:
   const int kMaxSize_ = 36;

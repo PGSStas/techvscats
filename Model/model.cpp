@@ -11,26 +11,26 @@ void Model::SetGameLevel(int level_id) {
   empty_towers_ = {{100, 100}, {200, 100}, {500, 100}};
   Building building_instance;
   building_instance.SetParameters(0, QColor(Qt::gray), 0, 0);
-  buildings_tree_.push_back({1, 2});
+  upgrades_tree_.push_back({1, 2});
 
   Building building_instance2;
   building_instance2.SetParameters(1, Qt::white, 2, 75);
-  buildings_tree_.push_back({3, 0});
+  upgrades_tree_.push_back({3, 0});
 
   Building building_instance3;
   building_instance3.SetParameters(2, Qt::darkRed, 3, 100);
-  buildings_tree_.push_back({1, 3, 0});
+  upgrades_tree_.push_back({1, 3, 0});
 
   Building building_instance4;
   building_instance4.SetParameters(3, Qt::darkBlue, 4, 150);
-  buildings_tree_.push_back({0});
+  upgrades_tree_.push_back({0});
 
   id_to_building_.push_back(building_instance);
   id_to_building_.push_back(building_instance2);
   id_to_building_.push_back(building_instance3);
   id_to_building_.push_back(building_instance4);
 
-  InitialiseTowerSlots();
+  InitializeTowerSlots();
 }
 
 int Model::GetTimeBetweenWaves() const {
@@ -95,7 +95,7 @@ void Model::ClearGameModel() {
   qDebug() << "Clear Model";
 }
 
-void Model::InitialiseTowerSlots() {
+void Model::InitializeTowerSlots() {
   for (Coordinate coordinate : empty_towers_) {
     auto empty_place = std::make_shared<Building>(id_to_building_[0]);
     empty_place->SetPosition(coordinate);
@@ -124,7 +124,7 @@ const Building& Model::GetBuildingById(int id) const {
 }
 
 const std::vector<std::vector<int>>& Model::GetBuildingsTree() const {
-  return buildings_tree_;
+  return upgrades_tree_;
 }
 
 void Model::LoadLevelFromJson(int level) {

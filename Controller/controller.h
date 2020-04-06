@@ -22,7 +22,7 @@ class Controller : public AbstractController {
   void MousePress(Coordinate position) override;
   void MouseMove(Coordinate position) override;
 
-  std::list<std::shared_ptr<Enemy>>* GetEnemies() const override;
+  const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<Road>& GetRoads() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
 
@@ -30,8 +30,8 @@ class Controller : public AbstractController {
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
 
-  WindowType game_mode_ = WindowType::kMainMenu;
-  bool has_unprocessed_rounds_ = true;
+  WindowType game_mode_;
+  bool has_unprocessed_rounds_ = false;
   int current_time_ = 0;
   int last_round_start_time_ = 0;
 
@@ -45,7 +45,7 @@ class Controller : public AbstractController {
   void TickSpawners();
   void TickEnemies();
 
-  void CreateTowerMenu(int tower_to_process);
+  void CreateTowerMenu(int tower_index);
 
   // Upgrades or evolves the building
   void SetBuilding(int index_in_buildings, int replacing_id);
