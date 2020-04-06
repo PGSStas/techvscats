@@ -18,34 +18,30 @@ void Building::Upgrade() {
   current_level_++;
 }
 
-Building::Building(const std::list<std::shared_ptr<Enemy>>& enemies) :
-    enemies_(enemies) {}
+Building::Building(int id, int max_level, int settle_cost, int upgrade_cost,
+                   Size size,
+                   const std::list<std::shared_ptr<Enemy>>& enemies) :
+    id_(id), max_level_(max_level), settle_cost_(settle_cost),
+    upgrade_cost_(upgrade_cost), enemies_(enemies) {
+  size_ = size;
+}
 
-Building::Building(const Building& other) : Building(other.enemies_) {
-  SetParameters(other.id_,
-                other.max_level_,
-                other.settle_cost_,
-                other.upgrade_cost_,
-                other.max_aims_,
+Building::Building(const Building& other) :
+    Building(other.id_, other.max_level_, other.settle_cost_,
+             other.upgrade_cost_, other.size_, other.enemies_) {
+  SetParameters(other.max_aims_,
                 other.attack_range_,
                 other.attack_damage_,
                 other.projectile_id_);
   SetAnimationParameters(other.reload_color_, other.reload_time_,
                          other.pre_fire_color_, other.pre_fire_time_,
                          other.post_fire_color_, other.post_fire_time_);
-   size_ = other.size_;
+  size_ = other.size_;
   current_level_ = other.current_level_;
 }
 
-void Building::Draw(QPainter* painter,
-    const std::shared_ptr<SizeHandler>& size_handler) const {
+void Building::Draw(QPainter* painter,const SizeHandler& size_handler) const {
   painter->save();
-  painter->setBrush(draw_color_);
-  Coordinate center = size_handler->GameToWindowCoordinate(position_);
-  Size window_size = size_handler->GameToWindowSize(size_);
-  painter->drawEllipse(QPointF(center.x, center.y),
-                       window_size.width / 2,
-                       window_size.height / 2);
   switch (action) {
     case Action::reload: painter->setBrush(reload_color_);
       break;
@@ -55,20 +51,20 @@ void Building::Draw(QPainter* painter,
       break;
   }
   painter->save();
-   Coordinate center = size_handler->GameToWindowCoordinate(position_);
-  Size window_size = size_handler->GameToWindowSize(size_);
+  Coordinate center = size_handler.GameToWindowCoordinate(position_);
+  Size window_size = size_handler.GameToWindowSize(size_);
   painter->drawEllipse(QPointF(center.x, center.y),
                        window_size.width / 2,
                        window_size.height / 2);
   painter->restore();
 }
 
-void Building::Tick(int controller_current_time) {
+void Building::Tick(int current_time) {
   if (max_aims_ == 0) {
     return;
   }
-  wait_time_ += (controller_current_time - object_current_time_);
-  object_current_time_ = controller_current_time;
+  wait_time_ += (current_time - object_current_time_);
+  object_current_time_ = current_time;
 
   switch (action) {
     case Action::reload:
@@ -111,24 +107,17 @@ int Building::GetCurrentLevel() const {
   return current_level_;
 }
 
-void Building::SetParameters(int id,
-                             int max_level,
-                             int settle_cost,
-                             int upgrade_cost,
-                             int max_aims,
-                             int attack_range,
-                             int attack_damage,
-                             int projectile_id) {
+void Building::SetParameters(
+    int max_aims,
+    int attack_range,
+    int attack_damage,
+    int projectile_id) {
 
-  id_ = id;
-  projectile_id_ = projectile_id;
-  max_level_ = max_level;
-  current_level_ = 1;
-  settle_cost_ = settle_cost;
-  upgrade_cost_ = upgrade_cost;
+  max_aims_ = max_aims;
   attack_range_ = attack_range;
   attack_damage_ = attack_damage;
-  max_aims_ = max_aims;
+  projectile_id_ = projectile_id;
+  current_level_ = 1;
 }
 
 void Building::SetAnimationParameters(QColor wait_color,
@@ -153,7 +142,7 @@ void Building::UpdateAim() {
   }
   aims_.remove_if([&](const auto& object) {
     return (object->IsDead() ||
-        object->GetPosition().GetBetween(position_).GetLength()
+        object->GetPosition().GetDistanceTo(position_).GetLength()
             > attack_range_);
   });
 
@@ -168,7 +157,7 @@ void Building::UpdateAim() {
       break;
     }
     bool can_add = true;
-    if (enemy->GetPosition().GetBetween(position_).GetLength()
+    if (enemy->GetPosition().GetDistanceTo(position_).GetLength()
         > attack_range_) {
       continue;
     }

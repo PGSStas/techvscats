@@ -11,22 +11,21 @@ enum class ProjectileType {
 
 class Projectile : public MovingObject {
  public:
-  explicit Projectile(const std::shared_ptr<Projectile>& other);
-  explicit Projectile(ProjectileType projectile_type = ProjectileType::kDefault);
+  explicit Projectile(const Projectile& other);
+  explicit Projectile(Size size, double speed ,
+                      ProjectileType projectile_type = ProjectileType::kDefault);
 
-  void SetParameters(int speed, int damage = 0,
+  void SetParameters(double speed, int damage = 0,
                      std::shared_ptr<Enemy> aim = {});
-  void SetAnimationParameters(QColor draw_color,
-                              int projectile_size);
+  void SetAnimationParameters(QColor draw_color);
   ProjectileType GetType() const;
   ~Projectile() = default;
-  void Draw(QPainter* painter) const override;
+  void Draw(QPainter* painter, const SizeHandler& handler) const override;
   void Tick(int current_time) override;
   void Move() override;
 
  protected:
   QColor draw_color_ = Qt::darkYellow;
-  int projectile_size_ = 1;
   std::shared_ptr<Enemy> aim_ = {};
   ProjectileType type_ = ProjectileType::kDefault;
   int damage_ = 0;

@@ -11,21 +11,21 @@ TowerMenu::TowerMenu(int creation_time,
 }
 
 void TowerMenu::Draw(QPainter* painter,
-    const std::shared_ptr<SizeHandler>& size_handler, int current_time) const {
+    const SizeHandler& size_handler, int current_time) const {
   painter->save();
 
   painter->setBrush(QColor(148, 148, 148, 0.33 * 255));
   Coordinate center =
-      size_handler->GameToWindowCoordinate(tower_->GetPosition());
+      size_handler.GameToWindowCoordinate(tower_->GetPosition());
   if (hovered_option_ == nullptr) {
-    Size radius = size_handler->GameToWindowSize(
-        Size(tower_->GetActionRange(), tower_->GetActionRange()));
+    Size radius = size_handler.GameToWindowSize(
+        Size(tower_->GetAttackRange(), tower_->GetAttackRange()));
     painter->drawEllipse(QPointF(center.x, center.y),
                          radius.width, radius.height);
   } else {
-    Size radius = size_handler->GameToWindowSize(
-        Size(hovered_option_->GetReplacingTower().GetActionRange(),
-               hovered_option_->GetReplacingTower().GetActionRange()));
+    Size radius = size_handler.GameToWindowSize(
+        Size(hovered_option_->GetReplacingTower().GetAttackRange(),
+               hovered_option_->GetReplacingTower().GetAttackRange()));
     painter->drawEllipse(QPointF(center.x, center.y),
                          radius.width, radius.height);
   }
@@ -34,10 +34,10 @@ void TowerMenu::Draw(QPainter* painter,
   int button_size = (time_delta * 1.0 / kAnimationDuration) *
                     options_[0]->GetMaxSize();
   Size window_button_size =
-      size_handler->GameToWindowSize(Size(button_size, button_size));
+      size_handler.GameToWindowSize(Size(button_size, button_size));
   for (size_t i = 0; i < options_.size(); i++) {
     options_[i]->Draw(painter,
-        size_handler->GameToWindowCoordinate(GetCoordinate(i, button_size)),
+        size_handler.GameToWindowCoordinate(GetCoordinate(i, button_size)),
         window_button_size);
   }
 

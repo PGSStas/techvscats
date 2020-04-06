@@ -34,14 +34,13 @@ void Enemy::Move() {
   position_ += move_direction;
 }
 
-void Enemy::Draw(QPainter* painter,
-                 const std::shared_ptr<SizeHandler>& size_handler) const {
+void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
   painter->setPen(QColor("black"));
   Coordinate point =
-      size_handler->GameToWindowCoordinate(position_ - Size(15, 15));
-  Size size = size_handler->GameToWindowSize({30, 30});
+      size_handler.GameToWindowCoordinate(position_ - Size(15, 15));
+  Size size = size_handler.GameToWindowSize({30, 30});
   painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->restore();

@@ -45,7 +45,7 @@ class View : public QMainWindow {
  private:
   WindowType window_type_;
   AbstractController* controller_;
-  std::shared_ptr<SizeHandler> size_handler_;
+  SizeHandler size_handler_;
   QElapsedTimer game_time_;
 
   // Game window

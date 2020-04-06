@@ -1,8 +1,7 @@
 #include "view.h"
 
 View::View(AbstractController* controller)
-    : controller_(controller),
-      size_handler_(std::make_shared<SizeHandler>()) {
+    : controller_(controller){
   setMinimumSize(640, 360);
   setMouseTracking(true);
 
@@ -41,12 +40,12 @@ void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   // Example of work
 
-  Coordinate label_position = size_handler_->GameToWindowCoordinate({300, 10});
+  Coordinate label_position = size_handler_.GameToWindowCoordinate({300, 10});
   wave_status_label_->move(label_position.x, label_position.y);
 
   if (window_type_ == WindowType::kMainMenu) {
     Coordinate start_game_button_position =
-        size_handler_->GameToWindowCoordinate({0, 0});
+        size_handler_.GameToWindowCoordinate({0, 0});
     start_game_button_->move(start_game_button_position.x,
                              start_game_button_position.y);
 
@@ -54,7 +53,7 @@ void View::paintEvent(QPaintEvent*) {
   }
   if (window_type_ == WindowType::kGame) {
     Coordinate return_menu_button_position =
-        size_handler_->GameToWindowCoordinate({0, 0});
+        size_handler_.GameToWindowCoordinate({0, 0});
     return_menu_button_->move(return_menu_button_position.x,
                               return_menu_button_position.y);
 
@@ -104,9 +103,9 @@ void View::DrawBackground(QPainter* painter) {
   for (const auto& road : roads) {
     for (int i = 0; !road.IsEnd(i + 1); i++) {
       Coordinate start_point =
-          size_handler_->GameToWindowCoordinate(road.GetNode(i));
+          size_handler_.GameToWindowCoordinate(road.GetNode(i));
       Coordinate end_point =
-          size_handler_->GameToWindowCoordinate(road.GetNode(i + 1));
+          size_handler_.GameToWindowCoordinate(road.GetNode(i + 1));
       painter->drawLine(start_point.x, start_point.y, end_point.x, end_point.y);
     }
   }
@@ -137,7 +136,7 @@ void View::DrawProjectiles(QPainter* painter) {
 
 void View::mouseReleaseEvent(QMouseEvent* event) {
   if (event->button() == Qt::LeftButton) {
-    controller_->MousePress(size_handler_->WindowToGameCoordinate(
+    controller_->MousePress(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())));
   }
 }
@@ -161,13 +160,13 @@ std::shared_ptr<TowerMenu> View::GetTowerMenu() {
 
 void View::mouseMoveEvent(QMouseEvent* event) {
   if (window_type_ == WindowType::kGame) {
-    controller_->MouseMove(size_handler_->WindowToGameCoordinate(
+    controller_->MouseMove(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())));
   }
 }
 
 void View::resizeEvent(QResizeEvent*) {
-  size_handler_->ChangeSystem(this->width(), this->height());
+  size_handler_.ChangeSystem(this->width(), this->height());
   repaint();
 }
 
@@ -176,8 +175,8 @@ void View::DrawWindow(QPainter* painter, const QBrush& brush) {
   painter->drawRect(0, 0, width(), height());
   painter->setBrush(brush);
   Coordinate top_corner =
-      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
+      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
   painter->drawRect(top_corner.x, top_corner.y,
                     rect_size.width, rect_size.height);
 }

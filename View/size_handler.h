@@ -10,8 +10,6 @@
 
 class SizeHandler {
  public:
-  SizeHandler();
-
   void ChangeSystem(double window_width, double window_height);
 
   Coordinate WindowToGameCoordinate(Coordinate window_coordinate) const;
@@ -21,10 +19,9 @@ class SizeHandler {
 
  private:
   // The ratio of game coordinates to real
-  double scaling_coefficient_;
+  double scaling_coefficient_ = 3;
 
-  Size origin_offset_;
-
+  Size origin_offset_ = {0, 0};
   const double game_width_ = kGameWidth;
   const double game_height_ = kGameHeight;
 };
