@@ -20,7 +20,7 @@ class TowerMenuOption {
   // with left top angle in option_position
   bool IsPressed(Coordinate option_position, Coordinate press_position) const;
 
-  void Draw(QPainter* painter, Coordinate position, int current_size) const;
+  void Draw(QPainter* painter, Coordinate position, Size current_size) const;
   void Action();
 
  private:

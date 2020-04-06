@@ -6,9 +6,9 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QElapsedTimer>
+#include <QLabel>
 #include <QObject>
 #include <QString>
-#include <QLabel>
 #include <QDebug>
 
 #include <memory>
@@ -16,6 +16,7 @@
 
 #include "Controller/abstract_controller.h"
 #include "tower_menu.h"
+#include "size_handler.h"
 
 enum class WindowType {
   kMainMenu,
@@ -44,6 +45,7 @@ class View : public QMainWindow {
  private:
   WindowType window_type_;
   AbstractController* controller_;
+  std::shared_ptr<SizeHandler> size_handler_;
   QElapsedTimer game_time_;
 
   // Game window
@@ -59,10 +61,13 @@ class View : public QMainWindow {
   const int kTimeBetweenTicks_ = 10;
 
  private:
-  void paintEvent(QPaintEvent* event) override;
+  void paintEvent(QPaintEvent*) override;
   void timerEvent(QTimerEvent* event) override;
+  void resizeEvent(QResizeEvent*) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
+
+  void DrawWindow(QPainter* painter, const QBrush& brush);
 
   // Game window
   void DrawBackground(QPainter* painter);

@@ -7,7 +7,7 @@ int Building::GetProjectileId() const {
 }
 
 bool Building::IsInside(Coordinate point) const {
-  return point.GetBetween(position_).GetLength() <= kInteractionRadius;
+  return point.GetDistanceTo(position_).GetLength() <= size_.width / 2;
 }
 
 int Building::GetId() const {
@@ -19,9 +19,7 @@ void Building::Upgrade() {
 }
 
 Building::Building(const std::list<std::shared_ptr<Enemy>>& enemies) :
-    enemies_(enemies) {
-
-}
+    enemies_(enemies) {}
 
 Building::Building(const Building& other) : Building(other.enemies_) {
   SetParameters(other.id_,
@@ -35,11 +33,19 @@ Building::Building(const Building& other) : Building(other.enemies_) {
   SetAnimationParameters(other.reload_color_, other.reload_time_,
                          other.pre_fire_color_, other.pre_fire_time_,
                          other.post_fire_color_, other.post_fire_time_);
+   size_ = other.size_;
   current_level_ = other.current_level_;
 }
 
-void Building::Draw(QPainter* painter) const {
+void Building::Draw(QPainter* painter,
+    const std::shared_ptr<SizeHandler>& size_handler) const {
   painter->save();
+  painter->setBrush(draw_color_);
+  Coordinate center = size_handler->GameToWindowCoordinate(position_);
+  Size window_size = size_handler->GameToWindowSize(size_);
+  painter->drawEllipse(QPointF(center.x, center.y),
+                       window_size.width / 2,
+                       window_size.height / 2);
   switch (action) {
     case Action::reload: painter->setBrush(reload_color_);
       break;
@@ -49,9 +55,12 @@ void Building::Draw(QPainter* painter) const {
       break;
   }
   painter->save();
-  painter->drawEllipse(QPoint(position_.x, position_.y),
-                       kInteractionRadius,
-                       kInteractionRadius);
+   Coordinate center = size_handler->GameToWindowCoordinate(position_);
+  Size window_size = size_handler->GameToWindowSize(size_);
+  painter->drawEllipse(QPointF(center.x, center.y),
+                       window_size.width / 2,
+                       window_size.height / 2);
+  painter->restore();
 }
 
 void Building::Tick(int controller_current_time) {

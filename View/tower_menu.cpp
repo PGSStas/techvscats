@@ -10,27 +10,35 @@ TowerMenu::TowerMenu(int creation_time,
       options_[0]->GetMaxSize() * options_.size() + 10 * (options_.size() - 1);
 }
 
-void TowerMenu::Draw(QPainter* painter, int current_time) const {
+void TowerMenu::Draw(QPainter* painter,
+    const std::shared_ptr<SizeHandler>& size_handler, int current_time) const {
   painter->save();
 
   painter->setBrush(QColor(148, 148, 148, 0.33 * 255));
+  Coordinate center =
+      size_handler->GameToWindowCoordinate(tower_->GetPosition());
   if (hovered_option_ == nullptr) {
-    painter->drawEllipse(QPoint(tower_->GetPosition().x,
-                                tower_->GetPosition().y),
-                         tower_->GetAttackRange(), tower_->GetAttackRange());
+    Size radius = size_handler->GameToWindowSize(
+        Size(tower_->GetActionRange(), tower_->GetActionRange()));
+    painter->drawEllipse(QPointF(center.x, center.y),
+                         radius.width, radius.height);
   } else {
-    painter->drawEllipse(QPoint(tower_->GetPosition().x,
-            tower_->GetPosition().y),
-                         hovered_option_->GetReplacingTower().GetAttackRange(),
-                         hovered_option_->GetReplacingTower().GetAttackRange());
+    Size radius = size_handler->GameToWindowSize(
+        Size(hovered_option_->GetReplacingTower().GetActionRange(),
+               hovered_option_->GetReplacingTower().GetActionRange()));
+    painter->drawEllipse(QPointF(center.x, center.y),
+                         radius.width, radius.height);
   }
 
   int time_delta = std::min(current_time - creation_time_, kAnimationDuration);
   int button_size = (time_delta * 1.0 / kAnimationDuration) *
                     options_[0]->GetMaxSize();
+  Size window_button_size =
+      size_handler->GameToWindowSize(Size(button_size, button_size));
   for (size_t i = 0; i < options_.size(); i++) {
     options_[i]->Draw(painter,
-        GetCoordinate(i, button_size), button_size);
+        size_handler->GameToWindowCoordinate(GetCoordinate(i, button_size)),
+        window_button_size);
   }
 
   painter->restore();
@@ -55,8 +63,7 @@ Coordinate TowerMenu::GetCoordinate(int i, int size) const {
   int x = tower_->GetPosition().x -
       container_length_ / 2 + i * options_[i]->GetMaxSize() + i * 10
       + (options_[i]->GetMaxSize() - size) / 2;
- // int y = tower_->GetPosition().y + tower_->GetInteractionRadius() + 5
-  int y = tower_->GetPosition().y + 10 + 5
+  int y = tower_->GetPosition().y + tower_->GetSize().height / 2 + 5
           + (options_[i]->GetMaxSize() - size) / 2;
   return Coordinate(x, y);
 }

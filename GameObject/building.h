@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "enemy.h"
-#include "game_object.h"
 #include "projectile.h"
 
 enum class Action {
@@ -38,7 +37,8 @@ class Building : public GameObject {
   virtual void Upgrade();
 
   void Tick(int controller_current_time) override;
-  void Draw(QPainter* painter) const override;
+  void Draw(QPainter* painter,
+      const std::shared_ptr<SizeHandler>& size_handler) const override;
 
   bool IsInside(Coordinate point) const;
 

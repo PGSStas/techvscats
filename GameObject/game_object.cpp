@@ -11,3 +11,13 @@ void GameObject::SetPosition(Coordinate position) {
 
 
 GameObject::GameObject(Coordinate position) : position_(position) {}
+Size GameObject::GetSize() const {
+  return size_;
+}
+
+void GameObject::SetSize(Size size) {
+  size_ = size;
+}
+
+GameObject::GameObject(Coordinate position, Size size)
+    : position_(position), size_(size) {}
