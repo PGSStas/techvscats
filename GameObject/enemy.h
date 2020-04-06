@@ -28,6 +28,8 @@ class Enemy : public MovingObject {
 
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
+
+  const int kMoveShift_ = 50;
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_

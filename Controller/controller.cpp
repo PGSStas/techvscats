@@ -2,7 +2,8 @@
 #include <QDebug>
 
 Controller::Controller() : model_(std::make_unique<Model>()),
-                           view_(std::make_unique<View>(this)) {}
+                           view_(std::make_unique<View>(this)),
+                           game_mode_(WindowType::kMainMenu) {}
 
 void Controller::StartGame(int level_id) {
   qDebug() << "Game Start!";
@@ -169,7 +170,7 @@ void Controller::MousePress(Coordinate position) {
   // Check if tower menu element was pressed
   auto pressed = view_->GetTowerMenu()->GetButtonContaining(position);
   if (pressed != nullptr) {
-    pressed->Action();
+    pressed->MakeAction();
     qDebug() << pressed->GetReplacingTower().GetId() << " action";
   }
 
@@ -186,28 +187,28 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   }
 }
 
-void Controller::CreateTowerMenu(int tower_to_process) {
+void Controller::CreateTowerMenu(int tower_index) {
   std::vector<std::shared_ptr<TowerMenuOption>> options;
   const auto& buildings = *model_->GetBuildings();
-  const auto& building = buildings[tower_to_process];
-  const auto& building_tree = model_->GetBuildingsTree();
-  int building_id = buildings[tower_to_process]->GetId();
+  const auto& building = buildings[tower_index];
+  const auto& upgrade_tree = model_->GetUpgradesTree();
+  int building_id = buildings[tower_index]->GetId();
 
   // Upgrade option (will only affect level of tower, but not the type)
   if (building->GetMaxLevel() > building->GetCurrentLevel()) {
     options.push_back(std::make_shared<TowerMenuOption>(
         model_->GetBuildingById(building_id),
-        [&, tower_to_process, building_id]() {
-          SetBuilding(tower_to_process, building_id);
+        [&, tower_index, building_id]() {
+          SetBuilding(tower_index, building_id);
         }));
   }
 
   // Tower building & evolve & delete options (will affect the type of tower)
-  for (const auto& to_change_id : building_tree[building_id]) {
+  for (const auto& to_change_id : upgrade_tree[building_id]) {
     options.push_back(std::make_shared<TowerMenuOption>(
         model_->GetBuildingById(to_change_id),
-        [&, tower_to_process, to_change_id]() {
-          SetBuilding(tower_to_process, to_change_id);
+        [&, tower_index, to_change_id]() {
+          SetBuilding(tower_index, to_change_id);
         }));
   }
 
@@ -223,4 +224,3 @@ void Controller::MouseMove(Coordinate position) {
   auto button = view_->GetTowerMenu()->GetButtonContaining(position);
   view_->GetTowerMenu()->Hover(button);
 }
-

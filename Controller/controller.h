@@ -34,8 +34,8 @@ class Controller : public AbstractController {
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
 
-  WindowType game_mode_ = WindowType::kMainMenu;
-  bool has_unprocessed_rounds_ = true;
+  WindowType game_mode_;
+  bool has_unprocessed_rounds_ = false;
   int current_time_ = 0;
   int last_round_start_time_ = 0;
 
@@ -50,11 +50,10 @@ class Controller : public AbstractController {
   void TickEnemies();
   void TickBuildings();
   void TickProjectiles();
-  void CreateTowerMenu(int tower_to_process);
+  void CreateTowerMenu(int tower_index);
 
   // Upgrades or evolves the building
   void SetBuilding(int index_in_buildings, int replacing_id);
-
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

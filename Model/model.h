@@ -54,7 +54,7 @@ class Model {
 
   void CreateProjectiles(const std::vector<Projectile>& projectiles);
   const Projectile& GetProjectileById(int id) const;
-  const std::vector<std::vector<int>>& GetBuildingsTree() const;
+  const std::vector<std::vector<int>>& GetUpgradesTree() const;
 
   void SetBuildingAtIndex(int i, int id);
   void UpgradeBuildingAtIndex(int i);
@@ -85,11 +85,16 @@ class Model {
   std::vector<Projectile> id_to_projectile_;
   int building_count_;
   std::vector<Building> id_to_building_;
-  std::vector<std::vector<int>> buildings_tree_;
+  // upgrades_tree[i] is a vector of towers to which
+  // ith tower can be evolved or changed
+  std::vector<std::vector<int>> upgrades_tree_;
 
  private:
   // Helping functions
-  void InitialiseTowerSlots();
+
+  // Creates EmptyTower classes from empty_towers_ vector
+  // Should be called on load of empty_towers_
+  void InitializeTowerSlots();
 };
 
 #endif  // MODEL_MODEL_H_

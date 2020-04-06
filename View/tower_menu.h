@@ -39,9 +39,11 @@ class TowerMenu {
   int container_length_;
 
   const int kAnimationDuration = 100;
+  const int kIndentBetweenButtons = 10;
+  const int kIndentFromTower = 5;
 
-  // Calculates the position of ith button at current time
-  Coordinate GetCoordinate(int i, int time) const;
+  // Calculates the position of ith button assuming that it has given size
+  Coordinate GetCoordinate(int i, int size) const;
 };
 
 #endif  // VIEW_TOWER_MENU_H_

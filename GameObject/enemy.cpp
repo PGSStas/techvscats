@@ -27,8 +27,8 @@ void Enemy::Move() {
     if (!road_->IsEnd(node_number_ + 1)) {
       // We make small shifts so that enemies move chaotically,
       // not in the linear queue
-      destination_.x += std::rand() % 50 - 25;
-      destination_.y += std::rand() % 50 - 25;
+      destination_.x += std::rand() % kMoveShift_ - kMoveShift_ / 2;
+      destination_.y += std::rand() % kMoveShift_ - kMoveShift_ / 2;
     }
   }
   position_ += move_direction;

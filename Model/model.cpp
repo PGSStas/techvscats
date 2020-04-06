@@ -16,28 +16,28 @@ void Model::SetGameLevel(int level_id) {
   building_instance.SetAnimationParameters(Qt::gray,
                                            1000);
 
-  buildings_tree_.push_back({1, 2});
+  upgrades_tree_.push_back({1, 2});
 
   Building building_instance2(1, 4, 10, 24, Size(40,20), enemies_);
   building_instance2.SetParameters(1, 340, 3, 0);
   building_instance2.SetAnimationParameters(Qt::blue, 1000,
                                             Qt::red, 300,
                                             Qt::darkBlue, 100);
-  buildings_tree_.push_back({3, 0});
+  upgrades_tree_.push_back({3, 0});
 
   Building building_instance3(2, 4, 10, 24, Size(30,50), enemies_);
   building_instance3.SetParameters(11, 240, 1, 0);
   building_instance3.SetAnimationParameters(Qt::yellow, 400,
                                             Qt::red, 100,
                                             Qt::darkYellow, 100);
-  buildings_tree_.push_back({2, 1, 0});
+  upgrades_tree_.push_back({2, 1, 0});
 
   Building building_instance4(3, 4, 10, 24, Size(14,32), enemies_);
   building_instance4.SetParameters(1, 140, 1, 0);
   building_instance4.SetAnimationParameters(Qt::green, 1000,
                                             Qt::red, 300,
                                             Qt::darkGreen, 100);
-  buildings_tree_.push_back({1, 0});
+  upgrades_tree_.push_back({1, 0});
   Projectile projectile_instance(Size(10,20),7);
   projectile_instance.SetAnimationParameters(Qt::darkRed);
   id_to_projectile_.push_back(projectile_instance);
@@ -47,7 +47,7 @@ void Model::SetGameLevel(int level_id) {
   id_to_building_.push_back(building_instance3);
   id_to_building_.push_back(building_instance4);
 
-  InitialiseTowerSlots();
+  InitializeTowerSlots();
 }
 
 int Model::GetTimeBetweenWaves() const {
@@ -132,8 +132,8 @@ const Building& Model::GetBuildingById(int id) const {
   return id_to_building_[id];
 }
 
-const std::vector<std::vector<int>>& Model::GetBuildingsTree() const {
-  return buildings_tree_;
+const std::vector<std::vector<int>>& Model::GetUpgradesTree() const {
+  return upgrades_tree_;
 }
 
 void Model::LoadLevelFromJson(int level) {
@@ -197,7 +197,7 @@ void Model::LoadLevelFromJson(int level) {
 
 }
 
-void Model::InitialiseTowerSlots() {
+void Model::InitializeTowerSlots() {
   for (Coordinate coordinate : empty_towers_) {
     auto empty_place = std::make_shared<Building>(id_to_building_[0]);
     empty_place->SetPosition(coordinate);

@@ -171,6 +171,8 @@ void View::resizeEvent(QResizeEvent*) {
 }
 
 void View::DrawWindow(QPainter* painter, const QBrush& brush) {
+  painter->save();
+
   painter->setBrush(QColor("#000080"));
   painter->drawRect(0, 0, width(), height());
   painter->setBrush(brush);
@@ -179,4 +181,6 @@ void View::DrawWindow(QPainter* painter, const QBrush& brush) {
   Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
   painter->drawRect(top_corner.x, top_corner.y,
                     rect_size.width, rect_size.height);
+
+  painter->restore();
 }
