@@ -163,7 +163,7 @@ void Controller::CreateTowerMenu(int tower_index) {
   std::vector<std::shared_ptr<TowerMenuOption>> options;
   const auto& buildings = model_->GetBuildings();
   const auto& building = buildings[tower_index];
-  const auto& building_tree = model_->GetBuildingsTree();
+  const auto& upgrade_tree = model_->GetUpgradesTree();
   int building_id = buildings[tower_index]->GetId();
 
   // Upgrade option (will only affect level of tower, but not the type)
@@ -176,7 +176,7 @@ void Controller::CreateTowerMenu(int tower_index) {
   }
 
   // Tower building & evolve & delete options (will affect the type of tower)
-  for (const auto& to_change_id : building_tree[building_id]) {
+  for (const auto& to_change_id : upgrade_tree[building_id]) {
     options.push_back(std::make_shared<TowerMenuOption>(
         model_->GetBuildingById(to_change_id),
         [&, tower_index, to_change_id]() {

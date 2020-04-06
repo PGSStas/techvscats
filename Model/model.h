@@ -46,7 +46,7 @@ class Model {
   const std::vector<Road>& GetRoads() const;
 
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
-  const std::vector<std::vector<int>>& GetBuildingsTree() const;
+  const std::vector<std::vector<int>>& GetUpgradesTree() const;
   const Building& GetBuildingById(int id) const;
 
   void SetBuildingAtIndex(int i, int id);

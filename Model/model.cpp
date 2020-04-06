@@ -123,7 +123,7 @@ const Building& Model::GetBuildingById(int id) const {
   return id_to_building_[id];
 }
 
-const std::vector<std::vector<int>>& Model::GetBuildingsTree() const {
+const std::vector<std::vector<int>>& Model::GetUpgradesTree() const {
   return upgrades_tree_;
 }
 
