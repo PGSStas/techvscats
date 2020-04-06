@@ -26,8 +26,10 @@ void Enemy::Move() {
     }
     destination_ = (road_->GetNode(node_number_));
     if (!road_->IsEnd(node_number_ + 1)) {
-      destination_.x += qrand() % 50 - 25;
-      destination_.y += qrand() % 50 - 25;
+      // We make small shifts so that enemies move chaotically,
+      // not in the linear queue
+      destination_.x += std::rand() % 50 - 25;
+      destination_.y += std::rand() % 50 - 25;
     }
   }
   position_ += move_direction;

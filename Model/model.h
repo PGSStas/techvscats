@@ -4,7 +4,6 @@
 #include <iostream>
 #include <list>
 #include <memory>
-
 #include <utility>
 #include <vector>
 
@@ -17,9 +16,8 @@
 #include <QJsonObject>
 
 #include "GameObject/enemy.h"
-#include "GameObject/active_tower.h"
 #include "GameObject/projectile.h"
-
+#include "GameObject/building.h"
 #include "Controller/spawner.h"
 #include "enemy_group.h"
 #include "road.h"
@@ -39,27 +37,27 @@ class Model {
 
   int GetTimeBetweenWaves() const;
   int GetRoundsCount() const;
-  int GetRoadsCount() const;
   int GetCurrentRoundNumber() const;
 
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
-  std::vector<std::shared_ptr<Building>>* GetBuildings();
   std::list<std::shared_ptr<Projectile>>* GetProjectiles();
+  std::vector<std::shared_ptr<Building>>* GetBuildings();
 
-  std::shared_ptr<Enemy> GetEnemyById(int id) const;
+  const Enemy& GetEnemyById(int id) const;
+  const Building& GetBuildingById(int id) const;
+
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
+
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
 
-
+  void CreateProjectiles(const std::vector<Projectile>& projectiles);
+  const Projectile& GetProjectileById(int id) const;
   const std::vector<std::vector<int>>& GetBuildingsTree() const;
-  std::shared_ptr<Building> GetBuildingById(int id);
-    std::shared_ptr<Projectile> GetProjectileById(int id);
-  int GetBuildingCount();
-  void SetBuildingAt(int i, int id);
-  void CreateProjectiles(std::vector<std::shared_ptr<Projectile>> projectiles);
-  void UpgradeBuildingAt(int i);
+
+  void SetBuildingAtIndex(int i, int id);
+  void UpgradeBuildingAtIndex(int i);
 
  private:
   void LoadLevelFromJson(int level);
@@ -83,10 +81,10 @@ class Model {
   int roads_count_;
 
   // Database of GameObject's instances, that is used to create GameObjects.
-  std::vector<std::shared_ptr<Enemy>> id_to_enemy_;
-  std::vector<std::shared_ptr<Projectile>> id_to_projectile_;
+  std::vector<Enemy> id_to_enemy_;
+  std::vector<Projectile> id_to_projectile_;
   int building_count_;
-  std::vector<std::shared_ptr<Building>> id_to_building_;
+  std::vector<Building> id_to_building_;
   std::vector<std::vector<int>> buildings_tree_;
 
  private:

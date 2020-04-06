@@ -20,17 +20,26 @@ class Controller : public AbstractController {
   void EndGame(Exit exit) override;
 
   void MousePress(Coordinate position) override;
-  void ChangeBuildingAttempt(int building_number, int building_id);
+  void MouseMove(Coordinate position) override;
 
-  const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
+  const std::list<std::shared_ptr<Enemy>>&  GetEnemies()
+  const override;
+  const std::vector<std::shared_ptr<Building>>& GetBuildings()
+  const override;
+  const std::list<std::shared_ptr<Projectile>>& GetProjectiles()
+  const override;
   const std::vector<Road>& GetRoads() const override;
-  const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
-  const std::list<std::shared_ptr<Projectile>>& GetProjectiles() const;
 
  private:
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
 
+  WindowType game_mode_ = WindowType::kMainMenu;
+  bool has_unprocessed_rounds_ = true;
+  int current_time_ = 0;
+  int last_round_start_time_ = 0;
+
+ private:
   void GameProcess();
   void MenuProcess();
 
@@ -41,11 +50,11 @@ class Controller : public AbstractController {
   void TickEnemies();
   void TickBuildings();
   void TickProjectiles();
+  void CreateTowerMenu(int tower_to_process);
 
-  bool is_game_now_ = false;
-  bool have_unprocess_rounds_ = true;
-  int current_time_ = 0;
-  int last_round_start_time_ = 0;
+  // Upgrades or evolves the building
+  void SetBuilding(int index_in_buildings, int replacing_id);
+
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

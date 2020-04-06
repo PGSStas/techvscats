@@ -6,10 +6,10 @@ Controller::Controller() : model_(std::make_unique<Model>()),
 
 void Controller::StartGame(int level_id) {
   qDebug() << "Game Start!";
-  is_game_now_ = true;
+  game_mode_ = WindowType::kGame;
 
   last_round_start_time_ = current_time_;
-  have_unprocess_rounds_ = true;
+  has_unprocessed_rounds_ = true;
 
   model_->SetGameLevel(level_id);
 
@@ -19,21 +19,21 @@ void Controller::StartGame(int level_id) {
                       model_->GetRoundsCount());
 }
 
-void Controller::EndGame(Exit exit) {
-  // if end_code == 0 - win, 1 - return menu clicked
+void Controller::EndGame(Exit exit_code) {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMenuUi();
-  is_game_now_ = false;
+  game_mode_ = WindowType::kMainMenu;
 }
 
 void Controller::Tick(int current_time) {
   current_time_ = current_time;
-  if (is_game_now_) {
+  if (game_mode_ == WindowType::kGame) {
     GameProcess();
-    return;
   }
-  MenuProcess();
+  if (game_mode_ == WindowType::kMainMenu) {
+    MenuProcess();
+  }
 }
 
 void Controller::GameProcess() {
@@ -51,14 +51,14 @@ void Controller::MenuProcess() {}
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
-  if (!have_unprocess_rounds_ || current_time_ - last_round_start_time_
+  if (!has_unprocessed_rounds_ || current_time_ - last_round_start_time_
       < model_->GetTimeBetweenWaves()) {
     return false;
   }
 
   last_round_start_time_ = current_time_;
   if (current_round_number == model_->GetRoundsCount()) {
-    have_unprocess_rounds_ = false;
+    has_unprocessed_rounds_ = false;
     qDebug() << "Rounds end.";
     return false;
   }
@@ -85,7 +85,7 @@ void Controller::TickSpawners() {
   for (auto& spawner : *spawners) {
     spawner.Tick(current_time_ - last_round_start_time_);
     if (spawner.IsReadyToSpawn()) {
-      Enemy enemy = *model_->GetEnemyById(spawner.PrepareNextEnemyId());
+      Enemy enemy = model_->GetEnemyById(spawner.PrepareNextEnemyId());
       enemy.SetRoad(model_->GetRoad(spawner.GetRoad()));
       AddEnemyToModel(enemy);
     }
@@ -104,8 +104,8 @@ void Controller::TickBuildings() {
   auto buildings = model_->GetBuildings();
   for (auto& building:*buildings) {
     building->Tick(current_time_);
-    if(building->IsReadyToCreateProjectile()) {
-      model_->CreateProjectiles(building->PrepareProjectile(
+    if (building->IsReadyToCreateProjectile()) {
+      model_->CreateProjectiles(building->PrepareProjectiles(
           model_->GetProjectileById(building->GetProjectileId())));
     }
   }
@@ -152,60 +152,75 @@ void Controller::MousePress(Coordinate position) {
     // Check if that's the same building on which menu was already open
     // (which means now we should close it)
     if (view_->IsTowerMenuEnabled()
-        && view_->GetTowerMenu()->GetTowerPosition()
+        && view_->GetTowerMenu()->GetTower()->GetPosition()
             == building->GetPosition()) {
       view_->DisableTowerMenu();
       return;
     }
 
-    // Create the appropriate menu
-    std::vector<std::shared_ptr<TowerMenuOption>> options;
-    const auto& building_tree = model_->GetBuildingsTree();
-    int building_id = buildings[i]->GetId();
-    for (const auto& to_upgrade_id : building_tree[building_id]) {
-      // Tower building options
-      options.push_back(std::make_shared<TowerMenuOption>(
-          to_upgrade_id, [&, i, to_upgrade_id]() {
-            ChangeBuildingAttempt(i, to_upgrade_id);
-          }));
-    }
-
-    // Upgrade option
-    if (building->GetMaxLevel() > building->GetCurrentLevel()) {
-      options.push_back(std::make_shared<TowerMenuOption>(
-          building_id, [&, i, building_id]() {
-            ChangeBuildingAttempt(i, building_id);
-          }));
-    }
-    auto menu = std::make_shared<TowerMenu>(building->GetPosition(),
-                                            building->GetInteractionRadius(),
-                                            options);
-    view_->ShowTowerMenu(menu);
+    CreateTowerMenu(i);
     return;
   }
 
-  if (view_->GetTowerMenu() == nullptr) {
+  if (!view_->IsTowerMenuEnabled()) {
     return;
   }
 
-// Check if tower menu element was pressed
-  auto pressed = view_->GetTowerMenu()->GetPressedOption(position);
+  // Check if tower menu element was pressed
+  auto pressed = view_->GetTowerMenu()->GetButtonContaining(position);
   if (pressed != nullptr) {
     pressed->Action();
-    qDebug() << pressed->GetId() << " action";
+    qDebug() << pressed->GetReplacingTower().GetId() << " action";
   }
 
-// Disables menu after some action or if random point on the map was pressed
+  // Disables menu after some action or if random point on the map was pressed
   view_->DisableTowerMenu();
 }
 
-void Controller::ChangeBuildingAttempt(int building_number, int building_id) {
+void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   const auto& buildings = *model_->GetBuildings();
-  // Some manipulations with gold should be added here
-  if (buildings[building_number]->GetId() == building_id) {
-    model_->UpgradeBuildingAt(building_number);
+  if (buildings[index_in_buildings]->GetId() == replacing_id) {
+    model_->UpgradeBuildingAtIndex(index_in_buildings);
+  } else {
+    model_->SetBuildingAtIndex(index_in_buildings, replacing_id);
+  }
+}
+
+void Controller::CreateTowerMenu(int tower_to_process) {
+  std::vector<std::shared_ptr<TowerMenuOption>> options;
+  const auto& buildings = *model_->GetBuildings();
+  const auto& building = buildings[tower_to_process];
+  const auto& building_tree = model_->GetBuildingsTree();
+  int building_id = buildings[tower_to_process]->GetId();
+
+  // Upgrade option (will only affect level of tower, but not the type)
+  if (building->GetMaxLevel() > building->GetCurrentLevel()) {
+    options.push_back(std::make_shared<TowerMenuOption>(
+        model_->GetBuildingById(building_id),
+        [&, tower_to_process, building_id]() {
+          SetBuilding(tower_to_process, building_id);
+        }));
+  }
+
+  // Tower building & evolve & delete options (will affect the type of tower)
+  for (const auto& to_change_id : building_tree[building_id]) {
+    options.push_back(std::make_shared<TowerMenuOption>(
+        model_->GetBuildingById(to_change_id),
+        [&, tower_to_process, to_change_id]() {
+          SetBuilding(tower_to_process, to_change_id);
+        }));
+  }
+
+  auto menu = std::make_shared<TowerMenu>(current_time_, building, options);
+  view_->ShowTowerMenu(menu);
+}
+
+void Controller::MouseMove(Coordinate position) {
+  if (!view_->IsTowerMenuEnabled()) {
     return;
   }
-  model_->SetBuildingAt(building_number, building_id);
+
+  auto button = view_->GetTowerMenu()->GetButtonContaining(position);
+  view_->GetTowerMenu()->Hover(button);
 }
 

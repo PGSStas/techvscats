@@ -14,12 +14,10 @@ class GameObject {
   virtual void Tick(int current_time) = 0;
 
   Coordinate GetPosition() const;
-  bool IsDead() const;
   void SetPosition(Coordinate position);
 
  protected:
   int object_current_time_ = 0;
-  bool is_dead_ = false;
   Coordinate position_;
 };
 

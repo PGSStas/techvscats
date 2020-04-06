@@ -8,6 +8,7 @@ class MovingObject : public GameObject {
   MovingObject() = default;
 
   double GetSpeed() const;
+  bool IsDead() const;
   virtual void Move() = 0;
   void SetSpeedCoefficient(double speed_coefficient);
   bool HasReached() const;
@@ -15,6 +16,7 @@ class MovingObject : public GameObject {
  protected:
   Coordinate destination_;
   bool has_reached_ = false;
+  bool is_dead_ = false;
 
   double speed_;
   double speed_coefficient_ = 1;

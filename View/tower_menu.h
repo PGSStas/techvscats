@@ -3,8 +3,10 @@
 
 #include <memory>
 #include <vector>
+#include <algorithm>
 
 #include <QPainter>
+#include <GameObject/building.h>
 
 #include "Model/coordinate.h"
 #include "tower_menu_option.h"
@@ -12,28 +14,33 @@
 class TowerMenu {
  public:
   // Note: options are expected to be not empty
-  TowerMenu(Coordinate tower_position,
-            int tower_radius,
+  TowerMenu(int creation_time, const std::shared_ptr<const Building>& tower,
             const std::vector<std::shared_ptr<TowerMenuOption>>& options);
 
-  Coordinate GetTowerPosition() const;
-  int GetTowerRadius() const;
-  // Returns nullptr if none was pressed
-  std::shared_ptr<TowerMenuOption> GetPressedOption(Coordinate position);
+  std::shared_ptr<const Building> GetTower() const;
+  // Returns the button for which position is inside or
+  // nullptr if there is no such button
+  std::shared_ptr<TowerMenuOption>
+    GetButtonContaining(Coordinate position) const;
+  void Hover(const std::shared_ptr<TowerMenuOption>& option);
+  void Unhover();
 
-  void Draw(QPainter* painter);
+  void Draw(QPainter* painter, int current_time) const;
 
  private:
-  Coordinate tower_position_;
-  int tower_radius_;
+  int creation_time_;
+
+  std::shared_ptr<const Building> tower_;
   std::vector<std::shared_ptr<TowerMenuOption>> options_;
+  std::shared_ptr<TowerMenuOption> hovered_option_;
 
   // Won't be needed if we change buttons so that they circle around the tower
   int container_length_;
 
- private:
-  // Calculates the position of ith button
-  Coordinate GetCoordinateByIndex(int i);
+  const int kAnimationDuration = 100;
+
+  // Calculates the position of ith button at current time
+  Coordinate GetCoordinate(int i, int time) const;
 };
 
 #endif  // VIEW_TOWER_MENU_H_

@@ -21,6 +21,7 @@ enum class WindowType {
   kMainMenu,
   kGame
 };
+
 class View : public QMainWindow {
   Q_OBJECT
 
@@ -55,12 +56,13 @@ class View : public QMainWindow {
   // Menu window
   QPushButton* return_menu_button_;
   int controller_timer_id_;
-  const int kTime_between_ticks_ = 10;
+  const int kTimeBetweenTicks_ = 10;
 
  private:
   void paintEvent(QPaintEvent* event) override;
   void timerEvent(QTimerEvent* event) override;
-  void mousePressEvent(QMouseEvent* event) override;
+  void mouseReleaseEvent(QMouseEvent* event) override;
+  void mouseMoveEvent(QMouseEvent* event) override;
 
   // Game window
   void DrawBackground(QPainter* painter);

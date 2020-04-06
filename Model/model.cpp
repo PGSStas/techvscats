@@ -3,61 +3,51 @@
 void Model::SetGameLevel(int level_id) {
   Enemy temporary_enemy;
   temporary_enemy.SetParameters(1);
-  id_to_enemy_.push_back(std::make_shared<Enemy>(temporary_enemy));
+
+  id_to_enemy_.push_back(temporary_enemy);
   temporary_enemy.SetParameters(4);
-  id_to_enemy_.push_back(std::make_shared<Enemy>(temporary_enemy));
+  id_to_enemy_.push_back(temporary_enemy);
   LoadLevelFromJson(level_id);
 
-  empty_towers_ = {{100, 100}, {200, 300}, {900, 700}};
+  empty_towers_ = {{540, 700}, {200, 100}, {500, 100}};
 
-  building_count_ = 3;
-
-  Building temporary_building_instance;
-  temporary_building_instance.SetParameters(0);
-  temporary_building_instance.SetAnimationParameters(Qt::gray,
-                                                     1000);
+  Building building_instance(enemies_);
+  building_instance.SetParameters();
+  building_instance.SetAnimationParameters(Qt::gray,
+                                           1000);
 
   buildings_tree_.push_back({1, 2});
 
-  ActiveTower temporary_active_tower1(enemies_, 3);
-  temporary_active_tower1.SetParameters(1, 0, 4, 10, 24, 100, 40);
-  temporary_active_tower1.SetAnimationParameters(Qt::blue,
-                                                 1000,
-                                                 Qt::red,
-                                                 300,
-                                                 Qt::darkBlue,
-                                                 100);
+  Building building_instance2(enemies_);
+  building_instance2.SetParameters(1, 4, 10, 24, 1, 340, 3, 0);
+  building_instance2.SetAnimationParameters(Qt::blue, 1000,
+                                            Qt::red, 300,
+                                            Qt::darkBlue, 100);
   buildings_tree_.push_back({3, 0});
 
-  ActiveTower temporary_active_tower2(enemies_, 1);
-  temporary_active_tower2.SetParameters(1, 0, 4, 10, 24, 220, 40);
-  temporary_active_tower2.SetAnimationParameters(Qt::yellow,
-                                                 400,
-                                                 Qt::red,
-                                                 100,
-                                                 Qt::darkYellow,
-                                                 100);
-  buildings_tree_.push_back({1, 3, 0});
+  Building building_instance3(enemies_);
+  building_instance3.SetParameters(2, 4, 10, 24, 11, 240, 1, 0);
+  building_instance3.SetAnimationParameters(Qt::yellow, 400,
+                                            Qt::red, 100,
+                                            Qt::darkYellow, 100);
+  buildings_tree_.push_back({2,1, 0});
 
-  ActiveTower temporary_active_tower3(enemies_, 1);
-  temporary_active_tower3.SetParameters(1, 0, 4, 10, 24, 100, 40);
-  temporary_active_tower3.SetAnimationParameters(Qt::green,
-                                                 1000,
-                                                 Qt::red,
-                                                 300,
-                                                 Qt::darkGreen,
-                                                 100);
-  buildings_tree_.push_back({0});
+  Building building_instance4(enemies_);
+  building_instance4.SetParameters(3, 4, 10, 24, 1, 140, 1, 0);
+  building_instance4.SetAnimationParameters(Qt::green, 1000,
+                                            Qt::red, 300,
+                                            Qt::darkGreen, 100);
+  buildings_tree_.push_back({1, 0});
+  Projectile projectile_instance;
+  projectile_instance.SetParameters(6);
+  projectile_instance.SetAnimationParameters(Qt::darkRed, 5);
+  id_to_projectile_.push_back(projectile_instance);
 
-  Projectile default_projectile(5);
-  default_projectile.SetAnimationParameters(Qt::darkRed, 5);
-  id_to_projectile_.push_back(std::make_shared<Projectile>(default_projectile));
+  id_to_building_.push_back(building_instance);
+  id_to_building_.push_back(building_instance2);
+  id_to_building_.push_back(building_instance3);
+  id_to_building_.push_back(building_instance4);
 
-  id_to_building_ =
-      {std::make_shared<Building>(temporary_building_instance),
-       std::make_shared<ActiveTower>(temporary_active_tower1),
-       std::make_shared<ActiveTower>(temporary_active_tower2),
-       std::make_shared<ActiveTower>(temporary_active_tower3)};
   InitialiseTowerSlots();
 }
 
@@ -97,16 +87,12 @@ std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
   return &enemies_;
 }
 
-std::shared_ptr<Enemy> Model::GetEnemyById(int id) const {
+const Enemy& Model::GetEnemyById(int id) const {
   return id_to_enemy_[id];
 }
 
 const std::vector<EnemyGroup>& Model::GetEnemyGroupsPerRound(int round) const {
   return enemy_groups_[round];
-}
-
-int Model::GetRoadsCount() const {
-  return roads_count_;
 }
 
 void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
@@ -127,6 +113,30 @@ void Model::ClearGameModel() {
   qDebug() << "Clear Model";
 }
 
+std::vector<std::shared_ptr<Building>>* Model::GetBuildings() {
+  return &buildings_;
+}
+
+void Model::SetBuildingAtIndex(int i, int id) {
+  qDebug() << "set b" << i << " " << id;
+  Coordinate position = buildings_[i]->GetPosition();
+  // Create new building by id
+  buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
+  buildings_[i]->SetPosition(position);
+}
+
+void Model::UpgradeBuildingAtIndex(int i) {
+  buildings_[i]->Upgrade();
+}
+
+const Building& Model::GetBuildingById(int id) const {
+  return id_to_building_[id];
+}
+
+const std::vector<std::vector<int>>& Model::GetBuildingsTree() const {
+  return buildings_tree_;
+}
+
 void Model::LoadLevelFromJson(int level) {
   QFile level_file(":resources/levels/level_"
                        + QString::number(level) + ".json");
@@ -136,6 +146,7 @@ void Model::LoadLevelFromJson(int level) {
   }
   QJsonObject json_object =
       QJsonDocument::fromJson(level_file.readAll()).object();
+
   time_between_rounds_ = json_object["time_between_rounds"].toInt();
   gold_ = json_object["gold"].toInt();
   score_ = json_object["score"].toInt();
@@ -189,61 +200,26 @@ void Model::LoadLevelFromJson(int level) {
 
 void Model::InitialiseTowerSlots() {
   for (Coordinate coordinate : empty_towers_) {
-    Building empty_place(id_to_building_[0]);
-    empty_place.SetPosition(coordinate);
-    buildings_.push_back(std::make_shared<Building>(empty_place));
+    auto empty_place = std::make_shared<Building>(id_to_building_[0]);
+    empty_place->SetPosition(coordinate);
+    buildings_.push_back(empty_place);
   }
-}
-
-std::vector<std::shared_ptr<Building>>* Model::GetBuildings() {
-  return &buildings_;
-}
-
-void Model::UpgradeBuildingAt(int i) {
-  buildings_[i]->Upgrade();
-}
-
-void Model::SetBuildingAt(int i, int id) {
-  qDebug() << "set b" << i << " " << id;
-  Coordinate position = buildings_[i]->GetPosition();
-  buildings_[i] = GetBuildingById(id);
-  buildings_[i]->SetPosition(position);
-}
-
-std::shared_ptr<Building> Model::GetBuildingById(int id) {
-  auto instance = id_to_building_[id];
-  switch (instance->GetTowerType()) {
-    case 0:return std::make_shared<Building>(instance);
-
-    case 1:return std::make_shared<ActiveTower>(instance);
-
-    default:return nullptr;
-  }
-}
-
-std::shared_ptr<Projectile> Model::GetProjectileById(int id) {
-  auto instance = id_to_projectile_[id];
-  switch (instance->GetProjectileType()) {
-    case ProjectileType::kDefault:return std::make_shared<Projectile>(instance);
-
-    default:return nullptr;
-  }
-}
-
-int Model::GetBuildingCount() {
-  return building_count_;
-}
-
-const std::vector<std::vector<int>>& Model::GetBuildingsTree() const {
-  return buildings_tree_;
 }
 
 std::list<std::shared_ptr<Projectile>>* Model::GetProjectiles() {
   return &projectiles_;
 }
 
-void Model::CreateProjectiles(std::vector<std::shared_ptr<Projectile>> projectiles) {
+const Projectile& Model::GetProjectileById(int id) const {
+  return id_to_projectile_[id];
+}
+
+void Model::CreateProjectiles(const std::vector<Projectile>& projectiles) {
   for (auto& projectile:projectiles) {
-    projectiles_.push_back(projectile);
+    switch (projectile.GetType()) {
+      case ProjectileType::kDefault:
+        projectiles_.push_back(std::make_shared<Projectile>(projectile));
+
+    }
   }
 }

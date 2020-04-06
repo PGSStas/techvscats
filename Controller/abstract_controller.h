@@ -6,9 +6,8 @@
 #include <memory>
 
 #include "GameObject/enemy.h"
-#include "GameObject/active_tower.h"
-#include "GameObject/passive_tower.h"
 #include "GameObject/projectile.h"
+#include "GameObject/building.h"
 
 enum class Exit {
   kWin,
@@ -26,16 +25,17 @@ class AbstractController {
   virtual void StartGame(int level) = 0;
   virtual void EndGame(Exit exit) = 0;
 
-  // position is the coordinate of where the user clicked
+  // position is the coordinate of where the user clicked/moved
   virtual void MousePress(Coordinate position) = 0;
+  virtual void MouseMove(Coordinate position) = 0;
 
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
-  virtual const std::list<std::shared_ptr<Projectile>>&
-  GetProjectiles() const = 0;
+  virtual const std::list<std::shared_ptr<Projectile>>& GetProjectiles()
+  const = 0;
+  virtual const std::vector<std::shared_ptr<Building>>& GetBuildings()
+  const = 0;
 
   virtual const std::vector<Road>& GetRoads() const = 0;
-  virtual const std::vector<std::shared_ptr<Building>>&
-  GetBuildings() const = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

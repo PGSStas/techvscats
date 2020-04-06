@@ -25,7 +25,6 @@ add_executable(techvscats
         GameObject/moving_object.cpp
         GameObject/building.cpp
         GameObject/lazer_projectile.cpp
-        GameObject/active_tower.cpp
         Model/model.cpp
         Model/road.cpp
         Model/coordinate.cpp

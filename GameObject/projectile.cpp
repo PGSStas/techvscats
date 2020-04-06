@@ -1,12 +1,11 @@
 #include "projectile.h"
-Projectile::Projectile(int speed, ProjectileType type)
+Projectile::Projectile(ProjectileType type)
     : type_(type) {
-  speed_ = speed;
+
 }
 
-void Projectile::SetParameters(int id, int damage, int speed,
-                               std::shared_ptr<const GameObject> aim) {
-  id_ = id;
+void Projectile::SetParameters(int speed, int damage,
+                               std::shared_ptr<Enemy> aim) {
   damage_ = damage;
   speed_ = speed;
   aim_ = aim;
@@ -19,7 +18,7 @@ void Projectile::SetAnimationParameters(QColor draw_color,
 }
 
 Projectile::Projectile(const std::shared_ptr<Projectile>& other) {
-  speed_ = other->GetSpeed();
+  SetParameters(other->damage_, other->speed_, other->aim_);
   SetAnimationParameters(other->draw_color_, other->projectile_size_);
 }
 
@@ -39,12 +38,12 @@ void Projectile::Tick(int current_time) {
 void Projectile::Move() {
   destination_ = aim_->GetPosition();
   position_ += position_.GetBetween(destination_) /=
-      position_.GetBetween(destination_).GetLength()/speed_;
+      position_.GetBetween(destination_).GetLength() / speed_;
   if (position_.GetBetween(aim_->GetPosition()).GetLength() < 10) {
     is_dead_ = true;
   }
 }
 
-ProjectileType Projectile::GetProjectileType() const {
+ProjectileType Projectile::GetType() const {
   return type_;
 }
