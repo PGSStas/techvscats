@@ -30,7 +30,7 @@ void Model::SetGameLevel(int level_id) {
   building_instance3.SetAnimationParameters(Qt::yellow, 400,
                                             Qt::red, 100,
                                             Qt::darkYellow, 100);
-  upgrades_tree_.push_back({2, 1, 0});
+  upgrades_tree_.push_back({3, 1, 0});
 
   Building building_instance4(3, 4, 10, 24, Size(14,32), enemies_);
   building_instance4.SetParameters(1, 140, 1, 0);
@@ -38,7 +38,7 @@ void Model::SetGameLevel(int level_id) {
                                             Qt::red, 300,
                                             Qt::darkGreen, 100);
   upgrades_tree_.push_back({1, 0});
-  Projectile projectile_instance(Size(10,20),7);
+  Projectile projectile_instance(Size(10,20),7,100);
   projectile_instance.SetAnimationParameters(Qt::darkRed);
   id_to_projectile_.push_back(projectile_instance);
 

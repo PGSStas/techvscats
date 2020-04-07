@@ -79,3 +79,7 @@ Enemy::Enemy(const Enemy& enemy_instance) {
 void Enemy::SetParameters(double speed) {
   speed_ = speed;
 }
+
+void Enemy::ReceiveDamage(double damage) {
+   current_health_-=damage;
+}

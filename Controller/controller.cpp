@@ -118,6 +118,14 @@ void Controller::TickProjectiles() {
 
   for (auto& projectile : *projectiles) {
     projectile->Tick(current_time_);
+    if (projectile->IsAimAchieved()) {
+      auto enemies = model_->GetEnemies();
+      for (const auto& enemy: *enemies) {
+        if (projectile->IsUnderAttack(*enemy)) {
+          enemy->ReceiveDamage(projectile->GetDamage());
+        }
+      }
+    }
   }
 }
 

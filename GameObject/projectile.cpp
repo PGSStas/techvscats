@@ -1,6 +1,8 @@
 #include "projectile.h"
-Projectile::Projectile(Size size, double speed, ProjectileType type)
+Projectile::Projectile(Size size, double speed, double effect_radius,
+                       ProjectileType type)
     : type_(type) {
+  effect_radius_ = effect_radius;
   speed_ = speed;
   size_ = size;
 }
@@ -21,6 +23,7 @@ Projectile::Projectile(const Projectile& other) {
   SetAnimationParameters(other.draw_color_);
   position_ = other.position_;
   size_ = other.size_;
+  effect_radius_ = other.effect_radius_;
 }
 
 void Projectile::Draw(QPainter* painter, const SizeHandler& handler) const {
@@ -38,13 +41,35 @@ void Projectile::Tick(int current_time) {
 
 void Projectile::Move() {
   destination_ = aim_->GetPosition();
-  position_ += position_.GetDistanceTo(destination_) /=
-      position_.GetDistanceTo(destination_).GetLength() / speed_;
-  if (position_.GetDistanceTo(aim_->GetPosition()).GetLength() < 10) {
+
+  Size move = position_.GetDistanceTo(destination_) /=
+                  position_.GetDistanceTo(destination_).GetLength() / speed_;
+
+  if(move.GetLength()>position_.GetDistanceTo(destination_).GetLength()){
+    position_=destination_;
+  }else{
+    position_+=move;
+  }
+
+  if (position_.GetDistanceTo(aim_->GetPosition()).GetLength() < kEpsilon) {
+    is_aim_achieved_ = true;
     is_dead_ = true;
   }
 }
 
 ProjectileType Projectile::GetType() const {
   return type_;
+}
+
+bool Projectile::IsAimAchieved() const {
+  return is_aim_achieved_;
+}
+
+bool Projectile::IsUnderAttack(const Enemy& enemy) const {
+  return (position_.GetDistanceTo(enemy.GetPosition()).GetLength()
+      <= effect_radius_ + kEpsilon);
+}
+
+double Projectile::GetDamage() const {
+  return damage_;
 }

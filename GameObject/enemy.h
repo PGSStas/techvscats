@@ -17,6 +17,7 @@ class Enemy : public MovingObject {
   void Move() override;
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
   void SetRoad(const Road& road);
+  void ReceiveDamage(double damage);
 
  private:
   double damage_ = 0;
