@@ -21,7 +21,8 @@ SOURCES += \
          GameObject/game_object.cpp \
          GameObject/moving_object.cpp \
          GameObject/building.cpp \
-         GameObject/LazerProjectile.cpp \
+         GameObject/lazer_projectile.cpp \
+         GameObject/bomb_projectile.cpp \
          Model/model.cpp \
          Model/road.cpp \
          Model/coordinate.cpp \
@@ -36,7 +37,8 @@ HEADERS += \
          Controller/spawner.h \
          GameObject/building.h \
          GameObject/projectile.h \
-         GameObject/LazerProjectile.h \
+         GameObject/lazer_projectile.h \
+         GameObject/bomb_projectile.h \
          GameObject/enemy.h \
          GameObject/game_object.h \
          GameObject/moving_object.h \

@@ -2,7 +2,8 @@
 #define GAMEOBJECT_BUILDING_H_
 
 #include <memory>
-
+#include <vector>
+#include <list>
 #include "enemy.h"
 #include "projectile.h"
 

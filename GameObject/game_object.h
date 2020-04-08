@@ -16,8 +16,8 @@ class GameObject {
                     const SizeHandler& size_handler) const = 0;
   virtual void Tick(int current_time) = 0;
 
-  Coordinate GetPosition() const;
   void SetPosition(Coordinate position);
+  Coordinate GetPosition() const;
   Size GetSize() const;
 
  protected:

@@ -25,6 +25,7 @@ add_executable(techvscats
         GameObject/moving_object.cpp
         GameObject/building.cpp
         GameObject/lazer_projectile.cpp
+        GameObject/bomb_projectile.cpp
         Model/model.cpp
         Model/road.cpp
         Model/coordinate.cpp
@@ -33,7 +34,7 @@ add_executable(techvscats
         View/tower_menu.cpp
         View/tower_menu_option.cpp
         View/size_handler.cpp
-        resources.qrc GameObject/bomb_projectile.cpp GameObject/bomb_projectile.h)
+        resources.qrc)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

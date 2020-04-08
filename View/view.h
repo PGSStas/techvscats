@@ -9,8 +9,6 @@
 #include <QLabel>
 #include <QObject>
 #include <QString>
-#include <QDebug>
-
 #include <memory>
 #include <list>
 

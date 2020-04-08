@@ -38,7 +38,7 @@ void Model::SetGameLevel(int level_id) {
                                             Qt::red, 300,
                                             Qt::darkGreen, 100);
   upgrades_tree_.push_back({1, 0});
-  Projectile projectile_instance_default(Size(10, 20), 10 );
+  Projectile projectile_instance_default(Size(10, 20), 10);
   projectile_instance_default.SetAnimationParameters(Qt::darkRed, 100);
 
   BombProjectile projectile_instance_bomb(Size(10, 20), 3, 50);
@@ -118,7 +118,6 @@ void Model::ClearGameModel() {
   enemy_groups_.clear();
   roads_.clear();
   empty_towers_.clear();
-  qDebug() << "Clear Model";
 }
 
 std::vector<std::shared_ptr<Building>>* Model::GetBuildings() {
@@ -126,7 +125,6 @@ std::vector<std::shared_ptr<Building>>* Model::GetBuildings() {
 }
 
 void Model::SetBuildingAtIndex(int i, int id) {
-  qDebug() << "set b" << i << " " << id;
   Coordinate position = buildings_[i]->GetPosition();
   // Create new building by id
   buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
@@ -203,7 +201,6 @@ void Model::LoadLevelFromJson(int level) {
     }
     enemy_groups_.push_back(std::move(groups));
   }
-
 }
 
 void Model::InitializeTowerSlots() {
@@ -223,7 +220,7 @@ const Projectile& Model::GetProjectileById(int id) const {
 }
 
 void Model::CreateProjectiles(const std::vector<Projectile>& projectiles) {
-  for (auto& projectile:projectiles) {
+  for (auto& projectile : projectiles) {
     switch (projectile.GetType()) {
       case ProjectileType::kDefault:
         projectiles_.push_back(std::make_shared<Projectile>(projectile));

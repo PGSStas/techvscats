@@ -14,7 +14,9 @@ enum class ProjectileType {
 class Projectile : public MovingObject {
  public:
   explicit Projectile(const Projectile& other);
-  explicit Projectile(Size size, double speed, ProjectileType projectile_type = ProjectileType::kDefault);
+  explicit Projectile(Size size, double speed,
+                      ProjectileType projectile_type =
+                          ProjectileType::kDefault);
 
   void SetParameters(double speed, int damage = 0,
                      std::shared_ptr<Enemy> aim = {});
