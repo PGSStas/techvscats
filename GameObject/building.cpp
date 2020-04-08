@@ -151,7 +151,7 @@ void Building::UpdateAim() {
     return;
   }
 
-  for (auto& enemy:enemies_) {
+  for (auto& enemy : enemies_) {
     if (static_cast<int>(aims_.size()) == max_aims_
         || aims_.size() == enemies_.size()) {
       break;
@@ -161,7 +161,7 @@ void Building::UpdateAim() {
         > attack_range_) {
       continue;
     }
-    for (auto& aim:aims_) {
+    for (auto& aim : aims_) {
       if (aim->GetPosition() == enemy->GetPosition()) {
         can_add = false;
         break;
@@ -179,7 +179,7 @@ std::vector<Projectile> Building::PrepareProjectiles(
   is_ready_to_create_projectiles_ = false;
 
   std::vector<Projectile> projectiles;
-  for (auto& aim:aims_) {
+  for (auto& aim : aims_) {
     auto projectile = Projectile(projectile_instance);
     projectile.SetParameters(projectile_instance.GetSpeed(),
                              attack_damage_,

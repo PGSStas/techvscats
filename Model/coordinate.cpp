@@ -28,7 +28,7 @@ Coordinate Coordinate::operator/(double right) const {
   return Coordinate(x / right, y / right);
 }
 
-Size Coordinate::GetDistanceTo(Coordinate right) const{
+Size Coordinate::GetDistanceTo(Coordinate right) const {
   return Size(right.x - x, right.y - y);
 }
 

@@ -9,8 +9,6 @@
 #include <QLabel>
 #include <QObject>
 #include <QString>
-#include <QTimerEvent>
-#include <list>
 #include <memory>
 #include <list>
 
@@ -24,7 +22,7 @@ enum class WindowType {
 };
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);

@@ -7,7 +7,8 @@ void LazerProjectile::Draw(QPainter* painter,
   Coordinate start_position = handler.GameToWindowCoordinate(start_position_);
   Size size = handler.GameToWindowSize(size_);
   painter->setPen(QPen(draw_color_, size.width));
-  painter->drawLine(start_position.x, start_position.y, end_position.x, end_position.y);
+  painter->drawLine(start_position.x, start_position.y,
+                    end_position.x, end_position.y);
   painter->restore();
 }
 

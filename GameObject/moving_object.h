@@ -14,7 +14,7 @@ class MovingObject : public GameObject {
   bool HasReached() const;
 
  protected:
-  Coordinate destination_ = {0,0};
+  Coordinate destination_ = {0, 0};
   bool has_reached_ = false;
   bool is_dead_ = false;
 

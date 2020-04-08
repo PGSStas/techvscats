@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_LAZER_PROJECTILE_H
-#define GAMEOBJECT_LAZER_PROJECTILE_H
+#ifndef GAMEOBJECT_LAZER_PROJECTILE_H_
+#define GAMEOBJECT_LAZER_PROJECTILE_H_
 
 #include "projectile.h"
 #include "QPen"
@@ -17,4 +17,4 @@ class LazerProjectile : public Projectile {
   Coordinate start_position_ = {0, 0};
 };
 
-#endif  // GAMEOBJECT_LAZER_PROJECTILE_H
+#endif  // GAMEOBJECT_LAZER_PROJECTILE_H_

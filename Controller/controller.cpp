@@ -103,7 +103,7 @@ void Controller::TickEnemies() {
 
 void Controller::TickBuildings() {
   auto buildings = model_->GetBuildings();
-  for (auto& building:*buildings) {
+  for (auto& building : *buildings) {
     building->Tick(current_time_);
     if (building->IsReadyToCreateProjectile()) {
       model_->CreateProjectiles(building->PrepareProjectiles(
@@ -114,13 +114,15 @@ void Controller::TickBuildings() {
 
 void Controller::TickProjectiles() {
   auto projectiles = model_->GetProjectiles();
-  projectiles->remove_if([&](auto& projectile) { return projectile->IsDead(); });
+  projectiles->remove_if([&](auto& projectile) {
+    return projectile->IsDead();
+  });
 
   for (auto& projectile : *projectiles) {
     projectile->Tick(current_time_);
     if (projectile->HasReached()) {
       auto enemies = model_->GetEnemies();
-      for (const auto& enemy: *enemies) {
+      for (const auto& enemy : *enemies) {
         if (projectile->CheckForReceiveDamage(*enemy)) {
           enemy->ReceiveDamage(projectile->GetDamage());
         }
@@ -137,11 +139,13 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
   return *model_->GetEnemies();
 }
 
-const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
+const std::vector<std::shared_ptr<Building>>&
+Controller::GetBuildings() const {
   return *model_->GetBuildings();
 }
 
-const std::list<std::shared_ptr<Projectile>>& Controller::GetProjectiles() const {
+const std::list<std::shared_ptr<Projectile>>&
+Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }
 
