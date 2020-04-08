@@ -1,7 +1,7 @@
 #include "view.h"
 
 View::View(AbstractController* controller)
-    : controller_(controller){
+    : controller_(controller) {
   setMinimumSize(640, 360);
   setMouseTracking(true);
 

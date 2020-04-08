@@ -40,7 +40,7 @@ Building::Building(const Building& other) :
   current_level_ = other.current_level_;
 }
 
-void Building::Draw(QPainter* painter,const SizeHandler& size_handler) const {
+void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
   switch (action) {
     case Action::reload: painter->setBrush(reload_color_);
@@ -96,7 +96,6 @@ void Building::Tick(int current_time) {
         break;
       }
   }
-
 }
 
 int Building::GetMaxLevel() const {

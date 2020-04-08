@@ -81,5 +81,5 @@ void Enemy::SetParameters(double speed) {
 }
 
 void Enemy::ReceiveDamage(double damage) {
-   current_health_-=damage;
+  current_health_ -= damage;
 }

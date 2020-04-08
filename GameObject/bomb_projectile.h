@@ -14,7 +14,6 @@ class BombProjectile : public Projectile {
 
  private:
   double effect_radius;
-
 };
 
 #endif  // GAMEOBJECT_BOMB_PROJECTILE_H_
