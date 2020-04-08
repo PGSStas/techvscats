@@ -24,6 +24,7 @@ SOURCES += \
          GameObject/moving_object.cpp \
          GameObject/auric_field.cpp \
          GameObject/effect.cpp \
+         GameObject/base.cpp \
          Model/model.cpp \
          Model/road.cpp \
          Model/coordinate.cpp \

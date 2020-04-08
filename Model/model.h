@@ -58,18 +58,18 @@ class Model {
   std::list<std::shared_ptr<Projectile>> projectiles_;
   std::list<std::shared_ptr<Building>> buildings_;
   std::list<std::shared_ptr<Enemy>> enemies_;
-  int current_round_number_;
-  int gold_;
-  int score_;
+  int current_round_number_ = 0;
+  int gold_ = 0;
+  int score_ = 0;
 
   // Database which is loaded in SetGameLevel once
   std::shared_ptr<Base> base_;
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;
-  int time_between_rounds_;
-  int rounds_count_;
-  int roads_count_;
+  int time_between_rounds_ = 0;
+  int rounds_count_ = 0;
+  int roads_count_ = 0;
 
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
