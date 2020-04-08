@@ -19,20 +19,25 @@ add_executable(techvscats
         main.cpp
         Controller/controller.cpp
         Controller/spawner.cpp
-        GameObject/auric_field.h
         GameObject/passive_tower.cpp
         GameObject/active_tower.cpp
         GameObject/projectile.cpp
         GameObject/enemy.cpp
         GameObject/game_object.cpp
         GameObject/moving_object.cpp
+        GameObject/building.cpp
+        GameObject/auric_field.cpp 
+        GameObject/effect.cpp 
+        GameObject/base.cpp 
         Model/model.cpp
         Model/road.cpp
         Model/coordinate.cpp
         Model/size.cpp
         View/view.cpp
+        View/tower_menu.cpp
+        View/tower_menu_option.cpp
         View/size_handler.cpp
-        resources.qrc GameObject/effect.h GameObject/auric_field.cpp GameObject/effect.cpp GameObject/base.cpp GameObject/base.h)
+        resources.qrc)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

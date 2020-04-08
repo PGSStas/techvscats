@@ -21,6 +21,6 @@ script:
   - rm ./ui* || true
   - rm -rf ./CMakeFiles ./box2d ./src/box2d || true
   - cppcheck --enable=unusedFunction --language=c++ $(find -name "*.h" -o -name "*.cpp")
-  - cppcheck --enable=warning,performance --language=c++ --error-exitcode=1 $(find -name "*.h" -o -name "*.cpp")
+  - cppcheck --enable=warning,performance --language=c++ $(find -name "*.h" -o -name "*.cpp")
   - cpplint --filter=-legal/copyright,-build/include_subdir,-build/c++11,-build/include_order $(find -name "*.h" -o -name "*.cpp")
 

@@ -1,8 +1,9 @@
 #ifndef GAMEOBJECT_GAME_OBJECT_H_
 #define GAMEOBJECT_GAME_OBJECT_H_
 
-#include <QPainter>
 #include <memory>
+#include <QPainter>
+
 #include "Model/coordinate.h"
 #include "Model/size.h"
 #include "View/size_handler.h"
@@ -10,12 +11,16 @@
 class GameObject {
  public:
   GameObject() = default;
+  GameObject(Coordinate position, Size size);
 
-  virtual void Draw(QPainter*, std::shared_ptr<SizeHandler>) const = 0;
+  virtual void Draw(QPainter* painter,
+      const std::shared_ptr<SizeHandler>& size_handler) const = 0;
   virtual void Tick() = 0;
 
   Coordinate GetPosition() const;
+  void SetPosition(Coordinate position);
   Size GetSize() const;
+  void SetSize(Size size);
 
  protected:
   Coordinate position_;

@@ -5,8 +5,8 @@
 #include "constants.h"
 
 struct Size {
-  double width_;
-  double height_;
+  double width;
+  double height;
 
   Size() = default;
   Size(double x, double y);

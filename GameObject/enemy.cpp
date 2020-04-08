@@ -22,20 +22,27 @@ void Enemy::Move() {
       return;
     }
     destination_ = (road_->GetNode(node_number_));
+    if (!road_->IsEnd(node_number_ + 1)) {
+      // We make small shifts so that enemies move chaotically,
+      // not in the linear queue
+      destination_.x += std::rand() % kMoveShift_ - kMoveShift_ / 2;
+      destination_.y += std::rand() % kMoveShift_ - kMoveShift_ / 2;
+    }
   } else {
     position_ += move_direction;
   }
 }
 
 void Enemy::Draw(QPainter* painter,
-                 std::shared_ptr<SizeHandler> size_handler) const {
+                 const std::shared_ptr<SizeHandler>& size_handler) const {
   painter->save();
 
   painter->setPen(QColor("black"));
   Coordinate point =
       size_handler->GameToWindowCoordinate(position_ - Size(15, 15));
-  Size size = size_handler->GameToWindowSize(Size(30, 30));
-  painter->drawRect(point.x, point.y, size.width_, size.height_);
+  
+  Size size = size_handler->GameToWindowSize({30, 30});
+  painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->restore();
 }

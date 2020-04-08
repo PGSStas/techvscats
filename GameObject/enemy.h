@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <algorithm>
+
 #include "moving_object.h"
 #include "effect.h"
 #include "auric_field.h"
@@ -17,7 +18,7 @@ class Enemy : public MovingObject {
   void Tick() override;
   void Move() override;
   void Draw(QPainter* painter,
-            std::shared_ptr<SizeHandler> size_handler) const override;
+            сonst std::shared_ptr<SizeHandler>& size_handler) const override;
   void DrawAuras(QPainter* painter,
                  std::shared_ptr<SizeHandler> size_handler) const;
   void DrawHealthBars(QPainter* painter,
@@ -30,6 +31,7 @@ class Enemy : public MovingObject {
                      int reward,
                      double speed,
                      double max_health);
+
   void SetRoad(const Road& road);
   void SetAuricField(double radius, int effect_id);
 
@@ -57,7 +59,9 @@ class Enemy : public MovingObject {
 
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
-
+  
+  const int kMoveShift_ = 50;
+  
  private:
   void DrawAuraIcon(double coefficient,
                     Coordinate* point,

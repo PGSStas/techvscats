@@ -10,8 +10,8 @@ void SizeHandler::ChangeSystem(double window_width, double window_height) {
   Size real_size = Size(game_width_ / scaling_coefficient_,
                         game_height_ / scaling_coefficient_);
 
-  origin_offset_.width_ = (window_width - real_size.width_) / 2;
-  origin_offset_.height_ = (window_height - real_size.height_) / 2;
+  origin_offset_.width = (window_width - real_size.width) / 2;
+  origin_offset_.height = (window_height - real_size.height) / 2;
 }
 
 Coordinate SizeHandler::WindowToGameCoordinate(

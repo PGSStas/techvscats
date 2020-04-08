@@ -16,8 +16,6 @@ SOURCES += \
          main.cpp \
          Controller/controller.cpp \
          Controller/spawner.cpp \
-         GameObject/passive_tower.cpp \
-         GameObject/active_tower.cpp \
          GameObject/projectile.cpp \
          GameObject/enemy.cpp \
          GameObject/game_object.cpp \
@@ -25,18 +23,20 @@ SOURCES += \
          GameObject/auric_field.cpp \
          GameObject/effect.cpp \
          GameObject/base.cpp \
+         GameObject/building.cpp \
          Model/model.cpp \
          Model/road.cpp \
          Model/coordinate.cpp \
          Model/size.cpp \
          View/view.cpp \
          View/size_handler.cpp \
+         View/tower_menu.cpp \
+         View/tower_menu_option.cpp \
 
 HEADERS += \
          Controller/controller.h \
          Controller/spawner.h \
-         GameObject/passive_tower.h \
-         GameObject/active_tower.h \
+         GameObject/building.h \
          GameObject/projectile.h \
          GameObject/enemy.h \
          GameObject/game_object.h \
@@ -52,3 +52,5 @@ HEADERS += \
          Model/enemy_group.h \
          View/view.h \
          View/size_handler.h \
+         View/tower_menu.h \
+         View/tower_menu_option.h \
