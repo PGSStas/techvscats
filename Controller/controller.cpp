@@ -105,7 +105,7 @@ void Controller::TickBuildings() {
   auto buildings = model_->GetBuildings();
   for (auto& building:*buildings) {
     building->Tick(current_time_);
-    if (building->IsReadyToCreateProjectile()) {
+    if (building->IsReadyToCreateProjectiles()) {
       model_->CreateProjectiles(building->PrepareProjectiles(
           model_->GetProjectileById(building->GetProjectileId())));
     }

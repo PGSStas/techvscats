@@ -12,7 +12,7 @@ class LazerProjectile : public Projectile {
 
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
   void Tick(int current_time) override;
-  void Move() override;
+
  private:
   Coordinate start_position_ = {0, 0};
 };

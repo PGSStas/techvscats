@@ -2,30 +2,6 @@
 
 #include "building.h"
 
-int Building::GetProjectileId() const {
-  return projectile_id_;
-}
-
-bool Building::IsInside(Coordinate point) const {
-  return point.GetDistanceTo(position_).GetLength() <= size_.width / 2;
-}
-
-int Building::GetId() const {
-  return id_;
-}
-
-void Building::Upgrade() {
-  current_level_++;
-}
-
-Building::Building(int id, int max_level, int settle_cost, int upgrade_cost,
-                   Size size,
-                   const std::list<std::shared_ptr<Enemy>>& enemies) :
-    id_(id), max_level_(max_level), settle_cost_(settle_cost),
-    upgrade_cost_(upgrade_cost), enemies_(enemies) {
-  size_ = size;
-}
-
 Building::Building(const Building& other) :
     Building(other.id_, other.max_level_, other.settle_cost_,
              other.upgrade_cost_, other.size_, other.enemies_) {
@@ -40,7 +16,15 @@ Building::Building(const Building& other) :
   current_level_ = other.current_level_;
 }
 
-void Building::Draw(QPainter* painter,const SizeHandler& size_handler) const {
+Building::Building(int id, int max_level, int settle_cost,
+                   int upgrade_cost, Size size,
+                   const std::list<std::shared_ptr<Enemy>>& enemies) :
+    id_(id), max_level_(max_level), settle_cost_(settle_cost),
+    upgrade_cost_(upgrade_cost), enemies_(enemies) {
+  size_ = size;
+}
+
+void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
   switch (action) {
     case Action::reload: painter->setBrush(reload_color_);
@@ -50,12 +34,12 @@ void Building::Draw(QPainter* painter,const SizeHandler& size_handler) const {
     case Action::post_fire: painter->setBrush(post_fire_color_);
       break;
   }
-  painter->save();
+
   Coordinate center = size_handler.GameToWindowCoordinate(position_);
-  Size window_size = size_handler.GameToWindowSize(size_);
+  Size size = size_handler.GameToWindowSize(size_);
   painter->drawEllipse(QPointF(center.x, center.y),
-                       window_size.width / 2,
-                       window_size.height / 2);
+                       size.width / 2,
+                       size.height / 2);
   painter->restore();
 }
 
@@ -99,18 +83,10 @@ void Building::Tick(int current_time) {
 
 }
 
-int Building::GetMaxLevel() const {
-  return max_level_;
-}
-
-int Building::GetCurrentLevel() const {
-  return current_level_;
-}
-
 void Building::SetProjectile(
     int max_aims,
     int attack_range,
-    int attack_damage,
+    double attack_damage,
     int projectile_id) {
 
   max_aims_ = max_aims;
@@ -191,10 +167,34 @@ std::vector<Projectile> Building::PrepareProjectiles(
   return projectiles;
 }
 
-bool Building::IsReadyToCreateProjectile() const {
+bool Building::IsReadyToCreateProjectiles() const {
   return is_ready_to_create_projectiles_;
 }
 
 int Building::GetAttackRange() const {
   return attack_range_;
+}
+
+int Building::GetProjectileId() const {
+  return projectile_id_;
+}
+
+bool Building::IsInside(Coordinate point) const {
+  return point.GetDistanceTo(position_).GetLength() <= size_.width / 2;
+}
+
+int Building::GetId() const {
+  return id_;
+}
+
+void Building::Upgrade() {
+  current_level_++;
+}
+
+int Building::GetMaxLevel() const {
+  return max_level_;
+}
+
+int Building::GetCurrentLevel() const {
+  return current_level_;
 }

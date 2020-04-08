@@ -21,7 +21,7 @@ Projectile::Projectile(const Projectile& other) {
   SetParameters(other.speed_, other.damage_, other.aim_);
   SetAnimationParameters(other.draw_color_, other.iteration_time_);
   position_ = other.position_;
-  effect_radius_ = other.effect_radius_;
+  splash_radius_ = other.splash_radius_;
   type_ = other.type_;
   size_ = other.size_;
 }
@@ -44,7 +44,8 @@ void Projectile::Move() {
   Size move = position_.GetDistanceTo(destination_) /=
                   position_.GetDistanceTo(destination_).GetLength() / speed_;
 
-  if (move.GetLength() > position_.GetDistanceTo(destination_).GetLength()) {
+  if ((position_ + move).GetDistanceTo(destination_).width
+      * position_.GetDistanceTo(destination_).width <= 0) {
     position_ = destination_;
   } else {
     position_ += move;

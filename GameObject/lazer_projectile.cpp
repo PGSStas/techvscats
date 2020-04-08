@@ -22,8 +22,6 @@ void LazerProjectile::Tick(int current_time) {
   }
 }
 
-void LazerProjectile::Move() {}
-
 LazerProjectile::LazerProjectile(const Projectile& other) : Projectile(other) {
   start_position_ = position_;
 }

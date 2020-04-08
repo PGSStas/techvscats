@@ -19,22 +19,22 @@ class Projectile : public MovingObject {
   void SetParameters(double speed, int damage = 0,
                      std::shared_ptr<Enemy> aim = {});
   void SetAnimationParameters(QColor draw_color, int iteration_time);
-  double GetDamage() const;
-  ProjectileType GetType() const;
+
   void SetType(ProjectileType type);
-  ~Projectile() = default;
-  void Draw(QPainter* painter, const SizeHandler& handler) const override;
+  ProjectileType GetType() const;
+  double GetDamage() const;
   void Tick(int current_time) override;
   void Move() override;
+  void Draw(QPainter* painter, const SizeHandler& handler) const override;
   virtual bool CheckForReceiveDamage(const Enemy& enemy) ;
 
  protected:
   ProjectileType type_ = ProjectileType::kDefault;
   std::shared_ptr<Enemy> aim_ = {};
-  double effect_radius_ = 0;
+  double splash_radius_ = 0;
   double damage_ = 0;
 
-  QColor draw_color_ = Qt::darkYellow;
+  QColor draw_color_ = Qt::black;
   int iteration_time_ = 0;
 };
 
