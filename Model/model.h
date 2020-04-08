@@ -16,6 +16,7 @@
 #include <QJsonObject>
 
 #include "GameObject/enemy.h"
+#include "GameObject/lazer_projectile.h"
 #include "GameObject/building.h"
 #include "GameObject/projectile.h"
 #include "Controller/spawner.h"
@@ -38,16 +39,23 @@ class Model {
   int GetTimeBetweenWaves() const;
   int GetRoundsCount() const;
   int GetCurrentRoundNumber() const;
+
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
-  Enemy GetEnemyById(int id) const;
+  std::list<std::shared_ptr<Projectile>>* GetProjectiles();
+  std::vector<std::shared_ptr<Building>>* GetBuildings();
+
+  const Enemy& GetEnemyById(int id) const;
+  const Building& GetBuildingById(int id) const;
+
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
+
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
 
-  const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
+  void CreateProjectiles(const std::vector<Projectile>& projectiles);
+  const Projectile& GetProjectileById(int id) const;
   const std::vector<std::vector<int>>& GetUpgradesTree() const;
-  const Building& GetBuildingById(int id) const;
 
   void SetBuildingAtIndex(int i, int id);
   void UpgradeBuildingAtIndex(int i);
@@ -75,6 +83,8 @@ class Model {
 
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
+  std::vector<Projectile> id_to_projectile_;
+  int building_count_;
   std::vector<Building> id_to_building_;
   // upgrades_tree[i] is a vector of towers to which
   // ith tower can be evolved or changed

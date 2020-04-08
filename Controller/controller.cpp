@@ -31,7 +31,8 @@ void Controller::Tick(int current_time) {
   current_time_ = current_time;
   if (game_mode_ == WindowType::kGame) {
     GameProcess();
-  } else {
+  }
+  if (game_mode_ == WindowType::kMainMenu) {
     MenuProcess();
   }
 }
@@ -42,6 +43,8 @@ void Controller::GameProcess() {
   }
   TickSpawners();
   TickEnemies();
+  TickBuildings();
+  TickProjectiles();
 }
 
 void Controller::MenuProcess() {}
@@ -92,9 +95,37 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
-
+  enemies->remove_if([&](auto& enemy) { return enemy->IsDead(); });
   for (auto& enemy : *enemies) {
-    enemy->Tick();
+    enemy->Tick(current_time_);
+  }
+}
+
+void Controller::TickBuildings() {
+  auto buildings = model_->GetBuildings();
+  for (auto& building:*buildings) {
+    building->Tick(current_time_);
+    if (building->IsReadyToCreateProjectile()) {
+      model_->CreateProjectiles(building->PrepareProjectiles(
+          model_->GetProjectileById(building->GetProjectileId())));
+    }
+  }
+}
+
+void Controller::TickProjectiles() {
+  auto projectiles = model_->GetProjectiles();
+  projectiles->remove_if([&](auto& projectile) { return projectile->IsDead(); });
+
+  for (auto& projectile : *projectiles) {
+    projectile->Tick(current_time_);
+    if (projectile->HasReached()) {
+      auto enemies = model_->GetEnemies();
+      for (const auto& enemy: *enemies) {
+        if (projectile->CheckForReceiveDamage(*enemy)) {
+          enemy->ReceiveDamage(projectile->GetDamage());
+        }
+      }
+    }
   }
 }
 
@@ -106,17 +137,21 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
   return *model_->GetEnemies();
 }
 
+const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
+  return *model_->GetBuildings();
+}
+
+const std::list<std::shared_ptr<Projectile>>& Controller::GetProjectiles() const {
+  return *model_->GetProjectiles();
+}
+
 const std::vector<Road>& Controller::GetRoads() const {
   return model_->GetRoads();
 }
 
-const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
-  return model_->GetBuildings();
-}
-
 void Controller::MousePress(Coordinate position) {
   // Check if some tower was pressed
-  const auto& buildings = model_->GetBuildings();
+  const auto& buildings = *model_->GetBuildings();
   for (size_t i = 0; i < buildings.size(); i++) {
     const auto& building = buildings[i];
     if (!building->IsInside(position)) {
@@ -151,7 +186,7 @@ void Controller::MousePress(Coordinate position) {
 }
 
 void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
-  const auto& buildings = model_->GetBuildings();
+  const auto& buildings = *model_->GetBuildings();
   if (buildings[index_in_buildings]->GetId() == replacing_id) {
     model_->UpgradeBuildingAtIndex(index_in_buildings);
   } else {
@@ -161,7 +196,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
 
 void Controller::CreateTowerMenu(int tower_index) {
   std::vector<std::shared_ptr<TowerMenuOption>> options;
-  const auto& buildings = model_->GetBuildings();
+  const auto& buildings = *model_->GetBuildings();
   const auto& building = buildings[tower_index];
   const auto& upgrade_tree = model_->GetUpgradesTree();
   int building_id = buildings[tower_index]->GetId();

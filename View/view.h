@@ -9,8 +9,8 @@
 #include <QLabel>
 #include <QObject>
 #include <QString>
-#include <QDebug>
-
+#include <QTimerEvent>
+#include <list>
 #include <memory>
 #include <list>
 
@@ -45,7 +45,7 @@ class View : public QMainWindow {
  private:
   WindowType window_type_;
   AbstractController* controller_;
-  std::shared_ptr<SizeHandler> size_handler_;
+  SizeHandler size_handler_;
   QElapsedTimer game_time_;
 
   // Game window
@@ -73,6 +73,7 @@ class View : public QMainWindow {
   void DrawBackground(QPainter* painter);
   void DrawTowers(QPainter* painter);
   void DrawEnemies(QPainter* painter);
+  void DrawProjectiles(QPainter* painter);
 };
 
 #endif  // VIEW_VIEW_H_

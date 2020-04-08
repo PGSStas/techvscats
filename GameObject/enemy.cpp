@@ -1,7 +1,10 @@
 #include "enemy.h"
 
-void Enemy::Tick() {
+void Enemy::Tick(int current_time) {
   Move();
+  if (current_health_ <= 0) {
+    is_dead_ = true;
+  }
 }
 
 void Enemy::Move() {
@@ -31,14 +34,13 @@ void Enemy::Move() {
   position_ += move_direction;
 }
 
-void Enemy::Draw(QPainter* painter,
-                 const std::shared_ptr<SizeHandler>& size_handler) const {
+void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
   painter->setPen(QColor("black"));
   Coordinate point =
-      size_handler->GameToWindowCoordinate(position_ - Size(15, 15));
-  Size size = size_handler->GameToWindowSize({30, 30});
+      size_handler.GameToWindowCoordinate(position_ - Size(15, 15));
+  Size size = size_handler.GameToWindowSize({30, 30});
   painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->restore();
@@ -70,14 +72,14 @@ void Enemy::SetRoad(const Road& road) {
   destination_ = road_->GetNode(node_number_);
 }
 
-bool Enemy::IsDead() const {
-  return is_dead_;
-}
-
-Enemy::Enemy(const Enemy& enemy_instance) : MovingObject(enemy_instance) {
+Enemy::Enemy(const Enemy& enemy_instance) {
   *this = enemy_instance;
 }
 
 void Enemy::SetParameters(double speed) {
   speed_ = speed;
+}
+
+void Enemy::ReceiveDamage(double damage) {
+   current_health_-=damage;
 }

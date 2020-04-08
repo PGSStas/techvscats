@@ -3,18 +3,39 @@
 
 #include <memory>
 
-#include "moving_object.h"
-#include "building.h"
+#include "enemy.h"
 
-// If the projectile reaches enemy, the controller will
-// remove Projectile's object and cause damage damage to the enemy.
+enum class ProjectileType {
+  kDefault,
+  kLazer,
+  kBomb
+};
+
 class Projectile : public MovingObject {
-  Projectile() = default;
+ public:
+  explicit Projectile(const Projectile& other);
+  explicit Projectile(Size size, double speed, ProjectileType projectile_type = ProjectileType::kDefault);
+
+  void SetParameters(double speed, int damage = 0,
+                     std::shared_ptr<Enemy> aim = {});
+  void SetAnimationParameters(QColor draw_color, int iteration_time);
+  double GetDamage() const;
+  ProjectileType GetType() const;
+  void SetType(ProjectileType type);
   ~Projectile() = default;
- private:
-  const std::shared_ptr<GameObject> aim_;
-  bool is_aim_achived_;
-  int damage_;
+  void Draw(QPainter* painter, const SizeHandler& handler) const override;
+  void Tick(int current_time) override;
+  void Move() override;
+  virtual bool CheckForReceiveDamage(const Enemy& enemy) ;
+
+ protected:
+  ProjectileType type_ = ProjectileType::kDefault;
+  std::shared_ptr<Enemy> aim_ = {};
+  double effect_radius_ = 0;
+  double damage_ = 0;
+
+  QColor draw_color_ = Qt::darkYellow;
+  int iteration_time_ = 0;
 };
 
 #endif  // GAMEOBJECT_PROJECTILE_H_

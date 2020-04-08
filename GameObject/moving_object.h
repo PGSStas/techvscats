@@ -7,13 +7,17 @@ class MovingObject : public GameObject {
  public:
   MovingObject() = default;
 
+  double GetSpeed() const;
+  bool IsDead() const;
   virtual void Move() = 0;
   void SetSpeedCoefficient(double speed_coefficient);
   bool HasReached() const;
 
  protected:
+  Coordinate destination_ = {0,0};
   bool has_reached_ = false;
-  Coordinate destination_;
+  bool is_dead_ = false;
+
   double speed_;
   double speed_coefficient_ = 1;
 };

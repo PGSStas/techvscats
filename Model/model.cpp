@@ -1,29 +1,56 @@
+#include <GameObject/bomb_projectile.h>
 #include "model.h"
 
 void Model::SetGameLevel(int level_id) {
   Enemy temporary_enemy;
   temporary_enemy.SetParameters(1);
+
   id_to_enemy_.push_back(temporary_enemy);
   temporary_enemy.SetParameters(4);
   id_to_enemy_.push_back(temporary_enemy);
   LoadLevelFromJson(level_id);
 
-  empty_towers_ = {{100, 100}, {200, 100}, {500, 100}};
-  Building building_instance;
-  building_instance.SetParameters(0, QColor(Qt::gray), 0, 0);
+  empty_towers_ = {{540, 700}, {200, 100}, {500, 100}};
+
+  Building building_instance(0, 0, 0, 0, Size(33, 33), enemies_);
+  building_instance.SetParameters();
+  building_instance.SetAnimationParameters(Qt::gray,
+                                           1000);
+
   upgrades_tree_.push_back({1, 2});
 
-  Building building_instance2;
-  building_instance2.SetParameters(1, Qt::white, 2, 75);
+  Building building_instance2(1, 4, 10, 24, Size(40, 20), enemies_);
+  building_instance2.SetParameters(2, 340, 1, 0);
+  building_instance2.SetAnimationParameters(Qt::blue, 1000,
+                                            Qt::red, 300,
+                                            Qt::darkBlue, 100);
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3;
-  building_instance3.SetParameters(2, Qt::darkRed, 3, 100);
-  upgrades_tree_.push_back({1, 3, 0});
+  Building building_instance3(2, 4, 10, 24, Size(30, 50), enemies_);
+  building_instance3.SetParameters(3, 240, 1, 2);
+  building_instance3.SetAnimationParameters(Qt::yellow, 400,
+                                            Qt::red, 100,
+                                            Qt::darkYellow, 100);
+  upgrades_tree_.push_back({3, 1, 0});
 
-  Building building_instance4;
-  building_instance4.SetParameters(3, Qt::darkBlue, 4, 150);
-  upgrades_tree_.push_back({0});
+  Building building_instance4(3, 4, 10, 24, Size(14, 32), enemies_);
+  building_instance4.SetParameters(1, 540, 3, 1);
+  building_instance4.SetAnimationParameters(Qt::green, 1000,
+                                            Qt::red, 300,
+                                            Qt::darkGreen, 100);
+  upgrades_tree_.push_back({1, 0});
+  Projectile projectile_instance_default(Size(10, 20), 10 );
+  projectile_instance_default.SetAnimationParameters(Qt::darkRed, 100);
+
+  BombProjectile projectile_instance_bomb(Size(10, 20), 3, 50);
+  projectile_instance_bomb.SetAnimationParameters(Qt::darkGreen, 100);
+
+  LazerProjectile projectile_instance_lazer(Size(10, 20), 3);
+  projectile_instance_lazer.SetAnimationParameters(Qt::cyan, 600);
+
+  id_to_projectile_.push_back(projectile_instance_default);
+  id_to_projectile_.push_back(projectile_instance_bomb);
+  id_to_projectile_.push_back(projectile_instance_lazer);
 
   id_to_building_.push_back(building_instance);
   id_to_building_.push_back(building_instance2);
@@ -69,7 +96,7 @@ std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
   return &enemies_;
 }
 
-Enemy Model::GetEnemyById(int id) const {
+const Enemy& Model::GetEnemyById(int id) const {
   return id_to_enemy_[id];
 }
 
@@ -92,23 +119,13 @@ void Model::ClearGameModel() {
   enemy_groups_.clear();
   roads_.clear();
   empty_towers_.clear();
-  qDebug() << "Clear Model";
 }
 
-void Model::InitializeTowerSlots() {
-  for (Coordinate coordinate : empty_towers_) {
-    auto empty_place = std::make_shared<Building>(id_to_building_[0]);
-    empty_place->SetPosition(coordinate);
-    buildings_.push_back(empty_place);
-  }
-}
-
-const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
-  return buildings_;
+std::vector<std::shared_ptr<Building>>* Model::GetBuildings() {
+  return &buildings_;
 }
 
 void Model::SetBuildingAtIndex(int i, int id) {
-  qDebug() << "set b" << i << " " << id;
   Coordinate position = buildings_[i]->GetPosition();
   // Create new building by id
   buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
@@ -184,5 +201,38 @@ void Model::LoadLevelFromJson(int level) {
                           json_enemy_group["road_to_spawn"].toInt());
     }
     enemy_groups_.push_back(std::move(groups));
+  }
+
+}
+
+void Model::InitializeTowerSlots() {
+  for (Coordinate coordinate : empty_towers_) {
+    auto empty_place = std::make_shared<Building>(id_to_building_[0]);
+    empty_place->SetPosition(coordinate);
+    buildings_.push_back(empty_place);
+  }
+}
+
+std::list<std::shared_ptr<Projectile>>* Model::GetProjectiles() {
+  return &projectiles_;
+}
+
+const Projectile& Model::GetProjectileById(int id) const {
+  return id_to_projectile_[id];
+}
+
+void Model::CreateProjectiles(const std::vector<Projectile>& projectiles) {
+  for (auto& projectile:projectiles) {
+    switch (projectile.GetType()) {
+      case ProjectileType::kDefault:
+        projectiles_.push_back(std::make_shared<Projectile>(projectile));
+        break;
+      case ProjectileType::kLazer:
+        projectiles_.push_back(std::make_shared<LazerProjectile>(projectile));
+        break;
+      case ProjectileType::kBomb:
+        projectiles_.push_back(std::make_shared<BombProjectile>(projectile));
+        break;
+    }
   }
 }
