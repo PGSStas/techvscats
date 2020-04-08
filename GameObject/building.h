@@ -18,8 +18,8 @@ class Building : public GameObject {
            int upgrade_cost = 0, Size size = {20, 20},
            const std::list<std::shared_ptr<Enemy>>& enemies = {});
   explicit Building(const Building& other);
-  void SetParameters(int max_aims = 0, int attack_range = 0,
-                     int attack_damage = 0, int projectile_id = 0);
+  void SetProjectile(int max_aims , int attack_range ,
+                     int attack_damage , int projectile_id );
 
   void SetAnimationParameters(QColor wait_color,
                               int wait_time,
@@ -46,7 +46,7 @@ class Building : public GameObject {
   int GetCurrentLevel() const;
   bool IsReadyToCreateProjectile() const;
 
- protected:
+ private:
   virtual void UpdateAim();
   // parameters
   int id_ = 0;

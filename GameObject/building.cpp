@@ -29,7 +29,7 @@ Building::Building(int id, int max_level, int settle_cost, int upgrade_cost,
 Building::Building(const Building& other) :
     Building(other.id_, other.max_level_, other.settle_cost_,
              other.upgrade_cost_, other.size_, other.enemies_) {
-  SetParameters(other.max_aims_,
+  SetProjectile(other.max_aims_,
                 other.attack_range_,
                 other.attack_damage_,
                 other.projectile_id_);
@@ -107,7 +107,7 @@ int Building::GetCurrentLevel() const {
   return current_level_;
 }
 
-void Building::SetParameters(
+void Building::SetProjectile(
     int max_aims,
     int attack_range,
     int attack_damage,
