@@ -1,11 +1,11 @@
-#ifndef GAMEOBJECT_BASE_H
-#define GAMEOBJECT_BASE_H
+#ifndef GAMEOBJECT_BASE_H_
+#define GAMEOBJECT_BASE_H_
 
 #include "game_object.h"
 
 class Base {
  public:
-  Base(double max_health);
+  explicit Base(double max_health);
 
   double GetCurrentHealthPoints() const;
   double GetMaxHealth() const;
@@ -20,4 +20,4 @@ class Base {
   bool is_dead_;
 };
 
-#endif // GAMEOBJECT_BASE_H
+#endif  // GAMEOBJECT_BASE_H_

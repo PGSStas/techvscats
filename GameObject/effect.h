@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_EFFECT_H
-#define GAMEOBJECT_EFFECT_H
+#ifndef GAMEOBJECT_EFFECT_H_
+#define GAMEOBJECT_EFFECT_H_
 
 enum class EffectTarget {
   kAll = 0,
@@ -26,4 +26,4 @@ struct Effect {
   void SumEffects(const Effect& other);
 };
 
-#endif //GAMEOBJECT_EFFECT_H
+#endif  // GAMEOBJECT_EFFECT_H_

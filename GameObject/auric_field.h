@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_AURIC_FIELD_H
-#define GAMEOBJECT_AURIC_FIELD_H
+#ifndef GAMEOBJECT_AURIC_FIELD_H_
+#define GAMEOBJECT_AURIC_FIELD_H_
 
 #include <memory>
 #include "game_object.h"
@@ -26,4 +26,4 @@ class AuricField {
   Coordinate* carrier_coordinates_;
 };
 
-#endif //GAMEOBJECT_AURIC_FIELD_H
+#endif  // GAMEOBJECT_AURIC_FIELD_H_

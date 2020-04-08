@@ -69,7 +69,8 @@ void View::paintEvent(QPaintEvent*) {
     Coordinate health_bar_top_corner =
         size_handler_->GameToWindowCoordinate({0, 1060});
     Size health_bar_size =
-        size_handler_->GameToWindowSize({1920 * (1.0 * controller_->GetCurrentBaseHp()
+        size_handler_->GameToWindowSize({1920 * (1.0
+            * controller_->GetCurrentBaseHp()
             / controller_->GetMaxBaseHp()), 20});
     painter.setBrush(Qt::red);
     painter.drawRect(health_bar_top_corner.x,
