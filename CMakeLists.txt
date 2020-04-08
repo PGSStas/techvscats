@@ -19,6 +19,7 @@ add_executable(techvscats
         main.cpp
         Controller/controller.cpp
         Controller/spawner.cpp
+        GameObject/auric_field.h
         GameObject/passive_tower.cpp
         GameObject/active_tower.cpp
         GameObject/projectile.cpp
@@ -31,7 +32,7 @@ add_executable(techvscats
         Model/size.cpp
         View/view.cpp
         View/size_handler.cpp
-        resources.qrc)
+        resources.qrc GameObject/effect.h GameObject/auric_field.cpp GameObject/effect.cpp GameObject/base.cpp GameObject/base.h)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

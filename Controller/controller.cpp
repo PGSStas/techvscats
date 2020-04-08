@@ -42,6 +42,7 @@ void Controller::GameProcess() {
   }
   TickSpawners();
   TickEnemies();
+  TickAuras();
 }
 
 void Controller::MenuProcess() {}
@@ -91,11 +92,20 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto* enemies = model_->GetEnemies();
-  // Delete enemies code here
 
   for (auto& enemy : *enemies) {
     enemy->Tick();
   }
+
+  const auto& base = model_->GetBase();
+  for (auto& enemy : *enemies) {
+    if (enemy->IsEndReached()) {
+      base->ReduceHealthPoints(enemy->GetDamage());
+    }
+  }
+  enemies->remove_if([&](const std::shared_ptr<Enemy>& sp) {
+    return sp->IsDead() || sp->IsEndReached();
+  });
 }
 
 void Controller::AddEnemyToModel(const Enemy& enemy) const {
@@ -109,4 +119,62 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
 
 const std::vector<Road>& Controller::GetRoads() const {
   return model_->GetRoads();
+}
+
+void Controller::TickAuras() {
+  const auto& enemies = *model_->GetEnemies();
+
+  for (const auto& enemy : enemies) {
+    enemy->ResetEffect();
+  }
+
+  AuricField aura;
+  EffectTarget effect_target;
+  for (const auto& enemy : enemies) {
+    aura = enemy->GetAuricField();
+    if (!aura.IsValid()) {
+      continue;
+    }
+    effect_target = model_->GetEffectById(aura.GetEffectId()).effect_target;
+    if (effect_target == EffectTarget::kAll
+        || effect_target == EffectTarget::kEnemies) {
+      ApplyEffectToEnemies(aura);
+    }
+    if (effect_target == EffectTarget::kAll
+        || effect_target == EffectTarget::kBuildings) {
+      ApplyEffectToBuildings(aura);
+    }
+  }
+
+  // TODO(Katsuba Stanislav): Building auras cycle.
+}
+
+void Controller::ApplyEffectToEnemies(const AuricField& aura) {
+  const auto& enemies = *model_->GetEnemies();
+
+  Effect effect = model_->GetEffectById(aura.GetEffectId());
+  for (const auto& enemy : enemies) {
+    if (aura.IsInRadius(enemy->GetPosition())) {
+      enemy->ApplyEffect(effect);
+    }
+  }
+}
+
+void Controller::ApplyEffectToBuildings(const AuricField& aura) {
+  const auto& buildings = *model_->GetBuildings();
+
+  Effect effect = model_->GetEffectById(aura.GetEffectId());
+  for (const auto& building : buildings) {
+    if (aura.IsInRadius(building->GetPosition())) {
+      // TODO(Katsuba Stanislav): Function of applying.
+    }
+  }
+}
+
+double Controller::GetCurrentBaseHp() const {
+  return model_->GetBase()->GetCurrentHealthPoints();
+}
+
+double Controller::GetMaxBaseHp() const {
+  return model_->GetBase()->GetMaxHealth();
 }

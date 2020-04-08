@@ -38,6 +38,7 @@ void View::timerEvent(QTimerEvent* event) {
 
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
+  painter.setRenderHint(QPainter::Antialiasing);
   // Example of work
 
   Coordinate label_position = size_handler_->GameToWindowCoordinate({300, 10});
@@ -65,9 +66,31 @@ void View::paintEvent(QPaintEvent*) {
 
     DrawBackground(&painter);
 
+    Coordinate health_bar_top_corner =
+        size_handler_->GameToWindowCoordinate({0, 1060});
+    Size health_bar_size =
+        size_handler_->GameToWindowSize({1920 * (1.0 * controller_->GetCurrentBaseHp()
+            / controller_->GetMaxBaseHp()), 20});
+    painter.setBrush(Qt::red);
+    painter.drawRect(health_bar_top_corner.x,
+                     health_bar_top_corner.y,
+                     health_bar_size.width_,
+                     health_bar_size.height_);
+
     auto enemies_list = controller_->GetEnemies();
+    painter.setBrush(Qt::transparent);
+
+    for (auto& enemy : enemies_list) {
+      enemy->DrawAuras(&painter, size_handler_);
+    }
+
     for (auto& enemy : enemies_list) {
       enemy->Draw(&painter, size_handler_);
+      enemy->DrawAurasIcons(&painter, size_handler_);
+    }
+
+    for (auto& enemy : enemies_list) {
+      enemy->DrawHealthBars(&painter, size_handler_);
     }
   }
 }

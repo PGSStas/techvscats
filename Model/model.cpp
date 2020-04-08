@@ -1,16 +1,11 @@
 #include "model.h"
 
 void Model::SetGameLevel(int level_id) {
-  Enemy temporary_enemy;
-  temporary_enemy.SetParameters(1);
-  id_to_enemy_.push_back(temporary_enemy);
-  temporary_enemy.SetParameters(4);
-  id_to_enemy_.push_back(temporary_enemy);
   LoadLevelFromJson(level_id);
 }
 
 int Model::GetTimeBetweenWaves() const {
-  return time_between_ronds_;
+  return time_between_rounds_;
 }
 
 int Model::GetRoundsCount() const {
@@ -59,6 +54,7 @@ int Model::GetRoadsCount() const {
 
 void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
   enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
+  enemies_.back()->ChangeAuricFieldOrigin();
 }
 
 void Model::ClearGameModel() {
@@ -85,7 +81,7 @@ void Model::LoadLevelFromJson(int level) {
   QJsonObject json_object =
       QJsonDocument::fromJson(level_file.readAll()).object();
 
-  time_between_ronds_ = json_object["time_between_rounds"].toInt();
+  time_between_rounds_ = json_object["time_between_rounds"].toInt();
   gold_ = json_object["gold"].toInt();
   score_ = json_object["score"].toInt();
 
@@ -133,4 +129,78 @@ void Model::LoadLevelFromJson(int level) {
     }
     enemy_groups_.push_back(std::move(groups));
   }
+
+  base_ = std::make_shared<Base>(
+      json_object["base"].toObject()["max_health"].toDouble());
+}
+
+void Model::LoadDatabaseFromJson() {
+  QFile level_file(":resources/database/database.json");
+  if (!level_file.open(QFile::ReadOnly)) {
+    qDebug() << "ERROR! Missing database file";
+    return;
+  }
+
+  QJsonObject json_object =
+      QJsonDocument::fromJson(level_file.readAll()).object();
+
+  QJsonArray effects = json_object["effects"].toArray();
+  int effects_count = effects.size();
+  id_to_effect_.reserve(effects_count);
+
+  QJsonObject effect;
+  for (int i = 0; i < effects_count; i++) {
+    effect = effects[i].toObject();
+    id_to_effect_.emplace_back(
+        static_cast<EffectTarget>(effect["effect_target"].toInt()),
+        effect["speed_coefficient"].toDouble(),
+        effect["armor_coefficient"].toDouble(),
+        effect["damage_coefficient"].toDouble(),
+        effect["attack_rate_coefficient"].toDouble(),
+        effect["range_coefficient"].toDouble());
+  }
+
+  QJsonArray enemies = json_object["enemies"].toArray();
+  int enemies_count = enemies.size();
+  id_to_enemy_.reserve(enemies_count);
+
+  QJsonObject enemy;
+  for (int i = 0; i < enemies_count; i++) {
+    enemy = enemies[i].toObject();
+    Enemy new_enemy;
+    qDebug() << enemy["damage"].toInt() <<
+             enemy["armor"].toInt() <<
+             enemy["reward"].toInt() <<
+             enemy["speed"].toInt() <<
+             enemy["max_health"].toInt();
+    new_enemy.SetParameters(enemy["damage"].toInt(),
+                            enemy["armor"].toInt(),
+                            enemy["reward"].toInt(),
+                            enemy["speed"].toInt(),
+                            enemy["max_health"].toInt());
+    if (enemy.contains("aura")) {
+      new_enemy.SetAuricField(enemy["aura"].toObject()["radius"].toInt(),
+                              enemy["aura"].toObject()["effect_id"].toInt());
+    } else {
+      new_enemy.SetAuricField(-1, -1);
+    }
+    id_to_enemy_.push_back(new_enemy);
+  }
+}
+
+Model::Model() {
+  current_round_number_ = 0;
+  LoadDatabaseFromJson();
+}
+
+const Effect& Model::GetEffectById(int id) const {
+  return id_to_effect_[id];
+}
+
+std::list<std::shared_ptr<Building>>* Model::GetBuildings() {
+  return &buildings_;
+}
+
+std::shared_ptr<Base> Model::GetBase() const {
+  return base_;
 }

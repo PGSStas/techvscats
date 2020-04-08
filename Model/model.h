@@ -16,8 +16,10 @@
 #include <QJsonObject>
 
 #include "GameObject/enemy.h"
+#include "GameObject/base.h"
 #include "GameObject/building.h"
 #include "GameObject/projectile.h"
+#include "GameObject/effect.h"
 
 #include "Controller/spawner.h"
 #include "enemy_group.h"
@@ -25,7 +27,7 @@
 
 class Model {
  public:
-  Model() = default;
+  Model();
   ~Model() = default;
 
   void SetGameLevel(int level);
@@ -40,13 +42,17 @@ class Model {
   void IncreaseCurrentRoundNumber();
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
+  std::list<std::shared_ptr<Building>>* GetBuildings();
   Enemy GetEnemyById(int id) const;
+  const Effect& GetEffectById(int id) const;
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
+  std::shared_ptr<Base> GetBase() const;
 
  private:
   void LoadLevelFromJson(int level);
+  void LoadDatabaseFromJson();
 
   // Database which is updated by Controller all time
   std::list<std::shared_ptr<Projectile>> projectiles_;
@@ -57,15 +63,17 @@ class Model {
   int score_;
 
   // Database which is loaded in SetGameLevel once
+  std::shared_ptr<Base> base_;
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;
-  int time_between_ronds_;
+  int time_between_rounds_;
   int rounds_count_;
   int roads_count_;
 
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
+  std::vector<Effect> id_to_effect_;
   std::vector<Building> id_to_building_;
 };
 

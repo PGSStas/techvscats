@@ -3,7 +3,7 @@
 
 #include "game_object.h"
 
-class Building : GameObject {
+class Building : public GameObject {
  protected:
   int building_id_;
 };
