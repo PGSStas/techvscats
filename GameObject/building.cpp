@@ -82,33 +82,9 @@ void Building::Tick(int current_time) {
   }
 }
 
-int Building::GetMaxLevel() const {
-  return max_level_;
-}
-
-int Building::GetCurrentLevel() const {
-  return current_level_;
-}
-
-void Building::SetParameters(
-    int max_aims,
-    int attack_range,
-    int attack_damage,
-    int projectile_id) {
-
-  max_aims_ = max_aims;
-  attack_range_ = attack_range;
-  attack_damage_ = attack_damage;
-  projectile_id_ = projectile_id;
-  current_level_ = 1;
-}
-
-void Building::SetAnimationParameters(QColor wait_color,
-                                      int wait_time,
-                                      QColor pre_color,
-                                      int pre_fire_time,
-                                      QColor post_color,
-                                      int post_fire_time) {
+void Building::SetAnimationParameters(QColor wait_color, int wait_time,
+                                      QColor pre_color, int pre_fire_time,
+                                      QColor post_color, int post_fire_time) {
   reload_color_ = wait_color;
   reload_time_ = wait_time;
   pre_fire_color_ = pre_color;
