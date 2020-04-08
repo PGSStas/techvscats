@@ -16,7 +16,7 @@
 #include <QJsonObject>
 
 #include "GameObject/enemy.h"
-#include "GameObject/projectile.h"
+#include "GameObject/lazer_projectile.h"
 #include "GameObject/building.h"
 #include "Controller/spawner.h"
 #include "enemy_group.h"

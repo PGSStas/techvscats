@@ -6,34 +6,36 @@
 #include "enemy.h"
 
 enum class ProjectileType {
-  kDefault
+  kDefault,
+  kLazer,
+  kBomb
 };
 
 class Projectile : public MovingObject {
  public:
   explicit Projectile(const Projectile& other);
-  explicit Projectile(Size size, double speed, double effect_radius = 0,
-                      ProjectileType projectile_type = ProjectileType::kDefault);
+  explicit Projectile(Size size, double speed, ProjectileType projectile_type = ProjectileType::kDefault);
 
   void SetParameters(double speed, int damage = 0,
                      std::shared_ptr<Enemy> aim = {});
-  void SetAnimationParameters(QColor draw_color);
+  void SetAnimationParameters(QColor draw_color, int iteration_time);
   double GetDamage() const;
   ProjectileType GetType() const;
+  void SetType(ProjectileType type);
   ~Projectile() = default;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
   void Tick(int current_time) override;
   void Move() override;
-  bool IsUnderAttack(const Enemy& enemy) const;
-  bool IsAimAchieved() const;
+  virtual bool CheckForReceiveDamage(const Enemy& enemy) ;
 
  protected:
   ProjectileType type_ = ProjectileType::kDefault;
   std::shared_ptr<Enemy> aim_ = {};
-  bool is_aim_achieved_ = false;
   double effect_radius_ = 0;
   double damage_ = 0;
+
   QColor draw_color_ = Qt::darkYellow;
+  int iteration_time_ = 0;
 };
 
 #endif  // GAMEOBJECT_PROJECTILE_H_

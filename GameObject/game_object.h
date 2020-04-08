@@ -21,7 +21,7 @@ class GameObject {
   Size GetSize() const;
 
  protected:
-  int object_current_time_ = 0;
+  int object_time_ = 0;
   Coordinate position_;
   Size size_;
 };

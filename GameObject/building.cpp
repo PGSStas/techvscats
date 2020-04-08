@@ -63,8 +63,8 @@ void Building::Tick(int current_time) {
   if (max_aims_ == 0) {
     return;
   }
-  wait_time_ += (current_time - object_current_time_);
-  object_current_time_ = current_time;
+  wait_time_ += (current_time - object_time_);
+  object_time_ = current_time;
 
   switch (action) {
     case Action::reload:
@@ -185,6 +185,7 @@ std::vector<Projectile> Building::PrepareProjectiles(
                              attack_damage_,
                              aim);
     projectile.SetPosition(position_);
+    projectile.SetType(projectile_instance.GetType());
     projectiles.push_back(projectile);
   }
   return projectiles;

@@ -1,8 +1,6 @@
 #include "projectile.h"
-Projectile::Projectile(Size size, double speed, double effect_radius,
-                       ProjectileType type)
+Projectile::Projectile(Size size, double speed, ProjectileType type)
     : type_(type) {
-  effect_radius_ = effect_radius;
   speed_ = speed;
   size_ = size;
 }
@@ -14,16 +12,18 @@ void Projectile::SetParameters(double speed, int damage,
   aim_ = aim;
 }
 
-void Projectile::SetAnimationParameters(QColor draw_color) {
+void Projectile::SetAnimationParameters(QColor draw_color, int iteration_time) {
   draw_color_ = draw_color;
+  iteration_time_ = iteration_time;
 }
 
 Projectile::Projectile(const Projectile& other) {
   SetParameters(other.speed_, other.damage_, other.aim_);
-  SetAnimationParameters(other.draw_color_);
+  SetAnimationParameters(other.draw_color_, other.iteration_time_);
   position_ = other.position_;
-  size_ = other.size_;
   effect_radius_ = other.effect_radius_;
+  type_ = other.type_;
+  size_ = other.size_;
 }
 
 void Projectile::Draw(QPainter* painter, const SizeHandler& handler) const {
@@ -36,23 +36,22 @@ void Projectile::Draw(QPainter* painter, const SizeHandler& handler) const {
 }
 
 void Projectile::Tick(int current_time) {
+  destination_ = aim_->GetPosition();
   Move();
 }
 
 void Projectile::Move() {
-  destination_ = aim_->GetPosition();
-
   Size move = position_.GetDistanceTo(destination_) /=
                   position_.GetDistanceTo(destination_).GetLength() / speed_;
 
-  if(move.GetLength()>position_.GetDistanceTo(destination_).GetLength()){
-    position_=destination_;
-  }else{
-    position_+=move;
+  if (move.GetLength() > position_.GetDistanceTo(destination_).GetLength()) {
+    position_ = destination_;
+  } else {
+    position_ += move;
   }
 
-  if (position_.GetDistanceTo(aim_->GetPosition()).GetLength() < kEpsilon) {
-    is_aim_achieved_ = true;
+  if (position_.GetDistanceTo(destination_).GetLength() < kEpsilon) {
+    has_reached_ = true;
     is_dead_ = true;
   }
 }
@@ -61,15 +60,14 @@ ProjectileType Projectile::GetType() const {
   return type_;
 }
 
-bool Projectile::IsAimAchieved() const {
-  return is_aim_achieved_;
-}
-
-bool Projectile::IsUnderAttack(const Enemy& enemy) const {
-  return (position_.GetDistanceTo(enemy.GetPosition()).GetLength()
-      <= effect_radius_ + kEpsilon);
+bool Projectile::CheckForReceiveDamage(const Enemy& enemy) {
+  return enemy.GetPosition() == aim_->GetPosition();
 }
 
 double Projectile::GetDamage() const {
   return damage_;
+}
+
+void Projectile::SetType(ProjectileType type) {
+  type_ = type;
 }

@@ -1,3 +1,4 @@
+#include <GameObject/bomb_projectile.h>
 #include "model.h"
 
 void Model::SetGameLevel(int level_id) {
@@ -11,36 +12,45 @@ void Model::SetGameLevel(int level_id) {
 
   empty_towers_ = {{540, 700}, {200, 100}, {500, 100}};
 
-  Building building_instance(0, 0, 0, 0, Size(33,33), enemies_);
+  Building building_instance(0, 0, 0, 0, Size(33, 33), enemies_);
   building_instance.SetParameters();
   building_instance.SetAnimationParameters(Qt::gray,
                                            1000);
 
   upgrades_tree_.push_back({1, 2});
 
-  Building building_instance2(1, 4, 10, 24, Size(40,20), enemies_);
-  building_instance2.SetParameters(1, 340, 3, 0);
+  Building building_instance2(1, 4, 10, 24, Size(40, 20), enemies_);
+  building_instance2.SetParameters(2, 340, 1, 0);
   building_instance2.SetAnimationParameters(Qt::blue, 1000,
                                             Qt::red, 300,
                                             Qt::darkBlue, 100);
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3(2, 4, 10, 24, Size(30,50), enemies_);
-  building_instance3.SetParameters(11, 240, 1, 0);
+  Building building_instance3(2, 4, 10, 24, Size(30, 50), enemies_);
+  building_instance3.SetParameters(3, 240, 1, 2);
   building_instance3.SetAnimationParameters(Qt::yellow, 400,
                                             Qt::red, 100,
                                             Qt::darkYellow, 100);
   upgrades_tree_.push_back({3, 1, 0});
 
-  Building building_instance4(3, 4, 10, 24, Size(14,32), enemies_);
-  building_instance4.SetParameters(1, 140, 1, 0);
+  Building building_instance4(3, 4, 10, 24, Size(14, 32), enemies_);
+  building_instance4.SetParameters(1, 540, 3, 1);
   building_instance4.SetAnimationParameters(Qt::green, 1000,
                                             Qt::red, 300,
                                             Qt::darkGreen, 100);
   upgrades_tree_.push_back({1, 0});
-  Projectile projectile_instance(Size(10,20),7,100);
-  projectile_instance.SetAnimationParameters(Qt::darkRed);
-  id_to_projectile_.push_back(projectile_instance);
+  Projectile projectile_instance_default(Size(10, 20), 10 );
+  projectile_instance_default.SetAnimationParameters(Qt::darkRed, 100);
+
+  BombProjectile projectile_instance_bomb(Size(10, 20), 3, 50);
+  projectile_instance_bomb.SetAnimationParameters(Qt::darkGreen, 100);
+
+  LazerProjectile projectile_instance_lazer(Size(10, 20), 3);
+  projectile_instance_lazer.SetAnimationParameters(Qt::cyan, 600);
+
+  id_to_projectile_.push_back(projectile_instance_default);
+  id_to_projectile_.push_back(projectile_instance_bomb);
+  id_to_projectile_.push_back(projectile_instance_lazer);
 
   id_to_building_.push_back(building_instance);
   id_to_building_.push_back(building_instance2);
@@ -218,7 +228,13 @@ void Model::CreateProjectiles(const std::vector<Projectile>& projectiles) {
     switch (projectile.GetType()) {
       case ProjectileType::kDefault:
         projectiles_.push_back(std::make_shared<Projectile>(projectile));
-
+        break;
+      case ProjectileType::kLazer:
+        projectiles_.push_back(std::make_shared<LazerProjectile>(projectile));
+        break;
+      case ProjectileType::kBomb:
+        projectiles_.push_back(std::make_shared<BombProjectile>(projectile));
+        break;
     }
   }
 }

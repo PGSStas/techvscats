@@ -14,18 +14,12 @@ enum class Action {
 
 class Building : public GameObject {
  public:
-  Building(int id = 0,
-           int max_level = 0,
-           int settle_cost = 0,
-           int upgrade_cost = 0,
-           Size size={20,20},
+  Building(int id = 0, int max_level = 0, int settle_cost = 0,
+           int upgrade_cost = 0, Size size = {20, 20},
            const std::list<std::shared_ptr<Enemy>>& enemies = {});
   explicit Building(const Building& other);
-  void SetParameters(
-                     int max_aims = 0,
-                     int attack_range = 0,
-                     int attack_damage = 0,
-                     int projectile_id = 0);
+  void SetParameters(int max_aims = 0, int attack_range = 0,
+                     int attack_damage = 0, int projectile_id = 0);
 
   void SetAnimationParameters(QColor wait_color,
                               int wait_time,
@@ -36,11 +30,12 @@ class Building : public GameObject {
 
   virtual std::vector<Projectile> PrepareProjectiles(
       const Projectile& projectile_instance);
+
   virtual void Upgrade();
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter,
-      const  SizeHandler& size_handler) const override;
+            const SizeHandler& size_handler) const override;
 
   bool IsInside(Coordinate point) const;
 

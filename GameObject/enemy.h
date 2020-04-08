@@ -25,7 +25,7 @@ class Enemy : public MovingObject {
   int enemy_id_ = 0;
   int reward_ = 0;
   double current_health_ = 0;
-  double max_health_ = 1;
+  double max_health_ = 2;
 
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
