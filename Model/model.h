@@ -18,7 +18,6 @@
 #include "GameObject/enemy.h"
 #include "GameObject/building.h"
 #include "GameObject/projectile.h"
-
 #include "Controller/spawner.h"
 #include "enemy_group.h"
 #include "road.h"
@@ -33,11 +32,12 @@ class Model {
 
   void AddSpawner(const EnemyGroup& enemy_group);
   void AddEnemyFromInstance(const Enemy& enemy_instance);
+
+  void IncreaseCurrentRoundNumber();
+
   int GetTimeBetweenWaves() const;
   int GetRoundsCount() const;
-  int GetRoadsCount() const;
   int GetCurrentRoundNumber() const;
-  void IncreaseCurrentRoundNumber();
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   Enemy GetEnemyById(int id) const;
@@ -45,12 +45,19 @@ class Model {
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
 
+  const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
+  const std::vector<std::vector<int>>& GetUpgradesTree() const;
+  const Building& GetBuildingById(int id) const;
+
+  void SetBuildingAtIndex(int i, int id);
+  void UpgradeBuildingAtIndex(int i);
+
  private:
   void LoadLevelFromJson(int level);
 
   // Database which is updated by Controller all time
   std::list<std::shared_ptr<Projectile>> projectiles_;
-  std::list<std::shared_ptr<Building>> buildings_;
+  std::vector<std::shared_ptr<Building>> buildings_;
   std::list<std::shared_ptr<Enemy>> enemies_;
   int current_round_number_;
   int gold_;
@@ -60,13 +67,25 @@ class Model {
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;
-  int time_between_ronds_;
+  std::vector<Coordinate> empty_towers_;
+
+  int time_between_rounds_;
   int rounds_count_;
   int roads_count_;
 
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
   std::vector<Building> id_to_building_;
+  // upgrades_tree[i] is a vector of towers to which
+  // ith tower can be evolved or changed
+  std::vector<std::vector<int>> upgrades_tree_;
+
+ private:
+  // Helping functions
+
+  // Creates EmptyTower classes from empty_towers_ vector
+  // Should be called on load of empty_towers_
+  void InitializeTowerSlots();
 };
 
 #endif  // MODEL_MODEL_H_

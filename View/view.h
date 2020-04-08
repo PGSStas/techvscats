@@ -1,18 +1,21 @@
 #ifndef VIEW_VIEW_H_
 #define VIEW_VIEW_H_
 
-#include <QDebug>
+#include <QTimerEvent>
+#include <QMouseEvent>
+#include <QMainWindow>
+#include <QPushButton>
 #include <QElapsedTimer>
 #include <QLabel>
-#include <QMainWindow>
-#include <QMouseEvent>
 #include <QObject>
-#include <QPushButton>
 #include <QString>
-#include <QTimerEvent>
-#include <list>
+#include <QDebug>
+
 #include <memory>
+#include <list>
+
 #include "Controller/abstract_controller.h"
+#include "tower_menu.h"
 #include "size_handler.h"
 
 enum class WindowType {
@@ -34,8 +37,13 @@ class View : public QMainWindow {
 
   void UpdateRounds(int current_round_number, int number_of_rounds);
 
+  void ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu);
+  std::shared_ptr<TowerMenu> GetTowerMenu();
+  bool IsTowerMenuEnabled() const;
+  void DisableTowerMenu();
+
  private:
-  WindowType window_type;
+  WindowType window_type_;
   AbstractController* controller_;
   std::shared_ptr<SizeHandler> size_handler_;
   QElapsedTimer game_time_;
@@ -44,17 +52,27 @@ class View : public QMainWindow {
   QLabel* wave_status_label_;
   QPushButton* start_game_button_;
 
-  void DrawBackground(QPainter* p);
+  bool is_tower_menu_enabled_ = false;
+  std::shared_ptr<TowerMenu> tower_menu_ = nullptr;
 
   // Menu window
   QPushButton* return_menu_button_;
   int controller_timer_id_;
-  const int time_between_ticks_ = 10;
+  const int kTimeBetweenTicks_ = 10;
 
  private:
   void paintEvent(QPaintEvent*) override;
   void timerEvent(QTimerEvent* event) override;
   void resizeEvent(QResizeEvent*) override;
+  void mouseReleaseEvent(QMouseEvent* event) override;
+  void mouseMoveEvent(QMouseEvent* event) override;
+
+  void DrawWindow(QPainter* painter, const QBrush& brush);
+
+  // Game window
+  void DrawBackground(QPainter* painter);
+  void DrawTowers(QPainter* painter);
+  void DrawEnemies(QPainter* painter);
 };
 
 #endif  // VIEW_VIEW_H_

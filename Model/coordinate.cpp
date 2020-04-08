@@ -1,10 +1,11 @@
 #include "coordinate.h"
 
-Coordinate::Coordinate(double position_x, double position_y)
-    : x(position_x), y(position_y) {}
+Coordinate::Coordinate(double x, double y)
+    : x(x), y(y) {}
 
 bool Coordinate::operator==(Coordinate right) const {
-  return (x - right.x < kEpsilon) && (y - right.y < kEpsilon);
+  return (std::abs(x - right.x) < kEpsilon)
+      && (std::abs(y - right.y) < kEpsilon);
 }
 
 Coordinate& Coordinate::operator*=(double right) {
@@ -32,11 +33,11 @@ Size Coordinate::GetDistanceTo(Coordinate right) {
 }
 
 Coordinate Coordinate::operator+(Size right) const {
-  return Coordinate(x + right.width_, y + right.height_);
+  return Coordinate(x + right.width, y + right.height);
 }
 
 Coordinate Coordinate::operator-(Size right) const {
-  return Coordinate(x - right.width_, y - right.height_);
+  return Coordinate(x - right.width, y - right.height);
 }
 
 Coordinate& Coordinate::operator+=(Size right) {

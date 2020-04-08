@@ -2,14 +2,15 @@
 #include <QDebug>
 
 Controller::Controller() : model_(std::make_unique<Model>()),
-                           view_(std::make_unique<View>(this)) {}
+                           view_(std::make_unique<View>(this)),
+                           game_mode_(WindowType::kMainMenu) {}
 
 void Controller::StartGame(int level_id) {
   qDebug() << "Game Start!";
-  is_game_now_ = true;
+  game_mode_ = WindowType::kGame;
 
   last_round_start_time_ = current_time_;
-  have_unprocess_rounds_ = true;
+  has_unprocessed_rounds_ = true;
 
   model_->SetGameLevel(level_id);
 
@@ -19,21 +20,20 @@ void Controller::StartGame(int level_id) {
                       model_->GetRoundsCount());
 }
 
-void Controller::EndGame(Exit exit) {
-  // if end_code == 0 - win, 1 - return menu clicked
+void Controller::EndGame(Exit exit_code) {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMenuUi();
-  is_game_now_ = false;
+  game_mode_ = WindowType::kMainMenu;
 }
 
 void Controller::Tick(int current_time) {
   current_time_ = current_time;
-  if (is_game_now_) {
+  if (game_mode_ == WindowType::kGame) {
     GameProcess();
-    return;
+  } else {
+    MenuProcess();
   }
-  MenuProcess();
 }
 
 void Controller::GameProcess() {
@@ -49,17 +49,18 @@ void Controller::MenuProcess() {}
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
-  if (!have_unprocess_rounds_ || current_time_ - last_round_start_time_
+  if (!has_unprocessed_rounds_ || current_time_ - last_round_start_time_
       < model_->GetTimeBetweenWaves()) {
     return false;
   }
 
   last_round_start_time_ = current_time_;
   if (current_round_number == model_->GetRoundsCount()) {
-    have_unprocess_rounds_ = false;
+    has_unprocessed_rounds_ = false;
     qDebug() << "Rounds end.";
     return false;
   }
+
   return true;
 }
 
@@ -90,8 +91,7 @@ void Controller::TickSpawners() {
 }
 
 void Controller::TickEnemies() {
-  auto* enemies = model_->GetEnemies();
-  // Delete enemies code here
+  auto enemies = model_->GetEnemies();
 
   for (auto& enemy : *enemies) {
     enemy->Tick();
@@ -100,7 +100,6 @@ void Controller::TickEnemies() {
 
 void Controller::AddEnemyToModel(const Enemy& enemy) const {
   model_->AddEnemyFromInstance(enemy);
-  qDebug() << "new enemy";
 }
 
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
@@ -109,4 +108,91 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
 
 const std::vector<Road>& Controller::GetRoads() const {
   return model_->GetRoads();
+}
+
+const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
+  return model_->GetBuildings();
+}
+
+void Controller::MousePress(Coordinate position) {
+  // Check if some tower was pressed
+  const auto& buildings = model_->GetBuildings();
+  for (size_t i = 0; i < buildings.size(); i++) {
+    const auto& building = buildings[i];
+    if (!building->IsInside(position)) {
+      continue;
+    }
+    // Check if that's the same building on which menu was already open
+    // (which means now we should close it)
+    if (view_->IsTowerMenuEnabled()
+        && view_->GetTowerMenu()->GetTower()->GetPosition()
+            == building->GetPosition()) {
+      view_->DisableTowerMenu();
+      return;
+    }
+
+    CreateTowerMenu(i);
+    return;
+  }
+
+  if (!view_->IsTowerMenuEnabled()) {
+    return;
+  }
+
+  // Check if tower menu element was pressed
+  auto pressed = view_->GetTowerMenu()->GetButtonContaining(position);
+  if (pressed != nullptr) {
+    pressed->MakeAction();
+    qDebug() << pressed->GetReplacingTower().GetId() << " action";
+  }
+
+  // Disables menu after some action or if random point on the map was pressed
+  view_->DisableTowerMenu();
+}
+
+void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
+  const auto& buildings = model_->GetBuildings();
+  if (buildings[index_in_buildings]->GetId() == replacing_id) {
+    model_->UpgradeBuildingAtIndex(index_in_buildings);
+  } else {
+    model_->SetBuildingAtIndex(index_in_buildings, replacing_id);
+  }
+}
+
+void Controller::CreateTowerMenu(int tower_index) {
+  std::vector<std::shared_ptr<TowerMenuOption>> options;
+  const auto& buildings = model_->GetBuildings();
+  const auto& building = buildings[tower_index];
+  const auto& upgrade_tree = model_->GetUpgradesTree();
+  int building_id = buildings[tower_index]->GetId();
+
+  // Upgrade option (will only affect level of tower, but not the type)
+  if (building->GetMaxLevel() > building->GetCurrentLevel()) {
+    options.push_back(std::make_shared<TowerMenuOption>(
+        model_->GetBuildingById(building_id),
+        [&, tower_index, building_id]() {
+          SetBuilding(tower_index, building_id);
+        }));
+  }
+
+  // Tower building & evolve & delete options (will affect the type of tower)
+  for (const auto& to_change_id : upgrade_tree[building_id]) {
+    options.push_back(std::make_shared<TowerMenuOption>(
+        model_->GetBuildingById(to_change_id),
+        [&, tower_index, to_change_id]() {
+          SetBuilding(tower_index, to_change_id);
+        }));
+  }
+
+  auto menu = std::make_shared<TowerMenu>(current_time_, building, options);
+  view_->ShowTowerMenu(menu);
+}
+
+void Controller::MouseMove(Coordinate position) {
+  if (!view_->IsTowerMenuEnabled()) {
+    return;
+  }
+
+  auto button = view_->GetTowerMenu()->GetButtonContaining(position);
+  view_->GetTowerMenu()->Hover(button);
 }

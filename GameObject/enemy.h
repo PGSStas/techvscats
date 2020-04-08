@@ -2,6 +2,7 @@
 #define GAMEOBJECT_ENEMY_H_
 
 #include <memory>
+
 #include "moving_object.h"
 #include "Model/road.h"
 
@@ -15,7 +16,7 @@ class Enemy : public MovingObject {
   void SetParameters(double speed);
   void Move() override;
   void Draw(QPainter* painter,
-            std::shared_ptr<SizeHandler> size_handler) const override;
+            const std::shared_ptr<SizeHandler>& size_handler) const override;
   void SetRoad(const Road& road);
   bool IsDead() const;
 
@@ -30,6 +31,8 @@ class Enemy : public MovingObject {
 
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
+
+  const int kMoveShift_ = 50;
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_
