@@ -13,7 +13,6 @@ void Model::SetGameLevel(int level_id) {
   empty_towers_ = {{540, 700}, {200, 100}, {500, 100}};
 
   Building building_instance(0, 0, 0, 0, Size(33, 33), enemies_);
-  building_instance.SetProjectile();
   building_instance.SetAnimationParameters(Qt::gray,
                                            1000);
 
