@@ -19,14 +19,15 @@ class SizeHandler {
   Size WindowToGameSize(Size window_size) const;
   Size GameToWindowSize(Size game_size) const;
 
+  Size GetGameSize() const;
+
  private:
   // The ratio of game coordinates to real
   double scaling_coefficient_;
 
   Size origin_offset_;
 
-  const double game_width_ = kGameWidth;
-  const double game_height_ = kGameHeight;
+  const Size game_size_ = Size(kGameWidth, kGameHeight);
 };
 
 #endif  // VIEW_SIZE_HANDLER_H_

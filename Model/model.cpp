@@ -8,21 +8,24 @@ void Model::SetGameLevel(int level_id) {
   id_to_enemy_.push_back(temporary_enemy);
   LoadLevelFromJson(level_id);
 
-  empty_towers_ = {{100, 100}, {200, 100}, {500, 100}};
+  empty_towers_ = {{420, 310}, {720, 330}, {480, 675}, {480, 800},
+                   {775, 565}, {940, 565}, {1105, 565}, {765, 775},
+                   {1225, 775}, {1570, 775}, {1730, 600}, {1400, 540},
+                   {1430, 310}};
   Building building_instance;
   building_instance.SetParameters(0, QColor(Qt::gray), 0, 0);
   upgrades_tree_.push_back({1, 2});
 
   Building building_instance2;
-  building_instance2.SetParameters(1, Qt::white, 2, 75);
+  building_instance2.SetParameters(1, Qt::white, 2, 175);
   upgrades_tree_.push_back({3, 0});
 
   Building building_instance3;
-  building_instance3.SetParameters(2, Qt::darkRed, 3, 100);
+  building_instance3.SetParameters(2, Qt::darkRed, 3, 215);
   upgrades_tree_.push_back({1, 3, 0});
 
   Building building_instance4;
-  building_instance4.SetParameters(3, Qt::darkBlue, 4, 150);
+  building_instance4.SetParameters(3, Qt::darkBlue, 4, 275);
   upgrades_tree_.push_back({0});
 
   id_to_building_.push_back(building_instance);
@@ -185,4 +188,11 @@ void Model::LoadLevelFromJson(int level) {
     }
     enemy_groups_.push_back(std::move(groups));
   }
+
+  map_ = QPixmap(":resources/levels/map_level_" +
+      QString::number(level) + ".png");
+}
+
+const QPixmap& Model::GetMapImage() const {
+  return map_;
 }

@@ -196,3 +196,7 @@ void Controller::MouseMove(Coordinate position) {
   auto button = view_->GetTowerMenu()->GetButtonContaining(position);
   view_->GetTowerMenu()->Hover(button);
 }
+
+const QPixmap& Controller::GetMapImage() const {
+  return model_->GetMapImage();
+}

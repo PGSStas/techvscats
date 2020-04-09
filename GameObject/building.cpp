@@ -2,7 +2,7 @@
 
 #include "building.h"
 
-Building::Building() : GameObject(Coordinate(0, 0), Size(30, 30)) {}
+Building::Building() : GameObject(Coordinate(0, 0), Size(45, 45)) {}
 
 int Building::GetId() const {
   return id_;

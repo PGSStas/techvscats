@@ -39,7 +39,7 @@ void View::timerEvent(QTimerEvent* event) {
 
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
-  // Example of work
+  painter.setRenderHint(QPainter::Antialiasing);
 
   Coordinate label_position = size_handler_->GameToWindowCoordinate({300, 10});
   wave_status_label_->move(label_position.x, label_position.y);
@@ -58,7 +58,6 @@ void View::paintEvent(QPaintEvent*) {
     return_menu_button_->move(return_menu_button_position.x,
                               return_menu_button_position.y);
 
-    DrawWindow(&painter, QColor("#53a661"));
     DrawBackground(&painter);
     DrawEnemies(&painter);
     if (is_tower_menu_enabled_) {
@@ -95,20 +94,15 @@ void View::UpdateRounds(int current_round_nubmer, int number_of_rounds) {
 }
 
 void View::DrawBackground(QPainter* painter) {
-  // Test realization. Will be changed.
   painter->save();
 
-  painter->setPen(QPen(Qt::black, 5));
-  const auto& roads = controller_->GetRoads();
-  for (const auto& road : roads) {
-    for (int i = 0; !road.IsEnd(i + 1); i++) {
-      Coordinate start_point =
-          size_handler_->GameToWindowCoordinate(road.GetNode(i));
-      Coordinate end_point =
-          size_handler_->GameToWindowCoordinate(road.GetNode(i + 1));
-      painter->drawLine(start_point.x, start_point.y, end_point.x, end_point.y);
-    }
-  }
+  Coordinate origin = size_handler_->GameToWindowCoordinate({0, 0});
+  Size window_size =
+      size_handler_->GameToWindowSize(size_handler_->GetGameSize());
+  QRect background = QRect(origin.x, origin.y, window_size.width,
+      window_size.height);
+  painter->drawPixmap(background, controller_->GetMapImage());
+  //painter->drawImage(background, controller_->GetMapImage());
 
   painter->restore();
 }

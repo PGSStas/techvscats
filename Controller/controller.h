@@ -26,6 +26,8 @@ class Controller : public AbstractController {
   const std::vector<Road>& GetRoads() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
 
+  const QPixmap& GetMapImage() const override;
+
  private:
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;

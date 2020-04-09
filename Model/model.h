@@ -52,6 +52,8 @@ class Model {
   void SetBuildingAtIndex(int i, int id);
   void UpgradeBuildingAtIndex(int i);
 
+  const QPixmap& GetMapImage() const;
+
  private:
   void LoadLevelFromJson(int level);
 
@@ -79,6 +81,9 @@ class Model {
   // upgrades_tree[i] is a vector of towers to which
   // ith tower can be evolved or changed
   std::vector<std::vector<int>> upgrades_tree_;
+
+  // Images
+  QPixmap map_;
 
  private:
   // Helping functions
