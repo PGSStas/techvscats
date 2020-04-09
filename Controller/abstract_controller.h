@@ -29,9 +29,9 @@ class AbstractController {
 
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
   virtual const std::vector<std::shared_ptr<Building>>&
-    GetBuildings() const = 0;
+  GetBuildings() const = 0;
   virtual const std::vector<Road>& GetRoads() const = 0;
-  
+
   virtual double GetCurrentBaseHp() const = 0;
   virtual double GetMaxBaseHp() const = 0;
 };

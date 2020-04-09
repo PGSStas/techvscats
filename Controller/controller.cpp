@@ -143,7 +143,6 @@ void Controller::TickAuras() {
 }
 
 void Controller::ApplyEffectToInstance(const AuricField& aura) {
-
   if (!aura.IsValid()) {
     return;
   }
