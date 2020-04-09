@@ -201,10 +201,14 @@ void View::DrawWindow(QPainter* painter, const QBrush& brush) {
 }
 
 void View::DrawAuras(QPainter* painter) {
-  auto enemies_list = controller_->GetEnemies();
-
-  for (auto& enemy : enemies_list) {
+  const auto& enemies_list = controller_->GetEnemies();
+  for (const auto& enemy : enemies_list) {
     enemy->GetAuricField()->Draw(painter, size_handler_);
+  }
+
+  const auto& buildings_list = controller_->GetBuildings();
+  for (const auto& building : buildings_list) {
+    building->GetAuricField()->Draw(painter, size_handler_);
   }
 }
 
@@ -212,7 +216,9 @@ void View::DrawInterface(QPainter* painter) {
   auto enemies_list = controller_->GetEnemies();
 
   for (auto& enemy : enemies_list) {
-    enemy->DrawHealthBars(painter, size_handler_);
-    enemy->DrawAurasIcons(painter, size_handler_);
+    enemy->DrawHealthBar(painter, size_handler_);
+    enemy->GetEffect()->DrawEffectsIcons(painter,
+                                         size_handler_,
+                                         enemy->GetPosition());
   }
 }

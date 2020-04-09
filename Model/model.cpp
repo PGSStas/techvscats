@@ -13,7 +13,7 @@ void Model::SetGameLevel(int level_id) {
 
   Building building_instance3;
 
-  building_instance3.GetAuricField()->SetParameters(200, 0);
+  building_instance3.GetAuricField()->SetParameters(200, 2);
 
   building_instance3.SetParameters(2, Qt::darkRed, 3, 100);
   upgrades_tree_.push_back({1, 3, 0});
@@ -232,17 +232,11 @@ void Model::LoadDatabaseFromJson() {
   QJsonObject enemy;
   for (int i = 0; i < enemies_count; i++) {
     enemy = enemies[i].toObject();
-    Enemy new_enemy;
-    qDebug() << enemy["damage"].toInt() <<
-             enemy["armor"].toInt() <<
-             enemy["reward"].toInt() <<
-             enemy["speed"].toInt() <<
-             enemy["max_health"].toInt();
-    new_enemy.SetParameters(enemy["damage"].toInt(),
-                            enemy["armor"].toInt(),
-                            enemy["reward"].toInt(),
-                            enemy["speed"].toInt(),
-                            enemy["max_health"].toInt());
+    Enemy new_enemy(enemy["damage"].toInt(),
+                    enemy["armor"].toInt(),
+                    enemy["reward"].toInt(),
+                    enemy["speed"].toInt(),
+                    enemy["max_health"].toInt());
     if (enemy.contains("aura")) {
       new_enemy.GetAuricField()->SetParameters(
           enemy["aura"].toObject()["radius"].toInt(),

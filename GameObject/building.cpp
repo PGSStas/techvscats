@@ -18,7 +18,7 @@ void Building::Upgrade() {
 }
 
 void Building::SetParameters(int id, const QColor& draw_color, int max_level,
-    int action_range) {
+                             int action_range) {
   id_ = id;
   draw_color_ = draw_color;
   max_level_ = max_level;
@@ -28,7 +28,7 @@ void Building::SetParameters(int id, const QColor& draw_color, int max_level,
 
 Building::Building(const Building& other) {
   SetParameters(other.id_, other.draw_color_, other.max_level_,
-      other.action_range_);
+                other.action_range_);
   position_ = other.position_;
   size_ = other.size_;
   current_level_ = other.current_level_;
@@ -37,7 +37,7 @@ Building::Building(const Building& other) {
 }
 
 void Building::Draw(QPainter* painter,
-    const std::shared_ptr<SizeHandler>& size_handler) const {
+                    const std::shared_ptr<SizeHandler>& size_handler) const {
   painter->save();
   painter->setBrush(draw_color_);
   Coordinate center = size_handler->GameToWindowCoordinate(position_);

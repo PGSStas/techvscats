@@ -11,7 +11,11 @@
 
 class Enemy : public MovingObject {
  public:
-  Enemy() = default;
+  Enemy(double damage,
+        double armor,
+        int reward,
+        double speed,
+        double max_health);
   Enemy(const Enemy& enemy_instance);
   Enemy& operator=(const Enemy& enemy_instance);
 
@@ -19,16 +23,8 @@ class Enemy : public MovingObject {
   void Move() override;
   void Draw(QPainter* painter,
             const std::shared_ptr<SizeHandler>& size_handler) const override;
-  void DrawHealthBars(QPainter* painter,
-                      std::shared_ptr<SizeHandler> size_handler) const;
-  void DrawAurasIcons(QPainter* painter,
-                      std::shared_ptr<SizeHandler> size_handler) const;
-
-  void SetParameters(double damage,
-                     double armor,
-                     int reward,
-                     double speed,
-                     double max_health);
+  void DrawHealthBar(QPainter* painter,
+                     std::shared_ptr<SizeHandler> size_handler) const;
 
   void SetRoad(const Road& road);
 
@@ -42,7 +38,7 @@ class Enemy : public MovingObject {
 
  private:
   AuricField auric_field_;
-  Effect effect_;
+  Effect effect_ = Effect(EffectTarget::kEnemies);
 
   double damage_ = 0;
   double armor_ = 0;

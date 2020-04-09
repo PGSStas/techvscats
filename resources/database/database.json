@@ -64,7 +64,7 @@
     },
     {
       "effect_target": 1,
-      "speed_coefficient": -0.2,
+      "speed_coefficient": -0.8,
       "armor_coefficient": 1,
       "damage_coefficient": -0.3,
       "attack_rate_coefficient": -0.4,

@@ -97,13 +97,6 @@
         "time_of_next_spawn": 20,
         "group_size": 4,
         "road_to_spawn": 2
-      },
-      {
-        "spawn_period": 600,
-        "enemy_id": 4,
-        "time_of_next_spawn": 15,
-        "group_size": 6,
-        "road_to_spawn": 3
       }
     ],
     [

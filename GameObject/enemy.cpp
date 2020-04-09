@@ -11,7 +11,7 @@ void Enemy::Move() {
   Size move_direction = position_.GetDistanceTo(destination_);
   if (std::abs(move_direction.GetLength()) > kEpsilon) {
     move_direction /= move_direction.GetLength();
-    move_direction *= speed_ * effect_.speed_coefficient;
+    move_direction *= speed_ * effect_.GetSpeedCoefficient();
   }
   if (1ll * (position_ + move_direction).GetDistanceTo(destination_).width
       * position_.GetDistanceTo(destination_).width <= 0) {
@@ -82,24 +82,11 @@ Enemy::Enemy(const Enemy& enemy_instance) : MovingObject(enemy_instance) {
   *this = enemy_instance;
 }
 
-void Enemy::SetParameters(double damage,
-                          double armor,
-                          int reward,
-                          double speed,
-                          double max_health) {
-  damage_ = damage;
-  armor_ = armor;
-  reward_ = reward;
-  speed_ = speed;
-  max_health_ = max_health;
-}
-
 void Enemy::ReceiveDamage(double damage) {
   // Temporary formula.
   double multiplier = 1 - ((0.052 * armor_) / (0.9 + 0.048 * std::abs(armor_)));
-  current_health_ -= multiplier * damage;
-  if (current_health_ <= 0) {
-    current_health_ = 0;
+  current_health_ -= std::min(multiplier * damage, current_health_);
+  if (current_health_ == 0) {
     is_dead_ = true;
   }
 }
@@ -108,8 +95,8 @@ double Enemy::GetDamage() const {
   return damage_;
 }
 
-void Enemy::DrawHealthBars(QPainter* painter,
-                           std::shared_ptr<SizeHandler> size_handler) const {
+void Enemy::DrawHealthBar(QPainter* painter,
+                          std::shared_ptr<SizeHandler> size_handler) const {
   painter->save();
 
   painter->setBrush(Qt::red);
@@ -119,23 +106,6 @@ void Enemy::DrawHealthBars(QPainter* painter,
       size_handler->GameToWindowSize(Size(36 * current_health_ / max_health_,
                                           5));
   painter->drawRect(point.x, point.y, size.width, size.height);
-
-  painter->restore();
-}
-
-void Enemy::DrawAurasIcons(QPainter* painter,
-                           std::shared_ptr<SizeHandler> size_handler) const {
-  painter->save();
-
-  painter->setBrush(Qt::red);
-  Coordinate point =
-      size_handler->GameToWindowCoordinate(position_ - Size(18, -18));
-  Size size =
-      size_handler->GameToWindowSize(Size(6, 6));
-
-  DrawAuraIcon(effect_.speed_coefficient, &point, size, painter);
-  DrawAuraIcon(effect_.damage_coefficient, &point, size, painter);
-  DrawAuraIcon(effect_.armor_coefficient, &point, size, painter);
 
   painter->restore();
 }
@@ -165,4 +135,16 @@ AuricField* Enemy::GetAuricField() {
 
 Effect* Enemy::GetEffect() {
   return &effect_;
+}
+
+Enemy::Enemy(double damage,
+             double armor,
+             int reward,
+             double speed,
+             double max_health)
+    : damage_(damage),
+      armor_(armor),
+      reward_(reward),
+      max_health_(max_health) {
+  speed_ = speed;
 }
