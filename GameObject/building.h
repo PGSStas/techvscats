@@ -4,6 +4,8 @@
 #include <memory>
 
 #include "game_object.h"
+#include "effect.h"
+#include "auric_field.h"
 
 class Building : public GameObject {
  public:
@@ -27,8 +29,13 @@ class Building : public GameObject {
   int GetMaxLevel() const;
   int GetCurrentLevel() const;
   int GetActionRange() const;
+  AuricField* GetAuricField();
+  Effect* GetEffect();
 
- protected:
+ private:
+  AuricField auric_field_;
+  Effect effect_;
+
   int id_ = 0;
   int max_level_ = 0;
   int current_level_ = 0;

@@ -71,29 +71,21 @@ void View::paintEvent(QPaintEvent*) {
     painter.setBrush(Qt::red);
     painter.drawRect(health_bar_top_corner.x,
                      health_bar_top_corner.y,
-                     health_bar_size.width_,
-                     health_bar_size.height_);
+                     health_bar_size.width,
+                     health_bar_size.height);
 
     auto enemies_list = controller_->GetEnemies();
     painter.setBrush(Qt::transparent);
 
-    for (auto& enemy : enemies_list) {
-      enemy->DrawAuras(&painter, size_handler_);
-    }
+    DrawAuras(&painter);
+    DrawEnemies(&painter);
 
-    for (auto& enemy : enemies_list) {
-      enemy->Draw(&painter, size_handler_);
-      enemy->DrawAurasIcons(&painter, size_handler_);
-    }
-
-    for (auto& enemy : enemies_list) {
-      enemy->DrawHealthBars(&painter, size_handler_);
-    }
-    
     if (is_tower_menu_enabled_) {
       tower_menu_->Draw(&painter, size_handler_, game_time_.elapsed());
     }
     DrawTowers(&painter);
+
+    DrawInterface(&painter);
   }
 }
 
@@ -151,6 +143,7 @@ void View::DrawTowers(QPainter* painter) {
 
 void View::DrawEnemies(QPainter* painter) {
   auto enemies_list = controller_->GetEnemies();
+
   for (const auto& enemy : enemies_list) {
     enemy->Draw(painter, size_handler_);
   }
@@ -205,4 +198,21 @@ void View::DrawWindow(QPainter* painter, const QBrush& brush) {
                     rect_size.width, rect_size.height);
 
   painter->restore();
+}
+
+void View::DrawAuras(QPainter* painter) {
+  auto enemies_list = controller_->GetEnemies();
+
+  for (auto& enemy : enemies_list) {
+    enemy->GetAuricField()->Draw(painter, size_handler_);
+  }
+}
+
+void View::DrawInterface(QPainter* painter) {
+  auto enemies_list = controller_->GetEnemies();
+
+  for (auto& enemy : enemies_list) {
+    enemy->DrawHealthBars(painter, size_handler_);
+    enemy->DrawAurasIcons(painter, size_handler_);
+  }
 }

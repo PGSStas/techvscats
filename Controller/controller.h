@@ -25,7 +25,7 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<Road>& GetRoads() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
-  
+
   double GetCurrentBaseHp() const override;
   double GetMaxBaseHp() const override;
 
@@ -42,8 +42,7 @@ class Controller : public AbstractController {
   void GameProcess();
   void MenuProcess();
 
-  void ApplyEffectToEnemies(const AuricField& aura);
-  void ApplyEffectToBuildings(const AuricField& aura);
+  void ApplyEffectToInstance(const AuricField& aura);
   void CreateNextWave();
   bool CanCreateNextWave();
   void AddEnemyToModel(const Enemy& enemy) const;

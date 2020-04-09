@@ -43,7 +43,6 @@ class Model {
   int GetCurrentRoundNumber() const;
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
-  std::list<std::shared_ptr<Building>>* GetBuildings();
   Enemy GetEnemyById(int id) const;
   const Effect& GetEffectById(int id) const;
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;

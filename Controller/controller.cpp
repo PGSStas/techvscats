@@ -123,50 +123,54 @@ const std::vector<Road>& Controller::GetRoads() const {
 
 void Controller::TickAuras() {
   const auto& enemies = *model_->GetEnemies();
+  const auto& buildings = model_->GetBuildings();
 
-  for (const auto& enemy : enemies) {
-    enemy->ResetEffect();
+  for (auto& enemy : enemies) {
+    enemy->GetEffect()->ResetEffect();
   }
 
-  AuricField aura;
-  EffectTarget effect_target;
-  for (const auto& enemy : enemies) {
-    aura = enemy->GetAuricField();
-    if (!aura.IsValid()) {
-      continue;
-    }
-    effect_target = model_->GetEffectById(aura.GetEffectId()).effect_target;
-    if (effect_target == EffectTarget::kAll
-        || effect_target == EffectTarget::kEnemies) {
-      ApplyEffectToEnemies(aura);
-    }
-    if (effect_target == EffectTarget::kAll
-        || effect_target == EffectTarget::kBuildings) {
-      ApplyEffectToBuildings(aura);
-    }
+  for (auto& building : buildings) {
+    building->GetEffect()->ResetEffect();
   }
 
-  // TODO(Katsuba Stanislav): Building auras cycle.
-}
+  for (auto& enemy : enemies) {
+    ApplyEffectToInstance(*enemy->GetAuricField());
+  }
 
-void Controller::ApplyEffectToEnemies(const AuricField& aura) {
-  const auto& enemies = *model_->GetEnemies();
-
-  Effect effect = model_->GetEffectById(aura.GetEffectId());
-  for (const auto& enemy : enemies) {
-    if (aura.IsInRadius(enemy->GetPosition())) {
-      enemy->ApplyEffect(effect);
-    }
+  for (auto& building : buildings) {
+    ApplyEffectToInstance(*building->GetAuricField());
   }
 }
 
-void Controller::ApplyEffectToBuildings(const AuricField& aura) {
-  const auto& buildings = *model_->GetBuildings();
+void Controller::ApplyEffectToInstance(const AuricField& aura) {
 
-  Effect effect = model_->GetEffectById(aura.GetEffectId());
-  for (const auto& building : buildings) {
-    if (aura.IsInRadius(building->GetPosition())) {
-      // TODO(Katsuba Stanislav): Function of applying.
+  if (!aura.IsValid()) {
+    return;
+  }
+
+  EffectTarget
+      effect_target = model_->GetEffectById(aura.GetEffectId()).effect_target;
+
+  if (effect_target == EffectTarget::kAll
+      || effect_target == EffectTarget::kEnemies) {
+    const auto& enemies = *model_->GetEnemies();
+
+    Effect effect = model_->GetEffectById(aura.GetEffectId());
+    for (const auto& enemy : enemies) {
+      if (aura.IsInRadius(enemy->GetPosition())) {
+        enemy->GetEffect()->SumEffects(effect);
+      }
+    }
+  }
+  if (effect_target == EffectTarget::kAll
+      || effect_target == EffectTarget::kBuildings) {
+    const auto& buildings = model_->GetBuildings();
+
+    Effect effect = model_->GetEffectById(aura.GetEffectId());
+    for (const auto& building : buildings) {
+      if (aura.IsInRadius(building->GetPosition())) {
+        building->GetEffect()->SumEffects(effect);
+      }
     }
   }
 }

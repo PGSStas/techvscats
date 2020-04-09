@@ -2,12 +2,14 @@
 #define GAMEOBJECT_AURIC_FIELD_H_
 
 #include <memory>
-#include "game_object.h"
+#include <QPainter>
+
+#include "View/size_handler.h"
 #include "Model/coordinate.h"
 
 class AuricField {
  public:
-  AuricField() = default;
+  AuricField();
 
   void SetParameters(double effect_radius, int effect_id);
   void SetCarrierCoordinate(Coordinate* carrier_coordinates);

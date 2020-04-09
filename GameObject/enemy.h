@@ -18,9 +18,7 @@ class Enemy : public MovingObject {
   void Tick() override;
   void Move() override;
   void Draw(QPainter* painter,
-            сonst std::shared_ptr<SizeHandler>& size_handler) const override;
-  void DrawAuras(QPainter* painter,
-                 std::shared_ptr<SizeHandler> size_handler) const;
+            const std::shared_ptr<SizeHandler>& size_handler) const override;
   void DrawHealthBars(QPainter* painter,
                       std::shared_ptr<SizeHandler> size_handler) const;
   void DrawAurasIcons(QPainter* painter,
@@ -33,22 +31,18 @@ class Enemy : public MovingObject {
                      double max_health);
 
   void SetRoad(const Road& road);
-  void SetAuricField(double radius, int effect_id);
 
-  const AuricField& GetAuricField();
-  double GetDamage();
+  AuricField* GetAuricField();
+  Effect* GetEffect();
+  double GetDamage() const;
 
   bool IsDead() const;
-  bool IsInAuricField(const Coordinate& coordinate) const;
 
-  void ResetEffect();
   void ReceiveDamage(double damage);
-  void ApplyEffect(const Effect& effect);
-  void ChangeAuricFieldOrigin();
 
  private:
   AuricField auric_field_;
-  Effect effect_ = Effect(EffectTarget::kEnemies, 1, 1, 1, 1, 1);
+  Effect effect_;
 
   double damage_ = 0;
   double armor_ = 0;
@@ -59,9 +53,9 @@ class Enemy : public MovingObject {
 
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
-  
+
   const int kMoveShift_ = 50;
-  
+
  private:
   void DrawAuraIcon(double coefficient,
                     Coordinate* point,

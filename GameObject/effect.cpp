@@ -22,3 +22,11 @@ void Effect::SumEffects(const Effect& other) {
   attack_rate_coefficient += other.attack_rate_coefficient;
   range_coefficient += other.range_coefficient;
 }
+
+void Effect::ResetEffect() {
+  speed_coefficient = 1;
+  armor_coefficient = 1;
+  damage_coefficient = 1;
+  attack_rate_coefficient = 1;
+  range_coefficient = 1;
+}

@@ -24,6 +24,7 @@ struct Effect {
          double range_coefficient);
 
   void SumEffects(const Effect& other);
+  void ResetEffect();
 };
 
 #endif  // GAMEOBJECT_EFFECT_H_

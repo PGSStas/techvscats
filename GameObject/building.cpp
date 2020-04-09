@@ -32,6 +32,8 @@ Building::Building(const Building& other) {
   position_ = other.position_;
   size_ = other.size_;
   current_level_ = other.current_level_;
+  auric_field_ = other.auric_field_;
+  auric_field_.SetCarrierCoordinate(&position_);
 }
 
 void Building::Draw(QPainter* painter,
@@ -59,4 +61,12 @@ int Building::GetCurrentLevel() const {
 
 int Building::GetActionRange() const {
   return action_range_;
+}
+
+AuricField* Building::GetAuricField() {
+  return &auric_field_;
+}
+
+Effect* Building::GetEffect() {
+  return &effect_;
 }

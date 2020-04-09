@@ -19,8 +19,6 @@ add_executable(techvscats
         main.cpp
         Controller/controller.cpp
         Controller/spawner.cpp
-        GameObject/passive_tower.cpp
-        GameObject/active_tower.cpp
         GameObject/projectile.cpp
         GameObject/enemy.cpp
         GameObject/game_object.cpp

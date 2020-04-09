@@ -22,6 +22,9 @@ bool AuricField::IsValid() const {
 
 void AuricField::Draw(QPainter* painter,
                       std::shared_ptr<SizeHandler> size_handler) const {
+  if (!IsValid()) {
+    return;
+  }
   painter->save();
 
   QColor blue = Qt::blue;
@@ -33,7 +36,7 @@ void AuricField::Draw(QPainter* painter,
   Size size =
       size_handler->GameToWindowSize(Size(effect_radius_ * 2,
                                           effect_radius_ * 2));
-  painter->drawEllipse(point.x, point.y, size.width_, size.height_ - 10);
+  painter->drawEllipse(point.x, point.y, size.width, size.height - 10);
 
   painter->restore();
 }
@@ -41,3 +44,5 @@ void AuricField::Draw(QPainter* painter,
 void AuricField::SetCarrierCoordinate(Coordinate* carrier_coordinates) {
   carrier_coordinates_ = carrier_coordinates;
 }
+
+AuricField::AuricField() : effect_radius_(-1), effect_id_(-1) {}
