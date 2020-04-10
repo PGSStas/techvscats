@@ -1,6 +1,7 @@
 #ifndef GAMEOBJECT_BASE_H_
 #define GAMEOBJECT_BASE_H_
 
+#include <algorithm>
 #include "game_object.h"
 
 class Base {
