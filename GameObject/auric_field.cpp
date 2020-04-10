@@ -7,9 +7,8 @@ void AuricField::SetParameters(double effect_radius,
 }
 
 bool AuricField::IsInRadius(const Coordinate& coordinate) const {
-  double x = carrier_coordinates_->x - coordinate.x;
-  double y = carrier_coordinates_->y - coordinate.y;
-  return x * x + y * y <= effect_radius_ * effect_radius_;
+  return carrier_coordinates_->GetDistanceTo(coordinate).GetLength()
+      <= effect_radius_ + kEpsilon;
 }
 
 int AuricField::GetEffectId() const {
