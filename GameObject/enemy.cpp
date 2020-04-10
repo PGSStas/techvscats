@@ -8,14 +8,9 @@ void Enemy::Move() {
   if (is_end_reached_) {
     return;
   }
-  Size move_direction = position_.GetDistanceTo(destination_);
-  if (std::abs(move_direction.GetLength()) > kEpsilon) {
-    move_direction /= move_direction.GetLength();
-    move_direction *= speed_ * effect_.GetSpeedCoefficient();
-  }
-  if (1ll * (position_ + move_direction).GetDistanceTo(destination_).width
-      * position_.GetDistanceTo(destination_).width <= 0) {
-    position_ = destination_;
+  position_.MoveTo(destination_, speed_ * effect_.GetSpeedCoefficient());
+
+  if (position_ == destination_) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
       is_end_reached_ = true;
@@ -28,8 +23,6 @@ void Enemy::Move() {
       destination_.x += std::rand() % kMoveShift_ - kMoveShift_ / 2;
       destination_.y += std::rand() % kMoveShift_ - kMoveShift_ / 2;
     }
-  } else {
-    position_ += move_direction;
   }
 }
 

@@ -62,18 +62,6 @@ void View::paintEvent(QPaintEvent*) {
     DrawWindow(&painter, QColor("#53a661"));
     DrawBackground(&painter);
 
-    Coordinate health_bar_top_corner =
-        size_handler_->GameToWindowCoordinate({0, 1060});
-    Size health_bar_size =
-        size_handler_->GameToWindowSize({1920 * (1.0
-            * controller_->GetCurrentBaseHp()
-            / controller_->GetMaxBaseHp()), 20});
-    painter.setBrush(Qt::red);
-    painter.drawRect(health_bar_top_corner.x,
-                     health_bar_top_corner.y,
-                     health_bar_size.width,
-                     health_bar_size.height);
-
     auto enemies_list = controller_->GetEnemies();
     painter.setBrush(Qt::transparent);
 
@@ -86,6 +74,7 @@ void View::paintEvent(QPaintEvent*) {
     DrawTowers(&painter);
 
     DrawInterface(&painter);
+    DrawBase(&painter);
   }
 }
 
@@ -221,4 +210,22 @@ void View::DrawInterface(QPainter* painter) {
                                          size_handler_,
                                          enemy->GetPosition());
   }
+}
+
+void View::DrawBase(QPainter* painter) {
+  painter->save();
+
+  const auto& base = controller_->GetBase();
+
+  Coordinate health_bar_top_corner =
+      size_handler_->GameToWindowCoordinate({0, 1060});
+  Size health_bar_size = size_handler_->GameToWindowSize({1920 *
+      base.GetCurrentHealthPoints() / base.GetMaxHealth(), 20});
+  painter->setBrush(Qt::red);
+  painter->drawRect(health_bar_top_corner.x,
+                    health_bar_top_corner.y,
+                    health_bar_size.width,
+                    health_bar_size.height);
+
+  painter->restore();
 }

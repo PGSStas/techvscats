@@ -49,3 +49,19 @@ Coordinate& Coordinate::operator-=(Size right) {
   *this = *this - right;
   return *this;
 }
+
+void Coordinate::MoveTo(Coordinate destination, double speed) {
+  Size move_direction = GetDistanceTo(destination);
+
+  if (std::abs(move_direction.GetLength()) > kEpsilon) {
+    move_direction /= move_direction.GetLength();
+    move_direction *= speed;
+  }
+  if ((*this + move_direction).GetDistanceTo(destination).width
+      * GetDistanceTo(destination).width <= 0) {
+    *this = destination;
+  } else {
+    *this += move_direction;
+  }
+  return *this;
+}

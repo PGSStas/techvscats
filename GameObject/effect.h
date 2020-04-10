@@ -1,8 +1,9 @@
 #ifndef GAMEOBJECT_EFFECT_H_
 #define GAMEOBJECT_EFFECT_H_
 
+#include <memory>
 #include <QPainter>
-#include <View/size_handler.h>
+#include "View/size_handler.h"
 
 enum class EffectTarget {
   kAll = 0,

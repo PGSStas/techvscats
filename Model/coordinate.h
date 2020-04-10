@@ -11,6 +11,7 @@ struct Coordinate {
   Coordinate() = default;
   Coordinate(double x, double y);
   Size GetDistanceTo(Coordinate right);
+  void MoveTo(Coordinate destination, double speed);
 
   Coordinate operator*(double right) const;
   Coordinate operator/(double right) const;

@@ -25,9 +25,7 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<Road>& GetRoads() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
-
-  double GetCurrentBaseHp() const override;
-  double GetMaxBaseHp() const override;
+  const Base& GetBase() const override;
 
  private:
   std::unique_ptr<Model> model_;

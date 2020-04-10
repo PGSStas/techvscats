@@ -24,7 +24,7 @@ enum class WindowType {
 };
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -70,6 +70,7 @@ class View : public QMainWindow {
   void DrawWindow(QPainter* painter, const QBrush& brush);
 
   // Game window
+  void DrawBase(QPainter* painter);
   void DrawBackground(QPainter* painter);
   void DrawTowers(QPainter* painter);
   void DrawEnemies(QPainter* painter);

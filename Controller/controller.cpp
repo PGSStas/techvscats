@@ -80,7 +80,7 @@ void Controller::CreateNextWave() {
 
 void Controller::TickSpawners() {
   auto spawners = model_->GetSpawners();
-  spawners->remove_if([&](const Spawner& sp) { return sp.IsDead(); });
+  spawners->remove_if([&](const Spawner& spawner) { return spawner.IsDead(); });
   for (auto& spawner : *spawners) {
     spawner.Tick(current_time_ - last_round_start_time_);
     if (spawner.IsReadyToSpawn()) {
@@ -93,19 +93,16 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
+  const auto& base = model_->GetBase();
 
   for (auto& enemy : *enemies) {
     enemy->Tick();
-  }
-
-  const auto& base = model_->GetBase();
-  for (auto& enemy : *enemies) {
     if (enemy->IsEndReached()) {
       base->ReduceHealthPoints(enemy->GetDamage());
     }
   }
-  enemies->remove_if([&](const std::shared_ptr<Enemy>& sp) {
-    return sp->IsDead() || sp->IsEndReached();
+  enemies->remove_if([&](const std::shared_ptr<Enemy>& enemy) {
+    return enemy->IsDead() || enemy->IsEndReached();
   });
 }
 
@@ -172,14 +169,6 @@ void Controller::ApplyEffectToInstance(const AuricField& aura) {
       }
     }
   }
-}
-
-double Controller::GetCurrentBaseHp() const {
-  return model_->GetBase()->GetCurrentHealthPoints();
-}
-
-double Controller::GetMaxBaseHp() const {
-  return model_->GetBase()->GetMaxHealth();
 }
 
 const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
@@ -267,4 +256,8 @@ void Controller::MouseMove(Coordinate position) {
 
   auto button = view_->GetTowerMenu()->GetButtonContaining(position);
   view_->GetTowerMenu()->Hover(button);
+}
+
+const Base& Controller::GetBase() const {
+  return *model_->GetBase();
 }
