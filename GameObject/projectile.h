@@ -16,7 +16,7 @@ class Projectile : public MovingObject {
   explicit Projectile(const Projectile& other);
   explicit Projectile(Size size, double speed,
                       ProjectileType projectile_type =
-                          ProjectileType::kDefault);
+                      ProjectileType::kDefault);
 
   void SetParameters(double speed, int damage = 0,
                      std::shared_ptr<Enemy> aim = {});
@@ -28,7 +28,7 @@ class Projectile : public MovingObject {
   void Tick(int current_time) override;
   void Move() override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
-  virtual bool CheckForReceiveDamage(const Enemy& enemy) ;
+  virtual bool CheckForReceiveDamage(const Enemy& enemy);
 
  protected:
   ProjectileType type_ = ProjectileType::kDefault;

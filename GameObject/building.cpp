@@ -80,7 +80,6 @@ void Building::Tick(int current_time) {
         break;
       }
   }
-
 }
 
 void Building::SetProjectile(int max_aims, int attack_range,
@@ -123,7 +122,7 @@ void Building::UpdateAim() {
     return;
   }
 
-  for (auto& enemy:enemies_) {
+  for (auto& enemy : enemies_) {
     if (static_cast<int>(aims_.size()) == max_aims_
         || aims_.size() == enemies_.size()) {
       break;
