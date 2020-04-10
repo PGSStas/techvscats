@@ -18,7 +18,9 @@
 
 enum class WindowType {
   kMainMenu,
-  kGame
+  kGame,
+  kSettings,
+  kLevelChoosing
 };
 
 class View : public QMainWindow {
@@ -30,8 +32,15 @@ class View : public QMainWindow {
 
   void EnableGameUi();
   void DisableGameUi();
-  void EnableMenuUi();
-  void DisableMenuWindow();
+  void EnableMainMenuUi();
+  void DisableMainMenuUi();
+  void EnableSettingsUi();
+  void DisableSettingsUi();
+  void EnableLevelChoosingUi();
+  void DisableLevelChoosingUi();
+
+  void GamePause();
+  void GameReplay();
 
   void UpdateRounds(int current_round_number, int number_of_rounds);
 
@@ -47,14 +56,19 @@ class View : public QMainWindow {
   QElapsedTimer game_time_;
 
   // Game window
+  QPushButton* return_menu_button_;
+  QPushButton* pause_button_;
+  QPushButton* replay_button_;
+  QPushButton* restart_button_;
   QLabel* wave_status_label_;
-  QPushButton* start_game_button_;
 
   bool is_tower_menu_enabled_ = false;
   std::shared_ptr<TowerMenu> tower_menu_ = nullptr;
 
   // Menu window
-  QPushButton* return_menu_button_;
+  QPushButton* start_game_button_;
+  QPushButton* choose_level_button_;
+  QPushButton* settings_button_;
   int controller_timer_id_;
   const int kTimeBetweenTicks_ = 10;
 

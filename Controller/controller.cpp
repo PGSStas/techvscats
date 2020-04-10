@@ -14,7 +14,7 @@ void Controller::StartGame(int level_id) {
 
   model_->SetGameLevel(level_id);
 
-  view_->DisableMenuWindow();
+  view_->DisableMainMenuUi();
   view_->EnableGameUi();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
@@ -23,7 +23,7 @@ void Controller::StartGame(int level_id) {
 void Controller::EndGame(Exit exit_code) {
   model_->ClearGameModel();
   view_->DisableGameUi();
-  view_->EnableMenuUi();
+  view_->EnableMainMenuUi();
   game_mode_ = WindowType::kMainMenu;
 }
 

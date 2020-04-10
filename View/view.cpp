@@ -19,13 +19,17 @@ View::View(AbstractController* controller)
   };
   connect(return_menu_button_, &QPushButton::clicked, return_menu_button_click);
 
+  pause_button_ = new QPushButton(this);
+  pause_button_->setText("Пауза");
+  connect(pause_button_, &QPushButton::clicked, &View::GamePause);
+
   wave_status_label_ = new QLabel(this);
   wave_status_label_->setText(tr("Rounds 0 / 0"));
   show();
 
   game_time_.start();
   controller_timer_id_ = startTimer(kTimeBetweenTicks_);
-  EnableMenuUi();
+  EnableMainMenuUi();
   DisableGameUi();
 }
 
@@ -78,12 +82,12 @@ void View::DisableGameUi() {
   wave_status_label_->hide();
 }
 
-void View::EnableMenuUi() {
+void View::EnableMainMenuUi() {
   window_type_ = WindowType::kMainMenu;
   start_game_button_->show();
 }
 
-void View::DisableMenuWindow() {
+void View::DisableMainMenuUi() {
   window_type_ = WindowType::kGame;
   start_game_button_->hide();
 }
@@ -183,4 +187,8 @@ void View::DrawWindow(QPainter* painter, const QBrush& brush) {
                     rect_size.width, rect_size.height);
 
   painter->restore();
+}
+
+void View::GamePause() {
+
 }
