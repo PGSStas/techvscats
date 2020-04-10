@@ -63,5 +63,4 @@ void Coordinate::MoveTo(Coordinate destination, double speed) {
   } else {
     *this += move_direction;
   }
-  return *this;
 }
