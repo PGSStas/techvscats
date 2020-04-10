@@ -62,7 +62,6 @@ void View::paintEvent(QPaintEvent*) {
     DrawWindow(&painter, QColor("#53a661"));
     DrawBackground(&painter);
 
-    auto enemies_list = controller_->GetEnemies();
     painter.setBrush(Qt::transparent);
 
     DrawAuras(&painter);
@@ -209,6 +208,13 @@ void View::DrawInterface(QPainter* painter) {
     enemy->GetEffect()->DrawEffectsIcons(painter,
                                          size_handler_,
                                          enemy->GetPosition());
+  }
+
+  const auto& buildings_list = controller_->GetBuildings();
+  for (const auto& building : buildings_list) {
+    building->GetEffect()->DrawEffectsIcons(painter,
+                                            size_handler_,
+                                            building->GetPosition());
   }
 }
 

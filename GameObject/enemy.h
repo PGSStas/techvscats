@@ -51,12 +51,6 @@ class Enemy : public MovingObject {
   int node_number_ = 0;
 
   const int kMoveShift_ = 50;
-
- private:
-  void DrawAuraIcon(double coefficient,
-                    Coordinate* point,
-                    Size size,
-                    QPainter* painter) const;
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_

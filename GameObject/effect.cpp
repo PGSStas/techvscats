@@ -1,32 +1,38 @@
 #include "effect.h"
 
+std::vector<EffectVisualization> Effect::effect_visualizations_;
+
 Effect::Effect(EffectTarget effect_type,
                double speed_coefficient,
                double armor_coefficient,
                double damage_coefficient,
                double attack_rate_coefficient,
                double range_coefficient)
-    : effect_target_(effect_type),
-      speed_coefficient_(speed_coefficient),
-      armor_coefficient_(armor_coefficient),
-      damage_coefficient_(damage_coefficient),
-      attack_rate_coefficient_(attack_rate_coefficient),
-      range_coefficient_(range_coefficient) {}
+    : effect_target_(effect_type) {
+  coefficients_.resize(5);
+  coefficients_[static_cast<int>(CoefficientType::kSpeed)] = speed_coefficient;
+  coefficients_[static_cast<int>(CoefficientType::kArmor)] = armor_coefficient;
+  coefficients_[static_cast<int>(CoefficientType::kAttackRate)] =
+      attack_rate_coefficient;
+  coefficients_[static_cast<int>(CoefficientType::kDamage)] =
+      damage_coefficient;
+  coefficients_[static_cast<int>(CoefficientType::kRange)] = range_coefficient;
+}
+
+
 
 void Effect::SumEffects(const Effect& other) {
-  speed_coefficient_ += other.speed_coefficient_;
-  armor_coefficient_ += other.armor_coefficient_;
-  damage_coefficient_ += other.damage_coefficient_;
-  attack_rate_coefficient_ += other.attack_rate_coefficient_;
-  range_coefficient_ += other.range_coefficient_;
+  int n = coefficients_.size();
+  for (int i = 0; i < n; i++) {
+    coefficients_[i] = std::max(coefficients_[i] + other.coefficients_[i], 0.0);
+  }
 }
 
 void Effect::ResetEffect() {
-  speed_coefficient_ = 1;
-  armor_coefficient_ = 1;
-  damage_coefficient_ = 1;
-  attack_rate_coefficient_ = 1;
-  range_coefficient_ = 1;
+  int n = coefficients_.size();
+  for (int i = 0; i < n; i++) {
+    coefficients_[i] = 1;
+  }
 }
 
 void Effect::DrawEffectsIcons(QPainter* painter,
@@ -40,35 +46,40 @@ void Effect::DrawEffectsIcons(QPainter* painter,
   Size size =
       size_handler->GameToWindowSize(Size(6, 6));
 
-  DrawEffectIcon(damage_coefficient_, &point, size, painter);
+  DrawEffectIcon(CoefficientType::kDamage, &point, size, painter);
 
   if (effect_target_ == EffectTarget::kEnemies) {
-    DrawEffectIcon(speed_coefficient_, &point, size, painter);
-    DrawEffectIcon(armor_coefficient_, &point, size, painter);
+    DrawEffectIcon(CoefficientType::kSpeed, &point, size, painter);
+    DrawEffectIcon(CoefficientType::kArmor, &point, size, painter);
   }
   if (effect_target_ == EffectTarget::kBuildings) {
-    DrawEffectIcon(attack_rate_coefficient_, &point, size, painter);
-    DrawEffectIcon(range_coefficient_, &point, size, painter);
+    DrawEffectIcon(CoefficientType::kRange, &point, size, painter);
+    DrawEffectIcon(CoefficientType::kAttackRate, &point, size, painter);
   }
 
   painter->restore();
 }
 
-void Effect::DrawEffectIcon(double coefficient,
+void Effect::DrawEffectIcon(CoefficientType coefficient_type,
                             Coordinate* point,
                             Size size,
                             QPainter* painter) const {
+  int index = static_cast<int>(coefficient_type);
+  double coefficient = coefficients_[index];
+  if (std::abs(coefficient  - 1) < kEpsilon) {
+    return;
+  }
+
   painter->save();
 
+  EffectVisualization effect_visualization = effect_visualizations_[index];
   if (coefficient > 1) {
-    painter->setBrush(Qt::green);
-    painter->drawEllipse(point->x, point->y, size.width, size.height);
-    point->x += size.width + 1;
+    painter->setBrush(effect_visualization.increased);
   } else if (coefficient < 1) {
-    painter->setBrush(Qt::red);
-    painter->drawEllipse(point->x, point->y, size.width, size.height);
-    point->x += size.width + 1;
+    painter->setBrush(effect_visualization.reduced);
   }
+  painter->drawEllipse(point->x, point->y, size.width, size.height);
+  point->x += size.width + 1;
 
   painter->restore();
 }
@@ -78,21 +89,26 @@ EffectTarget Effect::GetEffectTarget() const {
 }
 
 double Effect::GetSpeedCoefficient() const {
-  return speed_coefficient_;
+  return coefficients_[static_cast<int>(CoefficientType::kSpeed)];
 }
 
 double Effect::GetArmorCoefficient() const {
-  return armor_coefficient_;
+  return coefficients_[static_cast<int>(CoefficientType::kArmor)];
 }
 
 double Effect::GetDamageCoefficient() const {
-  return damage_coefficient_;
+  return coefficients_[static_cast<int>(CoefficientType::kDamage)];
 }
 
 double Effect::GetAttackRateCoefficient() const {
-  return attack_rate_coefficient_;
+  return coefficients_[static_cast<int>(CoefficientType::kAttackRate)];
 }
 
 double Effect::GetRangeCoefficient() const {
-  return range_coefficient_;
+  return coefficients_[static_cast<int>(CoefficientType::kRange)];
+}
+
+void Effect::SetEffectVisualizations(
+    const std::vector<EffectVisualization>& effect_visualization) {
+  effect_visualizations_ = effect_visualization;
 }

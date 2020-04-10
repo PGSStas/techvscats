@@ -2,6 +2,8 @@
 #define GAMEOBJECT_EFFECT_H_
 
 #include <memory>
+#include <algorithm>
+#include <vector>
 #include <QPainter>
 #include "View/size_handler.h"
 
@@ -11,7 +13,21 @@ enum class EffectTarget {
   kBuildings = 2
 };
 
-struct Effect {
+enum class CoefficientType {
+  kSpeed,
+  kArmor,
+  kDamage,
+  kAttackRate,
+  kRange
+};
+
+struct EffectVisualization {
+  QColor reduced;
+  QColor increased;
+};
+
+class Effect {
+ public:
   explicit Effect(EffectTarget effect_type,
                   double speed_coefficient = 1,
                   double armor_coefficient = 1,
@@ -26,6 +42,9 @@ struct Effect {
   void SumEffects(const Effect& other);
   void ResetEffect();
 
+  static void SetEffectVisualizations(
+      const std::vector<EffectVisualization>& effect_visualization);
+
   EffectTarget GetEffectTarget() const;
   double GetSpeedCoefficient() const;
   double GetArmorCoefficient() const;
@@ -35,14 +54,12 @@ struct Effect {
 
  private:
   EffectTarget effect_target_;
-  double speed_coefficient_;
-  double armor_coefficient_;
-  double damage_coefficient_;
-  double attack_rate_coefficient_;
-  double range_coefficient_;
+  std::vector<double> coefficients_;
+
+  static std::vector<EffectVisualization> effect_visualizations_;
 
  private:
-  void DrawEffectIcon(double coefficient,
+  void DrawEffectIcon(CoefficientType coefficient_type,
                       Coordinate* point,
                       Size size,
                       QPainter* painter) const;

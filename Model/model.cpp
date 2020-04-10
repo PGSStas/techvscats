@@ -8,6 +8,9 @@ void Model::SetGameLevel(int level_id) {
   upgrades_tree_.push_back({1, 2});
 
   Building building_instance2;
+
+  building_instance2.GetAuricField()->SetParameters(300, 0);
+
   building_instance2.SetParameters(1, Qt::white, 2, 75);
   upgrades_tree_.push_back({3, 0});
 
@@ -138,8 +141,7 @@ void Model::LoadLevelFromJson(int level) {
   gold_ = json_object["gold"].toInt();
   score_ = json_object["score"].toInt();
 
-  base_ = std::make_shared<Base>(
-      json_object["base"].toObject()["max_health"].toDouble());
+  base_ = Base(json_object["base"].toObject()["max_health"].toDouble());
 
   roads_.clear();
   QJsonArray json_roads = json_object["roads"].toArray();
@@ -244,6 +246,15 @@ void Model::LoadDatabaseFromJson() {
     }
     id_to_enemy_.push_back(new_enemy);
   }
+
+  // Temporary part
+  std::vector<EffectVisualization>
+      effect_visualization = {{Qt::cyan, Qt::black},
+                              {Qt::gray, Qt::darkGreen},
+                              {Qt::blue, Qt::darkBlue},
+                              {Qt::darkRed, Qt::magenta},
+                              {Qt::white, Qt::yellow}};
+  Effect::SetEffectVisualizations(effect_visualization);
 }
 
 Model::Model() {
@@ -255,6 +266,6 @@ const Effect& Model::GetEffectById(int id) const {
   return id_to_effect_[id];
 }
 
-std::shared_ptr<Base> Model::GetBase() const {
-  return base_;
+Base* Model::GetBase() {
+  return &base_;
 }

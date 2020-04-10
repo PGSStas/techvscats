@@ -44,5 +44,3 @@ void AuricField::Draw(QPainter* painter,
 void AuricField::SetCarrierCoordinate(Coordinate* carrier_coordinates) {
   carrier_coordinates_ = carrier_coordinates;
 }
-
-AuricField::AuricField() : effect_radius_(-1), effect_id_(-1) {}

@@ -93,7 +93,7 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
-  const auto& base = model_->GetBase();
+  auto base = model_->GetBase();
 
   for (auto& enemy : *enemies) {
     enemy->Tick();
@@ -131,15 +131,15 @@ void Controller::TickAuras() {
   }
 
   for (auto& enemy : enemies) {
-    ApplyEffectToInstance(*enemy->GetAuricField());
+    ApplyEffectToInstances(*enemy->GetAuricField());
   }
 
   for (auto& building : buildings) {
-    ApplyEffectToInstance(*building->GetAuricField());
+    ApplyEffectToInstances(*building->GetAuricField());
   }
 }
 
-void Controller::ApplyEffectToInstance(const AuricField& aura) {
+void Controller::ApplyEffectToInstances(const AuricField& aura) {
   if (!aura.IsValid()) {
     return;
   }

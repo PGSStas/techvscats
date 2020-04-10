@@ -43,12 +43,12 @@ class Model {
   int GetCurrentRoundNumber() const;
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
+  Base* GetBase();
   Enemy GetEnemyById(int id) const;
   const Effect& GetEffectById(int id) const;
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
-  std::shared_ptr<Base> GetBase() const;
 
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
   const std::vector<std::vector<int>>& GetUpgradesTree() const;
@@ -70,7 +70,7 @@ class Model {
   int score_ = 0;
 
   // Database which is loaded in SetGameLevel once
-  std::shared_ptr<Base> base_;
+  Base base_ = Base(0);
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;

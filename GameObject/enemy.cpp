@@ -77,15 +77,16 @@ Enemy::Enemy(const Enemy& enemy_instance) : MovingObject(enemy_instance) {
 
 void Enemy::ReceiveDamage(double damage) {
   // Temporary formula.
-  double multiplier = 1 - ((0.052 * armor_) / (0.9 + 0.048 * std::abs(armor_)));
+  double armor = armor_ * effect_.GetArmorCoefficient();
+  double multiplier = 1 - ((0.052 * armor) / (0.9 + 0.048 * std::abs(armor)));
   current_health_ -= std::min(multiplier * damage, current_health_);
-  if (current_health_ == 0) {
+  if (current_health_ <= kEpsilon) {
     is_dead_ = true;
   }
 }
 
 double Enemy::GetDamage() const {
-  return damage_;
+  return damage_ * effect_.GetDamageCoefficient();
 }
 
 void Enemy::DrawHealthBar(QPainter* painter,
@@ -99,25 +100,6 @@ void Enemy::DrawHealthBar(QPainter* painter,
       size_handler->GameToWindowSize(Size(36 * current_health_ / max_health_,
                                           5));
   painter->drawRect(point.x, point.y, size.width, size.height);
-
-  painter->restore();
-}
-
-void Enemy::DrawAuraIcon(double coefficient,
-                         Coordinate* point,
-                         Size size,
-                         QPainter* painter) const {
-  painter->save();
-
-  if (coefficient > 1) {
-    painter->setBrush(Qt::green);
-    painter->drawEllipse(point->x, point->y, size.width, size.height);
-    point->x += size.width + 1;
-  } else if (coefficient < 1) {
-    painter->setBrush(Qt::red);
-    painter->drawEllipse(point->x, point->y, size.width, size.height);
-    point->x += size.width + 1;
-  }
 
   painter->restore();
 }
