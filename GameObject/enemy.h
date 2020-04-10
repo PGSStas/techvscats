@@ -14,6 +14,7 @@ class Enemy : public MovingObject {
   void Tick() override;
 
   void SetParameters(double speed);
+  void SetAnimationParameters(std::shared_ptr<QPixmap> image);
   void Move() override;
   void Draw(QPainter* painter,
             const std::shared_ptr<SizeHandler>& size_handler) const override;
@@ -32,7 +33,9 @@ class Enemy : public MovingObject {
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
 
-  const int kMoveShift_ = 50;
+  const int kMoveShift_ = 30;
+
+  std::shared_ptr<QPixmap> image_ = nullptr;
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_

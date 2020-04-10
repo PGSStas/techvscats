@@ -37,9 +37,9 @@ void Enemy::Draw(QPainter* painter,
 
   painter->setPen(QColor("black"));
   Coordinate point =
-      size_handler->GameToWindowCoordinate(position_ - Size(15, 15));
-  Size size = size_handler->GameToWindowSize({30, 30});
-  painter->drawRect(point.x, point.y, size.width, size.height);
+      size_handler->GameToWindowCoordinate(position_ - Size(30, 30));
+  Size size = size_handler->GameToWindowSize({60, 70});
+  painter->drawPixmap(QRect(point.x, point.y, size.width, size.height), *image_);
 
   painter->restore();
 }
@@ -61,6 +61,7 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   if (enemy_instance.road_ != nullptr) {
     SetRoad(*enemy_instance.road_);
   }
+  image_ = enemy_instance.image_;
   return *this;
 }
 
@@ -80,4 +81,8 @@ Enemy::Enemy(const Enemy& enemy_instance) : MovingObject(enemy_instance) {
 
 void Enemy::SetParameters(double speed) {
   speed_ = speed;
+}
+
+void Enemy::SetAnimationParameters(std::shared_ptr<QPixmap> image) {
+  image_ = image;
 }

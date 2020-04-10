@@ -1,10 +1,14 @@
 #include "model.h"
 
 void Model::SetGameLevel(int level_id) {
+  LoadDatabase();
+
   Enemy temporary_enemy;
   temporary_enemy.SetParameters(1);
+  temporary_enemy.SetAnimationParameters(std::shared_ptr<QPixmap>(&enemy_images_[0]));
   id_to_enemy_.push_back(temporary_enemy);
   temporary_enemy.SetParameters(4);
+  temporary_enemy.SetAnimationParameters(std::shared_ptr<QPixmap>(&enemy_images_[0]));
   id_to_enemy_.push_back(temporary_enemy);
   LoadLevelFromJson(level_id);
 
@@ -195,4 +199,8 @@ void Model::LoadLevelFromJson(int level) {
 
 const QPixmap& Model::GetMapImage() const {
   return map_;
+}
+
+void Model::LoadDatabase() {
+  enemy_images_.emplace_back(":resources/database/enemy.png");
 }

@@ -56,6 +56,7 @@ class Model {
 
  private:
   void LoadLevelFromJson(int level);
+  void LoadDatabase();
 
   // Database which is updated by Controller all time
   std::list<std::shared_ptr<Projectile>> projectiles_;
@@ -84,6 +85,7 @@ class Model {
 
   // Images
   QPixmap map_;
+  std::vector<QPixmap> enemy_images_;
 
  private:
   // Helping functions
