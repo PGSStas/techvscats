@@ -40,10 +40,17 @@ void Enemy::Draw(QPainter* painter,
   painter->restore();
 }
 
-Enemy& Enemy::operator=(const Enemy& enemy_instance) {
-  if (this == &enemy_instance) {
-    return *this;
-  }
+void Enemy::SetRoad(const Road& road) {
+  road_ = std::make_shared<const Road>(road);
+  position_ = road_->GetNode(node_number_);
+  destination_ = road_->GetNode(node_number_);
+}
+
+bool Enemy::IsDead() const {
+  return is_dead_;
+}
+
+Enemy::Enemy(const Enemy& enemy_instance) : MovingObject(enemy_instance) {
   is_dead_ = enemy_instance.is_dead_;
   damage_ = enemy_instance.damage_;
   armor_ = enemy_instance.armor_;
@@ -58,21 +65,6 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   if (enemy_instance.road_ != nullptr) {
     SetRoad(*enemy_instance.road_);
   }
-  return *this;
-}
-
-void Enemy::SetRoad(const Road& road) {
-  road_ = std::make_shared<const Road>(road);
-  position_ = road_->GetNode(node_number_);
-  destination_ = road_->GetNode(node_number_);
-}
-
-bool Enemy::IsDead() const {
-  return is_dead_;
-}
-
-Enemy::Enemy(const Enemy& enemy_instance) : MovingObject(enemy_instance) {
-  *this = enemy_instance;
 }
 
 void Enemy::ReceiveDamage(double damage) {
@@ -95,10 +87,9 @@ void Enemy::DrawHealthBar(QPainter* painter,
 
   painter->setBrush(Qt::red);
   Coordinate point =
-      size_handler->GameToWindowCoordinate(position_ - Size(18, 24));
-  Size size =
-      size_handler->GameToWindowSize(Size(36 * current_health_ / max_health_,
-                                          5));
+      size_handler->GameToWindowCoordinate(position_ - kHealthBarShift);
+  Size size = size_handler->GameToWindowSize(Size(
+      kHealthBar.width * current_health_ / max_health_, kHealthBar.height));
   painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->restore();
@@ -123,3 +114,4 @@ Enemy::Enemy(double damage,
       max_health_(max_health) {
   speed_ = speed;
 }
+

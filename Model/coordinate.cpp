@@ -28,7 +28,7 @@ Coordinate Coordinate::operator/(double right) const {
   return Coordinate(x / right, y / right);
 }
 
-Size Coordinate::GetDistanceTo(Coordinate right) {
+Size Coordinate::GetVectorTo(Coordinate right) {
   return Size(right.x - x, right.y - y);
 }
 
@@ -50,15 +50,15 @@ Coordinate& Coordinate::operator-=(Size right) {
   return *this;
 }
 
-void Coordinate::MoveTo(Coordinate destination, double speed) {
-  Size move_direction = GetDistanceTo(destination);
+void Coordinate::MoveTo(Coordinate destination, double vector_length) {
+  Size move_direction = GetVectorTo(destination);
 
   if (std::abs(move_direction.GetLength()) > kEpsilon) {
     move_direction /= move_direction.GetLength();
-    move_direction *= speed;
+    move_direction *= vector_length;
   }
-  if ((*this + move_direction).GetDistanceTo(destination).width
-      * GetDistanceTo(destination).width <= 0) {
+  if ((*this + move_direction).GetVectorTo(destination).width
+      * GetVectorTo(destination).width <= 0) {
     *this = destination;
   } else {
     *this += move_direction;

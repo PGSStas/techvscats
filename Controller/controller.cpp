@@ -98,7 +98,7 @@ void Controller::TickEnemies() {
   for (auto& enemy : *enemies) {
     enemy->Tick();
     if (enemy->IsEndReached()) {
-      base->ReduceHealthPoints(enemy->GetDamage());
+      base->DecreaseHealth(enemy->GetDamage());
     }
   }
   enemies->remove_if([&](const std::shared_ptr<Enemy>& enemy) {
@@ -131,15 +131,15 @@ void Controller::TickAuras() {
   }
 
   for (auto& enemy : enemies) {
-    ApplyEffectToInstances(*enemy->GetAuricField());
+    ApplyEffectToAllInstances(*enemy->GetAuricField());
   }
 
   for (auto& building : buildings) {
-    ApplyEffectToInstances(*building->GetAuricField());
+    ApplyEffectToAllInstances(*building->GetAuricField());
   }
 }
 
-void Controller::ApplyEffectToInstances(const AuricField& aura) {
+void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
   if (!aura.IsValid()) {
     return;
   }
@@ -154,7 +154,7 @@ void Controller::ApplyEffectToInstances(const AuricField& aura) {
     const Effect& effect = model_->GetEffectById(aura.GetEffectId());
     for (const auto& enemy : enemies) {
       if (aura.IsInRadius(enemy->GetPosition())) {
-        enemy->GetEffect()->SumEffects(effect);
+        *enemy->GetEffect() += effect;
       }
     }
   }
@@ -165,7 +165,7 @@ void Controller::ApplyEffectToInstances(const AuricField& aura) {
     const Effect& effect = model_->GetEffectById(aura.GetEffectId());
     for (const auto& building : buildings) {
       if (aura.IsInRadius(building->GetPosition())) {
-        building->GetEffect()->SumEffects(effect);
+        *building->GetEffect() += effect;
       }
     }
   }

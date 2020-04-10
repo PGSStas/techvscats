@@ -7,7 +7,7 @@ void AuricField::SetParameters(double effect_radius,
 }
 
 bool AuricField::IsInRadius(const Coordinate& coordinate) const {
-  return carrier_coordinates_->GetDistanceTo(coordinate).GetLength()
+  return carrier_coordinate_->GetVectorTo(coordinate).GetLength()
       <= effect_radius_ + kEpsilon;
 }
 
@@ -31,7 +31,7 @@ void AuricField::Draw(QPainter* painter,
   painter->setBrush(QBrush(blue));
   painter->setPen(QPen(Qt::darkBlue, 3));
   Coordinate point = size_handler->GameToWindowCoordinate(
-      *carrier_coordinates_ - Size(effect_radius_, effect_radius_));
+      *carrier_coordinate_ - Size(effect_radius_, effect_radius_));
   Size size =
       size_handler->GameToWindowSize(Size(effect_radius_ * 2,
                                           effect_radius_ * 2));
@@ -41,5 +41,5 @@ void AuricField::Draw(QPainter* painter,
 }
 
 void AuricField::SetCarrierCoordinate(Coordinate* carrier_coordinates) {
-  carrier_coordinates_ = carrier_coordinates;
+  carrier_coordinate_ = carrier_coordinates;
 }

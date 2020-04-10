@@ -40,7 +40,7 @@ class Controller : public AbstractController {
   void GameProcess();
   void MenuProcess();
 
-  void ApplyEffectToInstances(const AuricField& aura);
+  void ApplyEffectToAllInstances(const AuricField& aura);
   void CreateNextWave();
   bool CanCreateNextWave();
   void AddEnemyToModel(const Enemy& enemy) const;

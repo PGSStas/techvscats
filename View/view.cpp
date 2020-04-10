@@ -62,8 +62,6 @@ void View::paintEvent(QPaintEvent*) {
     DrawWindow(&painter, QColor("#53a661"));
     DrawBackground(&painter);
 
-    painter.setBrush(Qt::transparent);
-
     DrawAuras(&painter);
     DrawEnemies(&painter);
 
@@ -226,7 +224,7 @@ void View::DrawBase(QPainter* painter) {
   Coordinate health_bar_top_corner =
       size_handler_->GameToWindowCoordinate({0, 1060});
   Size health_bar_size = size_handler_->GameToWindowSize({1920 *
-      base.GetCurrentHealthPoints() / base.GetMaxHealth(), 20});
+      base.GetCurrentHealth() / base.GetMaxHealth(), 20});
   painter->setBrush(Qt::red);
   painter->drawRect(health_bar_top_corner.x,
                     health_bar_top_corner.y,

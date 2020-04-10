@@ -39,7 +39,8 @@ class Effect {
                         std::shared_ptr<SizeHandler> size_handler,
                         Coordinate position) const;
 
-  void SumEffects(const Effect& other);
+  Effect& operator+=(const Effect& other);
+
   void ResetEffect();
 
   static void SetEffectVisualizations(

@@ -28,7 +28,6 @@
 class Model {
  public:
   Model();
-  ~Model() = default;
 
   void SetGameLevel(int level);
   void ClearGameModel();

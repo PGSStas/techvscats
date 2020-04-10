@@ -19,15 +19,6 @@ Effect::Effect(EffectTarget effect_type,
   coefficients_[static_cast<int>(CoefficientType::kRange)] = range_coefficient;
 }
 
-
-
-void Effect::SumEffects(const Effect& other) {
-  int n = coefficients_.size();
-  for (int i = 0; i < n; i++) {
-    coefficients_[i] = std::max(coefficients_[i] + other.coefficients_[i], 0.0);
-  }
-}
-
 void Effect::ResetEffect() {
   int n = coefficients_.size();
   for (int i = 0; i < n; i++) {
@@ -66,7 +57,7 @@ void Effect::DrawEffectIcon(CoefficientType coefficient_type,
                             QPainter* painter) const {
   int index = static_cast<int>(coefficient_type);
   double coefficient = coefficients_[index];
-  if (std::abs(coefficient  - 1) < kEpsilon) {
+  if (std::abs(coefficient - 1) < kEpsilon) {
     return;
   }
 
@@ -111,4 +102,11 @@ double Effect::GetRangeCoefficient() const {
 void Effect::SetEffectVisualizations(
     const std::vector<EffectVisualization>& effect_visualization) {
   effect_visualizations_ = effect_visualization;
+}
+
+Effect& Effect::operator+=(const Effect& other) {
+  int n = coefficients_.size();
+  for (int i = 0; i < n; i++) {
+    coefficients_[i] = std::max(coefficients_[i] + other.coefficients_[i], 0.0);
+  }
 }

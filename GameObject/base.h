@@ -7,15 +7,15 @@ class Base {
  public:
   explicit Base(double max_health);
 
-  double GetCurrentHealthPoints() const;
+  double GetCurrentHealth() const;
   double GetMaxHealth() const;
 
   bool IsDead() const;
 
-  void ReduceHealthPoints(double damage);
+  void DecreaseHealth(double damage);
 
  private:
-  double current_health_points_;
+  double current_health_;
   double max_health_;
   bool is_dead_;
 };

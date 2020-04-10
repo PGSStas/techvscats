@@ -17,7 +17,6 @@ class Enemy : public MovingObject {
         double speed,
         double max_health);
   Enemy(const Enemy& enemy_instance);
-  Enemy& operator=(const Enemy& enemy_instance);
 
   void Tick() override;
   void Move() override;
@@ -31,7 +30,6 @@ class Enemy : public MovingObject {
   AuricField* GetAuricField();
   Effect* GetEffect();
   double GetDamage() const;
-
   bool IsDead() const;
 
   void ReceiveDamage(double damage);
@@ -51,6 +49,8 @@ class Enemy : public MovingObject {
   int node_number_ = 0;
 
   const int kMoveShift_ = 50;
+  const Size kHealthBarShift = {18, 24};
+  const Size kHealthBar = {36, 5};
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_

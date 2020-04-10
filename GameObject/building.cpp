@@ -9,7 +9,7 @@ int Building::GetId() const {
 }
 
 bool Building::IsInside(Coordinate point) const {
-  return point.GetDistanceTo(position_).GetLength() <= size_.width / 2;
+  return point.GetVectorTo(position_).GetLength() <= size_.width / 2;
 }
 
 void Building::Upgrade() {
@@ -70,3 +70,4 @@ AuricField* Building::GetAuricField() {
 Effect* Building::GetEffect() {
   return &effect_;
 }
+
