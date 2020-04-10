@@ -75,7 +75,6 @@ void Building::Tick(int current_time) {
       }
       break;
   }
-
 }
 
 void Building::SetProjectile(int max_aims, int attack_range,

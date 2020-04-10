@@ -19,9 +19,12 @@ class Building : public GameObject {
   Building(int id = 0, int settle_cost = 0, Size size = {20, 20},
            const std::list<std::shared_ptr<Enemy>>& enemies = {});
 
-  void SetAnimationParameters(QColor reload_color, int reload_time,
-                              QColor pre_color = Qt::black, int before_fire_time = 0,
-                              QColor post_color = Qt::black, int after_fire_time = 0);
+  void SetAnimationParameters(QColor reload_color,
+                              int reload_time,
+                              QColor pre_color = Qt::black,
+                              int before_fire_time = 0,
+                              QColor post_color = Qt::black,
+                              int after_fire_time = 0);
 
   void SetProjectile(int max_aims, int attack_range,
                      double attack_damage, int projectile_id);
@@ -48,7 +51,7 @@ class Building : public GameObject {
   int wait_time_ = 0;
 
   int action_time[3];
-  // TODO(some body)  here should be imgs to draw
+  // TODO(some body)  here should be Images to draw
   QColor reload_color_ = QColor("black");
   QColor before_fire_color_ = QColor("black");
   QColor after_fire_color_ = QColor("black");

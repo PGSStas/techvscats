@@ -19,7 +19,7 @@ class Projectile : public MovingObject {
                       ProjectileType::kDefault);
 
   void SetParameters(double speed, double damage,
-                     std::shared_ptr<Enemy> aim );
+                     std::shared_ptr<Enemy> aim);
   void SetAnimationParameters(QColor draw_color, int iteration_time);
 
   void SetType(ProjectileType type);

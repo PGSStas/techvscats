@@ -194,7 +194,6 @@ void Controller::MousePress(Coordinate position) {
 void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   const auto& buildings = *model_->GetBuildings();
   model_->SetBuildingAtIndex(index_in_buildings, replacing_id);
-
 }
 
 void Controller::CreateTowerMenu(int tower_index) {

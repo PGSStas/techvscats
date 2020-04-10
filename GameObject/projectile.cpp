@@ -22,8 +22,8 @@ void Projectile::SetAnimationParameters(QColor draw_color, int iteration_time) {
 
 Projectile::Projectile(const Projectile& other) {
   SetAnimationParameters(other.draw_color_, other.iteration_time_);
-  SetParameters(other.speed_,other.damage_,other.aim_);
-  //destination_ = other.destination_;
+  SetParameters(other.speed_, other.damage_, other.aim_);
+
   position_ = other.position_;
   effect_radius_ = other.effect_radius_;
   type_ = other.type_;
