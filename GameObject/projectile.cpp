@@ -5,11 +5,14 @@ Projectile::Projectile(Size size, double speed, ProjectileType type)
   size_ = size;
 }
 
-void Projectile::SetParameters(double speed, int damage,
+void Projectile::SetParameters(double speed, double damage,
                                std::shared_ptr<Enemy> aim) {
-  damage_ = damage;
   speed_ = speed;
+  damage_ = damage;
   aim_ = aim;
+  if (aim != nullptr) {
+    destination_ = aim->GetPosition();
+  }
 }
 
 void Projectile::SetAnimationParameters(QColor draw_color, int iteration_time) {
@@ -18,10 +21,11 @@ void Projectile::SetAnimationParameters(QColor draw_color, int iteration_time) {
 }
 
 Projectile::Projectile(const Projectile& other) {
-  SetParameters(other.speed_, other.damage_, other.aim_);
   SetAnimationParameters(other.draw_color_, other.iteration_time_);
+  SetParameters(other.speed_,other.damage_,other.aim_);
+  //destination_ = other.destination_;
   position_ = other.position_;
-  splash_radius_ = other.splash_radius_;
+  effect_radius_ = other.effect_radius_;
   type_ = other.type_;
   size_ = other.size_;
 }

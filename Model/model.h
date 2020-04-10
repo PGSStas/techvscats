@@ -58,7 +58,6 @@ class Model {
   const std::vector<std::vector<int>>& GetUpgradesTree() const;
 
   void SetBuildingAtIndex(int i, int id);
-  void UpgradeBuildingAtIndex(int i);
 
  private:
   void LoadLevelFromJson(int level);

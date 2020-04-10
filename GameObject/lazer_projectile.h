@@ -14,7 +14,7 @@ class LazerProjectile : public Projectile {
   void Tick(int current_time) override;
 
  private:
-  Coordinate start_position_ = {0, 0};
+  Coordinate start_position_ ;
 };
 
 #endif  // GAMEOBJECT_LAZER_PROJECTILE_H_

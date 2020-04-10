@@ -3,24 +3,19 @@
 #include "building.h"
 
 Building::Building(const Building& other) :
-    Building(other.id_, other.max_level_, other.settle_cost_,
-             other.upgrade_cost_, other.size_, other.enemies_) {
+    Building(other.id_, other.settle_cost_, other.size_, other.enemies_) {
   SetProjectile(other.max_aims_,
                 other.attack_range_,
                 other.attack_damage_,
                 other.projectile_id_);
-  SetAnimationParameters(other.reload_color_, other.reload_time_,
-                         other.pre_fire_color_, other.pre_fire_time_,
-                         other.post_fire_color_, other.post_fire_time_);
-  size_ = other.size_;
-  current_level_ = other.current_level_;
+  SetAnimationParameters(other.reload_color_, other.action_time[0],
+                         other.before_fire_color_, other.action_time[1],
+                         other.after_fire_color_, other.action_time[2]);
 }
 
-Building::Building(int id, int max_level, int settle_cost,
-                   int upgrade_cost, Size size,
+Building::Building(int id, int settle_cost, Size size,
                    const std::list<std::shared_ptr<Enemy>>& enemies) :
-    id_(id), max_level_(max_level), settle_cost_(settle_cost),
-    upgrade_cost_(upgrade_cost), enemies_(enemies) {
+    id_(id), settle_cost_(settle_cost), enemies_(enemies) {
   size_ = size;
 }
 
@@ -29,9 +24,9 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   switch (action) {
     case Action::reload: painter->setBrush(reload_color_);
       break;
-    case Action::pre_fire: painter->setBrush(pre_fire_color_);
+    case Action::before_fire: painter->setBrush(before_fire_color_);
       break;
-    case Action::post_fire: painter->setBrush(post_fire_color_);
+    case Action::after_fire: painter->setBrush(after_fire_color_);
       break;
   }
 
@@ -52,34 +47,35 @@ void Building::Tick(int current_time) {
 
   switch (action) {
     case Action::reload:
-      if (wait_time_ > reload_time_) {
+      if (wait_time_ > action_time[static_cast<int>(Action::reload)]) {
         UpdateAim();
-        if (have_possible_to_shoot_) {
+        if (is_possible_to_shoot) {
           wait_time_ = 0;
-          action = Action::pre_fire;
+          action = Action::before_fire;
         }
       }
       break;
-    case Action::pre_fire:UpdateAim();
-      if (!have_possible_to_shoot_) {
+    case Action::before_fire:UpdateAim();
+      if (!is_possible_to_shoot) {
         action = Action::reload;
-        wait_time_ = reload_time_;
+        wait_time_ = action_time[static_cast<int>(Action::reload)];
         return;
       }
-      if (wait_time_ > pre_fire_time_) {
-        if (have_possible_to_shoot_) {
+      if (wait_time_ > action_time[static_cast<int>(Action::before_fire)]) {
+        if (is_possible_to_shoot) {
           is_ready_to_create_projectiles_ = true;
-          action = Action::post_fire;
+          action = Action::after_fire;
           wait_time_ = 0;
         }
-        break;
-        case Action::post_fire:
-          if (wait_time_ > post_fire_time_) {
-            action = Action::reload;
-          }
-        break;
       }
+      break;
+    case Action::after_fire:
+      if (wait_time_ > action_time[static_cast<int>(Action::after_fire)]) {
+        action = Action::reload;
+      }
+      break;
   }
+
 }
 
 void Building::SetProjectile(int max_aims, int attack_range,
@@ -88,26 +84,22 @@ void Building::SetProjectile(int max_aims, int attack_range,
   attack_range_ = attack_range;
   attack_damage_ = attack_damage;
   projectile_id_ = projectile_id;
-  current_level_ = 1;
 }
 
-void Building::SetAnimationParameters(QColor wait_color,
-                                      int wait_time,
-                                      QColor pre_color,
-                                      int pre_fire_time,
-                                      QColor post_color,
-                                      int post_fire_time) {
-  reload_color_ = wait_color;
-  reload_time_ = wait_time;
-  pre_fire_color_ = pre_color;
-  pre_fire_time_ = pre_fire_time;
-  post_fire_color_ = post_color;
-  post_fire_time_ = post_fire_time;
+void Building::SetAnimationParameters(QColor reload_color, int reload_time,
+                                      QColor pre_color, int before_fire_time,
+                                      QColor post_color, int after_fire_time) {
+  reload_color_ = reload_color;
+  action_time[static_cast<int>(Action::reload)] = reload_time;
+  before_fire_color_ = pre_color;
+  action_time[static_cast<int>(Action::before_fire)] = before_fire_time;
+  after_fire_color_ = post_color;
+  action_time[static_cast<int>(Action::after_fire)] = after_fire_time;
 }
 
 void Building::UpdateAim() {
   if (enemies_.empty()) {
-    have_possible_to_shoot_ = false;
+    is_possible_to_shoot = false;
     aims_.clear();
     return;
   }
@@ -118,7 +110,7 @@ void Building::UpdateAim() {
   });
 
   if (static_cast<int>(aims_.size()) == max_aims_) {
-    have_possible_to_shoot_ = true;
+    is_possible_to_shoot = true;
     return;
   }
 
@@ -142,7 +134,7 @@ void Building::UpdateAim() {
       aims_.push_back(enemy);
     }
   }
-  have_possible_to_shoot_ = !aims_.empty();
+  is_possible_to_shoot = !aims_.empty();
 }
 
 std::vector<Projectile> Building::PrepareProjectiles(
@@ -180,16 +172,4 @@ bool Building::IsInside(Coordinate point) const {
 
 int Building::GetId() const {
   return id_;
-}
-
-void Building::Upgrade() {
-  current_level_++;
-}
-
-int Building::GetMaxLevel() const {
-  return max_level_;
-}
-
-int Building::GetCurrentLevel() const {
-  return current_level_;
 }

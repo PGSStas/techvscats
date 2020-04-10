@@ -12,27 +12,27 @@ void Model::SetGameLevel(int level_id) {
 
   empty_towers_ = {{540, 700}, {200, 100}, {500, 100}};
 
-  Building building_instance(0, 0, 0, 0, Size(33, 33), enemies_);
+  Building building_instance(0, 0, Size(33, 33), enemies_);
   building_instance.SetAnimationParameters(Qt::gray,
                                            1000);
 
   upgrades_tree_.push_back({1, 2});
 
-  Building building_instance2(1, 4, 10, 24, Size(40, 20), enemies_);
+  Building building_instance2(1, 24, Size(40, 20), enemies_);
   building_instance2.SetProjectile(2, 340, 1, 0);
   building_instance2.SetAnimationParameters(Qt::blue, 1000,
                                             Qt::red, 300,
-                                            Qt::darkBlue, 100);
+                                            Qt::darkYellow, 300);
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3(2, 4, 10, 24, Size(30, 50), enemies_);
-  building_instance3.SetProjectile(3, 240, 1, 2);
-  building_instance3.SetAnimationParameters(Qt::yellow, 400,
-                                            Qt::red, 100,
-                                            Qt::darkYellow, 100);
+  Building building_instance3(2, 24, Size(30, 50), enemies_);
+  building_instance3.SetProjectile(3, 240, 0.2, 2);
+  building_instance3.SetAnimationParameters(Qt::yellow, 100,
+                                            Qt::red, 50,
+                                            Qt::darkYellow, 10);
   upgrades_tree_.push_back({3, 1, 0});
 
-  Building building_instance4(3, 4, 10, 24, Size(14, 32), enemies_);
+  Building building_instance4(3, 24, Size(14, 32), enemies_);
   building_instance4.SetProjectile(1, 540, 3, 1);
   building_instance4.SetAnimationParameters(Qt::green, 1000,
                                             Qt::red, 300,
@@ -45,7 +45,7 @@ void Model::SetGameLevel(int level_id) {
   projectile_instance_bomb.SetAnimationParameters(Qt::darkGreen, 100);
 
   LazerProjectile projectile_instance_lazer(Size(10, 20), 3);
-  projectile_instance_lazer.SetAnimationParameters(Qt::cyan, 600);
+  projectile_instance_lazer.SetAnimationParameters(Qt::cyan, 160);
 
   id_to_projectile_.push_back(projectile_instance_default);
   id_to_projectile_.push_back(projectile_instance_bomb);
@@ -129,10 +129,6 @@ void Model::SetBuildingAtIndex(int i, int id) {
   // Create new building by id
   buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
   buildings_[i]->SetPosition(position);
-}
-
-void Model::UpgradeBuildingAtIndex(int i) {
-  buildings_[i]->Upgrade();
 }
 
 const Building& Model::GetBuildingById(int id) const {

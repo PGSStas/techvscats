@@ -11,9 +11,6 @@ class BombProjectile : public Projectile {
                           ProjectileType::kBomb);
   void Tick(int current_time) override;
   bool CheckForReceiveDamage(const Enemy& enemy) override;
-
- private:
-  double effect_radius;
 };
 
 #endif  // GAMEOBJECT_BOMB_PROJECTILE_H_

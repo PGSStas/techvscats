@@ -9,23 +9,19 @@
 
 enum class Action {
   reload,
-  pre_fire,
-  post_fire
+  before_fire,
+  after_fire
 };
 
 class Building : public GameObject {
  public:
   explicit Building(const Building& other);
-  Building(int id = 0, int max_level = 0, int settle_cost = 0,
-           int upgrade_cost = 0, Size size = {20, 20},
+  Building(int id = 0, int settle_cost = 0, Size size = {20, 20},
            const std::list<std::shared_ptr<Enemy>>& enemies = {});
 
-  void SetAnimationParameters(QColor wait_color,
-                              int wait_time,
-                              QColor pre_color = Qt::black,
-                              int pre_fire_time = 0,
-                              QColor post_color = Qt::black,
-                              int post_fire_time = 0);
+  void SetAnimationParameters(QColor reload_color, int reload_time,
+                              QColor pre_color = Qt::black, int before_fire_time = 0,
+                              QColor post_color = Qt::black, int after_fire_time = 0);
 
   void SetProjectile(int max_aims, int attack_range,
                      double attack_damage, int projectile_id);
@@ -35,12 +31,9 @@ class Building : public GameObject {
   void Tick(int current_time) override;
   void Draw(QPainter* painter,
             const SizeHandler& size_handler) const override;
-  void Upgrade();
   int GetId() const;
   int GetAttackRange() const;
   int GetProjectileId() const;
-  int GetMaxLevel() const;
-  int GetCurrentLevel() const;
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
 
@@ -48,28 +41,24 @@ class Building : public GameObject {
   void UpdateAim();
   // parameters
   int id_ = 0;
-  int max_level_ = 0;
-  int current_level_ = 0;
   int settle_cost_ = 0;
-  int upgrade_cost_ = 0;
 
   // action part
   Action action = Action::reload;
   int wait_time_ = 0;
-  int reload_time_ = 0;
-  int pre_fire_time_ = 0;
-  int post_fire_time_ = 0;
-  // TODO(some body)  her should be imgs to draw
+
+  int action_time[3];
+  // TODO(some body)  here should be imgs to draw
   QColor reload_color_ = QColor("black");
-  QColor pre_fire_color_ = QColor("black");
-  QColor post_fire_color_ = QColor("black");
+  QColor before_fire_color_ = QColor("black");
+  QColor after_fire_color_ = QColor("black");
 
   int max_aims_ = 1;
   double attack_damage_ = 0;
   int attack_range_ = 0;
   int projectile_id_ = 0;
   bool is_ready_to_create_projectiles_ = false;
-  bool have_possible_to_shoot_ = false;
+  bool is_possible_to_shoot = false;
   const std::list<std::shared_ptr<Enemy>>& enemies_;
   std::list<std::shared_ptr<Enemy>> aims_;
 

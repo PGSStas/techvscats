@@ -18,8 +18,8 @@ class Projectile : public MovingObject {
                       ProjectileType projectile_type =
                       ProjectileType::kDefault);
 
-  void SetParameters(double speed, int damage = 0,
-                     std::shared_ptr<Enemy> aim = {});
+  void SetParameters(double speed, double damage,
+                     std::shared_ptr<Enemy> aim );
   void SetAnimationParameters(QColor draw_color, int iteration_time);
 
   void SetType(ProjectileType type);
@@ -33,7 +33,7 @@ class Projectile : public MovingObject {
  protected:
   ProjectileType type_ = ProjectileType::kDefault;
   std::shared_ptr<Enemy> aim_ = {};
-  double splash_radius_ = 0;
+  double effect_radius_ = 0;
   double damage_ = 0;
 
   QColor draw_color_ = Qt::black;

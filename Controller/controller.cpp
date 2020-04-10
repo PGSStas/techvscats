@@ -29,11 +29,11 @@ void Controller::EndGame(Exit exit_code) {
 
 void Controller::Tick(int current_time) {
   current_time_ = current_time;
-  if (game_mode_ == WindowType::kGame) {
-    GameProcess();
-  }
-  if (game_mode_ == WindowType::kMainMenu) {
-    MenuProcess();
+  switch (game_mode_) {
+    case WindowType::kGame:GameProcess();
+      break;
+    case WindowType::kMainMenu: MenuProcess();
+      break;
   }
 }
 
@@ -106,8 +106,10 @@ void Controller::TickBuildings() {
   for (auto& building : *buildings) {
     building->Tick(current_time_);
     if (building->IsReadyToCreateProjectiles()) {
-      model_->CreateProjectiles(building->PrepareProjectiles(
-          model_->GetProjectileById(building->GetProjectileId())));
+      const Projectile& instance_to_use =
+          model_->GetProjectileById(building->GetProjectileId());
+
+      model_->CreateProjectiles(building->PrepareProjectiles(instance_to_use));
     }
   }
 }
@@ -191,11 +193,8 @@ void Controller::MousePress(Coordinate position) {
 
 void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   const auto& buildings = *model_->GetBuildings();
-  if (buildings[index_in_buildings]->GetId() == replacing_id) {
-    model_->UpgradeBuildingAtIndex(index_in_buildings);
-  } else {
-    model_->SetBuildingAtIndex(index_in_buildings, replacing_id);
-  }
+  model_->SetBuildingAtIndex(index_in_buildings, replacing_id);
+
 }
 
 void Controller::CreateTowerMenu(int tower_index) {
@@ -206,13 +205,6 @@ void Controller::CreateTowerMenu(int tower_index) {
   int building_id = buildings[tower_index]->GetId();
 
   // Upgrade option (will only affect level of tower, but not the type)
-  if (building->GetMaxLevel() > building->GetCurrentLevel()) {
-    options.push_back(std::make_shared<TowerMenuOption>(
-        model_->GetBuildingById(building_id),
-        [&, tower_index, building_id]() {
-          SetBuilding(tower_index, building_id);
-        }));
-  }
 
   // Tower building & evolve & delete options (will affect the type of tower)
   for (const auto& to_change_id : upgrade_tree[building_id]) {
