@@ -147,13 +147,13 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
   return *model_->GetEnemies();
 }
 
-const std::vector<std::shared_ptr<Building>>& Controller::
-GetBuildings() const {
+const std::vector<std::shared_ptr<Building>>&
+Controller::GetBuildings() const {
   return model_->GetBuildings();
 }
 
-const std::list<std::shared_ptr<Projectile>>& Controller::
-GetProjectiles() const {
+const std::list<std::shared_ptr<Projectile>>&
+Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }
 

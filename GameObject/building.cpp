@@ -20,7 +20,7 @@ Building::Building(int id, int settle_cost, Size size) :
 
 void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
-  switch (action) {
+  switch (action_) {
     case Action::reload: {
       painter->setBrush(reload_color_);
       break;
@@ -50,32 +50,32 @@ void Building::Tick(int current_time) {
   wait_time_ += (current_time - object_time_);
   object_time_ = current_time;
 
-  switch (action) {
+  switch (action_) {
     case Action::reload: {
       if (wait_time_ > action_time[static_cast<int>(Action::reload)]) {
         if (is_ready_to_shoot) {
           wait_time_ = 0;
-          action = Action::before_fire;
+          action_ = Action::before_fire;
         }
       }
       break;
     }
     case Action::before_fire: {
       if (!is_ready_to_shoot) {
-        action = Action::reload;
+        action_ = Action::reload;
         wait_time_ = action_time[static_cast<int>(Action::reload)];
         return;
       }
       if (wait_time_ > action_time[static_cast<int>(Action::before_fire)]) {
         is_ready_to_create_projectiles_ = true;
-        action = Action::after_fire;
+        action_ = Action::after_fire;
         wait_time_ = 0;
       }
       break;
     }
     case Action::after_fire: {
       if (wait_time_ > action_time[static_cast<int>(Action::after_fire)]) {
-        action = Action::reload;
+        action_ = Action::reload;
       }
       break;
     }
@@ -101,12 +101,12 @@ void Building::SetAnimationParameters(QColor reload_color, int reload_time,
   action_time[static_cast<int>(Action::after_fire)] = after_fire_time;
 }
 
-void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies_) {
+void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   if ((wait_time_ < action_time[static_cast<int>(Action::reload)]
-      && action == Action::reload) || action == Action::before_fire) {
+      && action_ == Action::reload) || action_ == Action::before_fire) {
     return;
   }
-  if (enemies_.empty()) {
+  if (enemies.empty()) {
     is_ready_to_shoot = false;
     aims_.clear();
     return;
@@ -122,9 +122,9 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies_) {
     return;
   }
 
-  for (auto& enemy : enemies_) {
+  for (auto& enemy : enemies) {
     if (aims_.size() == max_aims_
-        || aims_.size() == enemies_.size()) {
+        || aims_.size() == enemies.size()) {
       break;
     }
     if (enemy->GetPosition().GetDistanceTo(position_).GetLength()
@@ -133,7 +133,7 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies_) {
     }
     bool can_add = true;
     for (auto& aim : aims_) {
-      if (aim->GetPosition() == enemy->GetPosition()) {
+      if (aim == enemy) {
         can_add = false;
         break;
       }

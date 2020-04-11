@@ -1,5 +1,14 @@
 #include "lazer_projectile.h"
 
+LazerProjectile::LazerProjectile(const Projectile& other) : Projectile(other) {
+  start_position_ = position_;
+}
+
+LazerProjectile::LazerProjectile(Size size,
+                                 double speed,
+                                 ProjectileType projectile_type) :
+    Projectile(size, speed, projectile_type) {}
+
 void LazerProjectile::Draw(QPainter* painter,
                            const SizeHandler& handler) const {
   painter->save();
@@ -22,12 +31,3 @@ void LazerProjectile::Tick(int current_time) {
     is_dead_ = true;
   }
 }
-
-LazerProjectile::LazerProjectile(const Projectile& other) : Projectile(other) {
-  start_position_ = position_;
-}
-
-LazerProjectile::LazerProjectile(Size size,
-                                 double speed,
-                                 ProjectileType projectile_type) :
-    Projectile(size, speed, projectile_type) {}

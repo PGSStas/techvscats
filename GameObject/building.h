@@ -31,7 +31,7 @@ class Building : public GameObject {
       const Projectile& projectile_instance);
 
   void Tick(int current_time) override;
-  void UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies_);
+  void UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies);
   void Draw(QPainter* painter,
             const SizeHandler& size_handler) const override;
   int GetId() const;
@@ -45,7 +45,7 @@ class Building : public GameObject {
   int cost_ = 0;
 
   // action part
-  Action action = Action::reload;
+  Action action_ = Action::reload;
   int wait_time_ = 0;
 
   int action_time[3];
