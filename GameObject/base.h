@@ -2,6 +2,8 @@
 #define GAMEOBJECT_BASE_H_
 
 #include <algorithm>
+#include <memory>
+#include <vector>
 #include "game_object.h"
 
 class Base : public GameObject {
