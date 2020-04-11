@@ -30,10 +30,9 @@ void Base::Draw(QPainter* painter,
 
   painter->setBrush(Qt::magenta);
 
-  int n = positions_.size();
-  for (int i = 0; i < n; i++) {
+  for (auto position : positions_) {
     Coordinate point =
-        size_handler->GameToWindowCoordinate(positions_[i] - kBaseSize / 2);
+        size_handler->GameToWindowCoordinate(position - kBaseSize / 2);
     Size size = size_handler->GameToWindowSize(kBaseSize);
 
     painter->drawRect(point.x, point.y, size.width, size.height);
