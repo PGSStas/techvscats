@@ -43,7 +43,7 @@ class Model {
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   std::list<std::shared_ptr<Projectile>>* GetProjectiles();
-  std::vector<std::shared_ptr<Building>>* GetBuildings();
+  const std::vector<std::shared_ptr<Building>>& GetBuildings();
 
   const Enemy& GetEnemyById(int id) const;
   const Building& GetBuildingById(int id) const;

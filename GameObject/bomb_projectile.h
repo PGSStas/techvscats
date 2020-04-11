@@ -10,7 +10,7 @@ class BombProjectile : public Projectile {
                           ProjectileType projectile_type =
                           ProjectileType::kBomb);
   void Tick(int current_time) override;
-  bool CheckForReceiveDamage(const Enemy& enemy) override;
+  bool IsInAffectedArea(const Enemy& enemy) override;
 };
 
 #endif  // GAMEOBJECT_BOMB_PROJECTILE_H_

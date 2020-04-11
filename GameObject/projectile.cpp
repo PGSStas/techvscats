@@ -65,7 +65,7 @@ ProjectileType Projectile::GetType() const {
   return type_;
 }
 
-bool Projectile::CheckForReceiveDamage(const Enemy& enemy) {
+bool Projectile::IsInAffectedArea(const Enemy& enemy) {
   return enemy.GetPosition() == aim_->GetPosition();
 }
 

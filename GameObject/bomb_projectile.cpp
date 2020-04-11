@@ -12,7 +12,7 @@ void BombProjectile::Tick(int current_time) {
   Move();
 }
 
-bool BombProjectile::CheckForReceiveDamage(const Enemy& enemy) {
+bool BombProjectile::IsInAffectedArea(const Enemy& enemy) {
   return destination_.GetDistanceTo(enemy.GetPosition()).GetLength()
       <= effect_radius_ + kEpsilon;
 }

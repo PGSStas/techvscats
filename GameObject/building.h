@@ -44,7 +44,7 @@ class Building : public GameObject {
   void UpdateAim();
   // parameters
   int id_ = 0;
-  int settle_cost_ = 0;
+  int cost_ = 0;
 
   // action part
   Action action = Action::reload;
@@ -56,12 +56,12 @@ class Building : public GameObject {
   QColor before_fire_color_ = QColor("black");
   QColor after_fire_color_ = QColor("black");
 
-  int max_aims_ = 1;
+  int projectile_id_ = 0;
+  uint max_aims_ = 1;
   double attack_damage_ = 0;
   int attack_range_ = 0;
-  int projectile_id_ = 0;
   bool is_ready_to_create_projectiles_ = false;
-  bool is_possible_to_shoot = false;
+  bool is_possible_to_shoot_ = false;
   const std::list<std::shared_ptr<Enemy>>& enemies_;
   std::list<std::shared_ptr<Enemy>> aims_;
 

@@ -28,7 +28,7 @@ class Projectile : public MovingObject {
   void Tick(int current_time) override;
   void Move() override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
-  virtual bool CheckForReceiveDamage(const Enemy& enemy);
+  virtual bool IsInAffectedArea(const Enemy& enemy);
 
  protected:
   ProjectileType type_ = ProjectileType::kDefault;

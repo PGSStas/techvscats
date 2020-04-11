@@ -120,8 +120,8 @@ void Model::ClearGameModel() {
   empty_towers_.clear();
 }
 
-std::vector<std::shared_ptr<Building>>* Model::GetBuildings() {
-  return &buildings_;
+const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() {
+  return buildings_;
 }
 
 void Model::SetBuildingAtIndex(int i, int id) {
