@@ -67,7 +67,7 @@ AuricField* Building::GetAuricField() {
   return &auric_field_;
 }
 
-Effect* Building::GetEffect() {
-  return &effect_;
+Effect* Building::GetAppliedEffect() {
+  return &applied_effect_;
 }
 

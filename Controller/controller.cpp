@@ -43,6 +43,7 @@ void Controller::GameProcess() {
   TickSpawners();
   TickEnemies();
   TickAuras();
+  model_->GetBase()->Tick();
 }
 
 void Controller::MenuProcess() {}
@@ -123,11 +124,11 @@ void Controller::TickAuras() {
   const auto& buildings = model_->GetBuildings();
 
   for (auto& enemy : enemies) {
-    enemy->GetEffect()->ResetEffect();
+    enemy->GetAppliedEffect()->ResetEffect();
   }
 
   for (auto& building : buildings) {
-    building->GetEffect()->ResetEffect();
+    building->GetAppliedEffect()->ResetEffect();
   }
 
   for (auto& enemy : enemies) {
@@ -154,7 +155,7 @@ void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
     const Effect& effect = model_->GetEffectById(aura.GetEffectId());
     for (const auto& enemy : enemies) {
       if (aura.IsInRadius(enemy->GetPosition())) {
-        *enemy->GetEffect() += effect;
+        *enemy->GetAppliedEffect() += effect;
       }
     }
   }
@@ -165,7 +166,7 @@ void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
     const Effect& effect = model_->GetEffectById(aura.GetEffectId());
     for (const auto& building : buildings) {
       if (aura.IsInRadius(building->GetPosition())) {
-        *building->GetEffect() += effect;
+        *building->GetAppliedEffect() += effect;
       }
     }
   }

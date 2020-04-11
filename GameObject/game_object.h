@@ -2,6 +2,7 @@
 #define GAMEOBJECT_GAME_OBJECT_H_
 
 #include <memory>
+#include <algorithm>
 #include <QPainter>
 
 #include "Model/coordinate.h"
@@ -14,7 +15,7 @@ class GameObject {
   GameObject(Coordinate position, Size size);
 
   virtual void Draw(QPainter* painter,
-      const std::shared_ptr<SizeHandler>& size_handler) const = 0;
+                    const std::shared_ptr<SizeHandler>& size_handler) const = 0;
   virtual void Tick() = 0;
 
   Coordinate GetPosition() const;

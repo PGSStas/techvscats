@@ -64,14 +64,10 @@ void View::paintEvent(QPaintEvent*) {
 
     DrawAuras(&painter);
     DrawEnemies(&painter);
-
-    if (is_tower_menu_enabled_) {
-      tower_menu_->Draw(&painter, size_handler_, game_time_.elapsed());
-    }
     DrawTowers(&painter);
 
+    controller_->GetBase().Draw(&painter, size_handler_);
     DrawInterface(&painter);
-    DrawBase(&painter);
   }
 }
 
@@ -203,33 +199,19 @@ void View::DrawInterface(QPainter* painter) {
 
   for (auto& enemy : enemies_list) {
     enemy->DrawHealthBar(painter, size_handler_);
-    enemy->GetEffect()->DrawEffectsIcons(painter,
-                                         size_handler_,
-                                         enemy->GetPosition());
+    enemy->GetAppliedEffect()->DrawEffectsIcons(painter,
+                                                size_handler_,
+                                                enemy->GetPosition());
   }
 
   const auto& buildings_list = controller_->GetBuildings();
   for (const auto& building : buildings_list) {
-    building->GetEffect()->DrawEffectsIcons(painter,
-                                            size_handler_,
-                                            building->GetPosition());
+    building->GetAppliedEffect()->DrawEffectsIcons(painter,
+                                                   size_handler_,
+                                                   building->GetPosition());
   }
-}
 
-void View::DrawBase(QPainter* painter) {
-  painter->save();
-
-  const auto& base = controller_->GetBase();
-
-  Coordinate health_bar_top_corner =
-      size_handler_->GameToWindowCoordinate({0, 1060});
-  Size health_bar_size = size_handler_->GameToWindowSize({1920 *
-      base.GetCurrentHealth() / base.GetMaxHealth(), 20});
-  painter->setBrush(Qt::red);
-  painter->drawRect(health_bar_top_corner.x,
-                    health_bar_top_corner.y,
-                    health_bar_size.width,
-                    health_bar_size.height);
-
-  painter->restore();
+  if (is_tower_menu_enabled_) {
+    tower_menu_->Draw(painter, size_handler_, game_time_.elapsed());
+  }
 }

@@ -28,7 +28,7 @@ class Enemy : public MovingObject {
   void SetRoad(const Road& road);
 
   AuricField* GetAuricField();
-  Effect* GetEffect();
+  Effect* GetAppliedEffect();
   double GetDamage() const;
   bool IsDead() const;
 
@@ -36,7 +36,7 @@ class Enemy : public MovingObject {
 
  private:
   AuricField auric_field_;
-  Effect effect_ = Effect(EffectTarget::kEnemies);
+  Effect applied_effect_ = Effect(EffectTarget::kEnemies);
 
   double damage_ = 0;
   double armor_ = 0;

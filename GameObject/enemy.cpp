@@ -8,7 +8,8 @@ void Enemy::Move() {
   if (is_end_reached_) {
     return;
   }
-  position_.MoveTo(destination_, speed_ * effect_.GetSpeedCoefficient());
+  position_.MoveTo(destination_,
+                   speed_ * applied_effect_.GetSpeedCoefficient());
 
   if (position_ == destination_) {
     node_number_++;
@@ -69,7 +70,7 @@ Enemy::Enemy(const Enemy& enemy_instance) : MovingObject(enemy_instance) {
 
 void Enemy::ReceiveDamage(double damage) {
   // Temporary formula.
-  double armor = armor_ * effect_.GetArmorCoefficient();
+  double armor = armor_ * applied_effect_.GetArmorCoefficient();
   double multiplier = 1 - ((0.052 * armor) / (0.9 + 0.048 * std::abs(armor)));
   current_health_ -= std::min(multiplier * damage, current_health_);
   if (current_health_ <= kEpsilon) {
@@ -78,7 +79,7 @@ void Enemy::ReceiveDamage(double damage) {
 }
 
 double Enemy::GetDamage() const {
-  return damage_ * effect_.GetDamageCoefficient();
+  return damage_ * applied_effect_.GetDamageCoefficient();
 }
 
 void Enemy::DrawHealthBar(QPainter* painter,
@@ -99,8 +100,8 @@ AuricField* Enemy::GetAuricField() {
   return &auric_field_;
 }
 
-Effect* Enemy::GetEffect() {
-  return &effect_;
+Effect* Enemy::GetAppliedEffect() {
+  return &applied_effect_;
 }
 
 Enemy::Enemy(double damage,

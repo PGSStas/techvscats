@@ -141,8 +141,23 @@ void Model::LoadLevelFromJson(int level) {
   gold_ = json_object["gold"].toInt();
   score_ = json_object["score"].toInt();
 
+  // Reading information about the base.
   base_ = Base(json_object["base"].toObject()["max_health"].toDouble());
 
+  QJsonArray json_base_positions =
+      json_object["base"].toObject()["positions"].toArray();
+  int positions_size = json_base_positions.size();
+  std::vector<Coordinate> base_positions_;
+  base_positions_.reserve(positions_size);
+  QJsonObject json_base_position;
+  for (int i = 0; i < positions_size; i++) {
+    json_base_position = json_base_positions[i].toObject();
+    base_positions_.emplace_back(json_base_position["x"].toDouble(),
+                                 json_base_position["y"].toDouble());
+  }
+  base_.SetPositions(base_positions_);
+
+  // Reading information about the roads.
   roads_.clear();
   QJsonArray json_roads = json_object["roads"].toArray();
   roads_count_ = json_roads.size();
@@ -164,6 +179,7 @@ void Model::LoadLevelFromJson(int level) {
     roads_.emplace_back(nodes);
   }
 
+  // Reading information about the enemy groups.
   enemy_groups_.clear();
   QJsonArray json_rounds = json_object["rounds"].toArray();
   rounds_count_ = json_rounds.size();
@@ -188,6 +204,7 @@ void Model::LoadLevelFromJson(int level) {
     enemy_groups_.push_back(std::move(groups));
   }
 
+  // Reading information about the empty towers.
   empty_towers_.clear();
   QJsonArray json_empty_towers = json_object["empty_towers"].toArray();
   int empty_towers_count = json_empty_towers.size();

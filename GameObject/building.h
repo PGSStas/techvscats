@@ -12,7 +12,7 @@ class Building : public GameObject {
   Building();
   Building(const Building& other);
   void SetParameters(int id, const QColor& draw_color, int max_level,
-      int action_range);
+                     int action_range);
 
   // Determines whether the point is inside the building;
   // Is used to check whether mouse press was on the building;
@@ -23,18 +23,18 @@ class Building : public GameObject {
   void Tick() override;
 
   void Draw(QPainter* painter,
-      const std::shared_ptr<SizeHandler>& size_handler) const override;
+            const std::shared_ptr<SizeHandler>& size_handler) const override;
 
   int GetId() const;
   int GetMaxLevel() const;
   int GetCurrentLevel() const;
   int GetActionRange() const;
   AuricField* GetAuricField();
-  Effect* GetEffect();
+  Effect* GetAppliedEffect();
 
  private:
   AuricField auric_field_;
-  Effect effect_ = Effect(EffectTarget::kBuildings);
+  Effect applied_effect_ = Effect(EffectTarget::kBuildings);
 
   int id_ = 0;
   int max_level_ = 0;
