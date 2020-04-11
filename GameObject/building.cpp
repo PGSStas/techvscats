@@ -3,7 +3,7 @@
 #include "building.h"
 
 Building::Building(const Building& other) :
-    Building(other.id_, other.cost_, other.size_, other.enemies_) {
+    Building(other.id_, other.cost_, other.size_) {
   SetProjectile(other.max_aims_,
                 other.attack_range_,
                 other.attack_damage_,
@@ -13,21 +13,26 @@ Building::Building(const Building& other) :
                          other.after_fire_color_, other.action_time[2]);
 }
 
-Building::Building(int id, int settle_cost, Size size,
-                   const std::list<std::shared_ptr<Enemy>>& enemies) :
-    id_(id), cost_(settle_cost), enemies_(enemies) {
+Building::Building(int id, int settle_cost, Size size) :
+    id_(id), cost_(settle_cost) {
   size_ = size;
 }
 
 void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
   switch (action) {
-    case Action::reload : painter->setBrush(reload_color_);
+    case Action::reload: {
+      painter->setBrush(reload_color_);
       break;
-    case Action::before_fire : painter->setBrush(before_fire_color_);
+    }
+    case Action::before_fire: {
+      painter->setBrush(before_fire_color_);
       break;
-    case Action::after_fire : painter->setBrush(after_fire_color_);
+    }
+    case Action::after_fire: {
+      painter->setBrush(after_fire_color_);
       break;
+    }
   }
 
   Coordinate center = size_handler.GameToWindowCoordinate(position_);
@@ -46,18 +51,17 @@ void Building::Tick(int current_time) {
   object_time_ = current_time;
 
   switch (action) {
-    case Action::reload:
+    case Action::reload: {
       if (wait_time_ > action_time[static_cast<int>(Action::reload)]) {
-        UpdateAim();
-        if (is_possible_to_shoot_) {
+        if (is_ready_to_shoot) {
           wait_time_ = 0;
           action = Action::before_fire;
         }
       }
       break;
-    case Action::before_fire:
-      UpdateAim();
-      if (!is_possible_to_shoot_) {
+    }
+    case Action::before_fire: {
+      if (!is_ready_to_shoot) {
         action = Action::reload;
         wait_time_ = action_time[static_cast<int>(Action::reload)];
         return;
@@ -68,11 +72,13 @@ void Building::Tick(int current_time) {
         wait_time_ = 0;
       }
       break;
-    case Action::after_fire:
+    }
+    case Action::after_fire: {
       if (wait_time_ > action_time[static_cast<int>(Action::after_fire)]) {
         action = Action::reload;
       }
       break;
+    }
   }
 }
 
@@ -95,9 +101,13 @@ void Building::SetAnimationParameters(QColor reload_color, int reload_time,
   action_time[static_cast<int>(Action::after_fire)] = after_fire_time;
 }
 
-void Building::UpdateAim() {
+void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies_) {
+  if ((wait_time_ < action_time[static_cast<int>(Action::reload)]
+      && action == Action::reload) || action == Action::before_fire) {
+    return;
+  }
   if (enemies_.empty()) {
-    is_possible_to_shoot_ = false;
+    is_ready_to_shoot = false;
     aims_.clear();
     return;
   }
@@ -108,7 +118,7 @@ void Building::UpdateAim() {
   });
 
   if (aims_.size() == max_aims_) {
-    is_possible_to_shoot_ = true;
+    is_ready_to_shoot = true;
     return;
   }
 
@@ -132,7 +142,7 @@ void Building::UpdateAim() {
       aims_.push_back(enemy);
     }
   }
-  is_possible_to_shoot_ = !aims_.empty();
+  is_ready_to_shoot = !aims_.empty();
 }
 
 std::vector<Projectile> Building::PrepareProjectiles(
@@ -146,7 +156,6 @@ std::vector<Projectile> Building::PrepareProjectiles(
                              attack_damage_,
                              aim);
     projectile.SetPosition(position_);
-    projectile.SetType(projectile_instance.GetType());
     projectiles.push_back(projectile);
   }
   return projectiles;

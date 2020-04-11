@@ -12,27 +12,27 @@ void Model::SetGameLevel(int level_id) {
 
   empty_towers_ = {{540, 700}, {200, 100}, {500, 100}};
 
-  Building building_instance(0, 0, Size(33, 33), enemies_);
+  Building building_instance(0, 0, Size(33, 33));
   building_instance.SetAnimationParameters(Qt::gray,
                                            1000);
 
   upgrades_tree_.push_back({1, 2});
 
-  Building building_instance2(1, 24, Size(40, 20), enemies_);
+  Building building_instance2(1, 24, Size(40, 20));
   building_instance2.SetProjectile(2, 340, 1, 0);
   building_instance2.SetAnimationParameters(Qt::blue, 1000,
                                             Qt::red, 300,
                                             Qt::darkYellow, 300);
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3(2, 24, Size(30, 50), enemies_);
+  Building building_instance3(2, 24, Size(30, 50));
   building_instance3.SetProjectile(3, 240, 0.2, 2);
   building_instance3.SetAnimationParameters(Qt::yellow, 100,
                                             Qt::red, 50,
                                             Qt::darkYellow, 10);
   upgrades_tree_.push_back({3, 1, 0});
 
-  Building building_instance4(3, 24, Size(14, 32), enemies_);
+  Building building_instance4(3, 24, Size(14, 32));
   building_instance4.SetProjectile(1, 540, 3, 1);
   building_instance4.SetAnimationParameters(Qt::green, 1000,
                                             Qt::red, 300,
@@ -218,15 +218,18 @@ const Projectile& Model::GetProjectileById(int id) const {
 void Model::CreateProjectiles(const std::vector<Projectile>& projectiles) {
   for (auto& projectile : projectiles) {
     switch (projectile.GetType()) {
-      case ProjectileType::kDefault:
+      case ProjectileType::kDefault: {
         projectiles_.push_back(std::make_shared<Projectile>(projectile));
         break;
-      case ProjectileType::kLazer:
+      }
+      case ProjectileType::kLazer: {
         projectiles_.push_back(std::make_shared<LazerProjectile>(projectile));
         break;
-      case ProjectileType::kBomb:
+      }
+      case ProjectileType::kBomb: {
         projectiles_.push_back(std::make_shared<BombProjectile>(projectile));
         break;
+      }
     }
   }
 }

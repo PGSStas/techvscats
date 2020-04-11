@@ -30,10 +30,14 @@ void Controller::EndGame(Exit exit_code) {
 void Controller::Tick(int current_time) {
   current_time_ = current_time;
   switch (game_mode_) {
-    case WindowType::kGame : GameProcess();
+    case WindowType::kGame: {
+      GameProcess();
       break;
-    case WindowType::kMainMenu : MenuProcess();
+    }
+    case WindowType::kMainMenu: {
+      MenuProcess();
       break;
+    }
   }
 }
 
@@ -105,6 +109,8 @@ void Controller::TickBuildings() {
   auto buildings = model_->GetBuildings();
   for (auto& building : buildings) {
     building->Tick(current_time_);
+    building->UpdateAim(*model_->GetEnemies());
+
     if (building->IsReadyToCreateProjectiles()) {
       const Projectile& instance_to_use =
           model_->GetProjectileById(building->GetProjectileId());

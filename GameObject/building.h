@@ -16,8 +16,7 @@ enum class Action {
 class Building : public GameObject {
  public:
   explicit Building(const Building& other);
-  Building(int id = 0, int settle_cost = 0, Size size = {20, 20},
-           const std::list<std::shared_ptr<Enemy>>& enemies = {});
+  Building(int id = 0, int settle_cost = 0, Size size = {20, 20});
 
   void SetAnimationParameters(QColor reload_color,
                               int reload_time,
@@ -32,6 +31,7 @@ class Building : public GameObject {
       const Projectile& projectile_instance);
 
   void Tick(int current_time) override;
+  void UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies_);
   void Draw(QPainter* painter,
             const SizeHandler& size_handler) const override;
   int GetId() const;
@@ -39,9 +39,7 @@ class Building : public GameObject {
   int GetProjectileId() const;
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
-
  private:
-  void UpdateAim();
   // parameters
   int id_ = 0;
   int cost_ = 0;
@@ -61,8 +59,7 @@ class Building : public GameObject {
   double attack_damage_ = 0;
   int attack_range_ = 0;
   bool is_ready_to_create_projectiles_ = false;
-  bool is_possible_to_shoot_ = false;
-  const std::list<std::shared_ptr<Enemy>>& enemies_;
+  bool is_ready_to_shoot = false;
   std::list<std::shared_ptr<Enemy>> aims_;
 
   const int kInteractionRadius = 15;
