@@ -11,8 +11,6 @@ class Base : public GameObject {
   Base() = default;
   Base(double max_health, Coordinate position);
 
-  Base& operator=(const Base& other);
-
   void Draw(QPainter* painter,
             const std::shared_ptr<SizeHandler>& size_handler) const override;
   void Tick() override;

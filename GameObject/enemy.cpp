@@ -10,7 +10,7 @@ Enemy::Enemy(double damage,
       armor_(armor),
       reward_(reward),
       max_health_(max_health),
-      auric_field_(auric_field){
+      auric_field_(auric_field) {
   auric_field.SetCarrierCoordinate(&position_);
   speed_ = speed;
 }

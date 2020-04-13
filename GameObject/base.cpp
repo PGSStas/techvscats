@@ -60,11 +60,3 @@ void Base::Draw(QPainter* painter,
 void Base::Tick() {
   current_health_ = std::min(max_health_, current_health_ + regeneration_rate_);
 }
-
-Base& Base::operator=(const Base& other) {
-  regeneration_rate_ = other.regeneration_rate_;
-  max_health_ = other.max_health_;
-  current_health_ = max_health_;
-  position_ = other.position_;
-  size_ = other.size_;
-}
