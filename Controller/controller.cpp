@@ -131,11 +131,11 @@ void Controller::TickAuras() {
   }
 
   for (auto& enemy : enemies) {
-    ApplyEffectToAllInstances(*enemy->GetAuricField());
+    ApplyEffectToAllInstances(enemy->GetAuricField());
   }
 
   for (auto& building : buildings) {
-    ApplyEffectToAllInstances(*building->GetAuricField());
+    ApplyEffectToAllInstances(building->GetAuricField());
   }
 }
 

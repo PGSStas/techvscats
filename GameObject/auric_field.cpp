@@ -1,10 +1,7 @@
 #include "auric_field.h"
 
-void AuricField::SetParameters(double effect_radius,
-                               int effect_id) {
-  effect_radius_ = effect_radius;
-  effect_id_ = effect_id;
-}
+AuricField::AuricField(double effect_radius, int effect_id)
+    : effect_radius_(effect_radius), effect_id_(effect_id) {}
 
 bool AuricField::IsInRadius(const Coordinate& coordinate) const {
   return carrier_coordinate_->GetVectorTo(coordinate).GetLength()

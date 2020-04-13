@@ -1,5 +1,9 @@
 #include "base.h"
 
+const Coordinate Base::kHealthBarPosition = Coordinate(0, 1060);
+const Size Base::kBaseSize = Size(50, 50);
+const Size Base::kHealthBarSize = Size(1920, 20);
+
 Base::Base(double max_health, Coordinate position)
     : max_health_(max_health),
       current_health_(max_health),

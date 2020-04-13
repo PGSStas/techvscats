@@ -4,11 +4,14 @@ Enemy::Enemy(double damage,
              double armor,
              int reward,
              double speed,
-             double max_health)
+             double max_health,
+             AuricField auric_field)
     : damage_(damage),
       armor_(armor),
       reward_(reward),
-      max_health_(max_health) {
+      max_health_(max_health),
+      auric_field_(auric_field){
+  auric_field.SetCarrierCoordinate(&position_);
   speed_ = speed;
 }
 
@@ -108,8 +111,8 @@ void Enemy::DrawHealthBar(QPainter* painter,
   painter->restore();
 }
 
-AuricField* Enemy::GetAuricField() {
-  return &auric_field_;
+const AuricField& Enemy::GetAuricField() const {
+  return auric_field_;
 }
 
 Effect* Enemy::GetAppliedEffect() {

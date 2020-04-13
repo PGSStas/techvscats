@@ -9,7 +9,7 @@
 
 class AuricField {
  public:
-  void SetParameters(double effect_radius, int effect_id);
+  explicit AuricField(double effect_radius = -1, int effect_id = -1);
   void SetCarrierCoordinate(Coordinate* carrier_coordinates);
 
   int GetEffectId() const;

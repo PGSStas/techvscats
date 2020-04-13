@@ -15,7 +15,8 @@ class Enemy : public MovingObject {
         double armor,
         int reward,
         double speed,
-        double max_health);
+        double max_health,
+        AuricField auric_field = AuricField(-1, -1));
   Enemy(const Enemy& enemy_instance);
 
   void Tick() override;
@@ -27,7 +28,7 @@ class Enemy : public MovingObject {
 
   void SetRoad(const Road& road);
 
-  AuricField* GetAuricField();
+  const AuricField& GetAuricField() const;
   Effect* GetAppliedEffect();
   double GetDamage() const;
   bool IsDead() const;

@@ -14,16 +14,12 @@ void Model::SetGameLevel(int level_id) {
 
   Building building_instance2;
 
-  building_instance2.GetAuricField()->SetParameters(300, 0);
-
-  building_instance2.SetParameters(1, Qt::white, 2, 75);
+  building_instance2.SetParameters(1, Qt::white, 2, 75, AuricField(300, 0));
   upgrades_tree_.push_back({3, 0});
 
   Building building_instance3;
 
-  building_instance3.GetAuricField()->SetParameters(200, 2);
-
-  building_instance3.SetParameters(2, Qt::darkRed, 3, 100);
+  building_instance3.SetParameters(2, Qt::darkRed, 3, 100, AuricField(200, 2));
   upgrades_tree_.push_back({1, 3, 0});
 
   Building building_instance4;
@@ -247,17 +243,17 @@ void Model::LoadDatabaseFromJson() {
   QJsonObject enemy;
   for (int i = 0; i < enemies_count; i++) {
     enemy = enemies[i].toObject();
-    Enemy new_enemy(enemy["damage"].toInt(),
-                    enemy["armor"].toInt(),
-                    enemy["reward"].toInt(),
-                    enemy["speed"].toInt(),
-                    enemy["max_health"].toInt());
+    AuricField aura;
     if (enemy.contains("aura")) {
-      new_enemy.GetAuricField()->SetParameters(
-          enemy["aura"].toObject()["radius"].toInt(),
-          enemy["aura"].toObject()["effect_id"].toInt());
+      aura = AuricField(enemy["aura"].toObject()["radius"].toInt(),
+                        enemy["aura"].toObject()["effect_id"].toInt());
     }
-    id_to_enemy_.push_back(new_enemy);
+    id_to_enemy_.emplace_back(enemy["damage"].toInt(),
+                              enemy["armor"].toInt(),
+                              enemy["reward"].toInt(),
+                              enemy["speed"].toInt(),
+                              enemy["max_health"].toInt(),
+                              aura);
   }
 
   // Temporary part

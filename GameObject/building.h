@@ -11,8 +11,11 @@ class Building : public GameObject {
  public:
   Building();
   Building(const Building& other);
-  void SetParameters(int id, const QColor& draw_color, int max_level,
-                     int action_range);
+  void SetParameters(int id,
+                     const QColor& draw_color,
+                     int max_level,
+                     int action_range,
+                     AuricField auric_field = AuricField(-1, -1));
 
   // Determines whether the point is inside the building;
   // Is used to check whether mouse press was on the building;
@@ -29,7 +32,7 @@ class Building : public GameObject {
   int GetMaxLevel() const;
   int GetCurrentLevel() const;
   int GetActionRange() const;
-  AuricField* GetAuricField();
+  const AuricField& GetAuricField() const;
   Effect* GetAppliedEffect();
 
  private:

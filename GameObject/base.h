@@ -31,9 +31,9 @@ class Base : public GameObject {
 
   bool is_dead_;
 
-  const Coordinate kHealthBarPosition = Coordinate(0, 1060);
-  const Size kBaseSize = Size(50, 50);
-  const Size kHealthBarSize = Size(1920, 20);
+  static const Coordinate kHealthBarPosition;
+  static const Size kBaseSize;
+  static const Size kHealthBarSize;
 };
 
 #endif  // GAMEOBJECT_BASE_H_

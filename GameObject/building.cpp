@@ -17,22 +17,26 @@ void Building::Upgrade() {
   qDebug() << "building #" << id_ << " upgraded to" << current_level_;
 }
 
-void Building::SetParameters(int id, const QColor& draw_color, int max_level,
-                             int action_range) {
+void Building::SetParameters(int id,
+                             const QColor& draw_color,
+                             int max_level,
+                             int action_range,
+                             AuricField auric_field) {
   id_ = id;
   draw_color_ = draw_color;
   max_level_ = max_level;
   current_level_ = 1;
   action_range_ = action_range;
+  auric_field_ = auric_field;
+  auric_field_.SetCarrierCoordinate(&position_);
 }
 
 Building::Building(const Building& other) {
   SetParameters(other.id_, other.draw_color_, other.max_level_,
-                other.action_range_);
+                other.action_range_, other.auric_field_);
   position_ = other.position_;
   size_ = other.size_;
   current_level_ = other.current_level_;
-  auric_field_ = other.auric_field_;
   auric_field_.SetCarrierCoordinate(&position_);
 }
 
@@ -63,8 +67,8 @@ int Building::GetActionRange() const {
   return action_range_;
 }
 
-AuricField* Building::GetAuricField() {
-  return &auric_field_;
+const AuricField& Building::GetAuricField() const {
+  return auric_field_;
 }
 
 Effect* Building::GetAppliedEffect() {
