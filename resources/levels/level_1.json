@@ -4,12 +4,10 @@
   "score": 0,
   "base": {
     "max_health": 300,
-    "positions": [
-      {
-        "x": 1060,
-        "y": 660
-      }
-    ]
+    "position": {
+      "x": 1060,
+      "y": 660
+    }
   },
   "roads": [
     [

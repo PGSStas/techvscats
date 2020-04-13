@@ -1,5 +1,17 @@
 #include "enemy.h"
 
+Enemy::Enemy(double damage,
+             double armor,
+             int reward,
+             double speed,
+             double max_health)
+    : damage_(damage),
+      armor_(armor),
+      reward_(reward),
+      max_health_(max_health) {
+  speed_ = speed;
+}
+
 void Enemy::Tick() {
   Move();
 }
@@ -103,16 +115,3 @@ AuricField* Enemy::GetAuricField() {
 Effect* Enemy::GetAppliedEffect() {
   return &applied_effect_;
 }
-
-Enemy::Enemy(double damage,
-             double armor,
-             int reward,
-             double speed,
-             double max_health)
-    : damage_(damage),
-      armor_(armor),
-      reward_(reward),
-      max_health_(max_health) {
-  speed_ = speed;
-}
-

@@ -8,7 +8,8 @@
 
 class Base : public GameObject {
  public:
-  explicit Base(double max_health);
+  Base() = default;
+  Base(double max_health, Coordinate position);
 
   Base& operator=(const Base& other);
 
@@ -16,7 +17,6 @@ class Base : public GameObject {
             const std::shared_ptr<SizeHandler>& size_handler) const override;
   void Tick() override;
 
-  void SetPositions(const std::vector<Coordinate>& positions);
   double GetCurrentHealth() const;
   double GetMaxHealth() const;
 
@@ -28,7 +28,6 @@ class Base : public GameObject {
   double regeneration_rate_ = 0.05;
   double max_health_;
   double current_health_;
-  std::vector<Coordinate> positions_;
 
   bool is_dead_;
 

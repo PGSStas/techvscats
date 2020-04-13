@@ -69,11 +69,11 @@ class Model {
   int score_ = 0;
 
   // Database which is loaded in SetGameLevel once
-  Base base_ = Base(0);
+  Base base_;
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;
-  std::vector<Coordinate> empty_towers_;
+  std::vector<Coordinate> empty_places_for_towers_;
   int time_between_rounds_ = 0;
   int rounds_count_ = 0;
   int roads_count_ = 0;
@@ -89,8 +89,8 @@ class Model {
  private:
   // Helping functions
 
-  // Creates EmptyTower classes from empty_towers_ vector
-  // Should be called on load of empty_towers_
+  // Creates EmptyTower classes from empty_places_for_towers_ vector
+  // Should be called on load of empty_places_for_towers_
   void InitializeTowerSlots();
 };
 

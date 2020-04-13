@@ -37,24 +37,24 @@ void Effect::DrawEffectsIcons(QPainter* painter,
   Size size =
       size_handler->GameToWindowSize(Size(6, 6));
 
-  DrawEffectIcon(CoefficientType::kDamage, &point, size, painter);
+  DrawEffectIcon(painter, &point, size, CoefficientType::kDamage);
 
   if (effect_target_ == EffectTarget::kEnemies) {
-    DrawEffectIcon(CoefficientType::kSpeed, &point, size, painter);
-    DrawEffectIcon(CoefficientType::kArmor, &point, size, painter);
+    DrawEffectIcon(painter, &point, size, CoefficientType::kSpeed);
+    DrawEffectIcon(painter, &point, size, CoefficientType::kArmor);
   }
   if (effect_target_ == EffectTarget::kBuildings) {
-    DrawEffectIcon(CoefficientType::kRange, &point, size, painter);
-    DrawEffectIcon(CoefficientType::kAttackRate, &point, size, painter);
+    DrawEffectIcon(painter, &point, size, CoefficientType::kRange);
+    DrawEffectIcon(painter, &point, size, CoefficientType::kAttackRate);
   }
 
   painter->restore();
 }
 
-void Effect::DrawEffectIcon(CoefficientType coefficient_type,
+void Effect::DrawEffectIcon(QPainter* painter,
                             Coordinate* point,
                             Size size,
-                            QPainter* painter) const {
+                            CoefficientType coefficient_type) const {
   int index = static_cast<int>(coefficient_type);
   double coefficient = coefficients_[index];
   if (std::abs(coefficient - 1) < kEpsilon) {

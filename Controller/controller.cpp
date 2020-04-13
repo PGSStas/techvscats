@@ -121,12 +121,11 @@ const std::vector<Road>& Controller::GetRoads() const {
 
 void Controller::TickAuras() {
   const auto& enemies = *model_->GetEnemies();
-  const auto& buildings = model_->GetBuildings();
-
   for (auto& enemy : enemies) {
     enemy->GetAppliedEffect()->ResetEffect();
   }
 
+  const auto& buildings = model_->GetBuildings();
   for (auto& building : buildings) {
     building->GetAppliedEffect()->ResetEffect();
   }

@@ -1,9 +1,11 @@
 #include "base.h"
 
-Base::Base(double max_health)
+Base::Base(double max_health, Coordinate position)
     : max_health_(max_health),
       current_health_(max_health),
-      is_dead_(false) {}
+      is_dead_(false) {
+  position_ = position;
+}
 
 bool Base::IsDead() const {
   return is_dead_;
@@ -30,13 +32,11 @@ void Base::Draw(QPainter* painter,
 
   painter->setBrush(Qt::magenta);
 
-  for (auto position : positions_) {
-    Coordinate point =
-        size_handler->GameToWindowCoordinate(position - kBaseSize / 2);
-    Size size = size_handler->GameToWindowSize(kBaseSize);
+  Coordinate point =
+      size_handler->GameToWindowCoordinate(position_ - kBaseSize / 2);
+  Size size = size_handler->GameToWindowSize(kBaseSize);
 
-    painter->drawRect(point.x, point.y, size.width, size.height);
-  }
+  painter->drawRect(point.x, point.y, size.width, size.height);
 
   Coordinate health_bar_top_corner =
       size_handler->GameToWindowCoordinate(kHealthBarPosition);
@@ -57,12 +57,10 @@ void Base::Tick() {
   current_health_ = std::min(max_health_, current_health_ + regeneration_rate_);
 }
 
-void Base::SetPositions(const std::vector<Coordinate>& positions) {
-  positions_ = positions;
-}
-
 Base& Base::operator=(const Base& other) {
   regeneration_rate_ = other.regeneration_rate_;
   max_health_ = other.max_health_;
   current_health_ = max_health_;
+  position_ = other.position_;
+  size_ = other.size_;
 }

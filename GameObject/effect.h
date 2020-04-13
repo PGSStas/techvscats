@@ -60,10 +60,10 @@ class Effect {
   static std::vector<EffectVisualization> effect_visualizations_;
 
  private:
-  void DrawEffectIcon(CoefficientType coefficient_type,
+  void DrawEffectIcon(QPainter* painter,
                       Coordinate* point,
                       Size size,
-                      QPainter* painter) const;
+                      CoefficientType coefficient_type) const;
 };
 
 #endif  // GAMEOBJECT_EFFECT_H_

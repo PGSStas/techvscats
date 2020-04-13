@@ -1,5 +1,10 @@
 #include "model.h"
 
+Model::Model() {
+  current_round_number_ = 0;
+  LoadDatabaseFromJson();
+}
+
 void Model::SetGameLevel(int level_id) {
   LoadLevelFromJson(level_id);
 
@@ -91,12 +96,12 @@ void Model::ClearGameModel() {
   spawners_.clear();
   enemy_groups_.clear();
   roads_.clear();
-  empty_towers_.clear();
+  empty_places_for_towers_.clear();
   qDebug() << "Clear Model";
 }
 
 void Model::InitializeTowerSlots() {
-  for (Coordinate coordinate : empty_towers_) {
+  for (Coordinate coordinate : empty_places_for_towers_) {
     auto empty_place = std::make_shared<Building>(id_to_building_[0]);
     empty_place->SetPosition(coordinate);
     buildings_.push_back(empty_place);
@@ -142,20 +147,11 @@ void Model::LoadLevelFromJson(int level) {
   score_ = json_object["score"].toInt();
 
   // Reading information about the base.
-  base_ = Base(json_object["base"].toObject()["max_health"].toDouble());
-
-  QJsonArray json_base_positions =
-      json_object["base"].toObject()["positions"].toArray();
-  int positions_size = json_base_positions.size();
-  std::vector<Coordinate> base_positions_;
-  base_positions_.reserve(positions_size);
-  QJsonObject json_base_position;
-  for (int i = 0; i < positions_size; i++) {
-    json_base_position = json_base_positions[i].toObject();
-    base_positions_.emplace_back(json_base_position["x"].toDouble(),
-                                 json_base_position["y"].toDouble());
-  }
-  base_.SetPositions(base_positions_);
+  QJsonObject json_base = json_object["base"].toObject();
+  QJsonObject json_base_position = json_base["position"].toObject();
+  base_ = Base(json_base["max_health"].toDouble(),
+               {json_base_position["x"].toDouble(),
+                json_base_position["y"].toDouble()});
 
   // Reading information about the roads.
   roads_.clear();
@@ -205,16 +201,16 @@ void Model::LoadLevelFromJson(int level) {
   }
 
   // Reading information about the empty towers.
-  empty_towers_.clear();
+  empty_places_for_towers_.clear();
   QJsonArray json_empty_towers = json_object["empty_towers"].toArray();
   int empty_towers_count = json_empty_towers.size();
-  empty_towers_.reserve(empty_towers_count);
+  empty_places_for_towers_.reserve(empty_towers_count);
 
   QJsonObject json_empty_tower;
   for (int i = 0; i < empty_towers_count; i++) {
     json_empty_tower = json_empty_towers[i].toObject();
-    empty_towers_.emplace_back(json_empty_tower["x"].toDouble(),
-                               json_empty_tower["y"].toDouble());
+    empty_places_for_towers_.emplace_back(json_empty_tower["x"].toDouble(),
+                                          json_empty_tower["y"].toDouble());
   }
 }
 
@@ -272,11 +268,6 @@ void Model::LoadDatabaseFromJson() {
                               {Qt::darkRed, Qt::magenta},
                               {Qt::white, Qt::yellow}};
   Effect::SetEffectVisualizations(effect_visualization);
-}
-
-Model::Model() {
-  current_round_number_ = 0;
-  LoadDatabaseFromJson();
 }
 
 const Effect& Model::GetEffectById(int id) const {

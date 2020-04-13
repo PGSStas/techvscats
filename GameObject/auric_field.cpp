@@ -35,7 +35,7 @@ void AuricField::Draw(QPainter* painter,
   Size size =
       size_handler->GameToWindowSize(Size(effect_radius_ * 2,
                                           effect_radius_ * 2));
-  painter->drawEllipse(point.x, point.y, size.width, size.height - 10);
+  painter->drawEllipse(point.x, point.y, size.width, size.height);
 
   painter->restore();
 }
