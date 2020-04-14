@@ -13,7 +13,7 @@ enum class ProjectileType {
 
 class Projectile : public MovingObject {
  public:
-  explicit Projectile(const Projectile& other);
+  Projectile(const Projectile& other);
   explicit Projectile(Size size, double speed,
                       ProjectileType projectile_type =
                       ProjectileType::kDefault);

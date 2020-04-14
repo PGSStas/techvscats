@@ -25,6 +25,7 @@ View::View(AbstractController* controller)
   show();
 
   view_timer_.start();
+  time_between_ticks_.start();
   controller_timer_id_ = startTimer(kTimeBetweenTicks);
   EnableMenuUi();
   DisableGameUi();

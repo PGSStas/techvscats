@@ -108,7 +108,7 @@ void Controller::TickEnemies() {
 }
 
 void Controller::TickBuildings() {
-  auto buildings = model_->GetBuildings();
+  const auto& buildings = model_->GetBuildings();
   for (auto& building : buildings) {
     building->Tick(current_game_time_);
     building->UpdateAim(*model_->GetEnemies());
@@ -217,8 +217,8 @@ void Controller::CreateTowerMenu(int tower_index) {
         }));
   }
 
-  auto
-      menu = std::make_shared<TowerMenu>(current_game_time_, building, options);
+  auto menu = std::make_shared<TowerMenu>(
+      current_game_time_, building, options);
   view_->ShowTowerMenu(menu);
 }
 

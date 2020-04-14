@@ -8,9 +8,9 @@
 #include "projectile.h"
 
 enum class Action {
-  reload,
-  before_fire,
-  after_fire
+  kReload,
+  kBeforeFire,
+  fAfterFire
 };
 
 class Building : public GameObject {
@@ -47,7 +47,7 @@ class Building : public GameObject {
   int cost_ = 0;
 
   // action part
-  Action action_ = Action::reload;
+  Action action_ = Action::kReload;
   int wait_time_ = 0;
 
   int action_time[3] = {0, 0, 0};

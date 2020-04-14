@@ -1,8 +1,21 @@
 #include "projectile.h"
+
 Projectile::Projectile(Size size, double speed, ProjectileType type)
     : type_(type) {
   speed_ = speed;
   size_ = size;
+}
+
+Projectile::Projectile(const Projectile& other) :
+    type_(other.type_), up_force_(other.up_force_),
+    effect_radius_(other.effect_radius_) {
+
+  SetAnimationParameters(other.draw_color_, other.iteration_time_);
+  SetParameters(other.speed_, other.damage_, other.aim_);
+
+  position_ = other.position_;
+  start_position_ = position_;
+  size_ = other.size_;
 }
 
 void Projectile::SetParameters(double speed, double damage,
@@ -18,19 +31,6 @@ void Projectile::SetParameters(double speed, double damage,
 void Projectile::SetAnimationParameters(QColor draw_color, int iteration_time) {
   draw_color_ = draw_color;
   iteration_time_ = iteration_time;
-}
-
-Projectile::Projectile(const Projectile& other) {
-  SetAnimationParameters(other.draw_color_, other.iteration_time_);
-  SetParameters(other.speed_, other.damage_, other.aim_);
-
-  position_ = other.position_;
-  type_ = other.type_;
-  size_ = other.size_;
-
-  up_force_ = other.up_force_;
-  start_position_ = position_;
-  effect_radius_ = other.effect_radius_;
 }
 
 void Projectile::Draw(QPainter* painter, const SizeHandler& handler) const {
