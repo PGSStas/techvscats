@@ -1,11 +1,11 @@
 #ifndef GAMEOBJECT_BOMB_PROJECTILE_H_
 #define GAMEOBJECT_BOMB_PROJECTILE_H_
 
-#include "projectile.h"
+#include "abstract_projectile.h"
 
-class BombProjectile : public Projectile {
+class BombProjectile : public AbstractProjectile {
  public:
-  explicit BombProjectile(const Projectile& other);
+  explicit BombProjectile(const AbstractProjectile& other);
   explicit BombProjectile(Size size, double speed,double effect_radius,
       double up_force, ProjectileType projectile_type =ProjectileType::kBomb);
   void Draw(QPainter* painter, const SizeHandler& handler) const override;

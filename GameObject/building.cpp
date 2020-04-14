@@ -144,22 +144,6 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   is_ready_to_shoot = !aims_.empty();
 }
 
-std::vector<Projectile> Building::PrepareProjectiles(
-    const Projectile& projectile_instance) {
-  is_ready_to_create_projectiles_ = false;
-
-  std::vector<Projectile> projectiles;
-  for (auto& aim : aims_) {
-    auto projectile = Projectile(projectile_instance);
-    projectile.SetParameters(projectile_instance.GetSpeed(),
-                             attack_damage_,
-                             aim);
-    projectile.SetPosition(position_);
-    projectiles.push_back(projectile);
-  }
-  return projectiles;
-}
-
 bool Building::IsReadyToCreateProjectiles() const {
   return is_ready_to_create_projectiles_;
 }
@@ -178,4 +162,16 @@ bool Building::IsInside(Coordinate point) const {
 
 int Building::GetId() const {
   return id_;
+}
+
+const std::list<std::shared_ptr<Enemy>>& Building::GetAims() const {
+  return aims_;
+}
+
+void Building::SetReadyToCreateProjectileToFalse() {
+  is_ready_to_create_projectiles_ = false;
+}
+
+double Building::GetDamage() const {
+  return attack_damage_;
 }

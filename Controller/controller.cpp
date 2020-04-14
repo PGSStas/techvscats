@@ -114,10 +114,19 @@ void Controller::TickBuildings() {
     building->UpdateAim(*model_->GetEnemies());
 
     if (building->IsReadyToCreateProjectiles()) {
-      const Projectile& instance_to_use =
+      const AbstractProjectile& instance_to_use =
           model_->GetProjectileById(building->GetProjectileId());
 
-      model_->CreateProjectiles(building->PrepareProjectiles(instance_to_use));
+      const auto& aims = building->GetAims();
+      building->SetReadyToCreateProjectileToFalse();
+      for (auto& aim : aims) {
+        auto projectile = model_->CreateProjectile(instance_to_use);
+        projectile->SetParameters(building->GetPosition(),
+                                  instance_to_use.GetSpeed(), // speed coef!!!
+                                  building->GetDamage(), aim);
+
+      }
+      building->SetReadyToCreateProjectileToFalse();
     }
   }
 }
@@ -154,7 +163,7 @@ Controller::GetBuildings() const {
   return model_->GetBuildings();
 }
 
-const std::list<std::shared_ptr<Projectile>>&
+const std::list<std::shared_ptr<AbstractProjectile>>&
 Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }

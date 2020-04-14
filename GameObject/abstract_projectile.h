@@ -11,25 +11,24 @@ enum class ProjectileType {
   kBomb
 };
 
-class Projectile : public MovingObject {
+class AbstractProjectile : public MovingObject {
  public:
-  Projectile(const Projectile& other);
-  explicit Projectile(Size size, double speed,
-                      ProjectileType projectile_type =
-                      ProjectileType::kDefault);
+  AbstractProjectile(const AbstractProjectile& other);
 
-  void SetParameters(double speed, double damage,
-                     std::shared_ptr<Enemy> aim);
-  void SetAnimationParameters(QColor draw_color, int iteration_time);
+  virtual void SetParameters(Coordinate position, double speed, double damage,
+                             std::shared_ptr<Enemy> aim);
+  virtual void SetAnimationParameters(QColor draw_color, int iteration_time);
 
   ProjectileType GetType() const;
   double GetDamage() const;
-  void Tick(int current_time) override;
   void Move() override;
-  void Draw(QPainter* painter, const SizeHandler& handler) const override;
+
   virtual bool IsInAffectedArea(const Enemy& enemy);
 
  protected:
+  explicit AbstractProjectile(Size size, double speed,
+                              ProjectileType projectile_type);
+
   ProjectileType type_ = ProjectileType::kDefault;
   std::shared_ptr<Enemy> aim_ = {};
   double damage_ = 0;

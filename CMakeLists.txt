@@ -19,7 +19,7 @@ add_executable(techvscats
         main.cpp
         Controller/controller.cpp
         Controller/spawner.cpp
-        GameObject/projectile.cpp
+        GameObject/abstract_projectile.cpp
         GameObject/enemy.cpp
         GameObject/game_object.cpp
         GameObject/moving_object.cpp
@@ -34,7 +34,7 @@ add_executable(techvscats
         View/tower_menu.cpp
         View/tower_menu_option.cpp
         View/size_handler.cpp
-        resources.qrc)
+        resources.qrc GameObject/aimed_projectile.cpp GameObject/aimed_projectile.h)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

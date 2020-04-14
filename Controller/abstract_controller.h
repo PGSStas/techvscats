@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "GameObject/enemy.h"
-#include "GameObject/projectile.h"
+#include "GameObject/abstract_projectile.h"
 #include "GameObject/building.h"
 
 enum class Exit {
@@ -30,7 +30,7 @@ class AbstractController {
 
   virtual const std::list<std::shared_ptr<Enemy>>&
     GetEnemies() const = 0;
-  virtual const std::list<std::shared_ptr<Projectile>>&
+  virtual const std::list<std::shared_ptr<AbstractProjectile>>&
     GetProjectiles() const = 0;
   virtual const std::vector<std::shared_ptr<Building>>&
     GetBuildings() const = 0;

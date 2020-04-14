@@ -1,12 +1,12 @@
 #ifndef GAMEOBJECT_LAZER_PROJECTILE_H_
 #define GAMEOBJECT_LAZER_PROJECTILE_H_
 
-#include "projectile.h"
+#include "abstract_projectile.h"
 #include "QPen"
 
-class LazerProjectile : public Projectile {
+class LazerProjectile : public AbstractProjectile {
  public:
-  explicit LazerProjectile(const Projectile& other);
+  explicit LazerProjectile(const AbstractProjectile& other);
   explicit LazerProjectile(Size size,
         ProjectileType projectile_type = ProjectileType::kLazer);
 

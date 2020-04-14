@@ -37,8 +37,8 @@ void Model::SetGameLevel(int level_id) {
                                             Qt::red, 300,
                                             Qt::darkGreen, 100);
   upgrades_tree_.push_back({1, 0});
-  Projectile projectile_instance_default(Size(10, 20), 66);
-  projectile_instance_default.SetAnimationParameters(Qt::darkRed, 100);
+  AimedProjectile projectile_instance_aimed(Size(10, 20), 66);
+  projectile_instance_aimed.SetAnimationParameters(Qt::darkRed, 100);
 
   BombProjectile projectile_instance_bomb(Size(10, 20), 45, 52, 50);
   projectile_instance_bomb.SetAnimationParameters(Qt::darkGreen, 100);
@@ -46,9 +46,12 @@ void Model::SetGameLevel(int level_id) {
   LazerProjectile projectile_instance_lazer(Size(10, 20));
   projectile_instance_lazer.SetAnimationParameters(Qt::cyan, 160);
 
-  id_to_projectile_.push_back(projectile_instance_default);
-  id_to_projectile_.push_back(projectile_instance_bomb);
-  id_to_projectile_.push_back(projectile_instance_lazer);
+  id_to_projectile_.push_back(std::make_shared<AimedProjectile>(
+      projectile_instance_aimed));
+  id_to_projectile_.push_back(std::make_shared<BombProjectile>(
+      projectile_instance_bomb));
+  id_to_projectile_.push_back(std::make_shared<LazerProjectile>(
+      projectile_instance_lazer));
 
   id_to_building_.push_back(building_instance);
   id_to_building_.push_back(building_instance2);
@@ -206,29 +209,32 @@ void Model::InitializeTowerSlots() {
   }
 }
 
-std::list<std::shared_ptr<Projectile>>* Model::GetProjectiles() {
+std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
   return &projectiles_;
 }
 
-const Projectile& Model::GetProjectileById(int id) const {
-  return id_to_projectile_[id];
+const AbstractProjectile& Model::GetProjectileById(int id) const {
+  return *id_to_projectile_[id];
 }
 
-void Model::CreateProjectiles(const std::vector<Projectile>& projectiles) {
-  for (auto& projectile : projectiles) {
-    switch (projectile.GetType()) {
-      case ProjectileType::kDefault: {
-        projectiles_.push_back(std::make_shared<Projectile>(projectile));
-        break;
-      }
-      case ProjectileType::kLazer: {
-        projectiles_.push_back(std::make_shared<LazerProjectile>(projectile));
-        break;
-      }
-      case ProjectileType::kBomb: {
-        projectiles_.push_back(std::make_shared<BombProjectile>(projectile));
-        break;
-      }
+std::shared_ptr<AbstractProjectile> Model::CreateProjectile(const AbstractProjectile& projectile_instance) {
+  switch (projectile_instance.GetType()) {
+    case ProjectileType::kDefault: {
+      projectiles_.push_back(std::make_shared<AimedProjectile>(
+          projectile_instance));
+      break;
+    }
+    case ProjectileType::kLazer: {
+      projectiles_.push_back(std::make_shared<LazerProjectile>(
+          projectile_instance));
+      break;
+    }
+    case ProjectileType::kBomb: {
+      projectiles_.push_back(std::make_shared<BombProjectile>(
+          projectile_instance));
+      break;
     }
   }
+  return projectiles_.back();
 }
+

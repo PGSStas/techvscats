@@ -5,7 +5,7 @@
 #include <vector>
 #include <list>
 #include "enemy.h"
-#include "projectile.h"
+#include "abstract_projectile.h"
 
 enum class Action {
   kReload,
@@ -28,18 +28,19 @@ class Building : public GameObject {
 
   void SetProjectile(int max_aims, int attack_range,
                      double attack_damage, int projectile_id);
-  std::vector<Projectile> PrepareProjectiles(
-      const Projectile& projectile_instance);
 
   void Tick(int current_time) override;
   void UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies);
   void Draw(QPainter* painter,
             const SizeHandler& size_handler) const override;
+  void SetReadyToCreateProjectileToFalse();
+  double GetDamage() const;
   int GetId() const;
   int GetAttackRange() const;
   int GetProjectileId() const;
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
+  const std::list<std::shared_ptr<Enemy>>& GetAims() const;
 
  private:
   // parameters

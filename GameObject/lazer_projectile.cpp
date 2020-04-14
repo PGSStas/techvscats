@@ -1,10 +1,10 @@
 #include "lazer_projectile.h"
 
-LazerProjectile::LazerProjectile(const Projectile& other) : Projectile(other) {}
+LazerProjectile::LazerProjectile(const AbstractProjectile& other) : AbstractProjectile(other) {}
 
 LazerProjectile::LazerProjectile(Size size,
                                  ProjectileType projectile_type) :
-    Projectile(size, 0, projectile_type) {}
+    AbstractProjectile(size, 0, projectile_type) {}
 
 void LazerProjectile::Draw(QPainter* painter,
                            const SizeHandler& handler) const {

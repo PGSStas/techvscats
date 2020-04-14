@@ -17,9 +17,10 @@
 
 #include "GameObject/enemy.h"
 #include "GameObject/lazer_projectile.h"
+#include "GameObject/aimed_projectile.h"
 #include "GameObject/bomb_projectile.h"
 #include "GameObject/building.h"
-#include "GameObject/projectile.h"
+#include "GameObject/abstract_projectile.h"
 #include "Controller/spawner.h"
 #include "enemy_group.h"
 #include "road.h"
@@ -43,7 +44,7 @@ class Model {
 
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
-  std::list<std::shared_ptr<Projectile>>* GetProjectiles();
+  std::list<std::shared_ptr<AbstractProjectile>>* GetProjectiles();
   const std::vector<std::shared_ptr<Building>>& GetBuildings();
 
   const Enemy& GetEnemyById(int id) const;
@@ -54,8 +55,8 @@ class Model {
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
 
-  void CreateProjectiles(const std::vector<Projectile>& projectiles);
-  const Projectile& GetProjectileById(int id) const;
+  std::shared_ptr<AbstractProjectile> CreateProjectile(const AbstractProjectile& projectile_instance);
+  const AbstractProjectile& GetProjectileById(int id) const;
   const std::vector<std::vector<int>>& GetUpgradesTree() const;
 
   void SetBuildingAtIndex(int i, int id);
@@ -64,7 +65,7 @@ class Model {
   void LoadLevelFromJson(int level);
 
   // Database which is updated by Controller all time
-  std::list<std::shared_ptr<Projectile>> projectiles_;
+  std::list<std::shared_ptr<AbstractProjectile>> projectiles_;
   std::vector<std::shared_ptr<Building>> buildings_;
   std::list<std::shared_ptr<Enemy>> enemies_;
   int current_round_number_;
@@ -83,7 +84,7 @@ class Model {
 
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
-  std::vector<Projectile> id_to_projectile_;
+  std::vector<std::shared_ptr<AbstractProjectile>> id_to_projectile_;
   int building_count_;
   std::vector<Building> id_to_building_;
   // upgrades_tree[i] is a vector of towers to which
