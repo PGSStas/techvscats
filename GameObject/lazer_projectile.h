@@ -12,7 +12,6 @@ class LazerProjectile : public Projectile {
 
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
   void Tick(int current_time) override;
-
 };
 
 #endif  // GAMEOBJECT_LAZER_PROJECTILE_H_

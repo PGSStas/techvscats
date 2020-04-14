@@ -38,7 +38,7 @@ class Projectile : public MovingObject {
   int iteration_time_ = 0;
 
   // Fields for the child classes
-  double up_force_;
+  double up_force_ = 0;
   double effect_radius_ = 0;
   Coordinate start_position_;
 };

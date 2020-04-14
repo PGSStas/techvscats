@@ -23,7 +23,6 @@ class TowerMenu {
   std::shared_ptr<TowerMenuOption>
     GetButtonContaining(Coordinate position) const;
   void Hover(const std::shared_ptr<TowerMenuOption>& option);
-  void Unhover();
 
   void Draw(QPainter* painter, const  SizeHandler& size_handler,
       int current_time) const;

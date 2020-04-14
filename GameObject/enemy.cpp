@@ -10,7 +10,7 @@ void Enemy::Move() {
     return;
   }
   position_.MoveTo(destination_,
-                   delta_tick_time_*speed_/kTimeScale );
+                   delta_tick_time_ * speed_ / kTimeScale);
   if (position_ == destination_) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
@@ -74,7 +74,7 @@ void Enemy::SetParameters(double speed) {
 }
 
 void Enemy::ReceiveDamage(double damage) {
-    current_health_ -= damage;
+  current_health_ -= damage;
   if (current_health_ <= 0) {
     is_dead_ = true;
   }

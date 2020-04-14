@@ -27,7 +27,8 @@ class Controller : public AbstractController {
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
   const std::list<std::shared_ptr<Projectile>>& GetProjectiles() const override;
 
-  int GetCurrentTime()  const override;
+  int GetCurrentTime() const override;
+
  private:
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;

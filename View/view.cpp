@@ -34,7 +34,8 @@ void View::timerEvent(QTimerEvent* event) {
   if (event->timerId() == controller_timer_id_) {
     int delta_time = time_between_ticks_.elapsed();
     time_between_ticks_.restart();
-    controller_->Tick(controller_->GetCurrentTime()+delta_time*game_speed_coefficient_);
+    controller_->Tick(controller_->GetCurrentTime()
+                          + delta_time * game_speed_coefficient_);
     repaint();
   }
 }

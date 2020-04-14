@@ -26,8 +26,9 @@ class GameObject {
   int object_life_time_ = 0;
   Coordinate position_;
   Size size_;
+
  private:
-  int object_last_time_=0;
+  int object_last_time_ = 0;
 };
 
 #endif  // GAMEOBJECT_GAME_OBJECT_H_

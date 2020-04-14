@@ -40,7 +40,7 @@ void Model::SetGameLevel(int level_id) {
   Projectile projectile_instance_default(Size(10, 20), 66);
   projectile_instance_default.SetAnimationParameters(Qt::darkRed, 100);
 
-  BombProjectile projectile_instance_bomb(Size(10, 20), 45, 52,50);
+  BombProjectile projectile_instance_bomb(Size(10, 20), 45, 52, 50);
   projectile_instance_bomb.SetAnimationParameters(Qt::darkGreen, 100);
 
   LazerProjectile projectile_instance_lazer(Size(10, 20));

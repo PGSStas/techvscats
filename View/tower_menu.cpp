@@ -71,7 +71,3 @@ Coordinate TowerMenu::GetCoordinate(int i, int size) const {
 void TowerMenu::Hover(const std::shared_ptr<TowerMenuOption>& option) {
   hovered_option_ = option;
 }
-
-void TowerMenu::Unhover() {
-  hovered_option_ = nullptr;
-}

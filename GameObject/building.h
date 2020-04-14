@@ -16,7 +16,8 @@ enum class Action {
 class Building : public GameObject {
  public:
   explicit Building(const Building& other);
-  Building(int id = 0, int settle_cost = 0, Size size = {20, 20});
+  explicit Building(int id = 0, int settle_cost = 0,
+                    Size size = {20, 20});
 
   void SetAnimationParameters(QColor reload_color,
                               int reload_time,
@@ -39,6 +40,7 @@ class Building : public GameObject {
   int GetProjectileId() const;
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
+
  private:
   // parameters
   int id_ = 0;
@@ -48,7 +50,7 @@ class Building : public GameObject {
   Action action_ = Action::reload;
   int wait_time_ = 0;
 
-  int action_time[3];
+  int action_time[3] = {0, 0, 0};
   // TODO(some body)  here should be Images to draw
   QColor reload_color_ = QColor("black");
   QColor before_fire_color_ = QColor("black");

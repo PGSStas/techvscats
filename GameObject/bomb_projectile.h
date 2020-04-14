@@ -12,7 +12,7 @@ class BombProjectile : public Projectile {
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
   void Tick(int current_time) override;
  private:
-  double additional_draw_height_;
+  double additional_draw_height_ = 0;
 };
 
 #endif  // GAMEOBJECT_BOMB_PROJECTILE_H_
