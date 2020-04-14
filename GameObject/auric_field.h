@@ -23,7 +23,7 @@ class AuricField {
  private:
   double effect_radius_;
   int effect_id_;
-  Coordinate* carrier_coordinate_ = nullptr ;
+  Coordinate* carrier_coordinate_ = nullptr;
 };
 
 #endif  // GAMEOBJECT_AURIC_FIELD_H_
