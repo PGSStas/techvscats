@@ -10,7 +10,7 @@
 
 class GameObject {
  public:
-  GameObject() = default;
+  explicit GameObject(Size size, Coordinate position = {0, 0});
 
   virtual void Draw(QPainter* painter,
                     const SizeHandler& size_handler) const = 0;
@@ -24,8 +24,8 @@ class GameObject {
  protected:
   int delta_tick_time_ = 0;
   int object_life_time_ = 0;
-  Coordinate position_;
-  Size size_;
+  Size size_{};
+  Coordinate position_{};
 
  private:
   int object_last_time_ = 0;

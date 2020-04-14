@@ -15,9 +15,7 @@ Building::Building(const Building& other) :
 }
 
 Building::Building(int id, int settle_cost, Size size) :
-    id_(id), cost_(settle_cost) {
-  size_ = size;
-}
+    GameObject(size), id_(id), cost_(settle_cost) {}
 
 void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();

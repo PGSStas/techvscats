@@ -1,21 +1,23 @@
 #include "projectile.h"
 
+#include <utility>
+
 Projectile::Projectile(Size size, double speed, ProjectileType type)
-    : type_(type) {
+    : MovingObject(Size(), speed, Coordinate()), type_(type) {
   speed_ = speed;
   size_ = size;
 }
 
 Projectile::Projectile(const Projectile& other) :
-    type_(other.type_), up_force_(other.up_force_),
-    effect_radius_(other.effect_radius_) {
+    MovingObject(other.size_, 0, other.position_), type_(other.type_),
+    up_force_(other.up_force_), effect_radius_(other.effect_radius_),
+    start_position_(position_) {
 
   SetAnimationParameters(other.draw_color_, other.iteration_time_);
   SetParameters(other.speed_, other.damage_, other.aim_);
 
   position_ = other.position_;
-  start_position_ = position_;
-  size_ = other.size_;
+
 }
 
 void Projectile::SetParameters(double speed, double damage,
@@ -29,7 +31,7 @@ void Projectile::SetParameters(double speed, double damage,
 }
 
 void Projectile::SetAnimationParameters(QColor draw_color, int iteration_time) {
-  draw_color_ = draw_color;
+  draw_color_ = std::move(draw_color);
   iteration_time_ = iteration_time;
 }
 

@@ -216,7 +216,6 @@ void Controller::CreateTowerMenu(int tower_index) {
           SetBuilding(tower_index, to_change_id);
         }));
   }
-
   auto menu = std::make_shared<TowerMenu>(
       current_game_time_, building, options);
   view_->ShowTowerMenu(menu);

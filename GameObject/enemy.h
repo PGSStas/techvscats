@@ -8,9 +8,8 @@
 
 class Enemy : public MovingObject {
  public:
-  Enemy() = default;
+  Enemy();
   Enemy(const Enemy& enemy_instance);
-  Enemy& operator=(const Enemy& enemy_instance);
   void Tick(int current_time) override;
 
   void SetParameters(double speed);
@@ -24,8 +23,8 @@ class Enemy : public MovingObject {
   double armor_ = 0;
   int enemy_id_ = 0;
   int reward_ = 0;
-  double current_health_ = 0;
   double max_health_ = 2;
+  double current_health_ = 0;
 
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;

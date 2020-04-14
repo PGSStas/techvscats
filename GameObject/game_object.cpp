@@ -1,5 +1,9 @@
 #include "game_object.h"
 
+GameObject::GameObject(Size size, Coordinate position)
+    : size_(size), position_(position) {
+}
+
 void GameObject::UpdateTime(int current_time) {
   if (object_last_time_ != 0) {
     delta_tick_time_ = current_time - object_last_time_;
