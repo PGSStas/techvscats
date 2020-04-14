@@ -7,9 +7,10 @@ Controller::Controller() : model_(std::make_unique<Model>()),
 
 void Controller::StartGame(int level_id) {
   qDebug() << "Game Start!";
+  current_game_time_ = 0;
   game_mode_ = WindowType::kGame;
 
-  last_round_start_time_ = current_time_;
+  last_round_start_time_ = current_game_time_;
   has_unprocessed_rounds_ = true;
 
   model_->SetGameLevel(level_id);
@@ -24,11 +25,12 @@ void Controller::EndGame(Exit exit_code) {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMenuUi();
+  current_game_time_ = 0;
   game_mode_ = WindowType::kMainMenu;
 }
 
 void Controller::Tick(int current_time) {
-  current_time_ = current_time;
+  current_game_time_ = current_time;
   switch (game_mode_) {
     case WindowType::kGame: {
       GameProcess();
@@ -56,12 +58,12 @@ void Controller::MenuProcess() {}
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
-  if (!has_unprocessed_rounds_ || current_time_ - last_round_start_time_
+  if (!has_unprocessed_rounds_ || current_game_time_ - last_round_start_time_
       < model_->GetTimeBetweenWaves()) {
     return false;
   }
 
-  last_round_start_time_ = current_time_;
+  last_round_start_time_ = current_game_time_;
   if (current_round_number == model_->GetRoundsCount()) {
     has_unprocessed_rounds_ = false;
     qDebug() << "Rounds end.";
@@ -88,7 +90,7 @@ void Controller::TickSpawners() {
   auto spawners = model_->GetSpawners();
   spawners->remove_if([&](const Spawner& sp) { return sp.IsDead(); });
   for (auto& spawner : *spawners) {
-    spawner.Tick(current_time_ - last_round_start_time_);
+    spawner.Tick(current_game_time_ - last_round_start_time_);
     if (spawner.IsReadyToSpawn()) {
       Enemy enemy = model_->GetEnemyById(spawner.PrepareNextEnemyId());
       enemy.SetRoad(model_->GetRoad(spawner.GetRoad()));
@@ -101,14 +103,14 @@ void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
   enemies->remove_if([&](const auto& enemy) { return enemy->IsDead(); });
   for (auto& enemy : *enemies) {
-    enemy->Tick(current_time_);
+    enemy->Tick(current_game_time_);
   }
 }
 
 void Controller::TickBuildings() {
   auto buildings = model_->GetBuildings();
   for (auto& building : buildings) {
-    building->Tick(current_time_);
+    building->Tick(current_game_time_);
     building->UpdateAim(*model_->GetEnemies());
 
     if (building->IsReadyToCreateProjectiles()) {
@@ -127,7 +129,7 @@ void Controller::TickProjectiles() {
   });
 
   for (auto& projectile : *projectiles) {
-    projectile->Tick(current_time_);
+    projectile->Tick(current_game_time_);
     if (projectile->HasReached()) {
       auto enemies = model_->GetEnemies();
       for (const auto& enemy : *enemies) {
@@ -215,7 +217,8 @@ void Controller::CreateTowerMenu(int tower_index) {
         }));
   }
 
-  auto menu = std::make_shared<TowerMenu>(current_time_, building, options);
+  auto
+      menu = std::make_shared<TowerMenu>(current_game_time_, building, options);
   view_->ShowTowerMenu(menu);
 }
 
@@ -226,4 +229,8 @@ void Controller::MouseMove(Coordinate position) {
 
   auto button = view_->GetTowerMenu()->GetButtonContaining(position);
   view_->GetTowerMenu()->Hover(button);
+}
+
+int Controller::GetCurrentTime() const {
+  return current_game_time_;
 }

@@ -22,7 +22,6 @@ class Projectile : public MovingObject {
                      std::shared_ptr<Enemy> aim);
   void SetAnimationParameters(QColor draw_color, int iteration_time);
 
-  void SetType(ProjectileType type);
   ProjectileType GetType() const;
   double GetDamage() const;
   void Tick(int current_time) override;
@@ -33,11 +32,15 @@ class Projectile : public MovingObject {
  protected:
   ProjectileType type_ = ProjectileType::kDefault;
   std::shared_ptr<Enemy> aim_ = {};
-  double effect_radius_ = 0;
   double damage_ = 0;
 
   QColor draw_color_ = Qt::black;
   int iteration_time_ = 0;
+
+  // Fields for the child classes
+  double up_force_;
+  double effect_radius_ = 0;
+  Coordinate start_position_;
 };
 
 #endif  // GAMEOBJECT_PROJECTILE_H_

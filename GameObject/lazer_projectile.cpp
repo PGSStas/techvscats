@@ -1,13 +1,10 @@
 #include "lazer_projectile.h"
 
-LazerProjectile::LazerProjectile(const Projectile& other) : Projectile(other) {
-  start_position_ = position_;
-}
+LazerProjectile::LazerProjectile(const Projectile& other) : Projectile(other) {}
 
 LazerProjectile::LazerProjectile(Size size,
-                                 double speed,
                                  ProjectileType projectile_type) :
-    Projectile(size, speed, projectile_type) {}
+    Projectile(size, 0, projectile_type) {}
 
 void LazerProjectile::Draw(QPainter* painter,
                            const SizeHandler& handler) const {
@@ -22,12 +19,10 @@ void LazerProjectile::Draw(QPainter* painter,
 }
 
 void LazerProjectile::Tick(int current_time) {
-  if (object_time_ == 0) {
-    object_time_ = current_time;
-  }
-  if (current_time - object_time_ > iteration_time_ || aim_->IsDead()) {
+  UpdateTime(current_time);
+  if (object_life_time_ > iteration_time_ || aim_->IsDead()) {
     position_ = aim_->GetPosition();
-    has_reached_ = true;
+    is_end_reached_ = true;
     is_dead_ = true;
   }
 }

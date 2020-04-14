@@ -17,6 +17,7 @@
 
 #include "GameObject/enemy.h"
 #include "GameObject/lazer_projectile.h"
+#include "GameObject/bomb_projectile.h"
 #include "GameObject/building.h"
 #include "GameObject/projectile.h"
 #include "Controller/spawner.h"

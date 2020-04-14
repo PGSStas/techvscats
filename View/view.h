@@ -44,7 +44,10 @@ class View : public QMainWindow {
   WindowType window_type_;
   AbstractController* controller_;
   SizeHandler size_handler_;
-  QElapsedTimer game_time_;
+
+  double game_speed_coefficient_ = 1;
+  QElapsedTimer time_between_ticks_;
+  QElapsedTimer view_timer_;
 
   // Game window
   QLabel* wave_status_label_;
@@ -56,7 +59,6 @@ class View : public QMainWindow {
   // Menu window
   QPushButton* return_menu_button_;
   int controller_timer_id_;
-  const int kTimeBetweenTicks_ = 10;
 
  private:
   void paintEvent(QPaintEvent*) override;

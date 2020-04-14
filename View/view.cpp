@@ -15,6 +15,7 @@ View::View(AbstractController* controller)
   return_menu_button_ = new QPushButton(this);
   return_menu_button_->setText(tr("Вернуться"));
   auto return_menu_button_click = [&]() {
+    DisableTowerMenu();
     controller_->EndGame(Exit::kLose);
   };
   connect(return_menu_button_, &QPushButton::clicked, return_menu_button_click);
@@ -23,15 +24,17 @@ View::View(AbstractController* controller)
   wave_status_label_->setText(tr("Rounds 0 / 0"));
   show();
 
-  game_time_.start();
-  controller_timer_id_ = startTimer(kTimeBetweenTicks_);
+  view_timer_.start();
+  controller_timer_id_ = startTimer(kTimeBetweenTicks);
   EnableMenuUi();
   DisableGameUi();
 }
 
 void View::timerEvent(QTimerEvent* event) {
   if (event->timerId() == controller_timer_id_) {
-    controller_->Tick(game_time_.elapsed());
+    int delta_time = time_between_ticks_.elapsed();
+    time_between_ticks_.restart();
+    controller_->Tick(controller_->GetCurrentTime()+delta_time*game_speed_coefficient_);
     repaint();
   }
 }
@@ -62,7 +65,7 @@ void View::paintEvent(QPaintEvent*) {
     DrawEnemies(&painter);
     DrawProjectiles(&painter);
     if (is_tower_menu_enabled_) {
-      tower_menu_->Draw(&painter, size_handler_, game_time_.elapsed());
+      tower_menu_->Draw(&painter, size_handler_, view_timer_.elapsed());
     }
     DrawTowers(&painter);
   }

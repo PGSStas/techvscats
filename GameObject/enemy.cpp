@@ -1,23 +1,20 @@
 #include "enemy.h"
 
 void Enemy::Tick(int current_time) {
+  UpdateTime(current_time);
   Move();
 }
 
 void Enemy::Move() {
-  if (has_reached_) {
+  if (is_end_reached_) {
     return;
   }
-  Size move_direction = position_.GetDistanceTo(destination_);
-  if (std::abs(move_direction.GetLength()) > kEpsilon) {
-    move_direction /= move_direction.GetLength();
-    move_direction *= speed_ * speed_coefficient_;
-  }
-  if ((position_ + move_direction).GetDistanceTo(destination_).GetLength()
-      >= position_.GetDistanceTo(destination_).GetLength()) {
+  position_.MoveTo(destination_,
+                   delta_tick_time_*speed_/kTimeScale );
+  if (position_ == destination_) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
-      has_reached_ = true;
+      is_end_reached_ = true;
       return;
     }
     destination_ = (road_->GetNode(node_number_));
@@ -28,7 +25,6 @@ void Enemy::Move() {
       destination_.y += std::rand() % kMoveShift_ - kMoveShift_ / 2;
     }
   }
-  position_ += move_direction;
 }
 
 void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
@@ -78,7 +74,7 @@ void Enemy::SetParameters(double speed) {
 }
 
 void Enemy::ReceiveDamage(double damage) {
-  current_health_ -= damage;
+    current_health_ -= damage;
   if (current_health_ <= 0) {
     is_dead_ = true;
   }

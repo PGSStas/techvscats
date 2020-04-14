@@ -27,13 +27,14 @@ class Controller : public AbstractController {
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
   const std::list<std::shared_ptr<Projectile>>& GetProjectiles() const override;
 
+  int GetCurrentTime()  const override;
  private:
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
 
   WindowType game_mode_;
   bool has_unprocessed_rounds_ = false;
-  int current_time_ = 0;
+  int current_game_time_ = 0;
   int last_round_start_time_ = 0;
 
  private:

@@ -25,9 +25,12 @@ Projectile::Projectile(const Projectile& other) {
   SetParameters(other.speed_, other.damage_, other.aim_);
 
   position_ = other.position_;
-  effect_radius_ = other.effect_radius_;
   type_ = other.type_;
   size_ = other.size_;
+
+  up_force_ = other.up_force_;
+  start_position_ = position_;
+  effect_radius_ = other.effect_radius_;
 }
 
 void Projectile::Draw(QPainter* painter, const SizeHandler& handler) const {
@@ -40,23 +43,16 @@ void Projectile::Draw(QPainter* painter, const SizeHandler& handler) const {
 }
 
 void Projectile::Tick(int current_time) {
+  UpdateTime(current_time);
   destination_ = aim_->GetPosition();
   Move();
 }
 
 void Projectile::Move() {
-  Size move = position_.GetDistanceTo(destination_) /=
-                  position_.GetDistanceTo(destination_).GetLength() / speed_;
-
-  if ((position_ + move).GetDistanceTo(destination_).width
-      * position_.GetDistanceTo(destination_).width <= 0) {
-    position_ = destination_;
-  } else {
-    position_ += move;
-  }
-
-  if (position_.GetDistanceTo(destination_).GetLength() < kEpsilon) {
-    has_reached_ = true;
+  position_.MoveTo(destination_, delta_tick_time_ *
+      speed_ / kTimeScale);
+  if (position_ == destination_) {
+    is_end_reached_ = true;
     is_dead_ = true;
   }
 }
@@ -66,13 +62,10 @@ ProjectileType Projectile::GetType() const {
 }
 
 bool Projectile::IsInAffectedArea(const Enemy& enemy) {
-  return enemy.GetPosition() == aim_->GetPosition();
+  return position_.GetVectorTo(enemy.GetPosition()).GetLength()
+      <= effect_radius_ + kEpsilon;
 }
 
 double Projectile::GetDamage() const {
   return damage_;
-}
-
-void Projectile::SetType(ProjectileType type) {
-  type_ = type;
 }

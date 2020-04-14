@@ -1,12 +1,11 @@
-#include <GameObject/bomb_projectile.h>
 #include "model.h"
 
 void Model::SetGameLevel(int level_id) {
   Enemy temporary_enemy;
-  temporary_enemy.SetParameters(1);
+  temporary_enemy.SetParameters(10);
 
   id_to_enemy_.push_back(temporary_enemy);
-  temporary_enemy.SetParameters(4);
+  temporary_enemy.SetParameters(44);
   id_to_enemy_.push_back(temporary_enemy);
   LoadLevelFromJson(level_id);
 
@@ -26,7 +25,7 @@ void Model::SetGameLevel(int level_id) {
   upgrades_tree_.push_back({3, 0});
 
   Building building_instance3(2, 24, Size(30, 50));
-  building_instance3.SetProjectile(3, 240, 0.2, 2);
+  building_instance3.SetProjectile(3, 240, 0.3, 2);
   building_instance3.SetAnimationParameters(Qt::yellow, 100,
                                             Qt::red, 50,
                                             Qt::darkYellow, 10);
@@ -38,13 +37,13 @@ void Model::SetGameLevel(int level_id) {
                                             Qt::red, 300,
                                             Qt::darkGreen, 100);
   upgrades_tree_.push_back({1, 0});
-  Projectile projectile_instance_default(Size(10, 20), 10);
+  Projectile projectile_instance_default(Size(10, 20), 66);
   projectile_instance_default.SetAnimationParameters(Qt::darkRed, 100);
 
-  BombProjectile projectile_instance_bomb(Size(10, 20), 3, 50);
+  BombProjectile projectile_instance_bomb(Size(10, 20), 45, 52,50);
   projectile_instance_bomb.SetAnimationParameters(Qt::darkGreen, 100);
 
-  LazerProjectile projectile_instance_lazer(Size(10, 20), 3);
+  LazerProjectile projectile_instance_lazer(Size(10, 20));
   projectile_instance_lazer.SetAnimationParameters(Qt::cyan, 160);
 
   id_to_projectile_.push_back(projectile_instance_default);

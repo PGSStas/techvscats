@@ -10,7 +10,8 @@ struct Coordinate {
 
   Coordinate() = default;
   Coordinate(double x, double y);
-  Size GetDistanceTo(Coordinate right) const;
+  void MoveTo(Coordinate destination, double vector_length);
+  Size GetVectorTo(Coordinate right) const;
 
   Coordinate operator*(double right) const;
   Coordinate operator/(double right) const;

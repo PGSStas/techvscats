@@ -47,8 +47,8 @@ void Building::Tick(int current_time) {
   if (max_aims_ == 0) {
     return;
   }
-  wait_time_ += (current_time - object_time_);
-  object_time_ = current_time;
+  UpdateTime(current_time);
+  wait_time_ += delta_tick_time_;
 
   switch (action_) {
     case Action::reload: {
@@ -113,7 +113,7 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   }
   aims_.remove_if([&](const auto& object) {
     return (object->IsDead() ||
-        object->GetPosition().GetDistanceTo(position_).GetLength()
+        object->GetPosition().GetVectorTo(position_).GetLength()
             > attack_range_);
   });
 
@@ -127,7 +127,7 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
         || aims_.size() == enemies.size()) {
       break;
     }
-    if (enemy->GetPosition().GetDistanceTo(position_).GetLength()
+    if (enemy->GetPosition().GetVectorTo(position_).GetLength()
         > attack_range_) {
       continue;
     }
@@ -174,7 +174,7 @@ int Building::GetProjectileId() const {
 }
 
 bool Building::IsInside(Coordinate point) const {
-  return point.GetDistanceTo(position_).GetLength() <= size_.width / 2;
+  return point.GetVectorTo(position_).GetLength() <= size_.width / 2;
 }
 
 int Building::GetId() const {
