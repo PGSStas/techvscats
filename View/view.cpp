@@ -1,36 +1,24 @@
 #include "view.h"
 
 View::View(AbstractController* controller)
-    : controller_(controller) {
-  setMinimumSize(640, 360);
+    : controller_(controller),
+      button_handler_(std::make_unique<ButtonHandler>(this)) {
+  setMinimumSize(1080, 720);
   setMouseTracking(true);
 
-  start_game_button_ = new QPushButton(this);
-  start_game_button_->setText(tr("Начать"));
-  auto start_game_button_click = [&]() {
-    controller_->StartGame(1);
-  };
-  connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
+  button_handler_->CreateMainMenuButtons(controller_);
+  button_handler_->CreateSettingsButtons(controller_);
+  button_handler_->CreateGameButtons(controller_);
+  button_handler_->CreatePauseMenuButtons(controller_);
 
-  return_menu_button_ = new QPushButton(this);
-  return_menu_button_->setText(tr("Вернуться"));
-  auto return_menu_button_click = [&]() {
-    controller_->EndGame(Exit::kLose);
-  };
-  connect(return_menu_button_, &QPushButton::clicked, return_menu_button_click);
-
-  pause_button_ = new QPushButton(this);
-  pause_button_->setText("Пауза");
-  connect(pause_button_, &QPushButton::clicked, &View::GamePause);
-
-  wave_status_label_ = new QLabel(this);
-  wave_status_label_->setText(tr("Rounds 0 / 0"));
   show();
 
   game_time_.start();
   controller_timer_id_ = startTimer(kTimeBetweenTicks_);
-  EnableMainMenuUi();
-  DisableGameUi();
+  button_handler_->DisableGameUi();
+  button_handler_->DisablePauseMenuUi();
+  button_handler_->DisableSettingsUi();
+  button_handler_->EnableMainMenuUi();
 }
 
 void View::timerEvent(QTimerEvent* event) {
@@ -42,66 +30,30 @@ void View::timerEvent(QTimerEvent* event) {
 
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
-  // Example of work
+  painter.setBrush(QColor("#000000"));
+  painter.drawRect(0, 0, width(), height());
 
-  Coordinate label_position = size_handler_.GameToWindowCoordinate({300, 10});
-  wave_status_label_->move(label_position.x, label_position.y);
-
-  if (window_type_ == WindowType::kMainMenu) {
-    Coordinate start_game_button_position =
-        size_handler_.GameToWindowCoordinate({0, 0});
-    start_game_button_->move(start_game_button_position.x,
-                             start_game_button_position.y);
-
-    DrawWindow(&painter, QColor("#ffffff"));
+  if (button_handler_->GetWindowType() == WindowType::kMainMenu) {
+    DrawMainMenu(&painter);
   }
-  if (window_type_ == WindowType::kGame) {
-    Coordinate return_menu_button_position =
-        size_handler_.GameToWindowCoordinate({0, 0});
-    return_menu_button_->move(return_menu_button_position.x,
-                              return_menu_button_position.y);
-
-    DrawWindow(&painter, QColor("#53a661"));
-    DrawBackground(&painter);
-    DrawEnemies(&painter);
-    DrawProjectiles(&painter);
-    if (is_tower_menu_enabled_) {
-      tower_menu_->Draw(&painter, size_handler_, game_time_.elapsed());
-    }
-    DrawTowers(&painter);
+  if (button_handler_->GetWindowType() == WindowType::kGame) {
+    DrawGame(&painter);
   }
-}
-
-void View::EnableGameUi() {
-  return_menu_button_->show();
-  wave_status_label_->show();
-}
-
-void View::DisableGameUi() {
-  return_menu_button_->hide();
-  wave_status_label_->hide();
-}
-
-void View::EnableMainMenuUi() {
-  window_type_ = WindowType::kMainMenu;
-  start_game_button_->show();
-}
-
-void View::DisableMainMenuUi() {
-  window_type_ = WindowType::kGame;
-  start_game_button_->hide();
+  if (button_handler_->GetWindowType() == WindowType::kSettings) {
+    DrawSettings(&painter);
+  }
+  if (button_handler_->GetWindowType() == WindowType::kPauseMenu) {
+    DrawPauseMenu(&painter);
+  }
 }
 
 void View::UpdateRounds(int current_round_nubmer, int number_of_rounds) {
-  wave_status_label_->setText(
-      "Rounds " + QString::number(current_round_nubmer) + "/"
-          + QString::number(number_of_rounds));
+  // here will be some kind of round indicator
 }
 
 void View::DrawBackground(QPainter* painter) {
   // Test realization. Will be changed.
   painter->save();
-
   painter->setPen(QPen(Qt::black, 5));
   const auto& roads = controller_->GetRoads();
   for (const auto& road : roads) {
@@ -113,7 +65,6 @@ void View::DrawBackground(QPainter* painter) {
       painter->drawLine(start_point.x, start_point.y, end_point.x, end_point.y);
     }
   }
-
   painter->restore();
 }
 
@@ -163,7 +114,7 @@ std::shared_ptr<TowerMenu> View::GetTowerMenu() {
 }
 
 void View::mouseMoveEvent(QMouseEvent* event) {
-  if (window_type_ == WindowType::kGame) {
+  if (button_handler_->GetWindowType() == WindowType::kGame) {
     controller_->MouseMove(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())));
   }
@@ -171,24 +122,78 @@ void View::mouseMoveEvent(QMouseEvent* event) {
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
+  button_handler_->MoveMainMenuButtons(size_handler_);
+  button_handler_->MoveSettingsButtons(size_handler_);
+  button_handler_->MoveGameButtons(size_handler_);
+  button_handler_->MovePauseMenuButtons(size_handler_);
   repaint();
 }
 
-void View::DrawWindow(QPainter* painter, const QBrush& brush) {
-  painter->save();
-
-  painter->setBrush(QColor("#000080"));
-  painter->drawRect(0, 0, width(), height());
-  painter->setBrush(brush);
+void View::DrawMainMenu(QPainter* painter) {
   Coordinate top_corner =
       size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
   Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
-  painter->drawRect(top_corner.x, top_corner.y,
-                    rect_size.width, rect_size.height);
-
-  painter->restore();
+  painter->drawImage(QRect(top_corner.x, top_corner.y,
+                           rect_size.width, rect_size.height),
+                     QImage(":resources/background/main_background.png"));
+  button_handler_->DisableSettingsUi();
+  button_handler_->DisablePauseMenuUi();
+  button_handler_->EnableMainMenuUi();
 }
 
-void View::GamePause() {
+void View::DrawGame(QPainter* painter) {
+  Coordinate top_corner =
+      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+  painter->drawImage(QRect(top_corner.x, top_corner.y,
+                           rect_size.width, rect_size.height),
+                     QImage(":resources/background/game_background.png"));
+  DrawBackground(painter);
+  DrawEnemies(painter);
+  DrawProjectiles(painter);
+  if (is_tower_menu_enabled_) {
+    tower_menu_->Draw(painter, size_handler_, game_time_.elapsed());
+  }
+  DrawTowers(painter);
+  button_handler_->DisableMainMenuUi();
+  button_handler_->DisablePauseMenuUi();
+  button_handler_->EnableGameUi();
+}
 
+void View::DrawSettings(QPainter* painter) {
+  Coordinate top_corner =
+      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+  painter->drawImage(QRect(top_corner.x, top_corner.y,
+                           rect_size.width, rect_size.height),
+                     QImage(":resources/background/settings_background.png"));
+  button_handler_->DisableMainMenuUi();
+  button_handler_->EnableSettingsUi();
+}
+
+void View::DrawPauseMenu(QPainter* painter) {
+  Coordinate top_corner =
+      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+  painter->drawImage(QRect(top_corner.x, top_corner.y,
+                           rect_size.width, rect_size.height),
+                     QImage(":resources/background/pause_menu_background.png"));
+  button_handler_->DisableGameUi();
+  button_handler_->EnablePauseMenuUi();
+}
+
+void View::EnableGameUi() {
+  button_handler_->EnableGameUi();
+}
+
+void View::DisableGameUi() {
+  button_handler_->DisableGameUi();
+}
+
+void View::EnableMainMenuUi() {
+  button_handler_->EnableMainMenuUi();
+}
+
+void View::DisableMainMenuUi() {
+  button_handler_->DisableMainMenuUi();
 }

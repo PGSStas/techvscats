@@ -2,5 +2,34 @@
 <qresource>
     <file>resources/levels/level_1.json</file>
     <file>resources/database/database.json</file>
+
+    <file>resources/buttons_images/start_game_button.png</file>
+    <file>resources/buttons_images/choose_level_number_1.png</file>
+    <file>resources/buttons_images/choose_level_number_2.png</file>
+    <file>resources/buttons_images/choose_level_number_3.png</file>
+    <file>resources/buttons_images/dec_level_button.png</file>
+    <file>resources/buttons_images/inc_level_button.png</file>
+    <file>resources/buttons_images/settings_button.png</file>
+    <file>resources/buttons_images/exit_button.png</file>
+
+    <file>resources/buttons_images/sound_button_on.png</file>
+    <file>resources/buttons_images/sound_button_off.png</file>
+    <file>resources/buttons_images/language_button_rus.png</file>
+    <file>resources/buttons_images/language_button_eng.png</file>
+    <file>resources/buttons_images/reset_game_button.png</file>
+    <file>resources/buttons_images/to_main_menu_button.png</file>
+
+    <file>resources/buttons_images/pause_button.png</file>
+    <file>resources/buttons_images/double_speed_button.png</file>
+    <file>resources/buttons_images/normal_speed_button.png</file>
+    <file>resources/buttons_images/zero_speed_button.png</file>
+
+    <file>resources/buttons_images/restart_button.png</file>
+    <file>resources/buttons_images/continue_button.png</file>
+
+    <file>resources/background/main_background.png</file>
+    <file>resources/background/game_background.png</file>
+    <file>resources/background/settings_background.png</file>
+    <file>resources/background/pause_menu_background.png</file>
 </qresource>
 </RCC>

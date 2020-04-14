@@ -21,6 +21,7 @@ void Controller::StartGame(int level_id) {
 }
 
 void Controller::EndGame(Exit exit_code) {
+  qDebug() << "Game End!";
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMainMenuUi();
@@ -32,9 +33,9 @@ void Controller::Tick(int current_time) {
   if (game_mode_ == WindowType::kGame) {
     GameProcess();
   }
-  if (game_mode_ == WindowType::kMainMenu) {
-    MenuProcess();
-  }
+  // if (game_mode_ == WindowType::kMainMenu) {
+  //   MenuProcess();
+  // }
 }
 
 void Controller::GameProcess() {
@@ -47,7 +48,7 @@ void Controller::GameProcess() {
   TickProjectiles();
 }
 
-void Controller::MenuProcess() {}
+// void Controller::MenuProcess() {}
 
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
