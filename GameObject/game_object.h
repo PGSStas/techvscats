@@ -15,7 +15,7 @@ class GameObject {
 
   virtual void Draw(QPainter* painter,
       const std::shared_ptr<SizeHandler>& size_handler) const = 0;
-  virtual void Tick() = 0;
+  virtual void Tick(int time) = 0;
 
   Coordinate GetPosition() const;
   void SetPosition(Coordinate position);

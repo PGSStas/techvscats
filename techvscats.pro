@@ -29,6 +29,7 @@ SOURCES += \
          View/size_handler.cpp \
          View/tower_menu.cpp \
          View/tower_menu_option.cpp \
+         View/animation_player.cpp \
 
 HEADERS += \
          Controller/controller.h \
@@ -48,3 +49,4 @@ HEADERS += \
          View/size_handler.h \
          View/tower_menu.h \
          View/tower_menu_option.h \
+         View/animation_player.h \

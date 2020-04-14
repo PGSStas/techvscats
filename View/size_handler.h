@@ -27,7 +27,7 @@ class SizeHandler {
 
   Size origin_offset_;
 
-  const Size game_size_ = Size(kGameWidth, kGameHeight);
+  const Size game_size_ = Size(constants::kGameWidth, constants::kGameHeight);
 };
 
 #endif  // VIEW_SIZE_HANDLER_H_

@@ -18,7 +18,7 @@ class Building : public GameObject {
   bool IsInside(Coordinate point) const;
 
   virtual void Upgrade();
-  void Tick() override;
+  void Tick(int time) override;
 
   void Draw(QPainter* painter,
       const std::shared_ptr<SizeHandler>& size_handler) const override;

@@ -38,14 +38,14 @@ class Controller : public AbstractController {
   int last_round_start_time_ = 0;
 
  private:
-  void GameProcess();
+  void GameProcess(int time);
   void MenuProcess();
 
   void CreateNextWave();
   bool CanCreateNextWave();
   void AddEnemyToModel(const Enemy& enemy) const;
   void TickSpawners();
-  void TickEnemies();
+  void TickEnemies(int time);
 
   void CreateTowerMenu(int tower_index);
 

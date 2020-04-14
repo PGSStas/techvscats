@@ -32,6 +32,7 @@ add_executable(techvscats
         View/tower_menu.cpp
         View/tower_menu_option.cpp
         View/size_handler.cpp
+        View/animation_player.cpp
         resources.qrc)
 
 target_link_libraries(techvscats Qt5::Core)

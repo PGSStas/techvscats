@@ -55,7 +55,7 @@ class Model {
   const QPixmap& GetMapImage() const;
 
  private:
-  void LoadLevelFromJson(int level);
+  void LoadLevel(int level);
   void LoadDatabase();
 
   // Database which is updated by Controller all time
@@ -85,7 +85,7 @@ class Model {
 
   // Images
   QPixmap map_;
-  std::vector<QPixmap> enemy_images_;
+  std::vector<QImage> enemy_images_;
 
  private:
   // Helping functions

@@ -15,8 +15,8 @@ Size Size::operator/(double right) const {
 }
 
 bool Size::operator==(Size right) const {
-  return (width - right.width < kEpsilon)
-      && (height - right.height < kEpsilon);
+  return (width - right.width < constants::kEpsilon)
+      && (height - right.height < constants::kEpsilon);
 }
 
 Size Size::operator+(Size right) const {

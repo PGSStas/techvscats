@@ -2,6 +2,7 @@
 #define GAMEOBJECT_ENEMY_H_
 
 #include <memory>
+#include <View/animation_player.h>
 
 #include "moving_object.h"
 #include "Model/road.h"
@@ -11,10 +12,10 @@ class Enemy : public MovingObject {
   Enemy() = default;
   Enemy(const Enemy& enemy_instance);
   Enemy& operator=(const Enemy& enemy_instance);
-  void Tick() override;
+  void Tick(int time) override;
 
   void SetParameters(double speed);
-  void SetAnimationParameters(std::shared_ptr<QPixmap> image);
+  void SetAnimationPlayer(const AnimationPlayer& player);
   void Move() override;
   void Draw(QPainter* painter,
             const std::shared_ptr<SizeHandler>& size_handler) const override;
@@ -33,9 +34,9 @@ class Enemy : public MovingObject {
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
 
-  const int kMoveShift_ = 30;
+  AnimationPlayer player_;
 
-  std::shared_ptr<QPixmap> image_ = nullptr;
+  const int kMoveShift_ = 30;
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_

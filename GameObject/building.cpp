@@ -47,7 +47,7 @@ void Building::Draw(QPainter* painter,
   painter->restore();
 }
 
-void Building::Tick() {}
+void Building::Tick(int time) {}
 
 int Building::GetMaxLevel() const {
   return max_level_;

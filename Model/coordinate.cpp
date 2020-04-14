@@ -4,8 +4,8 @@ Coordinate::Coordinate(double x, double y)
     : x(x), y(y) {}
 
 bool Coordinate::operator==(Coordinate right) const {
-  return (std::abs(x - right.x) < kEpsilon)
-      && (std::abs(y - right.y) < kEpsilon);
+  return (std::abs(x - right.x) < constants::kEpsilon)
+      && (std::abs(y - right.y) < constants::kEpsilon);
 }
 
 Coordinate& Coordinate::operator*=(double right) {

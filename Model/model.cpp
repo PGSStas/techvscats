@@ -4,13 +4,17 @@ void Model::SetGameLevel(int level_id) {
   LoadDatabase();
 
   Enemy temporary_enemy;
+  AnimationPlayer enemy_player(
+      std::make_shared<std::vector<QImage>>(enemy_images_),
+      constants::kDefaultTimeBetweenFrames);
   temporary_enemy.SetParameters(1);
-  temporary_enemy.SetAnimationParameters(std::shared_ptr<QPixmap>(&enemy_images_[0]));
+  temporary_enemy.SetAnimationPlayer(enemy_player);
   id_to_enemy_.push_back(temporary_enemy);
   temporary_enemy.SetParameters(4);
-  temporary_enemy.SetAnimationParameters(std::shared_ptr<QPixmap>(&enemy_images_[0]));
+  enemy_player.SetTimeBetweenFrames(50);
+  temporary_enemy.SetAnimationPlayer(enemy_player);
   id_to_enemy_.push_back(temporary_enemy);
-  LoadLevelFromJson(level_id);
+  LoadLevel(level_id);
 
   empty_towers_ = {{420, 310}, {720, 330}, {480, 675}, {480, 800},
                    {775, 565}, {940, 565}, {1105, 565}, {765, 775},
@@ -134,7 +138,7 @@ const std::vector<std::vector<int>>& Model::GetUpgradesTree() const {
   return upgrades_tree_;
 }
 
-void Model::LoadLevelFromJson(int level) {
+void Model::LoadLevel(int level) {
   QFile level_file(":resources/levels/level_"
                        + QString::number(level) + ".json");
   if (!level_file.open(QFile::ReadOnly)) {
@@ -193,7 +197,7 @@ void Model::LoadLevelFromJson(int level) {
     enemy_groups_.push_back(std::move(groups));
   }
 
-  map_ = QPixmap(":resources/levels/map_level_" +
+  map_ = QPixmap(":resources/images/map_level_" +
       QString::number(level) + ".png");
 }
 
@@ -202,5 +206,6 @@ const QPixmap& Model::GetMapImage() const {
 }
 
 void Model::LoadDatabase() {
-  enemy_images_.emplace_back(":resources/database/enemy.png");
+  enemy_images_.emplace_back(":resources/images/enemy-1.png");
+  enemy_images_.emplace_back(":resources/images/enemy-2.png");
 }

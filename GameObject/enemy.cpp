@@ -1,19 +1,20 @@
 #include "enemy.h"
 
-void Enemy::Tick() {
+void Enemy::Tick(int time) {
   Move();
+  player_.GetNextFrame(time);
 }
 
 void Enemy::Move() {
   if (has_reached_) {
     return;
   }
-  Size move_direction = position_.GetDistanceTo(destination_);
-  if (std::abs(move_direction.GetLength()) > kEpsilon) {
-    move_direction /= move_direction.GetLength();
-    move_direction *= speed_ * speed_coefficient_;
+  moving_vector_ = position_.GetDistanceTo(destination_);
+  if (std::abs(moving_vector_.GetLength()) > constants::kEpsilon) {
+    moving_vector_ /= moving_vector_.GetLength();
+    moving_vector_ *= speed_ * speed_coefficient_;
   }
-  if ((position_ + move_direction).GetDistanceTo(destination_).GetLength()
+  if ((position_ + moving_vector_).GetDistanceTo(destination_).GetLength()
       >= position_.GetDistanceTo(destination_).GetLength()) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
@@ -28,7 +29,7 @@ void Enemy::Move() {
       destination_.y += std::rand() % kMoveShift_ - kMoveShift_ / 2;
     }
   }
-  position_ += move_direction;
+  position_ += moving_vector_;
 }
 
 void Enemy::Draw(QPainter* painter,
@@ -38,8 +39,15 @@ void Enemy::Draw(QPainter* painter,
   painter->setPen(QColor("black"));
   Coordinate point =
       size_handler->GameToWindowCoordinate(position_ - Size(30, 30));
-  Size size = size_handler->GameToWindowSize({60, 70});
-  painter->drawPixmap(QRect(point.x, point.y, size.width, size.height), *image_);
+  Size size = size_handler->GameToWindowSize({60, 60});
+
+  painter->translate(point.x, point.y);
+  if (moving_vector_.width < 0) {
+    painter->translate(size.width, size.height);
+    painter->rotate(180);
+  }
+  painter->drawImage(QRect(0, 0, size.width, size.height),
+      player_.GetCurrentFrame());
 
   painter->restore();
 }
@@ -61,7 +69,8 @@ Enemy& Enemy::operator=(const Enemy& enemy_instance) {
   if (enemy_instance.road_ != nullptr) {
     SetRoad(*enemy_instance.road_);
   }
-  image_ = enemy_instance.image_;
+
+  player_ = enemy_instance.player_;
   return *this;
 }
 
@@ -83,6 +92,6 @@ void Enemy::SetParameters(double speed) {
   speed_ = speed;
 }
 
-void Enemy::SetAnimationParameters(std::shared_ptr<QPixmap> image) {
-  image_ = image;
+void Enemy::SetAnimationPlayer(const AnimationPlayer& player) {
+  player_ = player;
 }

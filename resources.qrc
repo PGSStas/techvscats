@@ -2,7 +2,9 @@
 <qresource>
     <file>resources/levels/level_1.json</file>
     <file>resources/database/database.json</file>
-    <file>resources/database/enemy.png</file>
-    <file>resources/levels/map_level_1.png</file>
+
+    <file>resources/images/enemy-1.png</file>
+    <file>resources/images/enemy-2.png</file>
+    <file>resources/images/map_level_1.png</file>
 </qresource>
 </RCC>

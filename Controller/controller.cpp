@@ -30,18 +30,18 @@ void Controller::EndGame(Exit exit_code) {
 void Controller::Tick(int current_time) {
   current_time_ = current_time;
   if (game_mode_ == WindowType::kGame) {
-    GameProcess();
+    GameProcess(current_time);
   } else {
     MenuProcess();
   }
 }
 
-void Controller::GameProcess() {
+void Controller::GameProcess(int time) {
   if (CanCreateNextWave()) {
     CreateNextWave();
   }
   TickSpawners();
-  TickEnemies();
+  TickEnemies(time);
 }
 
 void Controller::MenuProcess() {}
@@ -90,11 +90,11 @@ void Controller::TickSpawners() {
   }
 }
 
-void Controller::TickEnemies() {
+void Controller::TickEnemies(int time) {
   auto enemies = model_->GetEnemies();
 
   for (auto& enemy : *enemies) {
-    enemy->Tick();
+    enemy->Tick(time);
   }
 }
 

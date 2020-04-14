@@ -67,10 +67,7 @@ class View : public QMainWindow {
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
 
-  void DrawWindow(QPainter* painter, const QBrush& brush);
-
   // Game window
-  void DrawBackground(QPainter* painter);
   void DrawTowers(QPainter* painter);
   void DrawEnemies(QPainter* painter);
 };

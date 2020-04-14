@@ -44,13 +44,22 @@ void View::paintEvent(QPaintEvent*) {
   Coordinate label_position = size_handler_->GameToWindowCoordinate({300, 10});
   wave_status_label_->move(label_position.x, label_position.y);
 
+  Coordinate origin = size_handler_->GameToWindowCoordinate({0, 0});
+  Size window_size =
+      size_handler_->GameToWindowSize(size_handler_->GetGameSize());
+  painter.setBrush(QColor("#000080"));
+  painter.drawRect(0, 0, width(), height());
+  QRect background = QRect(origin.x, origin.y, window_size.width,
+                           window_size.height);
+
   if (window_type_ == WindowType::kMainMenu) {
     Coordinate start_game_button_position =
         size_handler_->GameToWindowCoordinate({0, 0});
     start_game_button_->move(start_game_button_position.x,
                              start_game_button_position.y);
 
-    DrawWindow(&painter, QColor("#ffffff"));
+    painter.setBrush(QColor("#ffffff"));
+    painter.drawRect(background);
   }
   if (window_type_ == WindowType::kGame) {
     Coordinate return_menu_button_position =
@@ -58,7 +67,7 @@ void View::paintEvent(QPaintEvent*) {
     return_menu_button_->move(return_menu_button_position.x,
                               return_menu_button_position.y);
 
-    DrawBackground(&painter);
+    painter.drawPixmap(background, controller_->GetMapImage());
     DrawEnemies(&painter);
     if (is_tower_menu_enabled_) {
       tower_menu_->Draw(&painter, size_handler_, game_time_.elapsed());
@@ -91,20 +100,6 @@ void View::UpdateRounds(int current_round_nubmer, int number_of_rounds) {
   wave_status_label_->setText(
       "Rounds " + QString::number(current_round_nubmer) + "/"
           + QString::number(number_of_rounds));
-}
-
-void View::DrawBackground(QPainter* painter) {
-  painter->save();
-
-  Coordinate origin = size_handler_->GameToWindowCoordinate({0, 0});
-  Size window_size =
-      size_handler_->GameToWindowSize(size_handler_->GetGameSize());
-  QRect background = QRect(origin.x, origin.y, window_size.width,
-      window_size.height);
-  painter->drawPixmap(background, controller_->GetMapImage());
-  //painter->drawImage(background, controller_->GetMapImage());
-
-  painter->restore();
 }
 
 void View::DrawTowers(QPainter* painter) {
@@ -155,19 +150,4 @@ void View::mouseMoveEvent(QMouseEvent* event) {
 void View::resizeEvent(QResizeEvent*) {
   size_handler_->ChangeSystem(this->width(), this->height());
   repaint();
-}
-
-void View::DrawWindow(QPainter* painter, const QBrush& brush) {
-  painter->save();
-
-  painter->setBrush(QColor("#000080"));
-  painter->drawRect(0, 0, width(), height());
-  painter->setBrush(brush);
-  Coordinate top_corner =
-      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
-  painter->drawRect(top_corner.x, top_corner.y,
-                    rect_size.width, rect_size.height);
-
-  painter->restore();
 }
