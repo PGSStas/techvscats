@@ -1,9 +1,7 @@
 #include "moving_object.h"
 
-void MovingObject::SetSpeedCoefficient(double speed_coefficient) {
-  speed_coefficient_ = speed_coefficient;
-}
+MovingObject::MovingObject(double speed) : speed_(speed) {}
 
-bool MovingObject::HasReached() const {
-  return has_reached_;
+bool MovingObject::IsEndReached() const {
+  return is_end_reached_;
 }

@@ -7,6 +7,7 @@
 
 #include "GameObject/enemy.h"
 #include "GameObject/projectile.h"
+#include "GameObject/base.h"
 
 enum class Exit {
   kWin,
@@ -28,10 +29,10 @@ class AbstractController {
   virtual void MouseMove(Coordinate position) = 0;
 
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
-
-  virtual const std::vector<Road>& GetRoads() const = 0;
   virtual const std::vector<std::shared_ptr<Building>>&
     GetBuildings() const = 0;
+  virtual const std::vector<Road>& GetRoads() const = 0;
+  virtual const Base& GetBase() const = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

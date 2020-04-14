@@ -20,7 +20,7 @@ void Controller::StartGame(int level_id) {
                       model_->GetRoundsCount());
 }
 
-void Controller::EndGame(Exit exit_code) {
+void Controller::EndGame(Exit) {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMenuUi();
@@ -42,6 +42,8 @@ void Controller::GameProcess() {
   }
   TickSpawners();
   TickEnemies();
+  TickAuras();
+  model_->GetBase()->Tick();
 }
 
 void Controller::MenuProcess() {}
@@ -79,7 +81,7 @@ void Controller::CreateNextWave() {
 
 void Controller::TickSpawners() {
   auto spawners = model_->GetSpawners();
-  spawners->remove_if([&](const Spawner& sp) { return sp.IsDead(); });
+  spawners->remove_if([&](const Spawner& spawner) { return spawner.IsDead(); });
   for (auto& spawner : *spawners) {
     spawner.Tick(current_time_ - last_round_start_time_);
     if (spawner.IsReadyToSpawn()) {
@@ -92,10 +94,17 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
+  auto base = model_->GetBase();
 
   for (auto& enemy : *enemies) {
     enemy->Tick();
+    if (enemy->IsEndReached()) {
+      base->DecreaseHealth(enemy->GetDamage());
+    }
   }
+  enemies->remove_if([&](const std::shared_ptr<Enemy>& enemy) {
+    return enemy->IsDead() || enemy->IsEndReached();
+  });
 }
 
 void Controller::AddEnemyToModel(const Enemy& enemy) const {
@@ -108,6 +117,56 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
 
 const std::vector<Road>& Controller::GetRoads() const {
   return model_->GetRoads();
+}
+
+void Controller::TickAuras() {
+  const auto& enemies = *model_->GetEnemies();
+  for (auto& enemy : enemies) {
+    enemy->GetAppliedEffect()->ResetEffect();
+  }
+
+  const auto& buildings = model_->GetBuildings();
+  for (auto& building : buildings) {
+    building->GetAppliedEffect()->ResetEffect();
+  }
+
+  for (auto& enemy : enemies) {
+    ApplyEffectToAllInstances(enemy->GetAuricField());
+  }
+
+  for (auto& building : buildings) {
+    ApplyEffectToAllInstances(building->GetAuricField());
+  }
+}
+
+void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
+  if (!aura.IsValid()) {
+    return;
+  }
+
+  const Effect& effect = model_->GetEffectById(aura.GetEffectId());
+  EffectTarget effect_target = effect.GetEffectTarget();
+
+  if (effect_target == EffectTarget::kAny
+      || effect_target == EffectTarget::kEnemy) {
+    const auto& enemies = *model_->GetEnemies();
+
+    for (const auto& enemy : enemies) {
+      if (aura.IsInRadius(enemy->GetPosition())) {
+        *enemy->GetAppliedEffect() += effect;
+      }
+    }
+  }
+  if (effect_target == EffectTarget::kAny
+      || effect_target == EffectTarget::kBuilding) {
+    const auto& buildings = model_->GetBuildings();
+
+    for (const auto& building : buildings) {
+      if (aura.IsInRadius(building->GetPosition())) {
+        *building->GetAppliedEffect() += effect;
+      }
+    }
+  }
 }
 
 const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
@@ -195,4 +254,8 @@ void Controller::MouseMove(Coordinate position) {
 
   auto button = view_->GetTowerMenu()->GetButtonContaining(position);
   view_->GetTowerMenu()->Hover(button);
+}
+
+const Base& Controller::GetBase() const {
+  return *model_->GetBase();
 }

@@ -25,6 +25,7 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<Road>& GetRoads() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
+  const Base& GetBase() const override;
 
  private:
   std::unique_ptr<Model> model_;
@@ -39,11 +40,13 @@ class Controller : public AbstractController {
   void GameProcess();
   void MenuProcess();
 
+  void ApplyEffectToAllInstances(const AuricField& aura);
   void CreateNextWave();
   bool CanCreateNextWave();
   void AddEnemyToModel(const Enemy& enemy) const;
   void TickSpawners();
   void TickEnemies();
+  void TickAuras();
 
   void CreateTowerMenu(int tower_index);
 

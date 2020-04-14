@@ -2,6 +2,13 @@
   "time_between_rounds": 5000,
   "gold": 100,
   "score": 0,
+  "base": {
+    "max_health": 300,
+    "position": {
+      "x": 1060,
+      "y": 660
+    }
+  },
   "roads": [
     [
       {
@@ -52,6 +59,24 @@
         "x": 1060,
         "y": 660
       }
+    ],
+    [
+      {
+        "x": 200,
+        "y": 50
+      },
+      {
+        "x": 500,
+        "y": 150
+      },
+      {
+        "x": 600,
+        "y": 500
+      },
+      {
+        "x": 1060,
+        "y": 660
+      }
     ]
   ],
   "rounds": [
@@ -72,11 +97,34 @@
       },
       {
         "spawn_period": 500,
-        "enemy_id": 1,
+        "enemy_id": 2,
         "time_of_next_spawn": 20,
         "group_size": 4,
         "road_to_spawn": 2
       }
+    ],
+    [
+      {
+        "spawn_period": 600,
+        "enemy_id": 3,
+        "time_of_next_spawn": 15,
+        "group_size": 6,
+        "road_to_spawn": 0
+      }
     ]
+  ],
+  "empty_towers": [
+    {
+      "x": 100,
+      "y": 100
+    },
+    {
+      "x": 200,
+      "y": 100
+    },
+    {
+      "x": 500,
+      "y": 100
+    }
   ]
 }

@@ -16,16 +16,18 @@
 #include <QJsonObject>
 
 #include "GameObject/enemy.h"
+#include "GameObject/base.h"
 #include "GameObject/building.h"
 #include "GameObject/projectile.h"
+#include "GameObject/effect.h"
+
 #include "Controller/spawner.h"
 #include "enemy_group.h"
 #include "road.h"
 
 class Model {
  public:
-  Model() = default;
-  ~Model() = default;
+  Model();
 
   void SetGameLevel(int level);
   void ClearGameModel();
@@ -40,7 +42,9 @@ class Model {
   int GetCurrentRoundNumber() const;
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
+  Base* GetBase();
   Enemy GetEnemyById(int id) const;
+  const Effect& GetEffectById(int id) const;
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
@@ -54,27 +58,29 @@ class Model {
 
  private:
   void LoadLevelFromJson(int level);
+  void LoadDatabaseFromJson();
 
   // Database which is updated by Controller all time
   std::list<std::shared_ptr<Projectile>> projectiles_;
   std::vector<std::shared_ptr<Building>> buildings_;
   std::list<std::shared_ptr<Enemy>> enemies_;
-  int current_round_number_;
-  int gold_;
-  int score_;
+  int current_round_number_ = 0;
+  int gold_ = 0;
+  int score_ = 0;
 
   // Database which is loaded in SetGameLevel once
+  Base base_;
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
   std::vector<Road> roads_;
   std::list<Spawner> spawners_;
-  std::vector<Coordinate> empty_towers_;
-
-  int time_between_rounds_;
-  int rounds_count_;
-  int roads_count_;
+  std::vector<Coordinate> empty_places_for_towers_;
+  int time_between_rounds_ = 0;
+  int rounds_count_ = 0;
+  int roads_count_ = 0;
 
   // Database of GameObject's instances, that is used to create GameObjects.
   std::vector<Enemy> id_to_enemy_;
+  std::vector<Effect> id_to_effect_;
   std::vector<Building> id_to_building_;
   // upgrades_tree[i] is a vector of towers to which
   // ith tower can be evolved or changed
@@ -83,8 +89,8 @@ class Model {
  private:
   // Helping functions
 
-  // Creates EmptyTower classes from empty_towers_ vector
-  // Should be called on load of empty_towers_
+  // Creates EmptyTower classes from empty_places_for_towers_ vector
+  // Should be called on load of empty_places_for_towers_
   void InitializeTowerSlots();
 };
 

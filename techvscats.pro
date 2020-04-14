@@ -20,6 +20,9 @@ SOURCES += \
          GameObject/enemy.cpp \
          GameObject/game_object.cpp \
          GameObject/moving_object.cpp \
+         GameObject/auric_field.cpp \
+         GameObject/effect.cpp \
+         GameObject/base.cpp \
          GameObject/building.cpp \
          Model/model.cpp \
          Model/road.cpp \
@@ -38,6 +41,9 @@ HEADERS += \
          GameObject/enemy.h \
          GameObject/game_object.h \
          GameObject/moving_object.h \
+         GameObject/base.h \
+         GameObject/auric_field.h \
+         GameObject/effect.h \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \

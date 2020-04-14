@@ -6,16 +6,15 @@
 class MovingObject : public GameObject {
  public:
   MovingObject() = default;
+  explicit MovingObject(double speed);
 
   virtual void Move() = 0;
-  void SetSpeedCoefficient(double speed_coefficient);
-  bool HasReached() const;
+  bool IsEndReached() const;
 
  protected:
-  bool has_reached_ = false;
-  Coordinate destination_;
+  bool is_end_reached_ = false;
+  Coordinate destination_ = Coordinate(0, 0);
   double speed_;
-  double speed_coefficient_ = 1;
 };
 
 #endif  // GAMEOBJECT_MOVING_OBJECT_H_

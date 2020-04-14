@@ -73,6 +73,8 @@ class View : public QMainWindow {
   void DrawBackground(QPainter* painter);
   void DrawTowers(QPainter* painter);
   void DrawEnemies(QPainter* painter);
+  void DrawAuras(QPainter* painter);
+  void DrawInterface(QPainter* painter);
 };
 
 #endif  // VIEW_VIEW_H_
