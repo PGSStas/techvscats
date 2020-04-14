@@ -31,7 +31,7 @@ void Building::SetParameters(int id,
   auric_field_.SetCarrierCoordinate(&position_);
 }
 
-Building::Building(const Building& other) {
+Building::Building(const Building& other) : GameObject(other) {
   SetParameters(other.id_, other.draw_color_, other.max_level_,
                 other.action_range_, other.auric_field_);
   position_ = other.position_;

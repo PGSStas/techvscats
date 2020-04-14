@@ -109,4 +109,5 @@ Effect& Effect::operator+=(const Effect& other) {
   for (int i = 0; i < n; i++) {
     coefficients_[i] = std::max(coefficients_[i] + other.coefficients_[i], 0.0);
   }
+  return *this;
 }

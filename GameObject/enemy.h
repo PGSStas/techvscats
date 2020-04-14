@@ -36,9 +36,6 @@ class Enemy : public MovingObject {
   void ReceiveDamage(double damage);
 
  private:
-  AuricField auric_field_;
-  Effect applied_effect_ = Effect(EffectTarget::kEnemies);
-
   double damage_ = 0;
   double armor_ = 0;
   int reward_ = 0;
@@ -46,6 +43,8 @@ class Enemy : public MovingObject {
   double max_health_ = 0;
   bool is_dead_ = false;
 
+  AuricField auric_field_;
+  Effect applied_effect_ = Effect(EffectTarget::kEnemies);
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
 

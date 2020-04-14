@@ -20,7 +20,7 @@ void Controller::StartGame(int level_id) {
                       model_->GetRoundsCount());
 }
 
-void Controller::EndGame(Exit exit_code) {
+void Controller::EndGame(Exit) {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMenuUi();
