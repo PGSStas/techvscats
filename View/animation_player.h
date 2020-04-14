@@ -1,5 +1,5 @@
-#ifndef VIEW_ANIMATION_PLAYER_H
-#define VIEW_ANIMATION_PLAYER_H
+#ifndef VIEW_ANIMATION_PLAYER_H_
+#define VIEW_ANIMATION_PLAYER_H_
 
 #include <vector>
 #include <memory>
@@ -30,4 +30,4 @@ class AnimationPlayer {
   int time_between_frames_ = constants::kDefaultTimeBetweenFrames;
 };
 
-#endif  // VIEW_ANIMATION_PLAYER_H
+#endif  // VIEW_ANIMATION_PLAYER_H_
