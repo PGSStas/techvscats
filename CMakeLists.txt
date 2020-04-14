@@ -24,6 +24,9 @@ add_executable(techvscats
         GameObject/game_object.cpp
         GameObject/moving_object.cpp
         GameObject/building.cpp
+        GameObject/auric_field.cpp
+        GameObject/effect.cpp
+        GameObject/base.cpp
         GameObject/lazer_projectile.cpp
         GameObject/bomb_projectile.cpp
         Model/model.cpp
@@ -34,7 +37,8 @@ add_executable(techvscats
         View/tower_menu.cpp
         View/tower_menu_option.cpp
         View/size_handler.cpp
-        resources.qrc GameObject/aimed_projectile.cpp GameObject/aimed_projectile.h)
+        resources.qrc
+        GameObject/aimed_projectile.cpp)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

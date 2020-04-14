@@ -2,24 +2,25 @@
 
 #include <utility>
 
-AbstractProjectile::AbstractProjectile(Size size, double speed, ProjectileType type)
-    : MovingObject(Size(), speed, Coordinate()), type_(type) {
-  speed_ = speed;
-  size_ = size;
-}
+AbstractProjectile::AbstractProjectile(
+    Size size, double speed, ProjectileType type,
+    double effect_radius, double up_force)
+    : MovingObject(size, speed), type_(type),
+    effect_radius_(effect_radius),up_force_(up_force) {}
 
 AbstractProjectile::AbstractProjectile(const AbstractProjectile& other) :
     MovingObject(other.size_, 0, other.position_), type_(other.type_),
-    up_force_(other.up_force_), effect_radius_(other.effect_radius_),
+    effect_radius_(other.effect_radius_), up_force_(other.up_force_),
     start_position_(position_) {
   SetAnimationParameters(other.draw_color_, other.iteration_time_);
-  SetParameters(other.position_,other.speed_, other.damage_, other.aim_);
+  SetParameters(other.position_, other.speed_, other.damage_, other.aim_);
 }
 
-void AbstractProjectile::SetParameters(Coordinate position, double speed, double damage,
-                                       std::shared_ptr<Enemy> aim) {
+void AbstractProjectile::SetParameters(
+    Coordinate position, double speed, double damage,
+    std::shared_ptr<Enemy> aim) {
   position_ = position;
-  start_position_= position_;
+  start_position_ = position_;
   speed_ = speed;
   damage_ = damage;
   aim_ = aim;
@@ -28,7 +29,8 @@ void AbstractProjectile::SetParameters(Coordinate position, double speed, double
   }
 }
 
-void AbstractProjectile::SetAnimationParameters(QColor draw_color, int iteration_time) {
+void AbstractProjectile::SetAnimationParameters(QColor draw_color,
+                                                int iteration_time) {
   draw_color_ = std::move(draw_color);
   iteration_time_ = iteration_time;
 }

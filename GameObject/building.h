@@ -5,6 +5,9 @@
 #include <vector>
 #include <list>
 #include "enemy.h"
+#include "effect.h"
+#include "auric_field.h"
+
 #include "abstract_projectile.h"
 
 enum class Action {
@@ -41,9 +44,13 @@ class Building : public GameObject {
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
   const std::list<std::shared_ptr<Enemy>>& GetAims() const;
+  const AuricField& GetAuricField() const;
+  Effect* GetAppliedEffect();
 
  private:
-  // parameters
+  AuricField auric_field_;
+  Effect applied_effect_ = Effect(EffectTarget::kBuilding);
+
   int id_ = 0;
   int cost_ = 0;
 

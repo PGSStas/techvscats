@@ -28,6 +28,7 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<AbstractProjectile>>& GetProjectiles() const override;
 
   int GetCurrentTime() const override;
+  const Base& GetBase() const override;
 
  private:
   std::unique_ptr<Model> model_;
@@ -42,6 +43,7 @@ class Controller : public AbstractController {
   void GameProcess();
   void MenuProcess();
 
+  void ApplyEffectToAllInstances(const AuricField& aura);
   void CreateNextWave();
   bool CanCreateNextWave();
   void AddEnemyToModel(const Enemy& enemy) const;
@@ -49,6 +51,8 @@ class Controller : public AbstractController {
   void TickEnemies();
   void TickBuildings();
   void TickProjectiles();
+  void TickAuras();
+
   void CreateTowerMenu(int tower_index);
 
   // Upgrades or evolves the building

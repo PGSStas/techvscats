@@ -5,7 +5,7 @@ MovingObject::MovingObject(Size size, double speed,
     : GameObject(size, position),
       speed_(speed), destination_(destination) {}
 
-bool MovingObject::HasReached() const {
+bool MovingObject::IsEndReached() const {
   return is_end_reached_;
 }
 

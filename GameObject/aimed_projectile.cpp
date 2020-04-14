@@ -21,5 +21,3 @@ void AimedProjectile::Tick(int current_time) {
   destination_ = aim_->GetPosition();
   Move();
 }
-
-

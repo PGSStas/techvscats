@@ -17,6 +17,7 @@ class SizeHandler {
   Size WindowToGameSize(Size window_size) const;
   Size GameToWindowSize(Size game_size) const;
 
+
  private:
   // The ratio of game coordinates to real
   double scaling_coefficient_ = 3;

@@ -16,11 +16,15 @@ SOURCES += \
          main.cpp \
          Controller/controller.cpp \
          Controller/spawner.cpp \
-         GameObject/projectile.cpp \
          GameObject/enemy.cpp \
          GameObject/game_object.cpp \
          GameObject/moving_object.cpp \
+         GameObject/auric_field.cpp \
+         GameObject/effect.cpp \
+         GameObject/base.cpp \
          GameObject/building.cpp \
+         GameObject/abstract_projectile.cpp \
+         GameObject/aimed_projectile.cpp \
          GameObject/lazer_projectile.cpp \
          GameObject/bomb_projectile.cpp \
          Model/model.cpp \
@@ -36,12 +40,16 @@ HEADERS += \
          Controller/controller.h \
          Controller/spawner.h \
          GameObject/building.h \
-         GameObject/projectile.h \
+         GameObject/abstract_projectile.h \
+         GameObject/aimed_projectile.h \
          GameObject/lazer_projectile.h \
          GameObject/bomb_projectile.h \
          GameObject/enemy.h \
          GameObject/game_object.h \
          GameObject/moving_object.h \
+         GameObject/base.h \
+         GameObject/auric_field.h \
+         GameObject/effect.h \
          Model/model.h \
          Model/road.h \
          Model/coordinate.h \

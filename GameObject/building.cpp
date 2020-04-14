@@ -175,3 +175,12 @@ void Building::SetReadyToCreateProjectileToFalse() {
 double Building::GetDamage() const {
   return attack_damage_;
 }
+
+const AuricField& Building::GetAuricField() const {
+  return auric_field_;
+}
+
+Effect* Building::GetAppliedEffect() {
+  return &applied_effect_;
+}
+

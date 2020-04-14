@@ -9,7 +9,7 @@ struct Coordinate {
   double y;
 
   Coordinate() = default;
-  Coordinate(double x, double y);
+  Coordinate(double x, double y) noexcept;
   void MoveTo(Coordinate destination, double vector_length);
   Size GetVectorTo(Coordinate right) const;
 

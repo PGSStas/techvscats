@@ -1,12 +1,12 @@
 #include "bomb_projectile.h"
 
-BombProjectile::BombProjectile(const AbstractProjectile& other) : AbstractProjectile(other) {}
+BombProjectile::BombProjectile(const AbstractProjectile& other)
+    : AbstractProjectile(other) {}
 
 BombProjectile::BombProjectile(Size size, double speed, double effect_radius,
                                double up_force, ProjectileType projectile_type)
-    : AbstractProjectile(size, speed, projectile_type) {
-  effect_radius_ = effect_radius;
-  up_force_ = up_force;
+    : AbstractProjectile(size, speed, projectile_type,
+                         effect_radius, up_force) {
 }
 
 void BombProjectile::Tick(int current_time) {

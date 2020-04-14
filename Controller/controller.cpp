@@ -1,5 +1,4 @@
 #include "controller.h"
-#include <QDebug>
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)),
@@ -21,7 +20,7 @@ void Controller::StartGame(int level_id) {
                       model_->GetRoundsCount());
 }
 
-void Controller::EndGame(Exit exit_code) {
+void Controller::EndGame(Exit) {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMenuUi();
@@ -51,6 +50,8 @@ void Controller::GameProcess() {
   TickEnemies();
   TickBuildings();
   TickProjectiles();
+  TickAuras();
+  model_->GetBase()->Tick(current_game_time_);
 }
 
 void Controller::MenuProcess() {}
@@ -88,7 +89,7 @@ void Controller::CreateNextWave() {
 
 void Controller::TickSpawners() {
   auto spawners = model_->GetSpawners();
-  spawners->remove_if([](const Spawner& sp) { return sp.IsDead(); });
+  spawners->remove_if([](const Spawner& spawner) { return spawner.IsDead(); });
   for (auto& spawner : *spawners) {
     spawner.Tick(current_game_time_ - last_round_start_time_);
     if (spawner.IsReadyToSpawn()) {
@@ -101,9 +102,15 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
-  enemies->remove_if([](const auto& enemy) { return enemy->IsDead(); });
+  enemies->remove_if([](const auto& enemy) {
+    return enemy->IsDead() || enemy->IsEndReached();
+  });
+  auto base = model_->GetBase();
   for (auto& enemy : *enemies) {
     enemy->Tick(current_game_time_);
+    if (enemy->IsEndReached()) {
+      base->DecreaseHealth(enemy->GetDamage());
+    }
   }
 }
 
@@ -139,7 +146,7 @@ void Controller::TickProjectiles() {
 
   for (auto& projectile : *projectiles) {
     projectile->Tick(current_game_time_);
-    if (projectile->HasReached()) {
+    if (projectile->IsEndReached()) {
       auto enemies = model_->GetEnemies();
       for (const auto& enemy : *enemies) {
         if (projectile->IsInAffectedArea(*enemy)) {
@@ -170,6 +177,56 @@ Controller::GetProjectiles() const {
 
 const std::vector<Road>& Controller::GetRoads() const {
   return model_->GetRoads();
+}
+
+void Controller::TickAuras() {
+  const auto& enemies = *model_->GetEnemies();
+  for (auto& enemy : enemies) {
+    enemy->GetAppliedEffect()->ResetEffect();
+  }
+
+  const auto& buildings = model_->GetBuildings();
+  for (auto& building : buildings) {
+    building->GetAppliedEffect()->ResetEffect();
+  }
+
+  for (auto& enemy : enemies) {
+    ApplyEffectToAllInstances(enemy->GetAuricField());
+  }
+
+  for (auto& building : buildings) {
+    ApplyEffectToAllInstances(building->GetAuricField());
+  }
+}
+
+void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
+  if (!aura.IsValid()) {
+    return;
+  }
+
+  const Effect& effect = model_->GetEffectById(aura.GetEffectId());
+  EffectTarget effect_target = effect.GetEffectTarget();
+
+  if (effect_target == EffectTarget::kAny
+      || effect_target == EffectTarget::kEnemy) {
+    const auto& enemies = *model_->GetEnemies();
+
+    for (const auto& enemy : enemies) {
+      if (aura.IsInRadius(enemy->GetPosition())) {
+        *enemy->GetAppliedEffect() += effect;
+      }
+    }
+  }
+  if (effect_target == EffectTarget::kAny
+      || effect_target == EffectTarget::kBuilding) {
+    const auto& buildings = model_->GetBuildings();
+
+    for (const auto& building : buildings) {
+      if (aura.IsInRadius(building->GetPosition())) {
+        *building->GetAppliedEffect() += effect;
+      }
+    }
+  }
 }
 
 void Controller::MousePress(Coordinate position) {
@@ -241,4 +298,8 @@ void Controller::MouseMove(Coordinate position) {
 
 int Controller::GetCurrentTime() const {
   return current_game_time_;
+}
+
+const Base& Controller::GetBase() const {
+  return *model_->GetBase();
 }

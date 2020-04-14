@@ -9,9 +9,9 @@ class MovingObject : public GameObject {
                Coordinate destination = {0, 0});
 
   double GetSpeed() const;
-  bool IsDead() const;
+  virtual bool IsDead() const;
   virtual void Move() = 0;
-  bool HasReached() const;
+  bool IsEndReached() const;
 
  protected:
   double speed_;

@@ -9,7 +9,7 @@ struct Size {
   double height;
 
   Size() = default;
-  Size(double x, double y);
+  Size(double x, double y) noexcept;
 
   double GetLength() const;
 

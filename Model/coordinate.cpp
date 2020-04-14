@@ -1,6 +1,6 @@
 #include "coordinate.h"
 
-Coordinate::Coordinate(double x, double y)
+Coordinate::Coordinate(double x, double y) noexcept
     : x(x), y(y) {}
 
 bool Coordinate::operator==(Coordinate right) const {
@@ -53,7 +53,7 @@ Coordinate& Coordinate::operator-=(Size right) {
 void Coordinate::MoveTo(Coordinate destination, double vector_length) {
   Size move_direction = GetVectorTo(destination);
 
-  if (std::abs(move_direction.GetLength()) > kEpsilon) {
+  if (move_direction.GetLength() > kEpsilon) {
     move_direction /= move_direction.GetLength();
     move_direction *= vector_length;
   }
