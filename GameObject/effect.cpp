@@ -8,8 +8,7 @@ Effect::Effect(EffectTarget effect_type,
                double damage_coefficient,
                double attack_rate_coefficient,
                double range_coefficient)
-    : effect_target_(effect_type) {
-  coefficients_.resize(5);
+    : effect_target_(effect_type), coefficients_(5) {
   coefficients_[static_cast<int>(CoefficientType::kSpeed)] = speed_coefficient;
   coefficients_[static_cast<int>(CoefficientType::kArmor)] = armor_coefficient;
   coefficients_[static_cast<int>(CoefficientType::kAttackRate)] =
