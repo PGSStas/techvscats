@@ -15,15 +15,15 @@ class AuricField {
   int GetEffectId() const;
 
   void Draw(QPainter* painter,
-            std::shared_ptr<SizeHandler> size_handler) const;
+            const std::shared_ptr<SizeHandler>& size_handler) const;
 
   bool IsInRadius(const Coordinate& coordinate) const;
   bool IsValid() const;
 
  private:
-  double effect_radius_ = -1;
-  int effect_id_ = -1;
-  Coordinate* carrier_coordinate_;
+  double effect_radius_;
+  int effect_id_;
+  Coordinate* carrier_coordinate_ = nullptr ;
 };
 
 #endif  // GAMEOBJECT_AURIC_FIELD_H_

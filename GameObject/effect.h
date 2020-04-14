@@ -8,9 +8,9 @@
 #include "View/size_handler.h"
 
 enum class EffectTarget {
-  kAll = 0,
-  kEnemies = 1,
-  kBuildings = 2
+  kAny = 0,
+  kEnemy = 1,
+  kBuilding = 2
 };
 
 enum class CoefficientType {
@@ -36,7 +36,7 @@ class Effect {
                   double range_coefficient = 1);
 
   void DrawEffectsIcons(QPainter* painter,
-                        std::shared_ptr<SizeHandler> size_handler,
+                        const std::shared_ptr<SizeHandler>& size_handler,
                         Coordinate position) const;
 
   Effect& operator+=(const Effect& other);

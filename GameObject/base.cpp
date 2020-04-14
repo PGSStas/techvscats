@@ -5,10 +5,9 @@ const Size Base::kBaseSize = Size(50, 50);
 const Size Base::kHealthBarSize = Size(1920, 20);
 
 Base::Base(double max_health, Coordinate position)
-    : max_health_(max_health),
-      current_health_(max_health),
-      is_dead_(false) {
-  position_ = position;
+    : GameObject(position, Size(0, 0)) {
+  max_health_ = max_health;
+  current_health_ = max_health;
 }
 
 bool Base::IsDead() const {
@@ -36,8 +35,7 @@ void Base::Draw(QPainter* painter,
 
   painter->setBrush(Qt::magenta);
 
-  Coordinate point =
-      size_handler->GameToWindowCoordinate(position_ - kBaseSize / 2);
+  auto point = size_handler->GameToWindowCoordinate(position_ - kBaseSize / 2);
   Size size = size_handler->GameToWindowSize(kBaseSize);
 
   painter->drawRect(point.x, point.y, size.width, size.height);

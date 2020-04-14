@@ -27,7 +27,7 @@ class Base : public GameObject {
   double max_health_;
   double current_health_;
 
-  bool is_dead_;
+  bool is_dead_ = false;
 
   static const Coordinate kHealthBarPosition;
   static const Size kBaseSize;

@@ -144,25 +144,23 @@ void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
     return;
   }
 
-  EffectTarget effect_target =
-      model_->GetEffectById(aura.GetEffectId()).GetEffectTarget();
+  const Effect& effect = model_->GetEffectById(aura.GetEffectId());
+  EffectTarget effect_target = effect.GetEffectTarget();
 
-  if (effect_target == EffectTarget::kAll
-      || effect_target == EffectTarget::kEnemies) {
+  if (effect_target == EffectTarget::kAny
+      || effect_target == EffectTarget::kEnemy) {
     const auto& enemies = *model_->GetEnemies();
 
-    const Effect& effect = model_->GetEffectById(aura.GetEffectId());
     for (const auto& enemy : enemies) {
       if (aura.IsInRadius(enemy->GetPosition())) {
         *enemy->GetAppliedEffect() += effect;
       }
     }
   }
-  if (effect_target == EffectTarget::kAll
-      || effect_target == EffectTarget::kBuildings) {
+  if (effect_target == EffectTarget::kAny
+      || effect_target == EffectTarget::kBuilding) {
     const auto& buildings = model_->GetBuildings();
 
-    const Effect& effect = model_->GetEffectById(aura.GetEffectId());
     for (const auto& building : buildings) {
       if (aura.IsInRadius(building->GetPosition())) {
         *building->GetAppliedEffect() += effect;

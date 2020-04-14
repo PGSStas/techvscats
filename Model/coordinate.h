@@ -8,8 +8,8 @@ struct Coordinate {
   double x;
   double y;
 
-  Coordinate() = default;
-  Coordinate(double x, double y);
+  Coordinate() noexcept = default;
+  Coordinate(double x, double y) noexcept;
   Size GetVectorTo(Coordinate right);
   void MoveTo(Coordinate destination, double vector_length);
 

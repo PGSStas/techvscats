@@ -1,6 +1,6 @@
 #include "effect.h"
 
-std::vector<EffectVisualization> Effect::effect_visualizations_;
+std::vector<EffectVisualization> Effect::effect_visualizations_{};
 
 Effect::Effect(EffectTarget effect_type,
                double speed_coefficient,
@@ -27,7 +27,7 @@ void Effect::ResetEffect() {
 }
 
 void Effect::DrawEffectsIcons(QPainter* painter,
-                              std::shared_ptr<SizeHandler> size_handler,
+                              const std::shared_ptr<SizeHandler>& size_handler,
                               Coordinate position) const {
   painter->save();
 
@@ -39,11 +39,11 @@ void Effect::DrawEffectsIcons(QPainter* painter,
 
   DrawEffectIcon(painter, &point, size, CoefficientType::kDamage);
 
-  if (effect_target_ == EffectTarget::kEnemies) {
+  if (effect_target_ == EffectTarget::kEnemy) {
     DrawEffectIcon(painter, &point, size, CoefficientType::kSpeed);
     DrawEffectIcon(painter, &point, size, CoefficientType::kArmor);
   }
-  if (effect_target_ == EffectTarget::kBuildings) {
+  if (effect_target_ == EffectTarget::kBuilding) {
     DrawEffectIcon(painter, &point, size, CoefficientType::kRange);
     DrawEffectIcon(painter, &point, size, CoefficientType::kAttackRate);
   }

@@ -1,6 +1,6 @@
 #include "size.h"
 
-Size::Size(double x, double y) : width(x), height(y) {}
+Size::Size(double x, double y) noexcept : width(x), height(y) {}
 
 double Size::GetLength() const {
   return std::sqrt(width * width + height * height);

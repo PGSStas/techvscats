@@ -37,7 +37,7 @@ class Building : public GameObject {
 
  private:
   AuricField auric_field_;
-  Effect applied_effect_ = Effect(EffectTarget::kBuildings);
+  Effect applied_effect_ = Effect(EffectTarget::kBuilding);
 
   int id_ = 0;
   int max_level_ = 0;

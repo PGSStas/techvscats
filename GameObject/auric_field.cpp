@@ -17,7 +17,7 @@ bool AuricField::IsValid() const {
 }
 
 void AuricField::Draw(QPainter* painter,
-                      std::shared_ptr<SizeHandler> size_handler) const {
+                      const std::shared_ptr<SizeHandler>& size_handler) const {
   if (!IsValid()) {
     return;
   }
@@ -29,9 +29,8 @@ void AuricField::Draw(QPainter* painter,
   painter->setPen(QPen(Qt::darkBlue, 3));
   Coordinate point = size_handler->GameToWindowCoordinate(
       *carrier_coordinate_ - Size(effect_radius_, effect_radius_));
-  Size size =
-      size_handler->GameToWindowSize(Size(effect_radius_ * 2,
-                                          effect_radius_ * 2));
+  Size size = size_handler->GameToWindowSize(
+      Size(effect_radius_ * 2, effect_radius_ * 2));
   painter->drawEllipse(point.x, point.y, size.width, size.height);
 
   painter->restore();

@@ -1,16 +1,16 @@
 #include "enemy.h"
 
-Enemy::Enemy(double damage,
-             double armor,
-             int reward,
-             double speed,
-             double max_health,
-             AuricField auric_field)
-    : damage_(damage),
-      armor_(armor),
-      reward_(reward),
-      max_health_(max_health),
-      auric_field_(auric_field) {
+std::mt19937 Enemy::random_generator_ = std::mt19937(
+    std::chrono::system_clock::now().time_since_epoch().count());
+
+Enemy::Enemy(double damage, double armor, int reward,
+             double speed, double max_health,
+             AuricField auric_field) : MovingObject(speed) {
+  damage_ = damage;
+  armor_ = armor;
+  reward_ = reward;
+  max_health_ = max_health;
+  auric_field_ = auric_field;
   auric_field.SetCarrierCoordinate(&position_);
   speed_ = speed;
 }
@@ -36,8 +36,10 @@ void Enemy::Move() {
     if (!road_->IsEnd(node_number_ + 1)) {
       // We make small shifts so that enemies move chaotically,
       // not in the linear queue
-      destination_.x += std::rand() % kMoveShift_ - kMoveShift_ / 2;
-      destination_.y += std::rand() % kMoveShift_ - kMoveShift_ / 2;
+      destination_.x += static_cast<int32_t>(random_generator_()) % kMoveShift
+          - kMoveShift / 2;
+      destination_.y += static_cast<int32_t>(random_generator_()) % kMoveShift
+          - kMoveShift / 2;
     }
   }
 }

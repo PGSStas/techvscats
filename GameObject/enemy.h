@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <algorithm>
+#include <chrono>
+#include <random>
 
 #include "moving_object.h"
 #include "effect.h"
@@ -11,11 +13,8 @@
 
 class Enemy : public MovingObject {
  public:
-  Enemy(double damage,
-        double armor,
-        int reward,
-        double speed,
-        double max_health,
+  Enemy(double damage, double armor, int reward,
+        double speed, double max_health,
         AuricField auric_field = AuricField(-1, -1));
   Enemy(const Enemy& enemy_instance);
 
@@ -44,11 +43,13 @@ class Enemy : public MovingObject {
   bool is_dead_ = false;
 
   AuricField auric_field_;
-  Effect applied_effect_ = Effect(EffectTarget::kEnemies);
+  Effect applied_effect_ = Effect(EffectTarget::kEnemy);
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
 
-  const int kMoveShift_ = 50;
+  static std::mt19937 random_generator_;
+
+  const int kMoveShift = 25;
   const Size kHealthBarShift = {18, 24};
   const Size kHealthBar = {36, 5};
 };
