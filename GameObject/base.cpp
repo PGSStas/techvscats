@@ -5,10 +5,8 @@ const Size Base::kBaseSize = Size(50, 50);
 const Size Base::kHealthBarSize = Size(1920, 20);
 
 Base::Base(double max_health, Coordinate position)
-    : GameObject(position, Size(0, 0)) {
-  max_health_ = max_health;
-  current_health_ = max_health;
-}
+    : GameObject(position, Size(0, 0)),
+      max_health_(max_health), current_health_(max_health) {}
 
 bool Base::IsDead() const {
   return is_dead_;
