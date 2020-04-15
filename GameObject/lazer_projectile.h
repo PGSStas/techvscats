@@ -3,6 +3,8 @@
 
 #include <QPen>
 
+#include  <memory>
+
 #include "abstract_projectile.h"
 
 class LazerProjectile : public AbstractProjectile {
@@ -13,8 +15,8 @@ class LazerProjectile : public AbstractProjectile {
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
 
-  void SetParameters(Coordinate position, double speed_coefficient, double damage,
-                     const std::shared_ptr<Enemy>& aim) override ;
+  void SetParameters(Coordinate position, double speed_coefficient,
+                     double damage, const std::shared_ptr<Enemy>& aim) override;
 
  private:
   Coordinate start_position_ = {0, 0};

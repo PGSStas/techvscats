@@ -1,6 +1,8 @@
 #ifndef GAMEOBJECT_BOMB_PROJECTILE_H_
 #define GAMEOBJECT_BOMB_PROJECTILE_H_
 
+#include <memory>
+
 #include "abstract_projectile.h"
 
 class BombProjectile : public AbstractProjectile {

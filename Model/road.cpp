@@ -1,6 +1,6 @@
 #include "road.h"
 
-Road::Road(std::vector<Coordinate>  nodes) : nodes_(std::move(nodes)) {}
+Road::Road(const std::vector<Coordinate>& nodes) : nodes_(nodes) {}
 
 Coordinate Road::GetNode(int node_number) const {
   return nodes_[node_number];

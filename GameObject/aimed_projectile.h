@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_AIMDED_PROJECTILE_H
-#define GAMEOBJECT_AIMDED_PROJECTILE_H
+#ifndef GAMEOBJECT_AIMED_PROJECTILE_H_
+#define GAMEOBJECT_AIMED_PROJECTILE_H_
 
 #include "abstract_projectile.h"
 
@@ -12,4 +12,4 @@ class AimedProjectile : public AbstractProjectile {
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
 };
 
-#endif  // GAMEOBJECT_AIMDED_PROJECTILE_H
+#endif  // GAMEOBJECT_AIMED_PROJECTILE_H_

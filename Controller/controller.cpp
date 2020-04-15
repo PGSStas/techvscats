@@ -115,7 +115,6 @@ void Controller::TickBuildings() {
     building->UpdateAim(*model_->GetEnemies());
 
     if (building->IsReadyToCreateProjectiles()) {
-
       const auto& aims = building->GetAims();
       building->SetReadyToCreateProjectileToFalse();
       for (auto& aim : aims) {

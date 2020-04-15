@@ -1,5 +1,5 @@
-#ifndef GAMEOBJECT_PROJECTILE_H_
-#define GAMEOBJECT_PROJECTILE_H_
+#ifndef GAMEOBJECT_ABSTRACT_PROJECTILE_H_
+#define GAMEOBJECT_ABSTRACT_PROJECTILE_H_
 
 #include <memory>
 #include <utility>
@@ -28,4 +28,4 @@ class AbstractProjectile : public MovingObject {
   int iteration_time_ = 0;
 };
 
-#endif  // GAMEOBJECT_PROJECTILE_H_
+#endif  // GAMEOBJECT_ABSTRACT_PROJECTILE_H_

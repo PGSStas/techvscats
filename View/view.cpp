@@ -140,7 +140,6 @@ void View::mouseReleaseEvent(QMouseEvent* event) {
     controller_->MousePress(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())));
   }
-
 }
 
 void View::mouseMoveEvent(QMouseEvent* event) {
@@ -151,9 +150,7 @@ void View::mouseMoveEvent(QMouseEvent* event) {
 }
 
 void View::DrawBackground(QPainter* painter) {
-  // Test realization. Will be changed.
   painter->save();
-
   painter->setPen(QPen(Qt::black, 5));
   const auto& roads = controller_->GetRoads();
   for (const auto& road : roads) {
@@ -165,7 +162,6 @@ void View::DrawBackground(QPainter* painter) {
       painter->drawLine(start_point.x, start_point.y, end_point.x, end_point.y);
     }
   }
-
   painter->restore();
 }
 

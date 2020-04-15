@@ -24,7 +24,8 @@ class Controller : public AbstractController {
   const std::vector<Road>& GetRoads() const override;
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
-  const std::list<std::shared_ptr<AbstractProjectile>>& GetProjectiles() const override;
+  const std::list<std::shared_ptr<AbstractProjectile>>& GetProjectiles()
+    const override;
 
   const Base& GetBase() const override;
   int GetCurrentTime() const override;

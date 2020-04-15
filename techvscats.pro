@@ -31,7 +31,6 @@ SOURCES += \
         Model/model.cpp \
         Model/road.cpp \
         Model/size.cpp \
-        resources.qrc \
         View/size_handler.cpp \
         View/tower_menu.cpp \
         View/tower_menu_option.cpp \

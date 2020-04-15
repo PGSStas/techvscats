@@ -295,7 +295,7 @@ void Model::LoadDatabaseFromJson() {
       aura = AuricField(enemy["aura"].toObject()["radius"].toInt(),
                         enemy["aura"].toObject()["effect_id"].toInt());
     }
-    // TODO ( PGS ) size of enemy please. Also i put speed on the second place.
+    //  TODO (PGS) size of enemy please. Also i put speed on the second place.
     id_to_enemy_.emplace_back(Size(30, 30),
                               enemy["speed"].toInt(),
                               enemy["damage"].toInt(),
