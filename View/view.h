@@ -16,12 +16,7 @@
 
 #include "Controller/abstract_controller.h"
 #include "tower_menu.h"
-#include "size_handler.h"
-
-enum class WindowType {
-  kMainMenu,
-  kGame
-};
+#include "button_handler.h"
 
 class View : public QMainWindow {
   Q_OBJECT
@@ -32,8 +27,8 @@ class View : public QMainWindow {
 
   void EnableGameUi();
   void DisableGameUi();
-  void EnableMenuUi();
-  void DisableMenuWindow();
+  void EnableMainMenuUi();
+  void DisableMainMenuUi();
 
   void UpdateRounds(int current_round_number, int number_of_rounds);
 
@@ -43,20 +38,15 @@ class View : public QMainWindow {
   void DisableTowerMenu();
 
  private:
-  WindowType window_type_;
+  // WindowType window_type_;
   AbstractController* controller_;
-  std::shared_ptr<SizeHandler> size_handler_;
+  SizeHandler size_handler_;
   QElapsedTimer game_time_;
-
-  // Game window
-  QLabel* wave_status_label_;
-  QPushButton* start_game_button_;
+  std::shared_ptr<ButtonHandler> button_handler_;
 
   bool is_tower_menu_enabled_ = false;
   std::shared_ptr<TowerMenu> tower_menu_ = nullptr;
 
-  // Menu window
-  QPushButton* return_menu_button_;
   int controller_timer_id_;
   const int kTimeBetweenTicks_ = 10;
 
@@ -67,7 +57,11 @@ class View : public QMainWindow {
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
 
-  void DrawWindow(QPainter* painter, const QBrush& brush);
+  // void DrawWindow(QPainter* painter, const QBrush& brush);
+  void DrawMainMenu(QPainter* painter);
+  void DrawGame(QPainter* painter);
+  void DrawSettings(QPainter* painter);
+  void DrawPauseMenu(QPainter* painter);
 
   // Game window
   void DrawBackground(QPainter* painter);

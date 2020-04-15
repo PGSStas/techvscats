@@ -25,7 +25,7 @@ class TowerMenu {
   void Hover(const std::shared_ptr<TowerMenuOption>& option);
   void Unhover();
 
-  void Draw(QPainter* painter, const std::shared_ptr<SizeHandler>& size_handler,
+  void Draw(QPainter* painter, const  SizeHandler& size_handler,
       int current_time) const;
 
  private:

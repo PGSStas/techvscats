@@ -8,6 +8,7 @@
 #include "GameObject/enemy.h"
 #include "GameObject/projectile.h"
 #include "GameObject/base.h"
+#include "GameObject/building.h"
 
 enum class Exit {
   kWin,

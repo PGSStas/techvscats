@@ -24,6 +24,8 @@ SOURCES += \
          GameObject/effect.cpp \
          GameObject/base.cpp \
          GameObject/building.cpp \
+         GameObject/lazer_projectile.cpp \
+         GameObject/bomb_projectile.cpp \
          Model/model.cpp \
          Model/road.cpp \
          Model/coordinate.cpp \
@@ -32,12 +34,15 @@ SOURCES += \
          View/size_handler.cpp \
          View/tower_menu.cpp \
          View/tower_menu_option.cpp \
+         View/button_handler.cpp \
 
 HEADERS += \
          Controller/controller.h \
          Controller/spawner.h \
          GameObject/building.h \
          GameObject/projectile.h \
+         GameObject/lazer_projectile.h \
+         GameObject/bomb_projectile.h \
          GameObject/enemy.h \
          GameObject/game_object.h \
          GameObject/moving_object.h \
@@ -54,3 +59,4 @@ HEADERS += \
          View/size_handler.h \
          View/tower_menu.h \
          View/tower_menu_option.h \
+         View/button_handler.h \

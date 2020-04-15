@@ -24,9 +24,9 @@ add_executable(techvscats
         GameObject/game_object.cpp
         GameObject/moving_object.cpp
         GameObject/building.cpp
-        GameObject/auric_field.cpp 
-        GameObject/effect.cpp 
-        GameObject/base.cpp 
+        GameObject/auric_field.cpp
+        GameObject/effect.cpp
+        GameObject/base.cpp
         Model/model.cpp
         Model/road.cpp
         Model/coordinate.cpp
@@ -34,6 +34,7 @@ add_executable(techvscats
         View/view.cpp
         View/tower_menu.cpp
         View/tower_menu_option.cpp
+        View/button_handler.cpp
         View/size_handler.cpp
         resources.qrc)
 
