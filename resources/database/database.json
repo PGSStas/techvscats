@@ -5,7 +5,11 @@
       "damage": 1,
       "armor": 2,
       "reward": 100,
-      "max_health": 8
+      "max_health": 11,
+      "aura": {
+        "radius": 250,
+        "effect_id": 0
+      }
     },
     {
       "speed": 11,
@@ -47,12 +51,11 @@
   "buildings": [],
   "effects": [
     {
-      "effect_target": 2,
-      "speed_coefficient": 0.2,
-      "armor_coefficient": 1,
-      "damage_coefficient": 0.3,
-      "attack_rate_coefficient": -0.4,
-      "range_coefficient": 0.4
+      "effect_target": 0,
+      "damage_coefficient": -0.5,
+      "attack_rate_coefficient": -0.3,
+      "range_coefficient": -0.3,
+      "speed_coefficient": 0.9
     },
     {
       "effect_target": 1,

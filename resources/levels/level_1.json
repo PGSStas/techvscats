@@ -82,7 +82,7 @@
   "rounds": [
     [
       {
-        "spawn_period": 400,
+        "spawn_period": 1400,
         "enemy_id": 0,
         "time_of_next_spawn": 15,
         "group_size": 10,

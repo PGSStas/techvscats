@@ -20,7 +20,7 @@ void Building::Tick(int current_time) {
     return;
   }
   UpdateTime(current_time);
-  wait_time_ += delta_tick_time_;
+  wait_time_ += delta_tick_time_*applied_effect_.GetAttackRateCoefficient();
 
   switch (action_) {
     case Action::kReload: {
@@ -67,7 +67,7 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   aims_.remove_if([&](const auto& object) {
     return (object->IsDead() ||
         object->GetPosition().GetVectorTo(position_).GetLength()
-            > attack_range_);
+            > attack_range_*applied_effect_.GetRangeCoefficient());
   });
 
   if (aims_.size() == max_aims_) {
@@ -81,7 +81,7 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
       break;
     }
     if (enemy->GetPosition().GetVectorTo(position_).GetLength()
-        > attack_range_) {
+        > attack_range_*applied_effect_.GetRangeCoefficient()) {
       continue;
     }
     bool can_add = true;
@@ -151,7 +151,7 @@ int Building::GetId() const {
 }
 
 int Building::GetAttackRange() const {
-  return attack_range_;
+  return attack_range_*applied_effect_.GetRangeCoefficient();
 }
 
 int Building::GetProjectileId() const {
@@ -159,7 +159,7 @@ int Building::GetProjectileId() const {
 }
 
 double Building::GetDamage() const {
-  return attack_damage_;
+  return attack_damage_*applied_effect_.GetDamageCoefficient();
 }
 
 double Building::GetProjectileSpeedCoefficient() const {

@@ -12,7 +12,7 @@
 class TowerMenuOption {
  public:
   TowerMenuOption(const Building& replacing_tower,
-      const std::function<void()>& action);
+ const std::function<void()>& action);
 
   void MakeAction();
   void Draw(QPainter* painter, Coordinate position, Size current_size) const;

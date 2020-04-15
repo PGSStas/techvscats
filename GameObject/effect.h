@@ -15,7 +15,7 @@ enum class EffectTarget {
 };
 
 enum class CoefficientType {
-  kMooveSpeed,
+  kMoveSpeed,
   kArmor,
   kDamage,
   kAttackRate,
@@ -38,8 +38,7 @@ class Effect {
                   double range_coefficient = 1);
 
   void ResetEffect();
-  void DrawEffectsIcons(QPainter* painter,
-                        const SizeHandler& size_handler,
+  void DrawEffectsIcons(QPainter* painter,const SizeHandler& size_handler,
                         Coordinate position) const;
 
   static void SetEffectVisualizations(

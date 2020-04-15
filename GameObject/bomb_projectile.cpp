@@ -33,8 +33,7 @@ void BombProjectile::Draw(QPainter* painter, const SizeHandler& handler) const {
   painter->restore();
 }
 
-void BombProjectile::SetParameters(Coordinate position,
-                                   double speed_coefficient,
+void BombProjectile::SetParameters(Coordinate position,double speed_coefficient,
                                    double damage,
                                    const std::shared_ptr<Enemy>& aim) {
   start_position_ = position;

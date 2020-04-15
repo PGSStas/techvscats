@@ -9,7 +9,7 @@ Effect::Effect(EffectTarget effect_type,
                double attack_rate_coefficient,
                double range_coefficient)
     : effect_target_(effect_type), coefficients_(5) {
-  coefficients_[static_cast<int>(CoefficientType::kMooveSpeed)] =
+  coefficients_[static_cast<int>(CoefficientType::kMoveSpeed)] =
       speed_coefficient;
   coefficients_[static_cast<int>(CoefficientType::kArmor)] =
       armor_coefficient;
@@ -41,7 +41,7 @@ void Effect::DrawEffectsIcons(QPainter* painter,
   DrawEffectIcon(painter, &point, size, CoefficientType::kDamage);
 
   if (effect_target_ == EffectTarget::kEnemy) {
-    DrawEffectIcon(painter, &point, size, CoefficientType::kMooveSpeed);
+    DrawEffectIcon(painter, &point, size, CoefficientType::kMoveSpeed);
     DrawEffectIcon(painter, &point, size, CoefficientType::kArmor);
   }
   if (effect_target_ == EffectTarget::kBuilding) {
@@ -61,7 +61,7 @@ EffectTarget Effect::GetEffectTarget() const {
 }
 
 double Effect::GetMooveSpeedCoefficient() const {
-  return coefficients_[static_cast<int>(CoefficientType::kMooveSpeed)];
+  return coefficients_[static_cast<int>(CoefficientType::kMoveSpeed)];
 }
 
 double Effect::GetArmorCoefficient() const {

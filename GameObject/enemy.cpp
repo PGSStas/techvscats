@@ -70,12 +70,10 @@ void Enemy::ReceiveDamage(double damage) {
 
 Enemy::Enemy(const Enemy& enemy_instance)
     : MovingObject(enemy_instance.GetSize(), enemy_instance.speed_),
-      damage_(enemy_instance.damage_),
-      armor_(enemy_instance.armor_),
-      reward_(enemy_instance.reward_),
-      max_health_(enemy_instance.max_health_),
-      current_health_(enemy_instance.max_health_) {
-  auric_field_ = enemy_instance.auric_field_;
+      damage_(enemy_instance.damage_), armor_(enemy_instance.armor_),
+      reward_(enemy_instance.reward_), max_health_(enemy_instance.max_health_),
+      current_health_(enemy_instance.max_health_),
+      auric_field_(enemy_instance.auric_field_) {
   auric_field_.SetCarrierCoordinate(&position_);
   node_number_ = 0;
   if (enemy_instance.road_ != nullptr) {
