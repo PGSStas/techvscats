@@ -3,19 +3,6 @@
 AuricField::AuricField(double effect_radius, int effect_id)
     : effect_radius_(effect_radius), effect_id_(effect_id) {}
 
-bool AuricField::IsInRadius(const Coordinate& coordinate) const {
-  return carrier_coordinate_->GetVectorTo(coordinate).GetLength()
-      <= effect_radius_ + kEpsilon;
-}
-
-int AuricField::GetEffectId() const {
-  return effect_id_;
-}
-
-bool AuricField::IsValid() const {
-  return effect_id_ != -1;
-}
-
 void AuricField::Draw(QPainter* painter,
                       const SizeHandler& size_handler) const {
   if (!IsValid()) {
@@ -34,6 +21,19 @@ void AuricField::Draw(QPainter* painter,
   painter->drawEllipse(point.x, point.y, size.width, size.height);
 
   painter->restore();
+}
+
+bool AuricField::IsInRadius(const Coordinate& coordinate) const {
+  return carrier_coordinate_->GetVectorTo(coordinate).GetLength()
+      <= effect_radius_ + kEpsilon;
+}
+
+int AuricField::GetEffectId() const {
+  return effect_id_;
+}
+
+bool AuricField::IsValid() const {
+  return effect_id_ != -1;
 }
 
 void AuricField::SetCarrierCoordinate(Coordinate* carrier_coordinates) {

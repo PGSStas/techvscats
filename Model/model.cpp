@@ -33,21 +33,21 @@ void Model::SetGameLevel(int level_id) {
   upgrades_tree_.push_back({1, 2});
 
   Building building_instance2(1, 24, Size(40, 20));
-  building_instance2.SetProjectile(2, 340, 10, id_to_projectile_[0]);
+  building_instance2.SetProjectile(2, 340, 10, 0);
   building_instance2.SetAnimationParameters(Qt::blue, 1000,
                                             Qt::red, 300,
                                             Qt::darkYellow, 300);
   upgrades_tree_.push_back({3, 0});
 
   Building building_instance3(2, 24, Size(30, 50));
-  building_instance3.SetProjectile(3, 240, 3, id_to_projectile_[2]);
+  building_instance3.SetProjectile(3, 240, 3, 2);
   building_instance3.SetAnimationParameters(Qt::yellow, 100,
                                             Qt::red, 50,
                                             Qt::darkYellow, 10);
   upgrades_tree_.push_back({3, 1, 0});
 
   Building building_instance4(3, 24, Size(14, 32));
-  building_instance4.SetProjectile(1, 540, 10, id_to_projectile_[1]);
+  building_instance4.SetProjectile(1, 540, 10, 1);
   building_instance4.SetAnimationParameters(Qt::green, 1000,
                                             Qt::red, 300,
                                             Qt::darkGreen, 100);
@@ -298,25 +298,27 @@ std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
   return &projectiles_;
 }
 
-std::shared_ptr<AbstractProjectile> Model::CreateProjectile(const AbstractProjectile& projectile_instance) {
-  switch (projectile_instance.GetType()) {
-    case ProjectileType::kDefault: {
-      projectiles_.push_back(std::make_shared<AimedProjectile>(
-          projectile_instance));
-      break;
-    }
-    case ProjectileType::kLazer: {
-      projectiles_.push_back(std::make_shared<LazerProjectile>(
-          projectile_instance));
-      break;
-    }
-    case ProjectileType::kBomb: {
-      projectiles_.push_back(std::make_shared<BombProjectile>(
-          projectile_instance));
-      break;
-    }
+void Model::CreateProjectile(const Building& building,
+                             const std::shared_ptr<Enemy>& aim) {
+  int id = building.GetProjectileId();
+  if (const auto& casted =
+        std::dynamic_pointer_cast<AimedProjectile>(id_to_projectile_[id]);
+      casted != nullptr) {
+    projectiles_.push_back(std::make_shared<AimedProjectile>(*casted));
   }
-  return projectiles_.back();
+  if (const auto& casted =
+        std::dynamic_pointer_cast<BombProjectile>(id_to_projectile_[id]);
+      casted != nullptr) {
+    projectiles_.push_back(std::make_shared<BombProjectile>(*casted));
+  }
+  if (const auto& casted =
+        std::dynamic_pointer_cast<LazerProjectile>(id_to_projectile_[id]);
+      casted != nullptr) {
+    projectiles_.push_back(std::make_shared<LazerProjectile>(*casted));
+  }
+  projectiles_.back()->SetParameters(building.GetPosition(),
+                                     building.GetProjectileSpeedCoefficient(),
+                                     building.GetDamage(), aim);
 }
 
 const Enemy& Model::GetEnemyById(int id) const {

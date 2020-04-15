@@ -1,10 +1,10 @@
 #include "lazer_projectile.h"
 
-LazerProjectile::LazerProjectile(const AbstractProjectile& other) : AbstractProjectile(other) {}
+LazerProjectile::LazerProjectile(const LazerProjectile& other)
+    : AbstractProjectile(other) {}
 
-LazerProjectile::LazerProjectile(Size size,
-                                 ProjectileType projectile_type) :
-    AbstractProjectile(size, 0, projectile_type) {}
+LazerProjectile::LazerProjectile(Size size) :
+    AbstractProjectile(size, 0) {}
 
 void LazerProjectile::Draw(QPainter* painter,
                            const SizeHandler& handler) const {
@@ -25,4 +25,11 @@ void LazerProjectile::Tick(int current_time) {
     is_end_reached_ = true;
     is_dead_ = true;
   }
+}
+void LazerProjectile::SetParameters(Coordinate position,
+                                    double speed_coefficient,
+                                    double damage,
+                                    const std::shared_ptr<Enemy>& aim) {
+  start_position_ = position;
+  AbstractProjectile::SetParameters(position, speed_coefficient, damage, aim);
 }

@@ -14,11 +14,12 @@ enum class EffectTarget {
 };
 
 enum class CoefficientType {
-  kSpeed,
+  kMooveSpeed,
   kArmor,
   kDamage,
   kAttackRate,
-  kRange
+  kRange,
+
 };
 
 struct EffectVisualization {
@@ -47,7 +48,7 @@ class Effect {
       const std::vector<EffectVisualization>& effect_visualization);
 
   EffectTarget GetEffectTarget() const;
-  double GetSpeedCoefficient() const;
+  double GetMooveSpeedCoefficient() const;
   double GetArmorCoefficient() const;
   double GetDamageCoefficient() const;
   double GetAttackRateCoefficient() const;

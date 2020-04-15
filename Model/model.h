@@ -59,7 +59,8 @@ class Model {
   const Road& GetRoad(int i) const;
   const std::vector<Road>& GetRoads() const;
 
-  std::shared_ptr<AbstractProjectile> CreateProjectile(const AbstractProjectile& projectile_instance);
+  void CreateProjectile(const Building& building,
+                        const std::shared_ptr<Enemy>& aim);
   const std::vector<std::vector<int>>& GetUpgradesTree() const;
 
   void SetBuildingAtIndex(int i, int id);

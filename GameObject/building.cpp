@@ -8,7 +8,7 @@ Building::Building(const Building& other) :
   SetProjectile(other.max_aims_,
                 other.attack_range_,
                 other.attack_damage_,
-                other.projectile_instance_);
+                other.projectile_id_);
   SetAnimationParameters(other.reload_color_, other.action_time[0],
                          other.before_fire_color_, other.action_time[1],
                          other.after_fire_color_, other.action_time[2]);
@@ -83,11 +83,11 @@ void Building::Tick(int current_time) {
 
 void Building::SetProjectile(
     int max_aims, int attack_range, double attack_damage,
-    std::shared_ptr<AbstractProjectile> projectile_instance) {
+    int projectile_id) {
   max_aims_ = max_aims;
   attack_range_ = attack_range;
   attack_damage_ = attack_damage;
-  projectile_instance_ = projectile_instance;
+  projectile_id_ = projectile_id;
 }
 
 void Building::SetAnimationParameters(QColor reload_color, int reload_time,
@@ -153,8 +153,8 @@ int Building::GetAttackRange() const {
   return attack_range_;
 }
 
-const AbstractProjectile& Building::GetProjectile() const {
-  return *projectile_instance_;
+int Building::GetProjectileId() const {
+  return projectile_id_;
 }
 
 bool Building::IsInside(Coordinate point) const {
@@ -177,6 +177,10 @@ double Building::GetDamage() const {
   return attack_damage_;
 }
 
+double Building::GetProjectileSpeedCoefficient() const {
+  return applied_effect_.GetMooveSpeedCoefficient();
+}
+
 const AuricField& Building::GetAuricField() const {
   return auric_field_;
 }
@@ -184,4 +188,3 @@ const AuricField& Building::GetAuricField() const {
 Effect* Building::GetAppliedEffect() {
   return &applied_effect_;
 }
-

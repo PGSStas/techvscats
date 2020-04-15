@@ -5,10 +5,8 @@
 
 class AimedProjectile : public AbstractProjectile {
  public:
-  explicit AimedProjectile(Size size, double speed,
-                           ProjectileType projectile_type =
-                           ProjectileType::kDefault);
-  explicit AimedProjectile(const AbstractProjectile& other);
+  explicit AimedProjectile(const AimedProjectile& other);
+  explicit AimedProjectile(Size size, double speed);
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;

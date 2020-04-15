@@ -10,14 +10,12 @@ class Base : public GameObject {
  public:
   Base(double max_health, Coordinate position);
 
-  void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
   void Tick(int current_time) override;
+  void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
 
   double GetCurrentHealth() const;
   double GetMaxHealth() const;
-
   bool IsDead() const;
-
   void DecreaseHealth(double damage);
 
  private:

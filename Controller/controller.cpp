@@ -115,16 +115,12 @@ void Controller::TickBuildings() {
     building->UpdateAim(*model_->GetEnemies());
 
     if (building->IsReadyToCreateProjectiles()) {
-      const AbstractProjectile& instance_to_use =building->GetProjectile();
-      const auto& aims = building->GetAims();
-      for (auto& aim : aims) {
-        auto projectile = model_->CreateProjectile(instance_to_use);
-        projectile->SetParameters(building->GetPosition(),
-                                  instance_to_use.GetSpeed(), // speed coef!!!
-                                  building->GetDamage(), aim);
 
-      }
+      const auto& aims = building->GetAims();
       building->SetReadyToCreateProjectileToFalse();
+      for (auto& aim : aims) {
+        model_->CreateProjectile(*building, aim);
+      }
     }
   }
 
