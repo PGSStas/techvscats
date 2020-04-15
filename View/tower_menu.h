@@ -14,8 +14,8 @@
 class TowerMenu {
  public:
   // Note: options are expected to be not empty
-  TowerMenu(int creation_time, const std::shared_ptr<const Building>& tower,
-            const std::vector<std::shared_ptr<TowerMenuOption>>& options);
+  TowerMenu(int creation_time, std::shared_ptr<const Building>  tower,
+            std::vector<std::shared_ptr<TowerMenuOption>>  options);
 
   std::shared_ptr<const Building> GetTower() const;
   // Returns the button for which position is inside or
@@ -37,7 +37,7 @@ class TowerMenu {
   // Won't be needed if we change buttons so that they circle around the tower
   int container_length_;
 
-  const int kAnimationDuration = 100;
+  const int kAnimationDuration = 1200;
   const int kIndentBetweenButtons = 10;
   const int kIndentFromTower = 5;
 

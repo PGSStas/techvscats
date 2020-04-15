@@ -8,7 +8,7 @@ Building::Building(const Building& other) :
   SetProjectile(other.max_aims_,
                 other.attack_range_,
                 other.attack_damage_,
-                other.projectile_id_);
+                other.projectile_instance_);
   SetAnimationParameters(other.reload_color_, other.action_time[0],
                          other.before_fire_color_, other.action_time[1],
                          other.after_fire_color_, other.action_time[2]);
@@ -81,12 +81,13 @@ void Building::Tick(int current_time) {
   }
 }
 
-void Building::SetProjectile(int max_aims, int attack_range,
-                             double attack_damage, int projectile_id) {
+void Building::SetProjectile(
+    int max_aims, int attack_range, double attack_damage,
+    std::shared_ptr<AbstractProjectile> projectile_instance) {
   max_aims_ = max_aims;
   attack_range_ = attack_range;
   attack_damage_ = attack_damage;
-  projectile_id_ = projectile_id;
+  projectile_instance_ = projectile_instance;
 }
 
 void Building::SetAnimationParameters(QColor reload_color, int reload_time,
@@ -152,8 +153,8 @@ int Building::GetAttackRange() const {
   return attack_range_;
 }
 
-int Building::GetProjectileId() const {
-  return projectile_id_;
+const AbstractProjectile& Building::GetProjectile() const {
+  return *projectile_instance_;
 }
 
 bool Building::IsInside(Coordinate point) const {

@@ -10,32 +10,6 @@ void Model::SetGameLevel(int level_id) {
 
   empty_places_for_towers_ = {{540, 700}, {200, 100}, {500, 100}};
 
-  Building building_instance(0, 0, Size(33, 33));
-  building_instance.SetAnimationParameters(Qt::gray,
-                                           1000);
-
-  upgrades_tree_.push_back({1, 2});
-
-  Building building_instance2(1, 24, Size(40, 20));
-  building_instance2.SetProjectile(2, 340, 10, 0);
-  building_instance2.SetAnimationParameters(Qt::blue, 1000,
-                                            Qt::red, 300,
-                                            Qt::darkYellow, 300);
-  upgrades_tree_.push_back({3, 0});
-
-  Building building_instance3(2, 24, Size(30, 50));
-  building_instance3.SetProjectile(3, 240, 3, 2);
-  building_instance3.SetAnimationParameters(Qt::yellow, 100,
-                                            Qt::red, 50,
-                                            Qt::darkYellow, 10);
-  upgrades_tree_.push_back({3, 1, 0});
-
-  Building building_instance4(3, 24, Size(14, 32));
-  building_instance4.SetProjectile(1, 540, 10, 1);
-  building_instance4.SetAnimationParameters(Qt::green, 1000,
-                                            Qt::red, 300,
-                                            Qt::darkGreen, 100);
-  upgrades_tree_.push_back({1, 0});
   AimedProjectile projectile_instance_aimed(Size(10, 20), 66);
   projectile_instance_aimed.SetAnimationParameters(Qt::darkRed, 100);
 
@@ -51,6 +25,33 @@ void Model::SetGameLevel(int level_id) {
       projectile_instance_bomb));
   id_to_projectile_.push_back(std::make_shared<LazerProjectile>(
       projectile_instance_lazer));
+
+  Building building_instance(0, 0, Size(33, 33));
+  building_instance.SetAnimationParameters(Qt::gray,
+                                           1000);
+
+  upgrades_tree_.push_back({1, 2});
+
+  Building building_instance2(1, 24, Size(40, 20));
+  building_instance2.SetProjectile(2, 340, 10, id_to_projectile_[0]);
+  building_instance2.SetAnimationParameters(Qt::blue, 1000,
+                                            Qt::red, 300,
+                                            Qt::darkYellow, 300);
+  upgrades_tree_.push_back({3, 0});
+
+  Building building_instance3(2, 24, Size(30, 50));
+  building_instance3.SetProjectile(3, 240, 3, id_to_projectile_[2]);
+  building_instance3.SetAnimationParameters(Qt::yellow, 100,
+                                            Qt::red, 50,
+                                            Qt::darkYellow, 10);
+  upgrades_tree_.push_back({3, 1, 0});
+
+  Building building_instance4(3, 24, Size(14, 32));
+  building_instance4.SetProjectile(1, 540, 10, id_to_projectile_[1]);
+  building_instance4.SetAnimationParameters(Qt::green, 1000,
+                                            Qt::red, 300,
+                                            Qt::darkGreen, 100);
+  upgrades_tree_.push_back({1, 0});
 
   id_to_building_.push_back(building_instance);
   id_to_building_.push_back(building_instance2);
@@ -295,10 +296,6 @@ Base* Model::GetBase() {
 
 std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
   return &projectiles_;
-}
-
-const AbstractProjectile& Model::GetProjectileById(int id) const {
-  return *id_to_projectile_[id];
 }
 
 std::shared_ptr<AbstractProjectile> Model::CreateProjectile(const AbstractProjectile& projectile_instance) {

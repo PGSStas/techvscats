@@ -113,9 +113,6 @@ void View::paintEvent(QPaintEvent*) {
     DrawAuras(&painter);
     DrawEnemies(&painter);
     DrawProjectiles(&painter);
-    if (is_tower_menu_enabled_) {
-      tower_menu_->Draw(&painter, size_handler_, controller_->GetCurrentTime());
-    }
     DrawTowers(&painter);
 
     controller_->GetBase().Draw(&painter, size_handler_);
@@ -134,7 +131,6 @@ void View::mouseMoveEvent(QMouseEvent* event) {
         Coordinate(event->x(), event->y())));
   }
 }
-
 
 void View::DrawBackground(QPainter* painter) {
   // Test realization. Will be changed.
@@ -214,10 +210,9 @@ void View::DrawInterface(QPainter* painter) {
   }
 
   if (is_tower_menu_enabled_) {
-    tower_menu_->Draw(painter, size_handler_, view_timer_.elapsed());
+    tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
   }
 }
-
 
 void View::DrawWindow(QPainter* painter, const QBrush& brush) {
   painter->save();

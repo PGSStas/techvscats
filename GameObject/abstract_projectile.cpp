@@ -1,6 +1,5 @@
 #include "abstract_projectile.h"
 
-#include <utility>
 
 AbstractProjectile::AbstractProjectile(
     Size size, double speed, ProjectileType type,
@@ -18,7 +17,7 @@ AbstractProjectile::AbstractProjectile(const AbstractProjectile& other) :
 
 void AbstractProjectile::SetParameters(
     Coordinate position, double speed, double damage,
-    std::shared_ptr<Enemy> aim) {
+   const std::shared_ptr<Enemy>& aim) {
   position_ = position;
   start_position_ = position_;
   speed_ = speed;

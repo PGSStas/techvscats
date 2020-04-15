@@ -13,11 +13,10 @@
 class Controller : public AbstractController {
  public:
   Controller();
-  ~Controller() override = default;
 
-  void Tick(int current_time) override;
   void StartGame(int level) override;
   void EndGame(Exit exit) override;
+  void Tick(int current_time) override;
 
   void MousePress(Coordinate position) override;
   void MouseMove(Coordinate position) override;
@@ -27,8 +26,8 @@ class Controller : public AbstractController {
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
   const std::list<std::shared_ptr<AbstractProjectile>>& GetProjectiles() const override;
 
-  int GetCurrentTime() const override;
   const Base& GetBase() const override;
+  int GetCurrentTime() const override;
 
  private:
   std::unique_ptr<Model> model_;
@@ -43,20 +42,18 @@ class Controller : public AbstractController {
   void GameProcess();
   void MenuProcess();
 
-  void ApplyEffectToAllInstances(const AuricField& aura);
-  void CreateNextWave();
   bool CanCreateNextWave();
-  void AddEnemyToModel(const Enemy& enemy) const;
+  void CreateNextWave();
   void TickSpawners();
   void TickEnemies();
   void TickBuildings();
   void TickProjectiles();
   void TickAuras();
+  void ApplyEffectToAllInstances(const AuricField& aura);
+  void AddEnemyToModel(const Enemy& enemy) const;
 
-  void CreateTowerMenu(int tower_index);
-
-  // Upgrades or evolves the building
   void SetBuilding(int index_in_buildings, int replacing_id);
+  void CreateTowerMenu(int tower_index);
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

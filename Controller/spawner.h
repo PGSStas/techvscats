@@ -2,11 +2,10 @@
 #define CONTROLLER_SPAWNER_H_
 
 #include <memory>
-#include <QDebug>
 
+#include "GameObject/enemy.h"
 #include "Model/enemy_group.h"
 #include "Model/road.h"
-#include "GameObject/enemy.h"
 
 // The Spawner is installed on the road, and creates enemies from wave.
 // It does not process or edit the Game data it received, working only with
@@ -14,20 +13,16 @@
 class Spawner {
  public:
   explicit Spawner(const EnemyGroup& wave);
-  ~Spawner() = default;
-
-  // int GetRoadNumber() const;
-  bool IsReadyToSpawn() const;
-  bool IsDead() const;
-  int PrepareNextEnemyId();
-  int GetRoad() const;
 
   void Tick(int current_time);
+  int PrepareNextEnemyId();
+  int GetRoad() const;
+  bool IsReadyToSpawn() const;
+  bool IsDead() const;
 
  private:
   bool unit_pending_ = false;
   bool is_dead_ = false;
-
   EnemyGroup group_to_spawn_;
 };
 

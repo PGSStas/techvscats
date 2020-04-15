@@ -29,8 +29,8 @@ class Building : public GameObject {
                               QColor post_color = Qt::black,
                               int after_fire_time = 0);
 
-  void SetProjectile(int max_aims, int attack_range,
-                     double attack_damage, int projectile_id);
+  void SetProjectile(int max_aims, int attack_range, double attack_damage,
+                     std::shared_ptr<AbstractProjectile> projectile_instance);
 
   void Tick(int current_time) override;
   void UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies);
@@ -40,7 +40,7 @@ class Building : public GameObject {
   double GetDamage() const;
   int GetId() const;
   int GetAttackRange() const;
-  int GetProjectileId() const;
+  const AbstractProjectile& GetProjectile() const;
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
   const std::list<std::shared_ptr<Enemy>>& GetAims() const;
@@ -64,7 +64,7 @@ class Building : public GameObject {
   QColor before_fire_color_ = QColor("black");
   QColor after_fire_color_ = QColor("black");
 
-  int projectile_id_ = 0;
+  std::shared_ptr<AbstractProjectile> projectile_instance_  {};
   uint max_aims_ = 1;
   double attack_damage_ = 0;
   int attack_range_ = 0;
