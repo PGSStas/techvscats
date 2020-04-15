@@ -11,13 +11,14 @@ class AbstractProjectile : public MovingObject {
   AbstractProjectile(const AbstractProjectile& other);
   explicit AbstractProjectile(Size size, double speed);
 
-  virtual void SetParameters(Coordinate position, double speed_coefficient, double damage,
-                    const std::shared_ptr<Enemy>& aim);
+  void Move() override;
+
+  virtual void SetParameters(Coordinate position, double speed_coefficient,
+                             double damage, const std::shared_ptr<Enemy>& aim);
   void SetAnimationParameters(QColor draw_color, int iteration_time);
 
-  void Move() override;
-  virtual  bool IsInAffectedArea(const Enemy& enemy);
   double GetDamage() const;
+  virtual bool IsInAffectedArea(const Enemy& enemy);
 
  protected:
   std::shared_ptr<Enemy> aim_ = {};

@@ -10,7 +10,6 @@ struct Coordinate {
 
   Coordinate() = default;
   Coordinate(double x, double y) noexcept;
-  void MoveTo(Coordinate destination, double vector_length);
   Size GetVectorTo(Coordinate right) const;
 
   Coordinate operator*(double right) const;
@@ -18,10 +17,10 @@ struct Coordinate {
   Coordinate& operator*=(double right);
   Coordinate& operator/=(double right);
 
-  Coordinate operator+(Size right) const;
   Coordinate& operator+=(Size right);
-  Coordinate operator-(Size right) const;
+  Coordinate operator+(Size right) const;
   Coordinate& operator-=(Size right);
+  Coordinate operator-(Size right) const;
 
   bool operator==(Coordinate right) const;
 };

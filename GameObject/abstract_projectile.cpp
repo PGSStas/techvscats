@@ -6,7 +6,15 @@ AbstractProjectile::AbstractProjectile(const AbstractProjectile& other) :
 }
 
 AbstractProjectile::AbstractProjectile(Size size, double speed)
-    : MovingObject(size, speed){}
+    : MovingObject(size, speed) {}
+
+void AbstractProjectile::Move() {
+  MoveToDestination();
+  if (position_ == destination_) {
+    is_end_reached_ = true;
+    is_dead_ = true;
+  }
+}
 
 void AbstractProjectile::SetParameters(
     Coordinate position, double speed_coefficient, double damage,
@@ -26,20 +34,12 @@ void AbstractProjectile::SetAnimationParameters(
   iteration_time_ = iteration_time;
 }
 
-void AbstractProjectile::Move() {
-  position_.MoveTo(destination_, delta_tick_time_ *
-      speed_ / kTimeScale);
-  if (position_ == destination_) {
-    is_end_reached_ = true;
-    is_dead_ = true;
-  }
-}
-
- bool AbstractProjectile::IsInAffectedArea(const Enemy& enemy) {
+bool AbstractProjectile::IsInAffectedArea(const Enemy& enemy) {
   return position_.GetVectorTo(enemy.GetPosition()).GetLength()
-      <=  kEpsilon;
+      <= kEpsilon;
 }
 
 double AbstractProjectile::GetDamage() const {
   return damage_;
 }
+

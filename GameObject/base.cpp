@@ -8,8 +8,29 @@ Base::Base(double max_health, Coordinate position)
     : GameObject(Size(0, 0), position),
       max_health_(max_health), current_health_(max_health) {}
 
-bool Base::IsDead() const {
-  return is_dead_;
+void Base::Tick(int) {
+  current_health_ = std::min(max_health_, current_health_ + regeneration_rate_);
+}
+
+void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
+  painter->save();
+  painter->setBrush(Qt::magenta);
+
+  auto point = size_handler.GameToWindowCoordinate(position_ - kBaseSize / 2);
+  Size size = size_handler.GameToWindowSize(kBaseSize);
+
+  painter->drawRect(point.x, point.y, size.width, size.height);
+
+  Coordinate health_bar_top_corner =
+      size_handler.GameToWindowCoordinate(kHealthBarPosition);
+  Size health_bar_size =
+      size_handler.GameToWindowSize({kHealthBarSize.width * current_health_
+                                         / max_health_,
+                                     kHealthBarSize.height});
+  painter->setBrush(Qt::red);
+  painter->drawRect(health_bar_top_corner.x, health_bar_top_corner.y,
+                    health_bar_size.width, health_bar_size.height);
+  painter->restore();
 }
 
 void Base::DecreaseHealth(double damage) {
@@ -27,29 +48,6 @@ double Base::GetMaxHealth() const {
   return max_health_;
 }
 
-void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
-  painter->save();
-
-  painter->setBrush(Qt::magenta);
-
-  auto point = size_handler.GameToWindowCoordinate(position_ - kBaseSize / 2);
-  Size size = size_handler.GameToWindowSize(kBaseSize);
-
-  painter->drawRect(point.x, point.y, size.width, size.height);
-
-  Coordinate health_bar_top_corner =
-      size_handler.GameToWindowCoordinate(kHealthBarPosition);
-  Size health_bar_size =
-      size_handler.GameToWindowSize({kHealthBarSize.width * current_health_
-                                         / max_health_,
-                                     kHealthBarSize.height});
-  painter->setBrush(Qt::red);
-  painter->drawRect(health_bar_top_corner.x, health_bar_top_corner.y,
-                    health_bar_size.width, health_bar_size.height);
-
-  painter->restore();
-}
-
-void Base::Tick(int current_time) {
-  current_health_ = std::min(max_health_, current_health_ + regeneration_rate_);
+bool Base::IsDead() const {
+  return is_dead_;
 }

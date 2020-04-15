@@ -1,7 +1,19 @@
 #include "view.h"
 
-View::View(AbstractController* controller)
-    : controller_(controller) {
+void View::DrawWindow(QPainter* painter, const QBrush& brush) {
+  painter->save();
+  painter->setBrush(QColor("#000080"));
+  painter->drawRect(0, 0, width(), height());
+  painter->setBrush(brush);
+  Coordinate top_corner =
+      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+  painter->drawRect(top_corner.x, top_corner.y,
+                    rect_size.width, rect_size.height);
+  painter->restore();
+}
+
+View::View(AbstractController* controller) : controller_(controller) {
   setMinimumSize(640, 360);
   setMouseTracking(true);
 
@@ -31,19 +43,14 @@ View::View(AbstractController* controller)
   DisableGameUi();
 }
 
-void View::timerEvent(QTimerEvent* event) {
-  if (event->timerId() == controller_timer_id_) {
-    int delta_time = time_between_ticks_.elapsed();
-    time_between_ticks_.restart();
-    controller_->Tick(controller_->GetCurrentTime()
-                          + delta_time * game_speed_coefficient_);
-    repaint();
-  }
-}
-
 void View::EnableGameUi() {
   return_menu_button_->show();
   wave_status_label_->show();
+}
+
+void View::EnableMenuUi() {
+  window_type_ = WindowType::kMainMenu;
+  start_game_button_->show();
 }
 
 void View::DisableGameUi() {
@@ -52,25 +59,20 @@ void View::DisableGameUi() {
   wave_status_label_->hide();
 }
 
-void View::EnableMenuUi() {
-  window_type_ = WindowType::kMainMenu;
-  start_game_button_->show();
-}
-
 void View::DisableMenuWindow() {
   window_type_ = WindowType::kGame;
   start_game_button_->hide();
+}
+
+void View::ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu) {
+  tower_menu_ = menu;
+  is_tower_menu_enabled_ = true;
 }
 
 void View::UpdateRounds(int current_round_nubmer, int number_of_rounds) {
   wave_status_label_->setText(
       "Rounds " + QString::number(current_round_nubmer) + "/"
           + QString::number(number_of_rounds));
-}
-
-void View::ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu) {
-  tower_menu_ = menu;
-  is_tower_menu_enabled_ = true;
 }
 
 std::shared_ptr<TowerMenu> View::GetTowerMenu() {
@@ -88,7 +90,6 @@ void View::DisableTowerMenu() {
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
-  // Example of work
 
   Coordinate label_position = size_handler_.GameToWindowCoordinate({300, 10});
   wave_status_label_->move(label_position.x, label_position.y);
@@ -115,7 +116,6 @@ void View::paintEvent(QPaintEvent*) {
     DrawProjectiles(&painter);
     DrawTowers(&painter);
 
-    controller_->GetBase().Draw(&painter, size_handler_);
     DrawInterface(&painter);
   }
 }
@@ -123,6 +123,24 @@ void View::paintEvent(QPaintEvent*) {
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
   repaint();
+}
+
+void View::timerEvent(QTimerEvent* event) {
+  if (event->timerId() == controller_timer_id_) {
+    int delta_time = time_between_ticks_.elapsed();
+    time_between_ticks_.restart();
+    controller_->Tick(controller_->GetCurrentTime()
+                          + delta_time * game_speed_coefficient_);
+    repaint();
+  }
+}
+
+void View::mouseReleaseEvent(QMouseEvent* event) {
+  if (event->button() == Qt::LeftButton) {
+    controller_->MousePress(size_handler_.WindowToGameCoordinate(
+        Coordinate(event->x(), event->y())));
+  }
+
 }
 
 void View::mouseMoveEvent(QMouseEvent* event) {
@@ -151,21 +169,6 @@ void View::DrawBackground(QPainter* painter) {
   painter->restore();
 }
 
-void View::DrawTowers(QPainter* painter) {
-  const auto& buildings = controller_->GetBuildings();
-  for (const auto& building : buildings) {
-    building->Draw(painter, size_handler_);
-  }
-}
-
-void View::DrawEnemies(QPainter* painter) {
-  auto enemies_list = controller_->GetEnemies();
-
-  for (const auto& enemy : enemies_list) {
-    enemy->Draw(painter, size_handler_);
-  }
-}
-
 void View::DrawAuras(QPainter* painter) {
   const auto& enemies_list = controller_->GetEnemies();
   for (const auto& enemy : enemies_list) {
@@ -177,6 +180,13 @@ void View::DrawAuras(QPainter* painter) {
   }
 }
 
+void View::DrawEnemies(QPainter* painter) {
+  auto enemies_list = controller_->GetEnemies();
+  for (const auto& enemy : enemies_list) {
+    enemy->Draw(painter, size_handler_);
+  }
+}
+
 void View::DrawProjectiles(QPainter* painter) {
   auto projectiles_list = controller_->GetProjectiles();
   for (auto& projectile : projectiles_list) {
@@ -184,12 +194,13 @@ void View::DrawProjectiles(QPainter* painter) {
   }
 }
 
-void View::mouseReleaseEvent(QMouseEvent* event) {
-  if (event->button() == Qt::LeftButton) {
-    controller_->MousePress(size_handler_.WindowToGameCoordinate(
-        Coordinate(event->x(), event->y())));
-  }
+void View::DrawTowers(QPainter* painter) {
+  controller_->GetBase().Draw(painter, size_handler_);
 
+  const auto& buildings = controller_->GetBuildings();
+  for (const auto& building : buildings) {
+    building->Draw(painter, size_handler_);
+  }
 }
 
 void View::DrawInterface(QPainter* painter) {
@@ -212,19 +223,4 @@ void View::DrawInterface(QPainter* painter) {
   if (is_tower_menu_enabled_) {
     tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
   }
-}
-
-void View::DrawWindow(QPainter* painter, const QBrush& brush) {
-  painter->save();
-
-  painter->setBrush(QColor("#000080"));
-  painter->drawRect(0, 0, width(), height());
-  painter->setBrush(brush);
-  Coordinate top_corner =
-      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
-  painter->drawRect(top_corner.x, top_corner.y,
-                    rect_size.width, rect_size.height);
-
-  painter->restore();
 }

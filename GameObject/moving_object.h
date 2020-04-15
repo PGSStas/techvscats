@@ -8,8 +8,9 @@ class MovingObject : public GameObject {
   MovingObject(Size size, double speed, Coordinate position = {0, 0},
                Coordinate destination = {0, 0});
 
-  virtual bool IsDead() const;
+  void MoveToDestination();
   virtual void Move() = 0;
+  virtual bool IsDead() const;
   bool IsEndReached() const;
 
  protected:

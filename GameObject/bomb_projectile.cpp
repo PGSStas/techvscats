@@ -33,15 +33,15 @@ void BombProjectile::Draw(QPainter* painter, const SizeHandler& handler) const {
   painter->restore();
 }
 
-bool BombProjectile::IsInAffectedArea(const Enemy& enemy) {
-  return position_.GetVectorTo(enemy.GetPosition()).GetLength()
-      <= effect_radius_ + kEpsilon;
-}
-
 void BombProjectile::SetParameters(Coordinate position,
                                    double speed_coefficient,
                                    double damage,
                                    const std::shared_ptr<Enemy>& aim) {
   start_position_ = position;
   AbstractProjectile::SetParameters(position, speed_coefficient, damage, aim);
+}
+
+bool BombProjectile::IsInAffectedArea(const Enemy& enemy) {
+  return position_.GetVectorTo(enemy.GetPosition()).GetLength()
+      <= effect_radius_ + kEpsilon;
 }

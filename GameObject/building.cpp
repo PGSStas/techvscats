@@ -4,43 +4,16 @@
 #include "building.h"
 
 Building::Building(const Building& other) :
-    Building(other.id_, other.cost_, other.size_) {
-  SetProjectile(other.max_aims_,
-                other.attack_range_,
-                other.attack_damage_,
-                other.projectile_id_);
+    Building(other.size_, other.id_, other.cost_) {
+  SetProjectile(other.projectile_id_,other.attack_damage_,
+                other.attack_range_,other.max_aims_);
   SetAnimationParameters(other.reload_color_, other.action_time[0],
                          other.before_fire_color_, other.action_time[1],
                          other.after_fire_color_, other.action_time[2]);
 }
 
-Building::Building(int id, int settle_cost, Size size) :
+Building::Building(Size size, int id, int settle_cost) :
     GameObject(size), id_(id), cost_(settle_cost) {}
-
-void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
-  painter->save();
-  switch (action_) {
-    case Action::kReload: {
-      painter->setBrush(reload_color_);
-      break;
-    }
-    case Action::kBeforeFire: {
-      painter->setBrush(before_fire_color_);
-      break;
-    }
-    case Action::fAfterFire: {
-      painter->setBrush(after_fire_color_);
-      break;
-    }
-  }
-
-  Coordinate center = size_handler.GameToWindowCoordinate(position_);
-  Size size = size_handler.GameToWindowSize(size_);
-  painter->drawEllipse(QPointF(center.x, center.y),
-                       size.width / 2,
-                       size.height / 2);
-  painter->restore();
-}
 
 void Building::Tick(int current_time) {
   if (max_aims_ == 0) {
@@ -79,26 +52,6 @@ void Building::Tick(int current_time) {
       break;
     }
   }
-}
-
-void Building::SetProjectile(
-    int max_aims, int attack_range, double attack_damage,
-    int projectile_id) {
-  max_aims_ = max_aims;
-  attack_range_ = attack_range;
-  attack_damage_ = attack_damage;
-  projectile_id_ = projectile_id;
-}
-
-void Building::SetAnimationParameters(QColor reload_color, int reload_time,
-                                      QColor pre_color, int before_fire_time,
-                                      QColor post_color, int after_fire_time) {
-  reload_color_ = std::move(reload_color);
-  action_time[static_cast<int>(Action::kReload)] = reload_time;
-  before_fire_color_ = std::move(pre_color);
-  action_time[static_cast<int>(Action::kBeforeFire)] = before_fire_time;
-  after_fire_color_ = std::move(post_color);
-  action_time[static_cast<int>(Action::fAfterFire)] = after_fire_time;
 }
 
 void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
@@ -145,8 +98,56 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   is_ready_to_shoot = !aims_.empty();
 }
 
-bool Building::IsReadyToCreateProjectiles() const {
-  return is_ready_to_create_projectiles_;
+void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
+  painter->save();
+  switch (action_) {
+    case Action::kReload: {
+      painter->setBrush(reload_color_);
+      break;
+    }
+    case Action::kBeforeFire: {
+      painter->setBrush(before_fire_color_);
+      break;
+    }
+    case Action::fAfterFire: {
+      painter->setBrush(after_fire_color_);
+      break;
+    }
+  }
+
+  Coordinate center = size_handler.GameToWindowCoordinate(position_);
+  Size size = size_handler.GameToWindowSize(size_);
+  painter->drawEllipse(QPointF(center.x, center.y),
+                       size.width / 2,
+                       size.height / 2);
+  painter->restore();
+}
+
+void Building::SetAnimationParameters(QColor reload_color, int reload_time,
+                                      QColor pre_color, int before_fire_time,
+                                      QColor post_color, int after_fire_time) {
+  reload_color_ = std::move(reload_color);
+  action_time[static_cast<int>(Action::kReload)] = reload_time;
+  before_fire_color_ = std::move(pre_color);
+  action_time[static_cast<int>(Action::kBeforeFire)] = before_fire_time;
+  after_fire_color_ = std::move(post_color);
+  action_time[static_cast<int>(Action::fAfterFire)] = after_fire_time;
+}
+
+void Building::SetProjectile(int projectile_id, double attack_damage,
+                             int attack_range, int max_aims) {
+  projectile_id_ = projectile_id;
+  attack_damage_ = attack_damage;
+  attack_range_ = attack_range;
+  max_aims_ = max_aims;
+}
+
+void Building::SetReadyToCreateProjectileToFalse() {
+  is_ready_to_create_projectiles_ = false;
+}
+
+int Building::GetId() const {
+  return id_;
 }
 
 int Building::GetAttackRange() const {
@@ -157,22 +158,6 @@ int Building::GetProjectileId() const {
   return projectile_id_;
 }
 
-bool Building::IsInside(Coordinate point) const {
-  return point.GetVectorTo(position_).GetLength() <= size_.width / 2;
-}
-
-int Building::GetId() const {
-  return id_;
-}
-
-const std::list<std::shared_ptr<Enemy>>& Building::GetAims() const {
-  return aims_;
-}
-
-void Building::SetReadyToCreateProjectileToFalse() {
-  is_ready_to_create_projectiles_ = false;
-}
-
 double Building::GetDamage() const {
   return attack_damage_;
 }
@@ -181,10 +166,22 @@ double Building::GetProjectileSpeedCoefficient() const {
   return applied_effect_.GetMooveSpeedCoefficient();
 }
 
+Effect* Building::GetAppliedEffect() {
+  return &applied_effect_;
+}
+
 const AuricField& Building::GetAuricField() const {
   return auric_field_;
 }
 
-Effect* Building::GetAppliedEffect() {
-  return &applied_effect_;
+const std::list<std::shared_ptr<Enemy>>& Building::GetAims() const {
+  return aims_;
+}
+
+bool Building::IsInside(Coordinate point) const {
+  return point.GetVectorTo(position_).GetLength() <= size_.width / 2;
+}
+
+bool Building::IsReadyToCreateProjectiles() const {
+  return is_ready_to_create_projectiles_;
 }

@@ -20,8 +20,7 @@ void Enemy::Move() {
     return;
   }
 
-  position_.MoveTo(destination_,
-                   delta_tick_time_ * speed_ / kTimeScale);
+  MoveToDestination();
   if (position_ == destination_) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
@@ -57,10 +56,6 @@ void Enemy::SetRoad(const Road& road) {
   road_ = std::make_shared<const Road>(road);
   position_ = road_->GetNode(node_number_);
   destination_ = road_->GetNode(node_number_);
-}
-
-bool Enemy::IsDead() const {
-  return is_dead_;
 }
 
 void Enemy::ReceiveDamage(double damage) {

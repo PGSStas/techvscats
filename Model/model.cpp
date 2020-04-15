@@ -26,28 +26,28 @@ void Model::SetGameLevel(int level_id) {
   id_to_projectile_.push_back(std::make_shared<LazerProjectile>(
       projectile_instance_lazer));
 
-  Building building_instance(0, 0, Size(33, 33));
+  Building building_instance(Size(33, 33), 0, 0);
   building_instance.SetAnimationParameters(Qt::gray,
                                            1000);
 
   upgrades_tree_.push_back({1, 2});
 
-  Building building_instance2(1, 24, Size(40, 20));
-  building_instance2.SetProjectile(2, 340, 10, 0);
+  Building building_instance2(Size(40, 20), 1, 24);
+  building_instance2.SetProjectile(0, 10, 340, 2);
   building_instance2.SetAnimationParameters(Qt::blue, 1000,
                                             Qt::red, 300,
                                             Qt::darkYellow, 300);
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3(2, 24, Size(30, 50));
-  building_instance3.SetProjectile(3, 240, 3, 2);
+  Building building_instance3(Size(30, 50), 2, 24);
+  building_instance3.SetProjectile(2, 3, 240, 3);
   building_instance3.SetAnimationParameters(Qt::yellow, 100,
                                             Qt::red, 50,
                                             Qt::darkYellow, 10);
   upgrades_tree_.push_back({3, 1, 0});
 
-  Building building_instance4(3, 24, Size(14, 32));
-  building_instance4.SetProjectile(1, 540, 10, 1);
+  Building building_instance4(Size(14, 32), 3, 24);
+  building_instance4.SetProjectile(1, 54, 540, 1);
   building_instance4.SetAnimationParameters(Qt::green, 1000,
                                             Qt::red, 300,
                                             Qt::darkGreen, 100);
@@ -61,32 +61,62 @@ void Model::SetGameLevel(int level_id) {
   InitializeTowerSlots();
 }
 
-int Model::GetTimeBetweenWaves() const {
-  return time_between_rounds_;
+void Model::AddSpawner(const EnemyGroup& enemy_group) {
+  spawners_.emplace_back(enemy_group);
 }
 
-int Model::GetRoundsCount() const {
-  return rounds_count_;
+void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
+  enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
 }
 
-int Model::GetCurrentRoundNumber() const {
-  return current_round_number_;
+void Model::CreateBuildingAtIndex(int i, int id) {
+  Coordinate position = buildings_[i]->GetPosition();
+  // Create new building by id
+  buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
+  buildings_[i]->SetPosition(position);
+}
+
+void Model::CreateProjectile(const Building& building,
+                             const std::shared_ptr<Enemy>& aim) {
+  int id = building.GetProjectileId();
+  if (const auto& casted =
+        std::dynamic_pointer_cast<AimedProjectile>(id_to_projectile_[id]);
+      casted != nullptr) {
+    projectiles_.push_back(std::make_shared<AimedProjectile>(*casted));
+  }
+  if (const auto& casted =
+        std::dynamic_pointer_cast<BombProjectile>(id_to_projectile_[id]);
+      casted != nullptr) {
+    projectiles_.push_back(std::make_shared<BombProjectile>(*casted));
+  }
+  if (const auto& casted =
+        std::dynamic_pointer_cast<LazerProjectile>(id_to_projectile_[id]);
+      casted != nullptr) {
+    projectiles_.push_back(std::make_shared<LazerProjectile>(*casted));
+  }
+  projectiles_.back()->SetParameters(building.GetPosition(),
+                                     building.GetProjectileSpeedCoefficient(),
+                                     building.GetDamage(), aim);
 }
 
 void Model::IncreaseCurrentRoundNumber() {
   current_round_number_++;
 }
 
-void Model::AddSpawner(const EnemyGroup& enemy_group) {
-  spawners_.emplace_back(enemy_group);
+void Model::ClearGameModel() {
+  current_round_number_ = 0;
+  rounds_count_ = 0;
+  enemies_.clear();
+  buildings_.clear();
+  projectiles_.clear();
+  spawners_.clear();
+  enemy_groups_.clear();
+  roads_.clear();
+  empty_places_for_towers_.clear();
 }
 
-const Road& Model::GetRoad(int i) const {
-  return roads_.at(i);
-}
-
-const std::vector<Road>& Model::GetRoads() const {
-  return roads_;
+Base* Model::GetBase() {
+  return &base_;
 }
 
 std::list<Spawner>* Model::GetSpawners() {
@@ -97,53 +127,52 @@ std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
   return &enemies_;
 }
 
+std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
+  return &projectiles_;
+}
+
+const std::vector<Road>& Model::GetRoads() const {
+  return roads_;
+}
+
 const std::vector<EnemyGroup>& Model::GetEnemyGroupsPerRound(int round) const {
   return enemy_groups_[round];
 }
 
-void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
-  enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
+const std::vector<std::vector<int>>& Model::GetUpgradesTree() const {
+  return upgrades_tree_;
 }
 
-void Model::ClearGameModel() {
-  current_round_number_ = 0;
-  roads_count_ = 0;
-  rounds_count_ = 0;
-  enemies_.clear();
-  buildings_.clear();
-  projectiles_.clear();
-  spawners_.clear();
-  enemy_groups_.clear();
-  roads_.clear();
-  empty_places_for_towers_.clear();
-  qDebug() << "Clear Model";
-}
-
-const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() {
+const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
   return buildings_;
 }
 
-void Model::InitializeTowerSlots() {
-  for (Coordinate coordinate : empty_places_for_towers_) {
-    auto empty_place = std::make_shared<Building>(id_to_building_[0]);
-    empty_place->SetPosition(coordinate);
-    buildings_.push_back(empty_place);
-  }
+const Road& Model::GetRoad(int i) const {
+  return roads_.at(i);
 }
 
-void Model::SetBuildingAtIndex(int i, int id) {
-  Coordinate position = buildings_[i]->GetPosition();
-  // Create new building by id
-  buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
-  buildings_[i]->SetPosition(position);
+const Enemy& Model::GetEnemyById(int id) const {
+  return id_to_enemy_[id];
+}
+
+const Effect& Model::GetEffectById(int id) const {
+  return id_to_effect_[id];
 }
 
 const Building& Model::GetBuildingById(int id) const {
   return id_to_building_[id];
 }
 
-const std::vector<std::vector<int>>& Model::GetUpgradesTree() const {
-  return upgrades_tree_;
+int Model::GetRoundsCount() const {
+  return rounds_count_;
+}
+
+int Model::GetTimeBetweenWaves() const {
+  return time_between_rounds_;
+}
+
+int Model::GetCurrentRoundNumber() const {
+  return current_round_number_;
 }
 
 void Model::LoadLevelFromJson(int level) {
@@ -170,12 +199,12 @@ void Model::LoadLevelFromJson(int level) {
   // Reading information about the roads.
   roads_.clear();
   QJsonArray json_roads = json_object["roads"].toArray();
-  roads_count_ = json_roads.size();
-  roads_.reserve(roads_count_);
+  int roads_count = json_roads.size();
+  roads_.reserve(roads_count);
 
   QJsonArray json_road_nodes;
   QJsonObject json_node;
-  for (int i = 0; i < roads_count_; i++) {
+  for (int i = 0; i < roads_count; i++) {
     json_road_nodes = json_roads[i].toArray();
 
     int node_count = json_road_nodes.size();
@@ -286,42 +315,11 @@ void Model::LoadDatabaseFromJson() {
   Effect::SetEffectVisualizations(effect_visualization);
 }
 
-const Effect& Model::GetEffectById(int id) const {
-  return id_to_effect_[id];
-}
-
-Base* Model::GetBase() {
-  return &base_;
-}
-
-std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
-  return &projectiles_;
-}
-
-void Model::CreateProjectile(const Building& building,
-                             const std::shared_ptr<Enemy>& aim) {
-  int id = building.GetProjectileId();
-  if (const auto& casted =
-        std::dynamic_pointer_cast<AimedProjectile>(id_to_projectile_[id]);
-      casted != nullptr) {
-    projectiles_.push_back(std::make_shared<AimedProjectile>(*casted));
+void Model::InitializeTowerSlots() {
+  for (Coordinate coordinate : empty_places_for_towers_) {
+    auto empty_place = std::make_shared<Building>(id_to_building_[0]);
+    empty_place->SetPosition(coordinate);
+    buildings_.push_back(empty_place);
   }
-  if (const auto& casted =
-        std::dynamic_pointer_cast<BombProjectile>(id_to_projectile_[id]);
-      casted != nullptr) {
-    projectiles_.push_back(std::make_shared<BombProjectile>(*casted));
-  }
-  if (const auto& casted =
-        std::dynamic_pointer_cast<LazerProjectile>(id_to_projectile_[id]);
-      casted != nullptr) {
-    projectiles_.push_back(std::make_shared<LazerProjectile>(*casted));
-  }
-  projectiles_.back()->SetParameters(building.GetPosition(),
-                                     building.GetProjectileSpeedCoefficient(),
-                                     building.GetDamage(), aim);
-}
-
-const Enemy& Model::GetEnemyById(int id) const {
-  return id_to_enemy_[id];
 }
 

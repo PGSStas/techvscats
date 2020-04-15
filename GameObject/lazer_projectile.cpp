@@ -6,6 +6,15 @@ LazerProjectile::LazerProjectile(const LazerProjectile& other)
 LazerProjectile::LazerProjectile(Size size) :
     AbstractProjectile(size, 0) {}
 
+void LazerProjectile::Tick(int current_time) {
+  UpdateTime(current_time);
+  if (object_life_time_ > iteration_time_ || aim_->IsDead()) {
+    position_ = aim_->GetPosition();
+    is_end_reached_ = true;
+    is_dead_ = true;
+  }
+}
+
 void LazerProjectile::Draw(QPainter* painter,
                            const SizeHandler& handler) const {
   painter->save();
@@ -18,14 +27,6 @@ void LazerProjectile::Draw(QPainter* painter,
   painter->restore();
 }
 
-void LazerProjectile::Tick(int current_time) {
-  UpdateTime(current_time);
-  if (object_life_time_ > iteration_time_ || aim_->IsDead()) {
-    position_ = aim_->GetPosition();
-    is_end_reached_ = true;
-    is_dead_ = true;
-  }
-}
 void LazerProjectile::SetParameters(Coordinate position,
                                     double speed_coefficient,
                                     double damage,

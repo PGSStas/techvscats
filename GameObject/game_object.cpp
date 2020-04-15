@@ -12,12 +12,12 @@ void GameObject::UpdateTime(int current_time) {
   object_last_time_ = current_time;
 }
 
-Coordinate GameObject::GetPosition() const {
-  return position_;
-}
-
 void GameObject::SetPosition(Coordinate position) {
   position_ = position;
+}
+
+Coordinate GameObject::GetPosition() const {
+  return position_;
 }
 
 Size GameObject::GetSize() const {

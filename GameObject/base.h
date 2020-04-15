@@ -12,11 +12,11 @@ class Base : public GameObject {
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
+  void DecreaseHealth(double damage);
 
   double GetCurrentHealth() const;
   double GetMaxHealth() const;
   bool IsDead() const;
-  void DecreaseHealth(double damage);
 
  private:
   double regeneration_rate_ = 0.05;

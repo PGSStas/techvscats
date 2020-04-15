@@ -6,10 +6,10 @@
 #include <chrono>
 #include <random>
 
+#include "Model/road.h"
 #include "moving_object.h"
 #include "effect.h"
 #include "auric_field.h"
-#include "Model/road.h"
 
 class Enemy : public MovingObject {
  public:
@@ -30,7 +30,6 @@ class Enemy : public MovingObject {
   const AuricField& GetAuricField() const;
   Effect* GetAppliedEffect();
   double GetDamage() const;
-  bool IsDead() const;
   void ReceiveDamage(double damage);
 
  private:

@@ -15,8 +15,8 @@ class AuricField {
             const SizeHandler& size_handler) const;
 
   void SetCarrierCoordinate(Coordinate* carrier_coordinates);
-  bool IsInRadius(const Coordinate& coordinate) const;
   int GetEffectId() const;
+  bool IsInRadius(const Coordinate& coordinate) const;
   bool IsValid() const;
 
  private:

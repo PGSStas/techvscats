@@ -15,6 +15,7 @@ class Spawner {
   explicit Spawner(const EnemyGroup& wave);
 
   void Tick(int current_time);
+
   int PrepareNextEnemyId();
   int GetRoad() const;
   bool IsReadyToSpawn() const;

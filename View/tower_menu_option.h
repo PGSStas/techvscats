@@ -14,19 +14,17 @@ class TowerMenuOption {
   TowerMenuOption(const Building& replacing_tower,
       const std::function<void()>& action);
 
-  int GetMaxSize() const;
-  const Building& GetReplacingTower() const;
-  // Determines if press_position is inside a button
-  // with left top angle in option_position
-  bool IsPressed(Coordinate option_position, Coordinate press_position) const;
-
-  void Draw(QPainter* painter, Coordinate position, Size current_size) const;
   void MakeAction();
+  void Draw(QPainter* painter, Coordinate position, Size current_size) const;
+
+  const Building& GetReplacingTower() const;
+  bool IsPressed(Coordinate option_position, Coordinate press_position) const;
+  int GetMaxSize() const;
 
  private:
-  const int kMaxSize_ = 36;
-  const Building& replacing_tower_;
   std::function<void()> action_;
+  const Building& replacing_tower_;
+  const int kMaxSize_ = 36;
 };
 
 #endif  // VIEW_TOWER_MENU_OPTION_H_

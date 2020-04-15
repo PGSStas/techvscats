@@ -202,7 +202,7 @@ void Controller::AddEnemyToModel(const Enemy& enemy) const {
 }
 
 void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
-  model_->SetBuildingAtIndex(index_in_buildings, replacing_id);
+  model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
 }
 
 void Controller::CreateTowerMenu(int tower_index) {
@@ -220,7 +220,7 @@ void Controller::CreateTowerMenu(int tower_index) {
         }));
   }
   auto menu = std::make_shared<TowerMenu>(
-      current_game_time_, building, options);
+      current_game_time_, *building, options);
   view_->ShowTowerMenu(menu);
 }
 
@@ -235,7 +235,7 @@ void Controller::MousePress(Coordinate position) {
     // Check if that's the same building on which menu was already open
     // (which means now we should close it)
     if (view_->IsTowerMenuEnabled()
-        && view_->GetTowerMenu()->GetTower()->GetPosition()
+        && view_->GetTowerMenu()->GetTower().GetPosition()
             == building->GetPosition()) {
       view_->DisableTowerMenu();
       return;
@@ -247,7 +247,7 @@ void Controller::MousePress(Coordinate position) {
   if (!view_->IsTowerMenuEnabled()) {
     return;
   }
-  auto pressed = view_->GetTowerMenu()->GetButtonContaining(position);
+  auto pressed = view_->GetTowerMenu()->GetButtonInside(position);
   if (pressed != nullptr) {
     pressed->MakeAction();
   }
@@ -259,7 +259,7 @@ void Controller::MouseMove(Coordinate position) {
     return;
   }
 
-  auto button = view_->GetTowerMenu()->GetButtonContaining(position);
+  auto button = view_->GetTowerMenu()->GetButtonInside(position);
   view_->GetTowerMenu()->Hover(button);
 }
 
