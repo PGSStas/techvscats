@@ -6,11 +6,7 @@ AnimationPlayer::AnimationPlayer
 
 const QImage& AnimationPlayer::GetNextFrame(int time) {
   if (time - last_frame_change_time_ >= time_between_frames_) {
-    if (current_frame_ + 1 == frames_->size()) {
-      current_frame_ = 0;
-    } else {
-      ++current_frame_;
-    }
+    current_frame_ = (current_frame_ + 1) % frames_->size();
     last_frame_change_time_ = time;
   }
   return (*frames_)[current_frame_];

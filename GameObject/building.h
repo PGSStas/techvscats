@@ -28,11 +28,13 @@ class Building : public GameObject {
   int GetCurrentLevel() const;
   int GetActionRange() const;
 
- protected:
+ private:
   int id_ = 0;
   int max_level_ = 0;
   int current_level_ = 0;
   int action_range_ = 75;
+
+  const int kRadius = 45;
 
   // later here should be images to draw
   QColor draw_color_ = QColor("black");

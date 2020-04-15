@@ -10,7 +10,7 @@ void Enemy::Move() {
     return;
   }
   moving_vector_ = position_.GetDistanceTo(destination_);
-  if (std::abs(moving_vector_.GetLength()) > constants::kEpsilon) {
+  if (moving_vector_.GetLength() > constants::kEpsilon) {
     moving_vector_ /= moving_vector_.GetLength();
     moving_vector_ *= speed_ * speed_coefficient_;
   }

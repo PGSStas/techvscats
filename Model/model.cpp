@@ -206,6 +206,6 @@ const QPixmap& Model::GetMapImage() const {
 }
 
 void Model::LoadDatabase() {
-  enemy_images_.emplace_back(":resources/images/enemy-1.png");
-  enemy_images_.emplace_back(":resources/images/enemy-2.png");
+  enemy_images_.emplace_back(":resources/images/enemy_1.png");
+  enemy_images_.emplace_back(":resources/images/enemy_2.png");
 }
