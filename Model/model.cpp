@@ -27,31 +27,28 @@ void Model::SetGameLevel(int level_id) {
       projectile_instance_lazer));
 
   Building building_instance(Size(33, 33), 0, 0);
-  building_instance.SetAnimationParameters(Qt::gray,
-                                           1000);
+  building_instance.SetAnimationParameters(Qt::gray, Qt::gray, Qt::gray,
+                                           {0, 0, 0});
 
   upgrades_tree_.push_back({1, 2});
 
   Building building_instance2(Size(40, 20), 1, 24);
   building_instance2.SetProjectile(0, 10, 340, 2);
-  building_instance2.SetAnimationParameters(Qt::blue, 1000,
-                                            Qt::red, 300,
-                                            Qt::darkYellow, 300);
+  building_instance2.SetAnimationParameters(Qt::blue, Qt::red, Qt::darkYellow,
+                                            {1000, 300, 300});
   upgrades_tree_.push_back({3, 0});
 
   Building building_instance3(Size(30, 50), 2, 24, AuricField(200, 2));
   building_instance3.SetProjectile(2, 3, 240, 3);
-  building_instance3.SetAnimationParameters(Qt::yellow, 100,
-                                            Qt::red, 50,
-                                            Qt::darkYellow, 10);
+  building_instance3.SetAnimationParameters(Qt::yellow, Qt::red, Qt::darkYellow,
+                                            {100, 50, 10});
 
   upgrades_tree_.push_back({3, 1, 0});
 
   Building building_instance4(Size(14, 32), 3, 24);
   building_instance4.SetProjectile(1, 54, 540, 1);
-  building_instance4.SetAnimationParameters(Qt::green, 1000,
-                                            Qt::red, 300,
-                                            Qt::darkGreen, 100);
+  building_instance4.SetAnimationParameters(Qt::green, Qt::red, Qt::darkGreen,
+                                            {1000, 300, 100});
   upgrades_tree_.push_back({1, 0});
 
   id_to_building_.push_back(building_instance);

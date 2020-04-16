@@ -28,11 +28,9 @@ class Building : public GameObject {
             const SizeHandler& size_handler) const override;
 
   void SetAnimationParameters(const QColor& reload_color,
-                              int reload_time,
-                              const QColor& pre_color = Qt::black,
-                              int before_fire_time = 0,
-                              const QColor& post_color = Qt::black,
-                              int after_fire_time = 0);
+                              const QColor& pre_color ,
+                              const QColor& post_color ,
+                              const std::vector<int>& action_time);
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
                      int max_aims);
   void SetReadyToCreateProjectileToFalse();
@@ -59,7 +57,7 @@ class Building : public GameObject {
   Action action_ = Action::kReload;
   int wait_time_ = 0;
 
-  int action_time[3] = {0, 0, 0};
+  std::vector<int> action_time_;
   // TODO(some body)  here should be Images to draw
   QColor reload_color_ = QColor("black");
   QColor before_fire_color_ = QColor("black");
@@ -70,7 +68,7 @@ class Building : public GameObject {
   uint max_aims_ = 1;
   double attack_damage_ = 0;
   bool is_ready_to_create_projectiles_ = false;
-  bool is_ready_to_shoot = false;
+  bool is_ready_to_shoot_ = false;
   std::list<std::shared_ptr<Enemy>> aims_;
 };
 
