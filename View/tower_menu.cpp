@@ -38,8 +38,7 @@ void TowerMenu::Draw(QPainter* painter,
   Size window_button_size = size_handler.GameToWindowSize(
       Size(button_size, button_size));
   for (size_t i = 0; i < options_.size(); i++) {
-    options_[i]->
-        Draw(painter, size_handler.GameToWindowCoordinate(
+    options_[i]->Draw(painter, size_handler.GameToWindowCoordinate(
         CalculateCoordinate(i, button_size)), window_button_size);
   }
   painter->restore();

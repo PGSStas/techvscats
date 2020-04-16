@@ -9,8 +9,8 @@
 
 class LazerProjectile : public AbstractProjectile {
  public:
-  LazerProjectile(const LazerProjectile& other);
   explicit LazerProjectile(Size size);
+  LazerProjectile(const LazerProjectile& other) = default;
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;

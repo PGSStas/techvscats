@@ -18,8 +18,9 @@ enum class Action {
 
 class Building : public GameObject {
  public:
+  explicit Building(Size size = {20, 20}, int id = 0, int settle_cost = 0,
+                    AuricField aura = AuricField(-1, -1));
   Building(const Building& other);
-  explicit Building(Size size = {20, 20}, int id = 0, int settle_cost = 0);
 
   void Tick(int current_time) override;
   void UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies);

@@ -10,6 +10,19 @@ Enemy::Enemy(Size size, double speed, double damage, double armor, int reward,
   auric_field.SetCarrierCoordinate(&position_);
 }
 
+Enemy::Enemy(const Enemy& enemy_instance)
+    : MovingObject(enemy_instance.GetSize(), enemy_instance.speed_),
+      damage_(enemy_instance.damage_), armor_(enemy_instance.armor_),
+      reward_(enemy_instance.reward_), max_health_(enemy_instance.max_health_),
+      current_health_(enemy_instance.max_health_),
+      auric_field_(enemy_instance.auric_field_) {
+  auric_field_.SetCarrierCoordinate(&position_);
+  node_number_ = 0;
+  if (enemy_instance.road_ != nullptr) {
+    SetRoad(*enemy_instance.road_);
+  }
+}
+
 void Enemy::Tick(int current_time) {
   UpdateTime(current_time);
   Move();
@@ -52,38 +65,6 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->restore();
 }
 
-void Enemy::SetRoad(const Road& road) {
-  road_ = std::make_shared<const Road>(road);
-  position_ = road_->GetNode(node_number_);
-  destination_ = road_->GetNode(node_number_);
-}
-
-void Enemy::ReceiveDamage(double damage) {
-  // Temporary formula.
-  double armor = armor_ * applied_effect_.GetArmorCoefficient();
-  double multiplier = 1 - ((0.052 * armor) / (0.9 + 0.048 * std::abs(armor)));
-  current_health_ -= std::min(multiplier * damage, current_health_);
-  if (current_health_ <= kEpsilon) {
-    is_dead_ = true;
-  }
-}
-
-Enemy::Enemy(const Enemy& enemy_instance)
-    : MovingObject(enemy_instance.GetSize(), enemy_instance.speed_),
-      damage_(enemy_instance.damage_), armor_(enemy_instance.armor_),
-      reward_(enemy_instance.reward_), max_health_(enemy_instance.max_health_),
-      current_health_(enemy_instance.max_health_),
-      auric_field_(enemy_instance.auric_field_) {
-  auric_field_.SetCarrierCoordinate(&position_);
-  node_number_ = 0;
-  if (enemy_instance.road_ != nullptr) {
-    SetRoad(*enemy_instance.road_);
-  }
-}
-double Enemy::GetDamage() const {
-  return damage_ * applied_effect_.GetDamageCoefficient();
-}
-
 void Enemy::DrawHealthBar(QPainter* painter,
                           const SizeHandler& size_handler) const {
   painter->save();
@@ -98,11 +79,30 @@ void Enemy::DrawHealthBar(QPainter* painter,
   painter->restore();
 }
 
+void Enemy::SetRoad(const Road& road) {
+  road_ = std::make_shared<const Road>(road);
+  position_ = road_->GetNode(node_number_);
+  destination_ = road_->GetNode(node_number_);
+}
 const AuricField& Enemy::GetAuricField() const {
   return auric_field_;
 }
 
 Effect* Enemy::GetAppliedEffect() {
   return &applied_effect_;
+}
+
+double Enemy::GetDamage() const {
+  return damage_ * applied_effect_.GetDamageCoefficient();
+}
+
+void Enemy::ReceiveDamage(double damage) {
+  // Temporary formula.
+  double armor = armor_ * applied_effect_.GetArmorCoefficient();
+  double multiplier = 1 - ((0.052 * armor) / (0.9 + 0.048 * std::abs(armor)));
+  current_health_ -= std::min(multiplier * damage, current_health_);
+  if (current_health_ <= kEpsilon) {
+    is_dead_ = true;
+  }
 }
 

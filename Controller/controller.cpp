@@ -109,7 +109,7 @@ void Controller::TickEnemies() {
 
 void Controller::TickBuildings() {
   const auto& buildings = model_->GetBuildings();
-  for (auto& building : buildings) {
+  for (const auto& building : buildings) {
     building->Tick(current_game_time_);
     building->UpdateAim(*model_->GetEnemies());
     if (!building->IsReadyToCreateProjectiles()) {
@@ -117,7 +117,7 @@ void Controller::TickBuildings() {
     }
     const auto& aims = building->GetAims();
     building->SetReadyToCreateProjectileToFalse();
-    for (auto& aim : aims) {
+    for (const auto& aim : aims) {
       model_->CreateProjectile(aim, *building);
     }
 
@@ -149,20 +149,20 @@ void Controller::TickProjectiles() {
 
 void Controller::TickAuras() {
   const auto& enemies = *model_->GetEnemies();
-  for (auto& enemy : enemies) {
+  for (const auto& enemy : enemies) {
     enemy->GetAppliedEffect()->ResetEffect();
   }
 
   const auto& buildings = model_->GetBuildings();
-  for (auto& building : buildings) {
+  for (const auto& building : buildings) {
     building->GetAppliedEffect()->ResetEffect();
   }
 
-  for (auto& enemy : enemies) {
+  for (const auto& enemy : enemies) {
     ApplyEffectToAllInstances(enemy->GetAuricField());
   }
 
-  for (auto& building : buildings) {
+  for (const auto& building : buildings) {
     ApplyEffectToAllInstances(building->GetAuricField());
   }
 }

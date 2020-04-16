@@ -19,9 +19,9 @@ class BombProjectile : public AbstractProjectile {
   bool IsInAffectedArea(const Enemy& enemy) override;
 
  private:
-  double effect_radius_ = 0;
-  double up_force_ = 0;
-  Coordinate start_position_ = {0, 0};
+  double effect_radius_;
+  double up_force_;
+  Coordinate start_position_;
   double additional_draw_height_ = 0;
 };
 

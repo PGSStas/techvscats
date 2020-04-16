@@ -44,7 +44,7 @@ class Effect {
       const std::vector<EffectVisualization>& effect_visualization);
 
   EffectTarget GetEffectTarget() const;
-  double GetMooveSpeedCoefficient() const;
+  double GetMoveSpeedCoefficient() const;
   double GetArmorCoefficient() const;
   double GetDamageCoefficient() const;
   double GetAttackRateCoefficient() const;

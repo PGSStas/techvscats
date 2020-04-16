@@ -31,11 +31,11 @@ class Enemy : public MovingObject {
   void ReceiveDamage(double damage);
 
  private:
-  double damage_ = 0;
-  double armor_ = 0;
-  int reward_ = 0;
-  double max_health_ = 2;
-  double current_health_ = 0;
+  double damage_;
+  double armor_;
+  int reward_;
+  double max_health_;
+  double current_health_;
 
   AuricField auric_field_;
   Effect applied_effect_ = Effect(EffectTarget::kEnemy);

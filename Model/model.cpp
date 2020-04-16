@@ -39,11 +39,12 @@ void Model::SetGameLevel(int level_id) {
                                             Qt::darkYellow, 300);
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3(Size(30, 50), 2, 24);
+  Building building_instance3(Size(30, 50), 2, 24, AuricField(200, 2));
   building_instance3.SetProjectile(2, 3, 240, 3);
   building_instance3.SetAnimationParameters(Qt::yellow, 100,
                                             Qt::red, 50,
                                             Qt::darkYellow, 10);
+
   upgrades_tree_.push_back({3, 1, 0});
 
   Building building_instance4(Size(14, 32), 3, 24);
@@ -148,7 +149,7 @@ const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
 }
 
 const Road& Model::GetRoad(int i) const {
-  return roads_.at(i);
+  return roads_[i];
 }
 
 const Enemy& Model::GetEnemyById(int id) const {
@@ -316,6 +317,7 @@ void Model::LoadDatabaseFromJson() {
 }
 
 void Model::InitializeTowerSlots() {
+  buildings_.reserve(empty_places_for_towers_.size());
   for (Coordinate coordinate : empty_places_for_towers_) {
     auto empty_place = std::make_shared<Building>(id_to_building_[0]);
     empty_place->SetPosition(coordinate);

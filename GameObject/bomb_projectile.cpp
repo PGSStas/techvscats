@@ -7,10 +7,8 @@ BombProjectile::BombProjectile(const BombProjectile& other)
 
 BombProjectile::BombProjectile(Size size, double speed, double effect_radius,
                                double up_force)
-    : AbstractProjectile(size, speed) {
-  effect_radius_ = effect_radius;
-  up_force_ = up_force;
-}
+    : AbstractProjectile(size, speed),
+      effect_radius_(effect_radius), up_force_(up_force) {}
 
 void BombProjectile::Tick(int current_time) {
   UpdateTime(current_time);

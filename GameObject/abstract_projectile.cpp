@@ -1,12 +1,12 @@
 #include "abstract_projectile.h"
 
+AbstractProjectile::AbstractProjectile(Size size, double speed)
+    : MovingObject(size, speed) {}
+
 AbstractProjectile::AbstractProjectile(const AbstractProjectile& other) :
     MovingObject(other.size_, other.speed_, other.position_) {
   SetAnimationParameters(other.draw_color_, other.iteration_time_);
 }
-
-AbstractProjectile::AbstractProjectile(Size size, double speed)
-    : MovingObject(size, speed) {}
 
 void AbstractProjectile::Move() {
   MoveToDestination();

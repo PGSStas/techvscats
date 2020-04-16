@@ -1,10 +1,7 @@
 #include "lazer_projectile.h"
 
-LazerProjectile::LazerProjectile(const LazerProjectile& other)
-    : AbstractProjectile(other) {}
-
 LazerProjectile::LazerProjectile(Size size) :
-    AbstractProjectile(size, 0) {}
+AbstractProjectile(size, 0) {}
 
 void LazerProjectile::Tick(int current_time) {
   UpdateTime(current_time);

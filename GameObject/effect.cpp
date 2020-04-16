@@ -35,8 +35,7 @@ void Effect::DrawEffectsIcons(QPainter* painter,
   painter->setBrush(Qt::red);
   Coordinate point =
       size_handler.GameToWindowCoordinate(position - Size(18, -18));
-  Size size =
-      size_handler.GameToWindowSize(Size(6, 6));
+  Size size = size_handler.GameToWindowSize(Size(6, 6));
 
   DrawEffectIcon(painter, &point, size, CoefficientType::kDamage);
 
@@ -60,7 +59,7 @@ EffectTarget Effect::GetEffectTarget() const {
   return effect_target_;
 }
 
-double Effect::GetMooveSpeedCoefficient() const {
+double Effect::GetMoveSpeedCoefficient() const {
   return coefficients_[static_cast<int>(CoefficientType::kMoveSpeed)];
 }
 

@@ -8,8 +8,8 @@
 
 class AbstractProjectile : public MovingObject {
  public:
+  AbstractProjectile(Size size, double speed);
   AbstractProjectile(const AbstractProjectile& other);
-  explicit AbstractProjectile(Size size, double speed);
 
   void Move() override;
 

@@ -1,18 +1,5 @@
 #include "view.h"
 
-void View::DrawWindow(QPainter* painter, const QBrush& brush) {
-  painter->save();
-  painter->setBrush(QColor("#000080"));
-  painter->drawRect(0, 0, width(), height());
-  painter->setBrush(brush);
-  Coordinate top_corner =
-      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
-  painter->drawRect(top_corner.x, top_corner.y,
-                    rect_size.width, rect_size.height);
-  painter->restore();
-}
-
 View::View(AbstractController* controller) : controller_(controller) {
   setMinimumSize(640, 360);
   setMouseTracking(true);
@@ -87,9 +74,21 @@ void View::DisableTowerMenu() {
   is_tower_menu_enabled_ = false;
 }
 
+void View::DrawWindow(QPainter* painter, const QBrush& brush) {
+  painter->save();
+  painter->setBrush(QColor("#000080"));
+  painter->drawRect(0, 0, width(), height());
+  painter->setBrush(brush);
+  Coordinate top_corner =
+      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+  painter->drawRect(top_corner.x, top_corner.y,
+                    rect_size.width, rect_size.height);
+  painter->restore();
+}
+
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
-  painter.setRenderHint(QPainter::Antialiasing);
 
   Coordinate label_position = size_handler_.GameToWindowCoordinate({300, 10});
   wave_status_label_->move(label_position.x, label_position.y);

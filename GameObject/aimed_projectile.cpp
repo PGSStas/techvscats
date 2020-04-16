@@ -1,8 +1,5 @@
 #include "aimed_projectile.h"
 
-AimedProjectile::AimedProjectile(const AimedProjectile& other)
-    : AbstractProjectile(other) {}
-
 AimedProjectile::AimedProjectile(Size size, double speed)
     : AbstractProjectile(size, speed) {}
 

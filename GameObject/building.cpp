@@ -3,17 +3,19 @@
 
 #include "building.h"
 
+Building::Building(Size size, int id, int settle_cost, AuricField aura) :
+    GameObject(size), auric_field_(aura), id_(id), cost_(settle_cost) {
+  auric_field_.SetCarrierCoordinate(&position_);
+}
+
 Building::Building(const Building& other) :
-    Building(other.size_, other.id_, other.cost_) {
+    Building(other.size_, other.id_, other.cost_, other.auric_field_) {
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
   SetAnimationParameters(other.reload_color_, other.action_time[0],
                          other.before_fire_color_, other.action_time[1],
                          other.after_fire_color_, other.action_time[2]);
 }
-
-Building::Building(Size size, int id, int settle_cost) :
-    GameObject(size), id_(id), cost_(settle_cost) {}
 
 void Building::Tick(int current_time) {
   if (max_aims_ == 0) {
@@ -75,7 +77,7 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
     return;
   }
 
-  for (auto& enemy : enemies) {
+  for (const auto& enemy : enemies) {
     if (aims_.size() == max_aims_
         || aims_.size() == enemies.size()) {
       break;
@@ -164,7 +166,7 @@ double Building::GetDamage() const {
 }
 
 double Building::GetProjectileSpeedCoefficient() const {
-  return applied_effect_.GetMooveSpeedCoefficient();
+  return applied_effect_.GetMoveSpeedCoefficient();
 }
 
 Effect* Building::GetAppliedEffect() {
