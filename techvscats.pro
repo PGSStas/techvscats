@@ -25,7 +25,7 @@ SOURCES += \
         GameObject/effect.cpp \
         GameObject/enemy.cpp \
         GameObject/game_object.cpp \
-        GameObject/lazer_projectile.cpp \
+        GameObject/laser_projectile.cpp \
         GameObject/moving_object.cpp \
         Model/coordinate.cpp \
         Model/model.cpp \
@@ -49,7 +49,7 @@ HEADERS += \
         GameObject/effect.h \
         GameObject/enemy.h \
         GameObject/game_object.h \
-        GameObject/lazer_projectile.h \
+        GameObject/laser_projectile.h \
         GameObject/moving_object.h \
         Model/constants.h \
         Model/coordinate.h \

@@ -7,9 +7,9 @@
 
 class BombProjectile : public AbstractProjectile {
  public:
-  BombProjectile(const BombProjectile& other);
   explicit BombProjectile(Size size, double speed, double effect_radius,
                           double up_force);
+  BombProjectile(const BombProjectile& other);
   virtual ~BombProjectile() = default;
 
 

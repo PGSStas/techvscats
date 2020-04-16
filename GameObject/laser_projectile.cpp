@@ -1,7 +1,7 @@
 #include "laser_projectile.h"
 
 LaserProjectile::LaserProjectile(Size size) :
-AbstractProjectile(size, 0) {}
+    AbstractProjectile(size, 0) {}
 
 void LaserProjectile::Tick(int current_time) {
   UpdateTime(current_time);

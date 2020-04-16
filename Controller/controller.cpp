@@ -246,6 +246,8 @@ void Controller::MousePress(Coordinate position) {
   if (!view_->IsTowerMenuEnabled()) {
     return;
   }
+
+  // TODO(elizabethfeden): qt buttons.
   auto pressed = view_->GetTowerMenu()->GetButtonInside(position);
   if (pressed != nullptr) {
     pressed->MakeAction();

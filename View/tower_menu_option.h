@@ -9,6 +9,7 @@
 #include "GameObject/building.h"
 #include "Model/coordinate.h"
 
+// TODO(elizabethfeden): qt buttons.
 class TowerMenuOption {
  public:
   TowerMenuOption(const Building& replacing_tower,
