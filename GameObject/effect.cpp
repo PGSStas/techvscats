@@ -22,7 +22,7 @@ Effect::Effect(EffectTarget effect_type,
 }
 
 void Effect::ResetEffect() {
-  std::fill(coefficients_.begin(), coefficients_.end(), 1);
+  std::fill(coefficients_.begin(), coefficients_.end(), 1.0);
 }
 
 void Effect::DrawEffectsIcons(QPainter* painter,
