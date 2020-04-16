@@ -4,19 +4,18 @@
 #include <memory>
 #include <QPainter>
 
-#include "View/size_handler.h"
 #include "Model/coordinate.h"
+#include "View/size_handler.h"
 
 class AuricField {
  public:
   explicit AuricField(double effect_radius = -1, int effect_id = -1);
-  void SetCarrierCoordinate(Coordinate* carrier_coordinates);
-
-  int GetEffectId() const;
 
   void Draw(QPainter* painter,
-            const std::shared_ptr<SizeHandler>& size_handler) const;
+            const SizeHandler& size_handler) const;
 
+  void SetCarrierCoordinate(Coordinate* carrier_coordinates);
+  int GetEffectId() const;
   bool IsInRadius(const Coordinate& coordinate) const;
   bool IsValid() const;
 

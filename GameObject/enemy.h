@@ -6,41 +6,37 @@
 #include <chrono>
 #include <random>
 
+#include "Model/road.h"
 #include "moving_object.h"
 #include "effect.h"
 #include "auric_field.h"
-#include "Model/road.h"
 
 class Enemy : public MovingObject {
  public:
-  Enemy(double damage, double armor, int reward,
-        double speed, double max_health,
+  Enemy(Size size, double speed, double damage,
+        double armor, int reward, double max_health,
         AuricField auric_field = AuricField(-1, -1));
   Enemy(const Enemy& enemy_instance);
+  ~Enemy() override = default;
 
-  void Tick() override;
+  void Tick(int current_time) override;
   void Move() override;
-  void Draw(QPainter* painter,
-            const std::shared_ptr<SizeHandler>& size_handler) const override;
-  void DrawHealthBar(QPainter* painter,
-                     std::shared_ptr<SizeHandler> size_handler) const;
+  void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
+  void DrawHealthBar(QPainter* painter, const SizeHandler& size_handler) const;
 
   void SetRoad(const Road& road);
 
   const AuricField& GetAuricField() const;
   Effect* GetAppliedEffect();
   double GetDamage() const;
-  bool IsDead() const;
-
   void ReceiveDamage(double damage);
 
  private:
-  double damage_ = 0;
-  double armor_ = 0;
-  int reward_ = 0;
-  double current_health_ = 0;
-  double max_health_ = 0;
-  bool is_dead_ = false;
+  double damage_;
+  double armor_;
+  int reward_;
+  double max_health_;
+  double current_health_;
 
   AuricField auric_field_;
   Effect applied_effect_ = Effect(EffectTarget::kEnemy);

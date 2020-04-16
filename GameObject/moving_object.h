@@ -5,16 +5,21 @@
 
 class MovingObject : public GameObject {
  public:
-  MovingObject() = default;
-  explicit MovingObject(double speed);
+  MovingObject(Size size, double speed, Coordinate position = {0, 0},
+               Coordinate destination = {0, 0});
+  ~MovingObject() override = default;
 
+  void MoveToDestination();
   virtual void Move() = 0;
+  virtual bool IsDead() const;
   bool IsEndReached() const;
 
  protected:
-  bool is_end_reached_ = false;
-  Coordinate destination_ = Coordinate(0, 0);
   double speed_;
+  Coordinate destination_;
+  bool is_end_reached_ = false;
+  bool is_dead_ = false;
+  double speed_coefficient_ = 1;
 };
 
 #endif  // GAMEOBJECT_MOVING_OBJECT_H_

@@ -1,16 +1,13 @@
 #include "controller.h"
-#include <QDebug>
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)),
                            game_mode_(WindowType::kMainMenu) {}
 
 void Controller::StartGame(int level_id) {
-  qDebug() << "Game Start!";
+  current_game_time_ = 0;
   game_mode_ = WindowType::kGame;
-
-  last_round_start_time_ = current_time_;
-  has_unprocessed_rounds_ = true;
+  last_round_start_time_ = current_game_time_;
 
   model_->SetGameLevel(level_id);
 
@@ -21,18 +18,24 @@ void Controller::StartGame(int level_id) {
 }
 
 void Controller::EndGame(Exit) {
-  model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMenuUi();
+  model_->ClearGameModel();
   game_mode_ = WindowType::kMainMenu;
+  current_game_time_ = 0;
 }
 
 void Controller::Tick(int current_time) {
-  current_time_ = current_time;
-  if (game_mode_ == WindowType::kGame) {
-    GameProcess();
-  } else {
-    MenuProcess();
+  current_game_time_ = current_time;
+  switch (game_mode_) {
+    case WindowType::kGame: {
+      GameProcess();
+      break;
+    }
+    case WindowType::kMainMenu: {
+      MenuProcess();
+      break;
+    }
   }
 }
 
@@ -42,8 +45,9 @@ void Controller::GameProcess() {
   }
   TickSpawners();
   TickEnemies();
+  TickBuildings();
+  TickProjectiles();
   TickAuras();
-  model_->GetBase()->Tick();
 }
 
 void Controller::MenuProcess() {}
@@ -51,39 +55,43 @@ void Controller::MenuProcess() {}
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
-  if (!has_unprocessed_rounds_ || current_time_ - last_round_start_time_
-      < model_->GetTimeBetweenWaves()) {
+  if (!model_->GetEnemies()->empty()
+      || current_round_number == model_->GetRoundsCount()
+      || !model_->GetSpawners()->empty()) {
     return false;
   }
 
-  last_round_start_time_ = current_time_;
-  if (current_round_number == model_->GetRoundsCount()) {
-    has_unprocessed_rounds_ = false;
-    qDebug() << "Rounds end.";
+  if (!is_prepairing_to_spawn_) {
+    last_round_start_time_ = current_game_time_;
+    is_prepairing_to_spawn_ = true;
+  }
+
+  if (current_game_time_ - last_round_start_time_
+      < model_->GetPrepairTimeBetweenRounds()) {
     return false;
   }
 
+  last_round_start_time_ = current_game_time_;
+  is_prepairing_to_spawn_ = false;
   return true;
 }
 
 void Controller::CreateNextWave() {
-  auto&& enemy_groups =
-      model_->GetEnemyGroupsPerRound(model_->GetCurrentRoundNumber());
+  auto&& enemy_groups = model_->GetEnemyGroupsPerRound(
+      model_->GetCurrentRoundNumber());
   for (const auto& enemy_group : enemy_groups) {
     model_->AddSpawner(enemy_group);
   }
-
   model_->IncreaseCurrentRoundNumber();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
-  qDebug() << "Round!";
 }
 
 void Controller::TickSpawners() {
   auto spawners = model_->GetSpawners();
-  spawners->remove_if([&](const Spawner& spawner) { return spawner.IsDead(); });
+  spawners->remove_if([](const Spawner& spawner) { return spawner.IsDead(); });
   for (auto& spawner : *spawners) {
-    spawner.Tick(current_time_ - last_round_start_time_);
+    spawner.Tick(current_game_time_ - last_round_start_time_);
     if (spawner.IsReadyToSpawn()) {
       Enemy enemy = model_->GetEnemyById(spawner.PrepareNextEnemyId());
       enemy.SetRoad(model_->GetRoad(spawner.GetRoad()));
@@ -94,47 +102,73 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
+  enemies->remove_if([](const auto& enemy) {
+    return enemy->IsDead() || enemy->IsEndReached();
+  });
   auto base = model_->GetBase();
-
   for (auto& enemy : *enemies) {
-    enemy->Tick();
+    enemy->Tick(current_game_time_);
     if (enemy->IsEndReached()) {
       base->DecreaseHealth(enemy->GetDamage());
     }
   }
-  enemies->remove_if([&](const std::shared_ptr<Enemy>& enemy) {
-    return enemy->IsDead() || enemy->IsEndReached();
+}
+
+void Controller::TickBuildings() {
+  const auto& buildings = model_->GetBuildings();
+  for (const auto& building : buildings) {
+    building->Tick(current_game_time_);
+    building->UpdateAim(*model_->GetEnemies());
+    if (!building->IsReadyToCreateProjectiles()) {
+      continue;
+    }
+    const auto& aims = building->GetAims();
+    building->SetReadyToCreateProjectileToFalse();
+    for (const auto& aim : aims) {
+      model_->CreateProjectile(aim, *building);
+    }
+  }
+
+  // Base
+  model_->GetBase()->Tick(current_game_time_);
+}
+
+void Controller::TickProjectiles() {
+  auto projectiles = model_->GetProjectiles();
+  projectiles->remove_if([](const auto& projectile) {
+    return projectile->IsDead();
   });
-}
 
-void Controller::AddEnemyToModel(const Enemy& enemy) const {
-  model_->AddEnemyFromInstance(enemy);
-}
-
-const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
-  return *model_->GetEnemies();
-}
-
-const std::vector<Road>& Controller::GetRoads() const {
-  return model_->GetRoads();
+  for (auto& projectile : *projectiles) {
+    projectile->Tick(current_game_time_);
+    if (!projectile->IsEndReached()) {
+      continue;
+    }
+    auto enemies = model_->GetEnemies();
+    for (const auto& enemy : *enemies) {
+      if (projectile->IsInAffectedArea(*enemy)) {
+        enemy->ReceiveDamage(projectile->GetDamage());
+      }
+    }
+  }
 }
 
 void Controller::TickAuras() {
   const auto& enemies = *model_->GetEnemies();
-  for (auto& enemy : enemies) {
+  for (const auto& enemy : enemies) {
     enemy->GetAppliedEffect()->ResetEffect();
   }
 
   const auto& buildings = model_->GetBuildings();
-  for (auto& building : buildings) {
+  for (const auto& building : buildings) {
     building->GetAppliedEffect()->ResetEffect();
   }
 
-  for (auto& enemy : enemies) {
+  for (const auto& enemy : enemies) {
     ApplyEffectToAllInstances(enemy->GetAuricField());
   }
 
-  for (auto& building : buildings) {
+  for (const auto& building : buildings) {
     ApplyEffectToAllInstances(building->GetAuricField());
   }
 }
@@ -169,8 +203,31 @@ void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
   }
 }
 
-const std::vector<std::shared_ptr<Building>>& Controller::GetBuildings() const {
-  return model_->GetBuildings();
+void Controller::AddEnemyToModel(const Enemy& enemy) const {
+  model_->AddEnemyFromInstance(enemy);
+}
+
+void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
+  model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+}
+
+void Controller::CreateTowerMenu(int tower_index) {
+  std::vector<std::shared_ptr<TowerMenuOption>> options;
+  const auto& buildings = model_->GetBuildings();
+  const auto& building = buildings[tower_index];
+  const auto& upgrade_tree = model_->GetUpgradesTree();
+  int building_id = buildings[tower_index]->GetId();
+  // Tower building & evolve & delete options (will affect the type of tower)
+  for (const auto& to_change_id : upgrade_tree[building_id]) {
+    options.push_back(std::make_shared<TowerMenuOption>(
+        model_->GetBuildingById(to_change_id),
+        [this, tower_index, to_change_id]() {
+          SetBuilding(tower_index, to_change_id);
+        }));
+  }
+  auto menu = std::make_shared<TowerMenu>(
+      current_game_time_, *building, options);
+  view_->ShowTowerMenu(menu);
 }
 
 void Controller::MousePress(Coordinate position) {
@@ -184,12 +241,11 @@ void Controller::MousePress(Coordinate position) {
     // Check if that's the same building on which menu was already open
     // (which means now we should close it)
     if (view_->IsTowerMenuEnabled()
-        && view_->GetTowerMenu()->GetTower()->GetPosition()
+        && view_->GetTowerMenu()->GetTower().GetPosition()
             == building->GetPosition()) {
       view_->DisableTowerMenu();
       return;
     }
-
     CreateTowerMenu(i);
     return;
   }
@@ -198,53 +254,12 @@ void Controller::MousePress(Coordinate position) {
     return;
   }
 
-  // Check if tower menu element was pressed
-  auto pressed = view_->GetTowerMenu()->GetButtonContaining(position);
+  // TODO(elizabethfeden): qt buttons.
+  auto pressed = view_->GetTowerMenu()->GetButtonInside(position);
   if (pressed != nullptr) {
     pressed->MakeAction();
-    qDebug() << pressed->GetReplacingTower().GetId() << " action";
   }
-
-  // Disables menu after some action or if random point on the map was pressed
   view_->DisableTowerMenu();
-}
-
-void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
-  const auto& buildings = model_->GetBuildings();
-  if (buildings[index_in_buildings]->GetId() == replacing_id) {
-    model_->UpgradeBuildingAtIndex(index_in_buildings);
-  } else {
-    model_->SetBuildingAtIndex(index_in_buildings, replacing_id);
-  }
-}
-
-void Controller::CreateTowerMenu(int tower_index) {
-  std::vector<std::shared_ptr<TowerMenuOption>> options;
-  const auto& buildings = model_->GetBuildings();
-  const auto& building = buildings[tower_index];
-  const auto& upgrade_tree = model_->GetUpgradesTree();
-  int building_id = buildings[tower_index]->GetId();
-
-  // Upgrade option (will only affect level of tower, but not the type)
-  if (building->GetMaxLevel() > building->GetCurrentLevel()) {
-    options.push_back(std::make_shared<TowerMenuOption>(
-        model_->GetBuildingById(building_id),
-        [&, tower_index, building_id]() {
-          SetBuilding(tower_index, building_id);
-        }));
-  }
-
-  // Tower building & evolve & delete options (will affect the type of tower)
-  for (const auto& to_change_id : upgrade_tree[building_id]) {
-    options.push_back(std::make_shared<TowerMenuOption>(
-        model_->GetBuildingById(to_change_id),
-        [&, tower_index, to_change_id]() {
-          SetBuilding(tower_index, to_change_id);
-        }));
-  }
-
-  auto menu = std::make_shared<TowerMenu>(current_time_, building, options);
-  view_->ShowTowerMenu(menu);
 }
 
 void Controller::MouseMove(Coordinate position) {
@@ -252,10 +267,32 @@ void Controller::MouseMove(Coordinate position) {
     return;
   }
 
-  auto button = view_->GetTowerMenu()->GetButtonContaining(position);
+  auto button = view_->GetTowerMenu()->GetButtonInside(position);
   view_->GetTowerMenu()->Hover(button);
+}
+
+const std::vector<Road>& Controller::GetRoads() const {
+  return model_->GetRoads();
+}
+
+const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
+  return *model_->GetEnemies();
+}
+
+const std::vector<std::shared_ptr<Building>>&
+Controller::GetBuildings() const {
+  return model_->GetBuildings();
+}
+
+const std::list<std::shared_ptr<AbstractProjectile>>&
+Controller::GetProjectiles() const {
+  return *model_->GetProjectiles();
 }
 
 const Base& Controller::GetBase() const {
   return *model_->GetBase();
+}
+
+int Controller::GetCurrentTime() const {
+  return current_game_time_;
 }
