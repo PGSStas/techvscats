@@ -35,8 +35,8 @@ class Model {
   void AddSpawner(const EnemyGroup& enemy_group);
   void AddEnemyFromInstance(const Enemy& enemy_instance);
   void CreateBuildingAtIndex(int i, int id);
-  void CreateProjectile(const Building& building,
-                        const std::shared_ptr<Enemy>& aim);
+  void CreateProjectile(const std::shared_ptr<Enemy>& aim,
+                        const Building& building);
   void IncreaseCurrentRoundNumber();
   void ClearGameModel();
 

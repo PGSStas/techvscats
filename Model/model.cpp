@@ -76,8 +76,8 @@ void Model::CreateBuildingAtIndex(int i, int id) {
   buildings_[i]->SetPosition(position);
 }
 
-void Model::CreateProjectile(const Building& building,
-                             const std::shared_ptr<Enemy>& aim) {
+void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
+                             const Building& building) {
   int id = building.GetProjectileId();
   if (const auto& casted =
         std::dynamic_pointer_cast<AimedProjectile>(id_to_projectile_[id]);
@@ -94,9 +94,9 @@ void Model::CreateProjectile(const Building& building,
       casted != nullptr) {
     projectiles_.push_back(std::make_shared<LazerProjectile>(*casted));
   }
-  projectiles_.back()->SetParameters(building.GetPosition(),
+  projectiles_.back()->SetParameters(aim, building.GetPosition(),
                                      building.GetProjectileSpeedCoefficient(),
-                                     building.GetDamage(), aim);
+                                     building.GetDamage());
 }
 
 void Model::IncreaseCurrentRoundNumber() {

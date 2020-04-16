@@ -75,7 +75,6 @@ void Controller::CreateNextWave() {
   for (const auto& enemy_group : enemy_groups) {
     model_->AddSpawner(enemy_group);
   }
-
   model_->IncreaseCurrentRoundNumber();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
@@ -113,14 +112,15 @@ void Controller::TickBuildings() {
   for (auto& building : buildings) {
     building->Tick(current_game_time_);
     building->UpdateAim(*model_->GetEnemies());
-
-    if (building->IsReadyToCreateProjectiles()) {
-      const auto& aims = building->GetAims();
-      building->SetReadyToCreateProjectileToFalse();
-      for (auto& aim : aims) {
-        model_->CreateProjectile(*building, aim);
-      }
+    if (!building->IsReadyToCreateProjectiles()) {
+      continue;
     }
+    const auto& aims = building->GetAims();
+    building->SetReadyToCreateProjectileToFalse();
+    for (auto& aim : aims) {
+      model_->CreateProjectile(aim, *building);
+    }
+
   }
 
   // Base
@@ -135,12 +135,13 @@ void Controller::TickProjectiles() {
 
   for (auto& projectile : *projectiles) {
     projectile->Tick(current_game_time_);
-    if (projectile->IsEndReached()) {
-      auto enemies = model_->GetEnemies();
-      for (const auto& enemy : *enemies) {
-        if (projectile->IsInAffectedArea(*enemy)) {
-          enemy->ReceiveDamage(projectile->GetDamage());
-        }
+    if (!projectile->IsEndReached()) {
+      continue;
+    }
+    auto enemies = model_->GetEnemies();
+    for (const auto& enemy : *enemies) {
+      if (projectile->IsInAffectedArea(*enemy)) {
+        enemy->ReceiveDamage(projectile->GetDamage());
       }
     }
   }
@@ -214,7 +215,7 @@ void Controller::CreateTowerMenu(int tower_index) {
   for (const auto& to_change_id : upgrade_tree[building_id]) {
     options.push_back(std::make_shared<TowerMenuOption>(
         model_->GetBuildingById(to_change_id),
-        [&, tower_index, to_change_id]() {
+        [this, tower_index, to_change_id]() {
           SetBuilding(tower_index, to_change_id);
         }));
   }

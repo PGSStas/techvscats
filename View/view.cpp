@@ -19,14 +19,14 @@ View::View(AbstractController* controller) : controller_(controller) {
 
   start_game_button_ = new QPushButton(this);
   start_game_button_->setText(tr("Начать"));
-  auto start_game_button_click = [&]() {
+  auto start_game_button_click = [this]() {
     controller_->StartGame(1);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
   return_menu_button_ = new QPushButton(this);
   return_menu_button_->setText(tr("Вернуться"));
-  auto return_menu_button_click = [&]() {
+  auto return_menu_button_click = [this]() {
     DisableTowerMenu();
     controller_->EndGame(Exit::kLose);
   };

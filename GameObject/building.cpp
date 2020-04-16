@@ -123,14 +123,15 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->restore();
 }
 
-void Building::SetAnimationParameters(QColor reload_color, int reload_time,
-                                      QColor pre_color, int before_fire_time,
-                                      QColor post_color, int after_fire_time) {
-  reload_color_ = std::move(reload_color);
+void Building::SetAnimationParameters(
+    const QColor& reload_color, int reload_time,
+    const QColor& pre_color, int before_fire_time,
+    const QColor& post_color, int after_fire_time) {
+  reload_color_ = reload_color;
   action_time[static_cast<int>(Action::kReload)] = reload_time;
-  before_fire_color_ = std::move(pre_color);
+  before_fire_color_ = pre_color;
   action_time[static_cast<int>(Action::kBeforeFire)] = before_fire_time;
-  after_fire_color_ = std::move(post_color);
+  after_fire_color_ = post_color;
   action_time[static_cast<int>(Action::fAfterFire)] = after_fire_time;
 }
 

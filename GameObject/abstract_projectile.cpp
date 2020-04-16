@@ -17,20 +17,20 @@ void AbstractProjectile::Move() {
 }
 
 void AbstractProjectile::SetParameters(
-    Coordinate position, double speed_coefficient, double damage,
-    const std::shared_ptr<Enemy>& aim) {
+    const std::shared_ptr<Enemy>& aim, Coordinate position,
+    double speed_coefficient, double damage) {
+  aim_ = aim;
   position_ = position;
   speed_ = speed_ * speed_coefficient;
   damage_ = damage;
-  aim_ = aim;
   if (aim != nullptr) {
     destination_ = aim->GetPosition();
   }
 }
 
 void AbstractProjectile::SetAnimationParameters(
-    QColor draw_color, int iteration_time) {
-  draw_color_ = std::move(draw_color);
+    const QColor& draw_color, int iteration_time) {
+  draw_color_ = draw_color;
   iteration_time_ = iteration_time;
 }
 

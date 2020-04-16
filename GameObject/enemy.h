@@ -13,17 +13,15 @@
 
 class Enemy : public MovingObject {
  public:
-  Enemy(Size size, double speed, double damage, double armor, int reward,
-        double max_health,
+  Enemy(Size size, double speed, double damage,
+        double armor, int reward, double max_health,
         AuricField auric_field = AuricField(-1, -1));
   Enemy(const Enemy& enemy_instance);
 
   void Tick(int current_time) override;
   void Move() override;
-  void Draw(QPainter* painter,
-            const SizeHandler& size_handler) const override;
-  void DrawHealthBar(QPainter* painter,
-                     const SizeHandler& size_handler) const;
+  void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
+  void DrawHealthBar(QPainter* painter, const SizeHandler& size_handler) const;
 
   void SetRoad(const Road& road);
 

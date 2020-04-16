@@ -14,9 +14,8 @@ class BombProjectile : public AbstractProjectile {
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
 
-  void SetParameters(Coordinate position, double speed_coefficient,
-                     double damage,
-                     const std::shared_ptr<Enemy>& aim) override;
+  void SetParameters(const std::shared_ptr<Enemy>& aim, Coordinate position,
+                     double speed_coefficient, double damage) override;
   bool IsInAffectedArea(const Enemy& enemy) override;
 
  private:

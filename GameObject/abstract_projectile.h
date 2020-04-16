@@ -13,9 +13,10 @@ class AbstractProjectile : public MovingObject {
 
   void Move() override;
 
-  virtual void SetParameters(Coordinate position, double speed_coefficient,
-                             double damage, const std::shared_ptr<Enemy>& aim);
-  void SetAnimationParameters(QColor draw_color, int iteration_time);
+  virtual void SetParameters(const std::shared_ptr<Enemy>& aim,
+                             Coordinate position, double speed_coefficient,
+                             double damage);
+  void SetAnimationParameters(const QColor& draw_color, int iteration_time);
 
   double GetDamage() const;
   virtual bool IsInAffectedArea(const Enemy& enemy);

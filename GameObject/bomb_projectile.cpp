@@ -14,8 +14,8 @@ BombProjectile::BombProjectile(Size size, double speed, double effect_radius,
 
 void BombProjectile::Tick(int current_time) {
   UpdateTime(current_time);
-  double percent =
-      (position_.x - destination_.x) / (start_position_.x - destination_.x);
+  double percent = (position_.x - destination_.x) /
+      (start_position_.x - destination_.x);
   qDebug() << delta_tick_time_;
   additional_draw_height_ += up_force_ * (1 - 2 * percent) *
       delta_tick_time_ / kTimeScale;
@@ -33,11 +33,11 @@ void BombProjectile::Draw(QPainter* painter, const SizeHandler& handler) const {
   painter->restore();
 }
 
-void BombProjectile::SetParameters(Coordinate position,
-                                   double speed_coefficient, double damage,
-                                   const std::shared_ptr<Enemy>& aim) {
+void BombProjectile::SetParameters(const std::shared_ptr<Enemy>& aim,
+                                   Coordinate position,
+                                   double speed_coefficient, double damage) {
   start_position_ = position;
-  AbstractProjectile::SetParameters(position, speed_coefficient, damage, aim);
+  AbstractProjectile::SetParameters(aim, position, speed_coefficient, damage);
 }
 
 bool BombProjectile::IsInAffectedArea(const Enemy& enemy) {

@@ -15,7 +15,7 @@ class GameObject {
 
   virtual void Tick(int current_time) = 0;
   void UpdateTime(int current_time);
-  virtual void  Draw(QPainter* painter,
+  virtual void Draw(QPainter* painter,
                     const SizeHandler& size_handler) const = 0;
 
   void SetPosition(Coordinate position);

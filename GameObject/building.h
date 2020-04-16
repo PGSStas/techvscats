@@ -26,11 +26,11 @@ class Building : public GameObject {
   void Draw(QPainter* painter,
             const SizeHandler& size_handler) const override;
 
-  void SetAnimationParameters(QColor reload_color,
+  void SetAnimationParameters(const QColor& reload_color,
                               int reload_time,
-                              QColor pre_color = Qt::black,
+                              const QColor& pre_color = Qt::black,
                               int before_fire_time = 0,
-                              QColor post_color = Qt::black,
+                              const QColor& post_color = Qt::black,
                               int after_fire_time = 0);
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
                      int max_aims);
