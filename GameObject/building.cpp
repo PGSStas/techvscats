@@ -41,13 +41,13 @@ void Building::Tick(int current_time) {
       }
       if (wait_time_ > action_time_[static_cast<int>(Action::kBeforeFire)]) {
         is_ready_to_create_projectiles_ = true;
-        action_ = Action::fAfterFire;
+        action_ = Action::kAfterFire;
         wait_time_ = 0;
       }
       break;
     }
-    case Action::fAfterFire: {
-      if (wait_time_ > action_time_[static_cast<int>(Action::fAfterFire)]) {
+    case Action::kAfterFire: {
+      if (wait_time_ > action_time_[static_cast<int>(Action::kAfterFire)]) {
         action_ = Action::kReload;
       }
       break;
@@ -57,7 +57,7 @@ void Building::Tick(int current_time) {
 
 void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   if ((wait_time_ < action_time_[static_cast<int>(Action::kReload)]
-      && action_ == Action::kReload) || action_ == Action::kBeforeFire) {
+      && action_ == Action::kReload) || action_ == Action::kAfterFire) {
     return;
   }
   if (enemies.empty()) {
@@ -110,7 +110,7 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
       painter->setBrush(before_fire_color_);
       break;
     }
-    case Action::fAfterFire: {
+    case Action::kAfterFire: {
       painter->setBrush(after_fire_color_);
       break;
     }

@@ -13,7 +13,7 @@
 enum class Action {
   kReload,
   kBeforeFire,
-  fAfterFire
+  kAfterFire
 };
 
 class Building : public GameObject {

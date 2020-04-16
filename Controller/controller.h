@@ -37,6 +37,7 @@ class Controller : public AbstractController {
 
   WindowType game_mode_;
   bool has_unprocessed_rounds_ = false;
+  bool is_prepairing_to_spawn_ = false;
   int current_game_time_ = 0;
   int last_round_start_time_ = 0;
 

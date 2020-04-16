@@ -165,8 +165,8 @@ int Model::GetRoundsCount() const {
   return rounds_count_;
 }
 
-int Model::GetTimeBetweenWaves() const {
-  return time_between_rounds_;
+int Model::GetPrepairTimeBetweenRounds() const {
+  return preair_time_between_rounds_;
 }
 
 int Model::GetCurrentRoundNumber() const {
@@ -183,7 +183,7 @@ void Model::LoadLevelFromJson(int level) {
   QJsonObject json_object =
       QJsonDocument::fromJson(level_file.readAll()).object();
 
-  time_between_rounds_ = json_object["time_between_rounds"].toInt();
+  preair_time_between_rounds_ = json_object["preair_time_between_rounds_"].toInt();
   gold_ = json_object["gold"].toInt();
   score_ = json_object["score"].toInt();
 

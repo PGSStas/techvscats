@@ -1,5 +1,5 @@
 {
-  "time_between_rounds": 5000,
+  "preair_time_between_rounds_": 2000,
   "gold": 100,
   "score": 0,
   "base": {

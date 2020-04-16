@@ -8,7 +8,6 @@ void Controller::StartGame(int level_id) {
   current_game_time_ = 0;
   game_mode_ = WindowType::kGame;
   last_round_start_time_ = current_game_time_;
-  has_unprocessed_rounds_ = true;
 
   model_->SetGameLevel(level_id);
 
@@ -56,16 +55,24 @@ void Controller::MenuProcess() {}
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
-  if (!has_unprocessed_rounds_ || current_game_time_ - last_round_start_time_
-      < model_->GetTimeBetweenWaves()) {
+  if (!model_->GetEnemies()->empty()
+      || current_round_number == model_->GetRoundsCount()
+      || !model_->GetSpawners()->empty()) {
+    return false;
+  }
+
+  if (!is_prepairing_to_spawn_) {
+    last_round_start_time_ = current_game_time_;
+    is_prepairing_to_spawn_ = true;
+  }
+
+  if (current_game_time_ - last_round_start_time_
+      < model_->GetPrepairTimeBetweenRounds()) {
     return false;
   }
 
   last_round_start_time_ = current_game_time_;
-  if (current_round_number == model_->GetRoundsCount()) {
-    has_unprocessed_rounds_ = false;
-    return false;
-  }
+  is_prepairing_to_spawn_ = false;
   return true;
 }
 
