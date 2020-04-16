@@ -78,7 +78,7 @@ class Model {
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
   Base base_ = Base(0, {0, 0});
   std::vector<Coordinate> empty_places_for_towers_;
-  int preair_time_between_rounds_ = 0;
+  int prepair_time_between_rounds_ = 0;
   int rounds_count_ = 0;
 
   // Database of GameObject's instances, that is used to create GameObjects.

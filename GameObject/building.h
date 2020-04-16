@@ -11,9 +11,9 @@
 #include "enemy.h"
 
 enum class Action {
-  kReload,
-  kBeforeFire,
-  kAfterFire
+  kReload = 0,
+  kBeforeFire = 1,
+  kAfterFire = 2
 };
 
 class Building : public GameObject {
