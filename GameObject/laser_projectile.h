@@ -11,7 +11,7 @@ class LaserProjectile : public AbstractProjectile {
  public:
   explicit LaserProjectile(Size size);
   LaserProjectile(const LaserProjectile& other) = default;
-  virtual ~LaserProjectile() = default;
+  ~LaserProjectile() override = default;
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;

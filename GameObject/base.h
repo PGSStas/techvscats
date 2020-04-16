@@ -9,7 +9,7 @@
 class Base : public GameObject {
  public:
   Base(double max_health, Coordinate position);
-  virtual ~Base() = default;
+  ~Base() override = default;
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;

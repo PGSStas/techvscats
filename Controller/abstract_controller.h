@@ -20,6 +20,8 @@ enum class Exit {
 // All public methods of controller should also be written here
 class AbstractController {
  public:
+  virtual ~AbstractController() = default;
+
   virtual void StartGame(int level) = 0;
   virtual void Tick(int current_time) = 0;
   virtual void EndGame(Exit exit) = 0;

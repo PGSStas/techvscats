@@ -10,7 +10,7 @@ class AbstractProjectile : public MovingObject {
  public:
   AbstractProjectile(Size size, double speed);
   AbstractProjectile(const AbstractProjectile& other);
-  virtual ~AbstractProjectile() = default;
+  ~AbstractProjectile() override = default;
 
   void Move() override;
 

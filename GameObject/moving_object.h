@@ -7,7 +7,7 @@ class MovingObject : public GameObject {
  public:
   MovingObject(Size size, double speed, Coordinate position = {0, 0},
                Coordinate destination = {0, 0});
-  virtual ~MovingObject() = default;
+  ~MovingObject() override = default;
 
   void MoveToDestination();
   virtual void Move() = 0;

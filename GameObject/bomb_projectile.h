@@ -10,7 +10,7 @@ class BombProjectile : public AbstractProjectile {
   explicit BombProjectile(Size size, double speed, double effect_radius,
                           double up_force);
   BombProjectile(const BombProjectile& other);
-  virtual ~BombProjectile() = default;
+  ~BombProjectile() override = default;
 
 
   void Tick(int current_time) override;

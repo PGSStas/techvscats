@@ -7,7 +7,7 @@ class AimedProjectile : public AbstractProjectile {
  public:
   AimedProjectile(Size size, double speed);
   AimedProjectile(const AimedProjectile& other) = default;
-  virtual ~AimedProjectile() = default;
+  ~AimedProjectile() override = default;
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;

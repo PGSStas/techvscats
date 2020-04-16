@@ -109,7 +109,7 @@
         "enemy_id": 3,
         "time_of_next_spawn": 15,
         "group_size": 6,
-        "road_to_spawn": 0
+        "road_to_spawn": 3
       }
     ]
   ],
