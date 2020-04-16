@@ -120,7 +120,6 @@ void Controller::TickBuildings() {
     for (const auto& aim : aims) {
       model_->CreateProjectile(aim, *building);
     }
-
   }
 
   // Base

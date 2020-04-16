@@ -28,7 +28,7 @@ add_executable(techvscats
         GameObject/effect.cpp
         GameObject/enemy.cpp
         GameObject/game_object.cpp
-        GameObject/lazer_projectile.cpp
+        GameObject/laser_projectile.cpp
         GameObject/moving_object.cpp
         Model/coordinate.cpp
         Model/model.cpp

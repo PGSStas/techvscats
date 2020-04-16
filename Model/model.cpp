@@ -16,14 +16,14 @@ void Model::SetGameLevel(int level_id) {
   BombProjectile projectile_instance_bomb(Size(10, 20), 45, 52, 120);
   projectile_instance_bomb.SetAnimationParameters(Qt::darkGreen, 100);
 
-  LazerProjectile projectile_instance_lazer(Size(10, 20));
+  LaserProjectile projectile_instance_lazer(Size(10, 20));
   projectile_instance_lazer.SetAnimationParameters(Qt::cyan, 160);
 
   id_to_projectile_.push_back(std::make_shared<AimedProjectile>(
       projectile_instance_aimed));
   id_to_projectile_.push_back(std::make_shared<BombProjectile>(
       projectile_instance_bomb));
-  id_to_projectile_.push_back(std::make_shared<LazerProjectile>(
+  id_to_projectile_.push_back(std::make_shared<LaserProjectile>(
       projectile_instance_lazer));
 
   Building building_instance(Size(33, 33), 0, 0);
@@ -88,9 +88,9 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
     projectiles_.push_back(std::make_shared<BombProjectile>(*casted));
   }
   if (const auto& casted =
-        std::dynamic_pointer_cast<LazerProjectile>(id_to_projectile_[id]);
+        std::dynamic_pointer_cast<LaserProjectile>(id_to_projectile_[id]);
       casted != nullptr) {
-    projectiles_.push_back(std::make_shared<LazerProjectile>(*casted));
+    projectiles_.push_back(std::make_shared<LaserProjectile>(*casted));
   }
   projectiles_.back()->SetParameters(aim, building.GetPosition(),
                                      building.GetProjectileSpeedCoefficient(),
@@ -293,7 +293,7 @@ void Model::LoadDatabaseFromJson() {
       aura = AuricField(enemy["aura"].toObject()["radius"].toInt(),
                         enemy["aura"].toObject()["effect_id"].toInt());
     }
-    //  TODO (PGS) size of enemy please. Also i put speed on the second place.
+    // TODO(PGS): size of enemy please. Also i put speed on the second place.
     id_to_enemy_.emplace_back(Size(30, 30),
                               enemy["speed"].toInt(),
                               enemy["damage"].toInt(),

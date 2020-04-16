@@ -17,6 +17,7 @@ class Enemy : public MovingObject {
         double armor, int reward, double max_health,
         AuricField auric_field = AuricField(-1, -1));
   Enemy(const Enemy& enemy_instance);
+  virtual ~Enemy() = default;
 
   void Tick(int current_time) override;
   void Move() override;

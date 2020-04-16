@@ -13,6 +13,7 @@
 class Controller : public AbstractController {
  public:
   Controller();
+  virtual ~Controller() = default;
 
   void StartGame(int level) override;
   void EndGame(Exit exit) override;

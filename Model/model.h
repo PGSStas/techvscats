@@ -23,7 +23,7 @@
 #include "GameObject/building.h"
 #include "GameObject/effect.h"
 #include "GameObject/enemy.h"
-#include "GameObject/lazer_projectile.h"
+#include "GameObject/laser_projectile.h"
 #include "enemy_group.h"
 #include "road.h"
 

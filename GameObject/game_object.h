@@ -12,6 +12,7 @@
 class GameObject {
  public:
   explicit GameObject(Size size, Coordinate position = {0, 0});
+  virtual ~GameObject() = default;
 
   virtual void Tick(int current_time) = 0;
   void UpdateTime(int current_time);

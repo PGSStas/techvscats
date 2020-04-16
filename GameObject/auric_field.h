@@ -9,7 +9,7 @@
 
 class AuricField {
  public:
-  AuricField(double effect_radius = -1, int effect_id = -1);
+  explicit AuricField(double effect_radius = -1, int effect_id = -1);
 
   void Draw(QPainter* painter,
             const SizeHandler& size_handler) const;

@@ -21,6 +21,7 @@ class Building : public GameObject {
   explicit Building(Size size = {20, 20}, int id = 0, int settle_cost = 0,
                     AuricField aura = AuricField(-1, -1));
   Building(const Building& other);
+  virtual ~Building() = default;
 
   void Tick(int current_time) override;
   void UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies);

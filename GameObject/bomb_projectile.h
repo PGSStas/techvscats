@@ -10,6 +10,8 @@ class BombProjectile : public AbstractProjectile {
   BombProjectile(const BombProjectile& other);
   explicit BombProjectile(Size size, double speed, double effect_radius,
                           double up_force);
+  virtual ~BombProjectile() = default;
+
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;

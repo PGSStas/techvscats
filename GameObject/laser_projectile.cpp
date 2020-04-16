@@ -1,9 +1,9 @@
-#include "lazer_projectile.h"
+#include "laser_projectile.h"
 
-LazerProjectile::LazerProjectile(Size size) :
+LaserProjectile::LaserProjectile(Size size) :
 AbstractProjectile(size, 0) {}
 
-void LazerProjectile::Tick(int current_time) {
+void LaserProjectile::Tick(int current_time) {
   UpdateTime(current_time);
   if (object_life_time_ > iteration_time_ || aim_->IsDead()) {
     position_ = aim_->GetPosition();
@@ -12,7 +12,7 @@ void LazerProjectile::Tick(int current_time) {
   }
 }
 
-void LazerProjectile::Draw(QPainter* painter,
+void LaserProjectile::Draw(QPainter* painter,
                            const SizeHandler& handler) const {
   painter->save();
   Coordinate end_position = handler.GameToWindowCoordinate(aim_->GetPosition());
