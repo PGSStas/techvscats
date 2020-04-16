@@ -183,7 +183,8 @@ void Model::LoadLevelFromJson(int level) {
   QJsonObject json_object =
       QJsonDocument::fromJson(level_file.readAll()).object();
 
-  prepair_time_between_rounds_ = json_object["prepair_time_between_rounds_"].toInt();
+  prepair_time_between_rounds_ =
+      json_object["prepair_time_between_rounds_"].toInt();
   gold_ = json_object["gold"].toInt();
   score_ = json_object["score"].toInt();
 
