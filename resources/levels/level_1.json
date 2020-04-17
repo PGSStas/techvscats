@@ -1,5 +1,5 @@
 {
-  "time_between_rounds": 5000,
+  "prepair_time_between_rounds_": 2000,
   "gold": 100,
   "score": 0,
   "base": {
@@ -82,7 +82,7 @@
   "rounds": [
     [
       {
-        "spawn_period": 400,
+        "spawn_period": 1400,
         "enemy_id": 0,
         "time_of_next_spawn": 15,
         "group_size": 10,
@@ -109,7 +109,7 @@
         "enemy_id": 3,
         "time_of_next_spawn": 15,
         "group_size": 6,
-        "road_to_spawn": 0
+        "road_to_spawn": 3
       }
     ]
   ],

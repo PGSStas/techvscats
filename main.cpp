@@ -1,6 +1,8 @@
 #include <QApplication>
+
+#include <memory>
+
 #include "Controller/controller.h"
-#include "memory"
 
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);

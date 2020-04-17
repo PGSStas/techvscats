@@ -9,8 +9,9 @@ View::View(AbstractController* controller)
   button_handler_->CreateButtons(controller);
   show();
 
-  game_time_.start();
-  controller_timer_id_ = startTimer(kTimeBetweenTicks_);
+  view_timer_.start();
+  time_between_ticks_.start();
+  controller_timer_id_ = startTimer(kTimeBetweenTicks);
   button_handler_->DisableGameUi();
   button_handler_->DisablePauseMenuUi();
   button_handler_->DisableSettingsUi();
@@ -19,7 +20,10 @@ View::View(AbstractController* controller)
 
 void View::timerEvent(QTimerEvent* event) {
   if (event->timerId() == controller_timer_id_) {
-    controller_->Tick(game_time_.elapsed());
+    int delta_time = time_between_ticks_.elapsed();
+    time_between_ticks_.restart();
+    controller_->Tick(controller_->GetCurrentTime()
+                          + delta_time * game_speed_coefficient_);
     repaint();
   }
 }
@@ -78,13 +82,6 @@ void View::DrawEnemies(QPainter* painter) {
   }
 }
 
-void View::mouseReleaseEvent(QMouseEvent* event) {
-  if (event->button() == Qt::LeftButton) {
-    controller_->MousePress(size_handler_->WindowToGameCoordinate(
-        Coordinate(event->x(), event->y())));
-  }
-}
-
 void View::ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu) {
   tower_menu_ = menu;
   is_tower_menu_enabled_ = true;
@@ -102,9 +99,16 @@ std::shared_ptr<TowerMenu> View::GetTowerMenu() {
   return tower_menu_;
 }
 
+void View::mouseReleaseEvent(QMouseEvent* event) {
+  if (event->button() == Qt::LeftButton) {
+    controller_->MousePress(size_handler_->WindowToGameCoordinate(
+        Coordinate(event->x(), event->y())));
+  }
+}
+
 void View::mouseMoveEvent(QMouseEvent* event) {
   if (button_handler_->GetWindowType() == WindowType::kGame) {
-    controller_->MouseMove(size_handler_->WindowToGameCoordinate(
+    controller_->MouseMove(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())));
   }
 }
@@ -205,6 +209,7 @@ void View::DrawInterface(QPainter* painter) {
                                                 size_handler_,
                                                 enemy->GetPosition());
   }
+
   const auto& buildings_list = controller_->GetBuildings();
   for (const auto& building : buildings_list) {
     building->GetAppliedEffect()->DrawEffectsIcons(painter,
@@ -213,6 +218,6 @@ void View::DrawInterface(QPainter* painter) {
   }
 
   if (is_tower_menu_enabled_) {
-    tower_menu_->Draw(painter, size_handler_, game_time_.elapsed());
+    tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
   }
 }
