@@ -3,15 +3,28 @@
 std::mt19937 Enemy::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
-Enemy::Enemy(double damage, double armor, int reward,
-             double speed, double max_health,
-             AuricField auric_field)
-    : MovingObject(speed), damage_(damage), armor_(armor), reward_(reward),
-      max_health_(max_health), auric_field_(auric_field) {
+Enemy::Enemy(Size size, double speed, double damage, double armor, int reward,
+             double max_health, AuricField auric_field)
+    : MovingObject(size, speed), damage_(damage), armor_(armor),
+      reward_(reward), max_health_(max_health), auric_field_(auric_field) {
   auric_field.SetCarrierCoordinate(&position_);
 }
 
-void Enemy::Tick() {
+Enemy::Enemy(const Enemy& enemy_instance)
+    : MovingObject(enemy_instance.GetSize(), enemy_instance.speed_),
+      damage_(enemy_instance.damage_), armor_(enemy_instance.armor_),
+      reward_(enemy_instance.reward_), max_health_(enemy_instance.max_health_),
+      current_health_(enemy_instance.max_health_),
+      auric_field_(enemy_instance.auric_field_) {
+  auric_field_.SetCarrierCoordinate(&position_);
+  node_number_ = 0;
+  if (enemy_instance.road_ != nullptr) {
+    SetRoad(*enemy_instance.road_);
+  }
+}
+
+void Enemy::Tick(int current_time) {
+  UpdateTime(current_time);
   Move();
 }
 
@@ -19,9 +32,8 @@ void Enemy::Move() {
   if (is_end_reached_) {
     return;
   }
-  position_.MoveTo(destination_,
-                   speed_ * applied_effect_.GetSpeedCoefficient());
 
+  MoveToDestination();
   if (position_ == destination_) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
@@ -40,15 +52,28 @@ void Enemy::Move() {
   }
 }
 
-void Enemy::Draw(QPainter* painter,
-                 const std::shared_ptr<SizeHandler>& size_handler) const {
+void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
   painter->setPen(QColor("black"));
   Coordinate point =
-      size_handler->GameToWindowCoordinate(position_ - Size(15, 15));
+      size_handler.GameToWindowCoordinate(position_ - Size(15, 15));
 
-  Size size = size_handler->GameToWindowSize({30, 30});
+  Size size = size_handler.GameToWindowSize({30, 30});
+  painter->drawRect(point.x, point.y, size.width, size.height);
+
+  painter->restore();
+}
+
+void Enemy::DrawHealthBar(QPainter* painter,
+                          const SizeHandler& size_handler) const {
+  painter->save();
+
+  painter->setBrush(Qt::red);
+  Coordinate point =
+      size_handler.GameToWindowCoordinate(position_ - kHealthBarShift);
+  Size size = size_handler.GameToWindowSize(Size(
+      kHealthBar.width * current_health_ / max_health_, kHealthBar.height));
   painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->restore();
@@ -59,26 +84,16 @@ void Enemy::SetRoad(const Road& road) {
   position_ = road_->GetNode(node_number_);
   destination_ = road_->GetNode(node_number_);
 }
-
-bool Enemy::IsDead() const {
-  return is_dead_;
+const AuricField& Enemy::GetAuricField() const {
+  return auric_field_;
 }
 
-Enemy::Enemy(const Enemy& enemy_instance) : MovingObject(enemy_instance) {
-  is_dead_ = enemy_instance.is_dead_;
-  damage_ = enemy_instance.damage_;
-  armor_ = enemy_instance.armor_;
-  reward_ = enemy_instance.reward_;
-  max_health_ = enemy_instance.max_health_;
-  current_health_ = enemy_instance.max_health_;
-  auric_field_ = enemy_instance.auric_field_;
-  auric_field_.SetCarrierCoordinate(&position_);
+Effect* Enemy::GetAppliedEffect() {
+  return &applied_effect_;
+}
 
-  speed_ = enemy_instance.speed_;
-  node_number_ = 0;
-  if (enemy_instance.road_ != nullptr) {
-    SetRoad(*enemy_instance.road_);
-  }
+double Enemy::GetDamage() const {
+  return damage_ * applied_effect_.GetDamageCoefficient();
 }
 
 void Enemy::ReceiveDamage(double damage) {
@@ -91,28 +106,3 @@ void Enemy::ReceiveDamage(double damage) {
   }
 }
 
-double Enemy::GetDamage() const {
-  return damage_ * applied_effect_.GetDamageCoefficient();
-}
-
-void Enemy::DrawHealthBar(QPainter* painter,
-                          std::shared_ptr<SizeHandler> size_handler) const {
-  painter->save();
-
-  painter->setBrush(Qt::red);
-  Coordinate point =
-      size_handler->GameToWindowCoordinate(position_ - kHealthBarShift);
-  Size size = size_handler->GameToWindowSize(Size(
-      kHealthBar.width * current_health_ / max_health_, kHealthBar.height));
-  painter->drawRect(point.x, point.y, size.width, size.height);
-
-  painter->restore();
-}
-
-const AuricField& Enemy::GetAuricField() const {
-  return auric_field_;
-}
-
-Effect* Enemy::GetAppliedEffect() {
-  return &applied_effect_;
-}

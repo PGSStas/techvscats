@@ -21,12 +21,12 @@ class TowerMenu {
   // Returns the button for which position is inside or
   // nullptr if there is no such button
   std::shared_ptr<TowerMenuOption>
-    GetButtonContaining(Coordinate position) const;
+  GetButtonContaining(Coordinate position) const;
   void Hover(const std::shared_ptr<TowerMenuOption>& option);
   void Unhover();
 
-  void Draw(QPainter* painter, const  SizeHandler& size_handler,
-      int current_time) const;
+  void Draw(QPainter* painter, const std::shared_ptr<SizeHandler>& size_handler,
+            int current_time) const;
 
  private:
   int creation_time_;

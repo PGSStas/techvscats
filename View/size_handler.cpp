@@ -1,5 +1,8 @@
 #include "size_handler.h"
 
+SizeHandler::SizeHandler() :
+    scaling_coefficient_(3), origin_offset_(0, 0) {}
+
 void SizeHandler::ChangeSystem(double window_width, double window_height) {
   scaling_coefficient_ = std::max(game_width_ / window_width,
                                   game_height_ / window_height);
@@ -27,4 +30,8 @@ Size SizeHandler::GameToWindowSize(Size game_size) const {
 
 Size SizeHandler::WindowToGameSize(Size window_size) const {
   return window_size * scaling_coefficient_;
+}
+
+double SizeHandler::GameToWindowLength(double game_lendth) const {
+  return game_lendth / scaling_coefficient_;
 }

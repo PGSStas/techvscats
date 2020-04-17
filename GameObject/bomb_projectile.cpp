@@ -1,21 +1,44 @@
 #include "bomb_projectile.h"
 
-BombProjectile::BombProjectile(const Projectile& other) : Projectile(other) {}
-
 BombProjectile::BombProjectile(Size size, double speed, double effect_radius,
-                               ProjectileType projectile_type)
-    : Projectile(size, speed, projectile_type) {
-  splash_radius_ = effect_radius;
+                               double up_force)
+    : AbstractProjectile(size, speed),
+      effect_radius_(effect_radius), up_force_(up_force) {}
+
+BombProjectile::BombProjectile(const BombProjectile& other)
+    : AbstractProjectile(other), effect_radius_(other.effect_radius_),
+      up_force_(other.up_force_), start_position_(position_) {
 }
 
 void BombProjectile::Tick(int current_time) {
-  if (destination_ == Coordinate(0, 0)) {
-    destination_ = aim_->GetPosition();
-  }
+  UpdateTime(current_time);
+  double percent = (position_.x - destination_.x) /
+      (start_position_.x - destination_.x);
+  qDebug() << delta_tick_time_;
+  additional_draw_height_ += up_force_ * (1 - 2 * percent) *
+      delta_tick_time_ / kTimeScale;
   Move();
 }
 
-bool BombProjectile::CheckForReceiveDamage(const Enemy& enemy) {
-  return destination_.GetDistanceTo(enemy.GetPosition()).GetLength()
-      <= splash_radius_ + kEpsilon;
+void BombProjectile::Draw(QPainter* painter, const SizeHandler& handler) const {
+  painter->save();
+  painter->setBrush(draw_color_);
+  Coordinate bomb_position = position_;
+  bomb_position.y += additional_draw_height_;
+  Coordinate position = handler.GameToWindowCoordinate(bomb_position);
+  Size size = handler.GameToWindowSize(size_);
+  painter->drawEllipse(position.x, position.y, size.width, size.height);
+  painter->restore();
+}
+
+void BombProjectile::SetParameters(const std::shared_ptr<Enemy>& aim,
+                                   Coordinate position,
+                                   double speed_coefficient, double damage) {
+  start_position_ = position;
+  AbstractProjectile::SetParameters(aim, position, speed_coefficient, damage);
+}
+
+bool BombProjectile::IsInAffectedArea(const Enemy& enemy) {
+  return position_.GetVectorTo(enemy.GetPosition()).GetLength()
+      <= effect_radius_ + kEpsilon;
 }

@@ -8,20 +8,19 @@ struct Coordinate {
   double x;
   double y;
 
-  Coordinate() noexcept = default;
+  Coordinate() = default;
   Coordinate(double x, double y) noexcept;
-  Size GetVectorTo(Coordinate right);
-  void MoveTo(Coordinate destination, double vector_length);
+  Size GetVectorTo(Coordinate right) const;
 
   Coordinate operator*(double right) const;
   Coordinate operator/(double right) const;
   Coordinate& operator*=(double right);
   Coordinate& operator/=(double right);
 
-  Coordinate operator+(Size right) const;
   Coordinate& operator+=(Size right);
-  Coordinate operator-(Size right) const;
+  Coordinate operator+(Size right) const;
   Coordinate& operator-=(Size right);
+  Coordinate operator-(Size right) const;
 
   bool operator==(Coordinate right) const;
 };

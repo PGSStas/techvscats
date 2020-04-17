@@ -8,19 +8,16 @@
 
 class Base : public GameObject {
  public:
-  Base() = default;
   Base(double max_health, Coordinate position);
+  ~Base() override = default;
 
-  void Draw(QPainter* painter,
-            const std::shared_ptr<SizeHandler>& size_handler) const override;
-  void Tick() override;
+  void Tick(int current_time) override;
+  void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
+  void DecreaseHealth(double damage);
 
   double GetCurrentHealth() const;
   double GetMaxHealth() const;
-
   bool IsDead() const;
-
-  void DecreaseHealth(double damage);
 
  private:
   double regeneration_rate_ = 0.05;

@@ -2,15 +2,11 @@
 
 View::View(AbstractController* controller)
     : controller_(controller),
+      size_handler_(std::make_shared<SizeHandler>()),
       button_handler_(std::make_unique<ButtonHandler>(this)) {
   setMinimumSize(1080, 720);
   setMouseTracking(true);
-
-  button_handler_->CreateMainMenuButtons(controller_);
-  button_handler_->CreateSettingsButtons(controller_);
-  button_handler_->CreateGameButtons(controller_);
-  button_handler_->CreatePauseMenuButtons(controller_);
-
+  button_handler_->CreateButtons(controller);
   show();
 
   game_time_.start();
@@ -59,9 +55,9 @@ void View::DrawBackground(QPainter* painter) {
   for (const auto& road : roads) {
     for (int i = 0; !road.IsEnd(i + 1); i++) {
       Coordinate start_point =
-          size_handler_.GameToWindowCoordinate(road.GetNode(i));
+          size_handler_->GameToWindowCoordinate(road.GetNode(i));
       Coordinate end_point =
-          size_handler_.GameToWindowCoordinate(road.GetNode(i + 1));
+          size_handler_->GameToWindowCoordinate(road.GetNode(i + 1));
       painter->drawLine(start_point.x, start_point.y, end_point.x, end_point.y);
     }
   }
@@ -84,7 +80,7 @@ void View::DrawEnemies(QPainter* painter) {
 
 void View::mouseReleaseEvent(QMouseEvent* event) {
   if (event->button() == Qt::LeftButton) {
-    controller_->MousePress(size_handler_.WindowToGameCoordinate(
+    controller_->MousePress(size_handler_->WindowToGameCoordinate(
         Coordinate(event->x(), event->y())));
   }
 }
@@ -108,24 +104,20 @@ std::shared_ptr<TowerMenu> View::GetTowerMenu() {
 
 void View::mouseMoveEvent(QMouseEvent* event) {
   if (button_handler_->GetWindowType() == WindowType::kGame) {
-    controller_->MouseMove(size_handler_.WindowToGameCoordinate(
+    controller_->MouseMove(size_handler_->WindowToGameCoordinate(
         Coordinate(event->x(), event->y())));
   }
 }
 
 void View::resizeEvent(QResizeEvent*) {
-  size_handler_.ChangeSystem(this->width(), this->height());
-  button_handler_->MoveMainMenuButtons(size_handler_);
-  button_handler_->MoveSettingsButtons(size_handler_);
-  button_handler_->MoveGameButtons(size_handler_);
-  button_handler_->MovePauseMenuButtons(size_handler_);
-  repaint();
+  size_handler_->ChangeSystem(this->width(), this->height());
+  button_handler_->MoveButtons(size_handler_);
 }
 
 void View::DrawMainMenu(QPainter* painter) {
   Coordinate top_corner =
-      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
   painter->drawImage(QRect(top_corner.x, top_corner.y,
                            rect_size.width, rect_size.height),
                      QImage(":resources/background/main_background.png"));
@@ -136,17 +128,19 @@ void View::DrawMainMenu(QPainter* painter) {
 
 void View::DrawGame(QPainter* painter) {
   Coordinate top_corner =
-      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
   painter->drawImage(QRect(top_corner.x, top_corner.y,
                            rect_size.width, rect_size.height),
                      QImage(":resources/background/game_background.png"));
+  DrawAuras(painter);
   DrawBackground(painter);
   DrawEnemies(painter);
-  if (is_tower_menu_enabled_) {
-    tower_menu_->Draw(painter, size_handler_, game_time_.elapsed());
-  }
   DrawTowers(painter);
+
+  controller_->GetBase().Draw(painter, size_handler_);
+  DrawInterface(painter);
+
   button_handler_->DisableMainMenuUi();
   button_handler_->DisablePauseMenuUi();
   button_handler_->EnableGameUi();
@@ -154,8 +148,8 @@ void View::DrawGame(QPainter* painter) {
 
 void View::DrawSettings(QPainter* painter) {
   Coordinate top_corner =
-      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
   painter->drawImage(QRect(top_corner.x, top_corner.y,
                            rect_size.width, rect_size.height),
                      QImage(":resources/background/settings_background.png"));
@@ -165,8 +159,8 @@ void View::DrawSettings(QPainter* painter) {
 
 void View::DrawPauseMenu(QPainter* painter) {
   Coordinate top_corner =
-      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
   painter->drawImage(QRect(top_corner.x, top_corner.y,
                            rect_size.width, rect_size.height),
                      QImage(":resources/background/pause_menu_background.png"));

@@ -34,6 +34,7 @@ add_executable(techvscats
         View/view.cpp
         View/tower_menu.cpp
         View/tower_menu_option.cpp
+        View/menu_button.cpp
         View/button_handler.cpp
         View/size_handler.cpp
         resources.qrc)

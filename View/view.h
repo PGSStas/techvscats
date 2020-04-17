@@ -40,7 +40,7 @@ class View : public QMainWindow {
  private:
   // WindowType window_type_;
   AbstractController* controller_;
-  SizeHandler size_handler_;
+  std::shared_ptr<SizeHandler> size_handler_;
   QElapsedTimer game_time_;
   std::shared_ptr<ButtonHandler> button_handler_;
 
@@ -57,7 +57,6 @@ class View : public QMainWindow {
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
 
-  // void DrawWindow(QPainter* painter, const QBrush& brush);
   void DrawMainMenu(QPainter* painter);
   void DrawGame(QPainter* painter);
   void DrawSettings(QPainter* painter);

@@ -1,11 +1,23 @@
 #include "game_object.h"
 
-Coordinate GameObject::GetPosition() const {
-  return position_;
+GameObject::GameObject(Size size, Coordinate position)
+    : size_(size), position_(position) {
+}
+
+void GameObject::UpdateTime(int current_time) {
+  if (object_last_time_ != 0) {
+    delta_tick_time_ = current_time - object_last_time_;
+    object_life_time_ += delta_tick_time_;
+  }
+  object_last_time_ = current_time;
 }
 
 void GameObject::SetPosition(Coordinate position) {
   position_ = position;
+}
+
+Coordinate GameObject::GetPosition() const {
+  return position_;
 }
 
 Size GameObject::GetSize() const {
