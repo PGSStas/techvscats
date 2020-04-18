@@ -2,7 +2,7 @@
 
 View::View(AbstractController* controller)
     : controller_(controller),
-      size_handler_(std::make_shared<SizeHandler>()),
+      size_handler_(),
       button_handler_(std::make_unique<ButtonHandler>(this)) {
   setMinimumSize(1080, 720);
   setMouseTracking(true);
@@ -16,16 +16,6 @@ View::View(AbstractController* controller)
   button_handler_->DisablePauseMenuUi();
   button_handler_->DisableSettingsUi();
   button_handler_->EnableMainMenuUi();
-}
-
-void View::timerEvent(QTimerEvent* event) {
-  if (event->timerId() == controller_timer_id_) {
-    int delta_time = time_between_ticks_.elapsed();
-    time_between_ticks_.restart();
-    controller_->Tick(controller_->GetCurrentTime()
-                          + delta_time * game_speed_coefficient_);
-    repaint();
-  }
 }
 
 void View::paintEvent(QPaintEvent*) {
@@ -47,8 +37,59 @@ void View::paintEvent(QPaintEvent*) {
   }
 }
 
-void View::UpdateRounds(int current_round_nubmer, int number_of_rounds) {
-  // here will be some kind of round indicator
+void View::DrawMainMenu(QPainter* painter) {
+  Coordinate top_corner =
+      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+  painter->drawImage(QRect(top_corner.x, top_corner.y,
+                           rect_size.width, rect_size.height),
+                     QImage(":resources/background/main_background.png"));
+  button_handler_->DisableSettingsUi();
+  button_handler_->DisablePauseMenuUi();
+  button_handler_->EnableMainMenuUi();
+}
+
+void View::DrawGame(QPainter* painter) {
+  Coordinate top_corner =
+      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+  painter->drawImage(QRect(top_corner.x, top_corner.y,
+                           rect_size.width, rect_size.height),
+                     QImage(":resources/background/game_background.png"));
+  DrawAuras(painter);
+  DrawBackground(painter);
+  DrawProjectiles(painter);
+  DrawEnemies(painter);
+  DrawTowers(painter);
+
+  controller_->GetBase().Draw(painter, size_handler_);
+  DrawInterface(painter);
+
+  button_handler_->DisableMainMenuUi();
+  button_handler_->DisablePauseMenuUi();
+  button_handler_->EnableGameUi();
+}
+
+void View::DrawSettings(QPainter* painter) {
+  Coordinate top_corner =
+      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+  painter->drawImage(QRect(top_corner.x, top_corner.y,
+                           rect_size.width, rect_size.height),
+                     QImage(":resources/background/settings_background.png"));
+  button_handler_->DisableMainMenuUi();
+  button_handler_->EnableSettingsUi();
+}
+
+void View::DrawPauseMenu(QPainter* painter) {
+  Coordinate top_corner =
+      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
+  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
+  painter->drawImage(QRect(top_corner.x, top_corner.y,
+                           rect_size.width, rect_size.height),
+                     QImage(":resources/background/pause_menu_background.png"));
+  button_handler_->DisableGameUi();
+  button_handler_->EnablePauseMenuUi();
 }
 
 void View::DrawBackground(QPainter* painter) {
@@ -59,9 +100,9 @@ void View::DrawBackground(QPainter* painter) {
   for (const auto& road : roads) {
     for (int i = 0; !road.IsEnd(i + 1); i++) {
       Coordinate start_point =
-          size_handler_->GameToWindowCoordinate(road.GetNode(i));
+          size_handler_.GameToWindowCoordinate(road.GetNode(i));
       Coordinate end_point =
-          size_handler_->GameToWindowCoordinate(road.GetNode(i + 1));
+          size_handler_.GameToWindowCoordinate(road.GetNode(i + 1));
       painter->drawLine(start_point.x, start_point.y, end_point.x, end_point.y);
     }
   }
@@ -79,6 +120,44 @@ void View::DrawEnemies(QPainter* painter) {
   auto enemies_list = controller_->GetEnemies();
   for (const auto& enemy : enemies_list) {
     enemy->Draw(painter, size_handler_);
+  }
+}
+
+void View::DrawAuras(QPainter* painter) {
+  const auto& enemies_list = controller_->GetEnemies();
+  for (const auto& enemy : enemies_list) {
+    enemy->GetAuricField().Draw(painter, size_handler_);
+  }
+  const auto& buildings_list = controller_->GetBuildings();
+  for (const auto& building : buildings_list) {
+    building->GetAuricField().Draw(painter, size_handler_);
+  }
+}
+
+void View::DrawInterface(QPainter* painter) {
+  auto enemies_list = controller_->GetEnemies();
+
+  for (auto& enemy : enemies_list) {
+    enemy->DrawHealthBar(painter, size_handler_);
+    enemy->GetAppliedEffect()->DrawEffectsIcons(painter,
+                                                size_handler_,
+                                                enemy->GetPosition());
+  }
+  const auto& buildings_list = controller_->GetBuildings();
+  for (const auto& building : buildings_list) {
+    building->GetAppliedEffect()->DrawEffectsIcons(painter,
+                                                   size_handler_,
+                                                   building->GetPosition());
+  }
+  if (is_tower_menu_enabled_) {
+    tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
+  }
+}
+
+void View::DrawProjectiles(QPainter* painter) {
+  auto projectiles_list = controller_->GetProjectiles();
+  for (auto& projectile : projectiles_list) {
+    projectile->Draw(painter, size_handler_);
   }
 }
 
@@ -101,7 +180,7 @@ std::shared_ptr<TowerMenu> View::GetTowerMenu() {
 
 void View::mouseReleaseEvent(QMouseEvent* event) {
   if (event->button() == Qt::LeftButton) {
-    controller_->MousePress(size_handler_->WindowToGameCoordinate(
+    controller_->MousePress(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())));
   }
 }
@@ -114,62 +193,8 @@ void View::mouseMoveEvent(QMouseEvent* event) {
 }
 
 void View::resizeEvent(QResizeEvent*) {
-  size_handler_->ChangeSystem(this->width(), this->height());
+  size_handler_.ChangeSystem(this->width(), this->height());
   button_handler_->MoveButtons(size_handler_);
-}
-
-void View::DrawMainMenu(QPainter* painter) {
-  Coordinate top_corner =
-      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
-  painter->drawImage(QRect(top_corner.x, top_corner.y,
-                           rect_size.width, rect_size.height),
-                     QImage(":resources/background/main_background.png"));
-  button_handler_->DisableSettingsUi();
-  button_handler_->DisablePauseMenuUi();
-  button_handler_->EnableMainMenuUi();
-}
-
-void View::DrawGame(QPainter* painter) {
-  Coordinate top_corner =
-      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
-  painter->drawImage(QRect(top_corner.x, top_corner.y,
-                           rect_size.width, rect_size.height),
-                     QImage(":resources/background/game_background.png"));
-  DrawAuras(painter);
-  DrawBackground(painter);
-  DrawEnemies(painter);
-  DrawTowers(painter);
-
-  controller_->GetBase().Draw(painter, size_handler_);
-  DrawInterface(painter);
-
-  button_handler_->DisableMainMenuUi();
-  button_handler_->DisablePauseMenuUi();
-  button_handler_->EnableGameUi();
-}
-
-void View::DrawSettings(QPainter* painter) {
-  Coordinate top_corner =
-      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
-  painter->drawImage(QRect(top_corner.x, top_corner.y,
-                           rect_size.width, rect_size.height),
-                     QImage(":resources/background/settings_background.png"));
-  button_handler_->DisableMainMenuUi();
-  button_handler_->EnableSettingsUi();
-}
-
-void View::DrawPauseMenu(QPainter* painter) {
-  Coordinate top_corner =
-      size_handler_->GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_->GameToWindowSize({1920, 1080});
-  painter->drawImage(QRect(top_corner.x, top_corner.y,
-                           rect_size.width, rect_size.height),
-                     QImage(":resources/background/pause_menu_background.png"));
-  button_handler_->DisableGameUi();
-  button_handler_->EnablePauseMenuUi();
 }
 
 void View::EnableGameUi() {
@@ -188,36 +213,20 @@ void View::DisableMainMenuUi() {
   button_handler_->DisableMainMenuUi();
 }
 
-void View::DrawAuras(QPainter* painter) {
-  const auto& enemies_list = controller_->GetEnemies();
-  for (const auto& enemy : enemies_list) {
-    enemy->GetAuricField().Draw(painter, size_handler_);
-  }
-
-  const auto& buildings_list = controller_->GetBuildings();
-  for (const auto& building : buildings_list) {
-    building->GetAuricField().Draw(painter, size_handler_);
-  }
+void View::timerEvent(QTimerEvent* event) {
+    if (event->timerId() == controller_timer_id_) {
+      int delta_time = time_between_ticks_.elapsed();
+      time_between_ticks_.restart();
+      controller_->Tick(controller_->GetCurrentTime()
+                            + delta_time * game_speed_coefficient_);
+      repaint();
+    }
 }
 
-void View::DrawInterface(QPainter* painter) {
-  auto enemies_list = controller_->GetEnemies();
+void View::UpdateRounds(int current_round_nubmer, int number_of_rounds) {
+  // here will be some kind of round indicator
+}
 
-  for (auto& enemy : enemies_list) {
-    enemy->DrawHealthBar(painter, size_handler_);
-    enemy->GetAppliedEffect()->DrawEffectsIcons(painter,
-                                                size_handler_,
-                                                enemy->GetPosition());
-  }
-
-  const auto& buildings_list = controller_->GetBuildings();
-  for (const auto& building : buildings_list) {
-    building->GetAppliedEffect()->DrawEffectsIcons(painter,
-                                                   size_handler_,
-                                                   building->GetPosition());
-  }
-
-  if (is_tower_menu_enabled_) {
-    tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
-  }
+void View::ChangeGameSpeed(int game_speed_coefficient) {
+  game_speed_coefficient_ = game_speed_coefficient;
 }

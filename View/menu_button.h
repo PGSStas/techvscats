@@ -1,31 +1,28 @@
-#ifndef MENU_BUTTON_H
-#define MENU_BUTTON_H
+#ifndef VIEW_MENU_BUTTON_H_
+#define VIEW_MENU_BUTTON_H_
 
 #include <QPushButton>
 #include <QMainWindow>
+#include <QMouseEvent>
 #include <QPalette>
 #include <QFontDatabase>
 #include <memory>
 #include <string>
 #include "size_handler.h"
+#include "Model/constants.h"
 
-class MenuButton {
+class MenuButton : public QPushButton {
  public:
-  MenuButton() : button_(nullptr), button_size_(0, 0) {}
-  MenuButton(const QString& text, const Size button_size,
+  MenuButton() : button_size_(0, 0), border_size_(0) {}
+  MenuButton(const QString& text, const Size& button_size,
              QMainWindow* main_window, const QString& icon = "");
+  void Move(Coordinate game_coordinate, SizeHandler size_handler);
 
-  void Move(Coordinate game_coordinate,
-            std::shared_ptr<SizeHandler> size_handler);
-  void Show();
-  void Hide();
-  void SetIcon(const QString& icon);
-  void SetText(const QString& text);
-
-  QPushButton* GetQPushButton();
  private:
-  QPushButton* button_;
+  void enterEvent(QEvent*) override;
+  void leaveEvent(QEvent*) override;
   Size button_size_;
+  int border_size_;
 };
 
-#endif //MENU_BUTTON_H
+#endif  // VIEW_MENU_BUTTON_H_

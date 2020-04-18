@@ -2,6 +2,7 @@
 #define VIEW_VIEW_H_
 
 #include <QTimerEvent>
+#include <QTimer>
 #include <QMouseEvent>
 #include <QMainWindow>
 #include <QPushButton>
@@ -33,6 +34,7 @@ class View : public QMainWindow {
   void ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu);
   void UpdateRounds(int current_round_number, int number_of_rounds);
 
+  void ChangeGameSpeed(int game_speed_cofficient);
   std::shared_ptr<TowerMenu> GetTowerMenu();
   bool IsTowerMenuEnabled() const;
   void DisableTowerMenu();
@@ -40,8 +42,8 @@ class View : public QMainWindow {
  private:
   // WindowType window_type_;
   AbstractController* controller_;
-  std::shared_ptr<SizeHandler> size_handler_;
-  QElapsedTimer view_timer_;
+  SizeHandler size_handler_;
+  QTimer view_timer_;
   QElapsedTimer time_between_ticks_;
   std::shared_ptr<ButtonHandler> button_handler_;
 

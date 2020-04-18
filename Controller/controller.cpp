@@ -299,3 +299,14 @@ const Base& Controller::GetBase() const {
 int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
+
+void Controller::ZeroSpeed() {
+  view_->ChangeGameSpeed(0);
+}
+void Controller::NormalSpeed() {
+  view_->ChangeGameSpeed(1);
+}
+
+void Controller::DoubleSpeed() {
+  view_->ChangeGameSpeed(2);
+}

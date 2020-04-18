@@ -3,23 +3,24 @@
     <file>resources/levels/level_1.json</file>
     <file>resources/database/database.json</file>
 
-    <file>resources/buttons_images/dec_level_button.png</file>
-    <file>resources/buttons_images/inc_level_button.png</file>
+    <file>resources/buttons_resources/dec_level_button.png</file>
+    <file>resources/buttons_resources/inc_level_button.png</file>
 
-    <file>resources/buttons_images/sound_button_on.png</file>
-    <file>resources/buttons_images/sound_button_off.png</file>
-    <file>resources/buttons_images/language_button_rus.png</file>
-    <file>resources/buttons_images/language_button_eng.png</file>
+    <file>resources/buttons_resources/sound_button_on.png</file>
+    <file>resources/buttons_resources/sound_button_off.png</file>
+    <file>resources/buttons_resources/language_button_rus.png</file>
+    <file>resources/buttons_resources/language_button_eng.png</file>
 
-    <file>resources/buttons_images/pause_button.png</file>
-    <file>resources/buttons_images/double_speed_button.png</file>
-    <file>resources/buttons_images/normal_speed_button.png</file>
-    <file>resources/buttons_images/zero_speed_button.png</file>
+    <file>resources/buttons_resources/pause_button.png</file>
+    <file>resources/buttons_resources/double_speed_button.png</file>
+    <file>resources/buttons_resources/normal_speed_button.png</file>
+    <file>resources/buttons_resources/zero_speed_button.png</file>
+
+    <file>resources/buttons_resources/14722.ttf</file>
 
     <file>resources/background/main_background.png</file>
     <file>resources/background/game_background.png</file>
     <file>resources/background/settings_background.png</file>
     <file>resources/background/pause_menu_background.png</file>
-    <file>resources/buttons_images/14722.ttf</file>
 </qresource>
 </RCC>
