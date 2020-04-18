@@ -23,6 +23,8 @@ class AuricField {
   double effect_radius_;
   int effect_id_;
   Coordinate* carrier_coordinate_ = nullptr;
+
+  static const double kSemiMinorCoefficient;
 };
 
 #endif  // GAMEOBJECT_AURIC_FIELD_H_

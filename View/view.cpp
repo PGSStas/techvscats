@@ -165,10 +165,6 @@ void View::DrawBackground(QPainter* painter) {
 }
 
 void View::DrawAuras(QPainter* painter) {
-  const auto& enemies_list = controller_->GetEnemies();
-  for (const auto& enemy : enemies_list) {
-    enemy->GetAuricField().Draw(painter, size_handler_);
-  }
   const auto& buildings_list = controller_->GetBuildings();
   for (const auto& building : buildings_list) {
     building->GetAuricField().Draw(painter, size_handler_);
