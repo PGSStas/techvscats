@@ -296,7 +296,8 @@ void ButtonHandler::MoveButtons(SizeHandler size_handler) {
 void ButtonHandler::ChangeLanguage() {
   if (language_ == Language::kRussian) {
     start_game_button_->setText(tr("START GAME"));
-    choose_level_number_->setText(tr("LEVEL ") + QString::number(level_number_));
+    choose_level_number_->setText(tr("LEVEL ") + QString::number(
+        level_number_));
     settings_button_->setText(tr("SETTINGS"));
     exit_button_->setText(tr("EXIT"));
     reset_game_button_->setText(tr("RESET PROGRESS"));
@@ -309,7 +310,8 @@ void ButtonHandler::ChangeLanguage() {
   }
   if (language_ == Language::kEnglish) {
     start_game_button_->setText(tr("НАЧАТЬ ИГРУ"));
-    choose_level_number_->setText(tr("УРОВЕНЬ ") + QString::number(level_number_));
+    choose_level_number_->setText(tr("УРОВЕНЬ ") + QString::number(
+        level_number_));
     settings_button_->setText(tr("НАСТРОЙКИ"));
     exit_button_->setText(tr("ВЫЙТИ ИЗ ИГРЫ"));
     reset_game_button_->setText(tr("СБРОСИТЬ ПРОГРЕСС"));
