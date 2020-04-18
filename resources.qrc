@@ -3,8 +3,12 @@
     <file>resources/levels/level_1.json</file>
     <file>resources/database/database.json</file>
 
-    <file>resources/images/enemy_1.png</file>
-    <file>resources/images/enemy_2.png</file>
+    <file>resources/images/toster_1.png</file>
+    <file>resources/images/toster_2.png</file>
+    <file>resources/images/toster_3.png</file>
+    <file>resources/images/mouse_1.png</file>
+    <file>resources/images/mouse_2.png</file>
+    <file>resources/images/mouse_3.png</file>
     <file>resources/images/map_level_1.png</file>
 </qresource>
 </RCC>

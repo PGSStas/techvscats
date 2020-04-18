@@ -43,8 +43,9 @@ void Enemy::Draw(QPainter* painter,
 
   painter->translate(point.x, point.y);
   if (moving_vector_.width < 0) {
-    painter->translate(size.width, size.height);
-    painter->rotate(180);
+    painter->translate(size.width, 0);
+    // mirroring the image
+    painter->scale(-1.0, 1.0);
   }
   painter->drawImage(QRect(0, 0, size.width, size.height),
       player_.GetCurrentFrame());

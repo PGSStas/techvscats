@@ -85,7 +85,8 @@ class Model {
 
   // Images
   QPixmap map_;
-  std::vector<QImage> enemy_images_;
+  std::vector<QImage> toaster_images_;
+  std::vector<QImage> mouse_images_;
 
  private:
   // Helping functions

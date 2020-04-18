@@ -5,14 +5,16 @@ void Model::SetGameLevel(int level_id) {
 
   Enemy temporary_enemy;
   AnimationPlayer enemy_player(
-      std::make_shared<std::vector<QImage>>(enemy_images_),
+      std::make_shared<std::vector<QImage>>(toaster_images_),
       constants::kDefaultTimeBetweenFrames);
   temporary_enemy.SetParameters(1);
   temporary_enemy.SetAnimationPlayer(enemy_player);
   id_to_enemy_.push_back(temporary_enemy);
-  temporary_enemy.SetParameters(4);
-  enemy_player.SetTimeBetweenFrames(50);
-  temporary_enemy.SetAnimationPlayer(enemy_player);
+  temporary_enemy.SetParameters(3);
+  AnimationPlayer enemy_player2(
+      std::make_shared<std::vector<QImage>>(mouse_images_),
+      constants::kDefaultTimeBetweenFrames);
+  temporary_enemy.SetAnimationPlayer(enemy_player2);
   id_to_enemy_.push_back(temporary_enemy);
   LoadLevel(level_id);
 
@@ -206,6 +208,13 @@ const QPixmap& Model::GetMapImage() const {
 }
 
 void Model::LoadDatabase() {
-  enemy_images_.emplace_back(":resources/images/enemy_1.png");
-  enemy_images_.emplace_back(":resources/images/enemy_2.png");
+  toaster_images_.emplace_back(":resources/images/toster_1.png");
+  toaster_images_.emplace_back(":resources/images/toster_2.png");
+  toaster_images_.emplace_back(":resources/images/toster_3.png");
+  toaster_images_.push_back(toaster_images_[1]);
+
+  mouse_images_.emplace_back(":resources/images/mouse_1.png");
+  mouse_images_.emplace_back(":resources/images/mouse_2.png");
+  mouse_images_.emplace_back(":resources/images/mouse_3.png");
+  mouse_images_.push_back(mouse_images_[1]);
 }
