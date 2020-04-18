@@ -116,5 +116,3 @@ int Enemy::ComputeReward() const {
   int delta = static_cast<int>(random_generator_()) % modulus - modulus / 2;
   return reward_ + delta;
 }
-
-

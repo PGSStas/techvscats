@@ -25,6 +25,7 @@ class Controller : public AbstractController {
   const std::vector<Road>& GetRoads() const override;
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
+
   const std::list<std::shared_ptr<AbstractProjectile>>&
     GetProjectiles() const override;
   const std::list<std::shared_ptr<TextNotification>>&
@@ -55,6 +56,7 @@ class Controller : public AbstractController {
   void TickProjectiles();
   void TickAuras();
   void TickTextNotifications();
+
   void ApplyEffectToAllInstances(const AuricField& aura);
   void AddEnemyToModel(const Enemy& enemy) const;
 

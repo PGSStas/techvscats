@@ -8,6 +8,7 @@
 
 class Base : public GameObject {
  public:
+
   explicit Base(int gold = 0, double max_health = 0,
                 Coordinate position = {0, 0});
   ~Base() override = default;
