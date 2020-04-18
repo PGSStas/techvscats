@@ -15,7 +15,7 @@ void Base::Tick(int) {
 
 void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
-  
+
   auto font = painter->font();
   font.setPointSize(size_handler.GameToWindowLength(kFontSize));
   painter->setFont(font);

@@ -69,7 +69,7 @@ class Model {
   void InitializeTowerSlots();
 
   // Database which is updated by Controller all time
-  std::list<Spawner>  spawners_;
+  std::list<Spawner> spawners_;
   std::list<std::shared_ptr<Enemy>> enemies_;
   std::vector<std::shared_ptr<Building>> buildings_;
   std::list<std::shared_ptr<AbstractProjectile>> projectiles_;
@@ -82,7 +82,7 @@ class Model {
   std::vector<Road> roads_;
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
   Base base_;
-  
+
   std::vector<Coordinate> empty_places_for_towers_;
   int prepair_time_between_rounds_ = 0;
   int rounds_count_ = 0;
