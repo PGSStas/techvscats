@@ -23,7 +23,7 @@ void AuricField::Draw(QPainter* painter,
       *carrier_coordinate_);
 
   QRadialGradient gradient(gradient_center.x,
-      gradient_center.y * 1 / kSemiMinorCoefficient,size.width / 2);
+      gradient_center.y * 1 / kSemiMinorCoefficient, size.width / 2);
 
   QColor color(Qt::blue);
   color.setAlpha(60);
