@@ -8,8 +8,6 @@ Model::Model() {
 void Model::SetGameLevel(int level_id) {
   LoadLevelFromJson(level_id);
 
-  empty_places_for_towers_ = {{540, 700}, {200, 100}, {500, 100}};
-
   AimedProjectile projectile_instance_aimed(Size(10, 20), 66);
   projectile_instance_aimed.SetAnimationParameters(Qt::darkRed, 100);
 
@@ -26,41 +24,16 @@ void Model::SetGameLevel(int level_id) {
   id_to_projectile_.push_back(std::make_shared<LaserProjectile>(
       projectile_instance_lazer));
 
-  Building building_instance(Size(33, 33), 0, 0);
-  building_instance.SetAnimationParameters(Qt::gray, Qt::gray, Qt::gray,
-                                           {0, 0, 0});
-
-  upgrades_tree_.push_back({1, 2});
-
-  Building building_instance2(Size(40, 20), 1, 24);
-  building_instance2.SetProjectile(0, 10, 340, 2);
-  building_instance2.SetAnimationParameters(Qt::blue, Qt::red, Qt::darkYellow,
-                                            {1000, 300, 300});
-  upgrades_tree_.push_back({3, 0});
-
-  Building building_instance3(Size(30, 50), 2, 24, AuricField(200, 2));
-  building_instance3.SetProjectile(2, 3, 240, 3);
-  building_instance3.SetAnimationParameters(Qt::yellow, Qt::red, Qt::darkYellow,
-                                            {100, 50, 10});
-
-  upgrades_tree_.push_back({3, 1, 0});
-
-  Building building_instance4(Size(14, 32), 3, 24);
-  building_instance4.SetProjectile(1, 54, 540, 1);
-  building_instance4.SetAnimationParameters(Qt::green, Qt::red, Qt::darkGreen,
-                                            {1000, 300, 100});
-  upgrades_tree_.push_back({1, 0});
-
-  id_to_building_.push_back(building_instance);
-  id_to_building_.push_back(building_instance2);
-  id_to_building_.push_back(building_instance3);
-  id_to_building_.push_back(building_instance4);
-
   InitializeTowerSlots();
 }
 
 void Model::AddSpawner(const EnemyGroup& enemy_group) {
   spawners_.emplace_back(enemy_group);
+}
+
+void Model::AddTextNotification(
+    const std::shared_ptr<TextNotification>& text_notification) {
+  text_notifications_.emplace_back(text_notification);
 }
 
 void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
@@ -107,6 +80,7 @@ void Model::ClearGameModel() {
   enemies_.clear();
   buildings_.clear();
   projectiles_.clear();
+  text_notifications_.clear();
   spawners_.clear();
   enemy_groups_.clear();
   roads_.clear();
@@ -127,6 +101,10 @@ std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
 
 std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
   return &projectiles_;
+}
+
+std::list<std::shared_ptr<TextNotification>>* Model::GetTextNotifications() {
+  return &text_notifications_;
 }
 
 const std::vector<Road>& Model::GetRoads() const {
@@ -183,14 +161,14 @@ void Model::LoadLevelFromJson(int level) {
   QJsonObject json_object =
       QJsonDocument::fromJson(level_file.readAll()).object();
 
-  prepair_time_between_rounds_ = json_object["prepair_time_between_rounds_"].toInt();
-  gold_ = json_object["gold"].toInt();
+  prepair_time_between_rounds_ =
+      json_object["prepair_time_between_rounds_"].toInt();
   score_ = json_object["score"].toInt();
 
   // Reading information about the base.
   QJsonObject json_base = json_object["base"].toObject();
   QJsonObject json_base_position = json_base["position"].toObject();
-  base_ = Base(json_base["max_health"].toDouble(),
+  base_ = Base(json_object["gold"].toInt(), json_base["max_health"].toDouble(),
                {json_base_position["x"].toDouble(),
                 json_base_position["y"].toDouble()});
 
@@ -293,7 +271,7 @@ void Model::LoadDatabaseFromJson() {
       aura = AuricField(enemy["aura"].toObject()["radius"].toInt(),
                         enemy["aura"].toObject()["effect_id"].toInt());
     }
-    // TODO(PGS): size of enemy please. Also i put speed on the second place.
+    // TODO(PGS): size of enemy please.
     id_to_enemy_.emplace_back(Size(30, 30),
                               enemy["speed"].toInt(),
                               enemy["damage"].toInt(),
@@ -311,6 +289,51 @@ void Model::LoadDatabaseFromJson() {
                               {Qt::darkRed, Qt::magenta},
                               {Qt::white, Qt::yellow}};
   Effect::SetEffectVisualizations(effect_visualization);
+
+  // Loading Buildings
+  QJsonArray json_buildings = json_object["buildings"].toArray();
+  int buildings_count = json_buildings.count();
+  id_to_building_.clear();
+  id_to_building_.reserve(buildings_count);
+  upgrades_tree_.clear();
+  upgrades_tree_.reserve(buildings_count);
+  QJsonObject json_building;
+  for (int i = 0; i < buildings_count; i++) {
+    json_building = json_buildings[i].toObject();
+    auto json_size = json_building["size"].toObject();
+    Size size(json_size["width"].toDouble(), json_size["height"].toDouble());
+    AuricField aura;
+    if (json_building.contains("auric_field")) {
+      aura = AuricField(
+          json_building["aura"].toObject()["radius"].toInt(),
+          json_building["aura"].toObject()["effect_id"].toInt());
+    }
+
+    Building building(size, i, json_building["settle_cost"].toInt(), aura);
+    if (json_building.contains("projectile")) {
+      auto json_projectile = json_building["projectile"].toObject();
+      building.SetProjectile(json_projectile["projectile_id"].toInt(),
+                             json_projectile["attack_damage"].toDouble(),
+                             json_projectile["attack_range"].toInt(),
+                             json_projectile["max_aims"].toInt());
+    }
+
+    auto action_time = json_building["action_time"].toArray();
+    // Temporary colors
+    building.SetAnimationParameters(Qt::yellow, Qt::red, Qt::darkYellow, {
+        action_time[0].toInt(), action_time[1].toInt(), action_time[2].toInt()
+    });
+
+    auto json_upgrade_tree = json_building["upgrade_tree"].toArray();
+    int upgrade_tree_count = json_upgrade_tree.size();
+    std::vector<int> upgrade_tree;
+    upgrade_tree.reserve(upgrade_tree_count);
+    for (int j = 0; j < upgrade_tree_count; j++) {
+      upgrade_tree.push_back(json_upgrade_tree[j].toInt());
+    }
+    upgrades_tree_.push_back(std::move(upgrade_tree));
+    id_to_building_.push_back(std::move(building));
+  }
 }
 
 void Model::InitializeTowerSlots() {
@@ -321,4 +344,3 @@ void Model::InitializeTowerSlots() {
     buildings_.push_back(empty_place);
   }
 }
-

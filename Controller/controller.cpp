@@ -48,6 +48,7 @@ void Controller::GameProcess() {
   TickBuildings();
   TickProjectiles();
   TickAuras();
+  TickTextNotifications();
 }
 
 void Controller::MenuProcess() {}
@@ -102,7 +103,10 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
-  enemies->remove_if([](const auto& enemy) {
+  enemies->remove_if([this](const auto& enemy) {
+    if (enemy->IsDead()) {
+      ProcessEnemyDeath(*enemy);
+    }
     return enemy->IsDead() || enemy->IsEndReached();
   });
   auto base = model_->GetBase();
@@ -173,6 +177,17 @@ void Controller::TickAuras() {
   }
 }
 
+void Controller::TickTextNotifications() {
+  auto text_notifications = model_->GetTextNotifications();
+  text_notifications->remove_if(
+      [](const std::shared_ptr<TextNotification>& text_notification) {
+        return text_notification->IsDead();
+      });
+  for (auto& notification : *text_notifications) {
+    notification->Tick(current_game_time_);
+  }
+}
+
 void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
   if (!aura.IsValid()) {
     return;
@@ -208,7 +223,22 @@ void Controller::AddEnemyToModel(const Enemy& enemy) const {
 }
 
 void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
-  model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+  int settle_cost = model_->GetBuildingById(replacing_id).GetCost();
+  auto base = model_->GetBase();
+  if (base->GetGold() >= settle_cost) {
+    model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+    base->SubtractGoldAmount(settle_cost);
+
+    model_->AddTextNotification(std::make_shared<TextNotification>(
+        "- " + QString::number(settle_cost) + " gold", Size(70, 30),
+        base->GetGoldPosition(), Qt::red, current_game_time_
+    ));
+  } else {
+    model_->AddTextNotification(std::make_shared<TextNotification>(
+        "Not enough gold", Size(70, 30),
+        base->GetGoldPosition(), Qt::blue, current_game_time_
+    ));
+  }
 }
 
 void Controller::CreateTowerMenu(int tower_index) {
@@ -289,10 +319,24 @@ Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }
 
+const std::list<std::shared_ptr<TextNotification>>&
+Controller::GetTextNotifications() const {
+  return *model_->GetTextNotifications();
+}
+
 const Base& Controller::GetBase() const {
   return *model_->GetBase();
 }
 
 int Controller::GetCurrentTime() const {
   return current_game_time_;
+}
+
+void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
+  int reward = enemy.ComputeReward();
+  model_->AddTextNotification(std::make_shared<TextNotification>(
+      QString::number(reward) + " gold", Size(70, 30),
+      enemy.GetPosition(), Qt::yellow, current_game_time_
+  ));
+  model_->GetBase()->AddGoldAmount(reward);
 }

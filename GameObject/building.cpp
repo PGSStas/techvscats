@@ -161,6 +161,10 @@ double Building::GetDamage() const {
   return attack_damage_ * applied_effect_.GetDamageCoefficient();
 }
 
+int Building::GetCost() const {
+  return cost_;
+}
+
 double Building::GetProjectileSpeedCoefficient() const {
   return applied_effect_.GetMoveSpeedCoefficient();
 }

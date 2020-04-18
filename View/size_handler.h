@@ -16,6 +16,8 @@ class SizeHandler {
   Coordinate GameToWindowCoordinate(Coordinate game_coordinate) const;
   Size WindowToGameSize(Size window_size) const;
   Size GameToWindowSize(Size game_size) const;
+  double WindowToGameLength(double length) const;
+  double GameToWindowLength(double length) const;
 
  private:
   Size origin_offset_ = {0, 0};

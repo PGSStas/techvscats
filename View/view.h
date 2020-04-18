@@ -72,6 +72,7 @@ class View : public QMainWindow {
   void DrawEnemies(QPainter* painter);
   void DrawProjectiles(QPainter* painter);
   void DrawTowers(QPainter* painter);
+  void DrawAdditionalInfo(QPainter* painter);
   void DrawInterface(QPainter* painter);
 };
 

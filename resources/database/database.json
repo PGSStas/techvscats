@@ -48,7 +48,95 @@
       }
     }
   ],
-  "buildings": [],
+  "buildings": [
+    {
+      "size": {
+        "width": 33,
+        "height": 33
+      },
+      "settle_cost": 0,
+      "action_time": [
+        0,
+        0,
+        0
+      ],
+      "upgrade_tree": [
+        1,
+        2
+      ]
+    },
+    {
+      "size": {
+        "width": 40,
+        "height": 20
+      },
+      "settle_cost": 24,
+      "projectile": {
+        "projectile_id": 0,
+        "attack_damage": 100,
+        "attack_range": 340,
+        "max_aims": 2
+      },
+      "action_time": [
+        1000,
+        300,
+        300
+      ],
+      "upgrade_tree": [
+        3,
+        0
+      ]
+    },
+    {
+      "size": {
+        "width": 30,
+        "height": 50
+      },
+      "settle_cost": 24,
+      "auric_field": {
+        "radius": 200,
+        "effect_id": 2
+      },
+      "projectile": {
+        "projectile_id": 2,
+        "attack_damage": 3,
+        "attack_range": 240,
+        "max_aims": 3
+      },
+      "action_time": [
+        100,
+        50,
+        10
+      ],
+      "upgrade_tree": [
+        3,
+        1,
+        0
+      ]
+    },
+    {
+      "size": {
+        "width": 14,
+        "height": 32
+      },
+      "settle_cost": 24,
+      "projectile": {
+        "projectile_id": 1,
+        "attack_damage": 54,
+        "attack_range": 540,
+        "max_aims": 1
+      },
+      "action_time": [
+        1000,
+        300,
+        100
+      ],
+      "upgrade_tree": [
+        1,
+        0
+      ]
+    }
+  ],
   "effects": [
     {
       "effect_target": 0,

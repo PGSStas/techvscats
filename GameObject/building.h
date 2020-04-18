@@ -40,6 +40,7 @@ class Building : public GameObject {
   int GetAttackRange() const;
   int GetProjectileId() const;
   double GetDamage() const;
+  int GetCost() const;
   double GetProjectileSpeedCoefficient() const;
   Effect* GetAppliedEffect();
   const AuricField& GetAuricField() const;

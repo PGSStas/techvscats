@@ -115,7 +115,7 @@ void View::paintEvent(QPaintEvent*) {
     DrawProjectiles(&painter);
     DrawTowers(&painter);
 
-    DrawInterface(&painter);
+    DrawAdditionalInfo(&painter);
   }
 }
 
@@ -198,9 +198,8 @@ void View::DrawTowers(QPainter* painter) {
   }
 }
 
-void View::DrawInterface(QPainter* painter) {
-  auto enemies_list = controller_->GetEnemies();
-
+void View::DrawAdditionalInfo(QPainter* painter) {
+  const auto& enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
     enemy->DrawHealthBar(painter, size_handler_);
     enemy->GetAppliedEffect()->DrawEffectsIcons(painter,
@@ -217,5 +216,10 @@ void View::DrawInterface(QPainter* painter) {
 
   if (is_tower_menu_enabled_) {
     tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
+  }
+
+  const auto& text_notifications = controller_->GetTextNotifications();
+  for (auto& notification : text_notifications) {
+    notification->Draw(painter, size_handler_);
   }
 }
