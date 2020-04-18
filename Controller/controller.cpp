@@ -320,7 +320,7 @@ Controller::GetProjectiles() const {
 const std::list<std::shared_ptr<TextNotification>>&
 Controller::GetTextNotifications() const {
   return *model_->GetTextNotifications();
-}
+
 
 const Base& Controller::GetBase() const {
   return *model_->GetBase();

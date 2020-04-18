@@ -15,6 +15,7 @@ void Base::Tick(int) {
 
 void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
+  
   auto font = painter->font();
   font.setPointSize(size_handler.GameToWindowLength(kFontSize));
   painter->setFont(font);
@@ -28,6 +29,7 @@ void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
       size_handler.GameToWindowCoordinate(kGoldPosition);
   painter->drawText(gold_top_corner.x, gold_top_corner.y,
                     QString::number(gold_));
+
   painter->setBrush(Qt::magenta);
 
   auto point = size_handler.GameToWindowCoordinate(position_ - kBaseSize / 2);
