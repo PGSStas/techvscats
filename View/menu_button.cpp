@@ -5,8 +5,8 @@ MenuButton::MenuButton(const QString& text, const Size& button_size,
                        QMainWindow* main_window, const QString& icon) :
     QPushButton(text, main_window) {
   setMouseTracking(true);
-  int id =
-      QFontDatabase::addApplicationFont(":resources/buttons_resources/14722.ttf");
+  int id = QFontDatabase::addApplicationFont(
+      ":resources/buttons_resources/14722.ttf");
   QString family = QFontDatabase::applicationFontFamilies(id).at(0);
   setFont(QFont(family));
   setStyleSheet("background-color: #ffffff;");

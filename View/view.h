@@ -11,7 +11,6 @@
 #include <QObject>
 #include <QString>
 #include <QDebug>
-#include <QTimerEvent>
 
 #include <memory>
 #include <list>

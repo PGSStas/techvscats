@@ -72,10 +72,8 @@ void ButtonHandler::CreateMainMenuButtons() {
   };
   connect(inc_level_button_, &QPushButton::clicked, inc_level_button_click);
 
-  dec_level_button_ = new MenuButton("",
-                                     short_button_size_,
-                                     main_window_,
-                                     ":resources/buttons_resources/dec_level_button.png");
+  dec_level_button_ = new MenuButton("", short_button_size_,
+      main_window_,":resources/buttons_resources/dec_level_button.png");
   auto dec_level_button_click = [&]() {
     if (level_number_ > 1) {
       level_number_--;
@@ -105,19 +103,16 @@ void ButtonHandler::MoveMainMenuButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  language_button_ = new MenuButton("",
-                                    short_button_size_,
-                                    main_window_,
-                                    ":resources/buttons_resources/language_button_eng.png");
+  language_button_ = new MenuButton("", short_button_size_,
+      main_window_,
+      ":resources/buttons_resources/language_button_eng.png");
   auto language_button_click = [&]() {
     ChangeLanguage();
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
 
-  sound_button_ = new MenuButton("",
-                                 short_button_size_,
-                                 main_window_,
-                                 ":resources/buttons_resources/sound_button_on.png");
+  sound_button_ = new MenuButton("", short_button_size_,
+      main_window_,":resources/buttons_resources/sound_button_on.png");
   auto sound_button_click = [&]() {
     // changing sound
     if (is_sound_on) {
@@ -182,29 +177,23 @@ void ButtonHandler::DisableSettingsUi() {
 }
 
 void ButtonHandler::CreateGameButtons() {
-  pause_button_ = new MenuButton("",
-                                 short_button_size_,
-                                 main_window_,
-                                 ":resources/buttons_resources/pause_button.png");
+  pause_button_ = new MenuButton("",short_button_size_,
+      main_window_,":resources/buttons_resources/pause_button.png");
   auto pause_button_click = [&]() {
     controller_->ZeroSpeed();
     window_type_ = WindowType::kPauseMenu;
   };
   connect(pause_button_, &QPushButton::clicked, pause_button_click);
 
-  zero_speed_button_ = new MenuButton("",
-                                      short_button_size_,
-                                      main_window_,
-                                      ":resources/buttons_resources/zero_speed_button.png");
+  zero_speed_button_ = new MenuButton("", short_button_size_,
+      main_window_,":resources/buttons_resources/zero_speed_button.png");
   auto zero_speed_button_click = [&]() {
     controller_->ZeroSpeed();
   };
   connect(zero_speed_button_, &QPushButton::clicked, zero_speed_button_click);
 
-  normal_speed_button_ = new MenuButton("",
-                                        short_button_size_,
-                                        main_window_,
-                                        ":resources/buttons_resources/normal_speed_button.png");
+  normal_speed_button_ = new MenuButton("", short_button_size_,
+      main_window_,":resources/buttons_resources/normal_speed_button.png");
   auto normal_speed_button_click = [&]() {
     controller_->NormalSpeed();
   };
@@ -212,10 +201,8 @@ void ButtonHandler::CreateGameButtons() {
           &QPushButton::clicked,
           normal_speed_button_click);
 
-  double_speed_button_ = new MenuButton("",
-                                        short_button_size_,
-                                        main_window_,
-                                        ":resources/buttons_resources/double_speed_button.png");
+  double_speed_button_ = new MenuButton("", short_button_size_,
+      main_window_,":resources/buttons_resources/double_speed_button.png");
   auto double_speed_button_click = [&]() {
     controller_->DoubleSpeed();
   };
@@ -275,7 +262,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
 }
 
 void ButtonHandler::MovePauseMenuButtons(SizeHandler size_handler) {
-  Size shift = Size({0, long_button_size_.height + shift_,});
+  Size shift = Size({0, long_button_size_.height + shift_});
   continue_button_->Move(first_button_coordinate_, size_handler);
   restart_button_->Move(first_button_coordinate_ + shift, size_handler);
 }
