@@ -16,6 +16,12 @@ enum class Exit {
   kMenu,
 };
 
+enum class Speed {
+  kZeroSpeed,
+  kNormalSpeed,
+  kDoubleSpeed
+};
+
 // AbstractController is needed to avoid the problem with looping include
 // All public methods of controller should also be written here
 class AbstractController {
@@ -25,9 +31,7 @@ class AbstractController {
   virtual void StartGame(int level) = 0;
   virtual void Tick(int current_time) = 0;
   virtual void EndGame(Exit exit) = 0;
-  virtual void ZeroSpeed() = 0;
-  virtual void NormalSpeed() = 0;
-  virtual void DoubleSpeed() = 0;
+  virtual void SetSpeed(Speed speed) = 0;
 
   virtual void MousePress(Coordinate position) = 0;
   virtual void MouseMove(Coordinate position) = 0;

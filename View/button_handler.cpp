@@ -27,16 +27,16 @@ WindowType ButtonHandler::GetWindowType() {
 }
 
 void ButtonHandler::CreateMainMenuButtons() {
-  start_game_button_ =
-      new MenuButton("НАЧАТЬ ИГРУ", long_button_size_, main_window_);
+  start_game_button_ = new MenuButton(
+      tr("НАЧАТЬ ИГРУ"), long_button_size_, main_window_);
   auto start_game_button_click = [&]() {
-    controller_->NormalSpeed();
+    controller_->SetSpeed(Speed::kNormalSpeed);
     controller_->StartGame(level_number_);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
   settings_button_ = new MenuButton(
-      "НАСТРОЙКИ", long_button_size_, main_window_);
+      tr("НАСТРОЙКИ"), long_button_size_, main_window_);
   auto settings_button_click = [&]() {
     window_type_ = WindowType::kSettings;
     main_window_->repaint();
@@ -44,7 +44,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   connect(settings_button_, &QPushButton::clicked, settings_button_click);
 
   exit_button_ = new MenuButton(
-      "ВЫЙТИ ИЗ ИГРЫ", long_button_size_, main_window_);
+      tr("ВЫЙТИ ИЗ ИГРЫ"), long_button_size_, main_window_);
   connect(exit_button_,
           &QPushButton::clicked,
           main_window_,
@@ -54,16 +54,15 @@ void ButtonHandler::CreateMainMenuButtons() {
       Size(long_button_size_.width - short_button_size_.width * 2 - shift_ * 2,
            long_button_size_.height);
   choose_level_number_ = new MenuButton(
-      "УРОВЕНЬ 1", choose_level_number_size, main_window_);
+      tr("УРОВЕНЬ 1"), choose_level_number_size, main_window_);
 
-  inc_level_button_ = new MenuButton(
-      "", short_button_size_,
+  inc_level_button_ = new MenuButton("", short_button_size_,
       main_window_, ":resources/buttons_resources/inc_level_button.png");
   auto inc_level_button_click = [&]() {
     if (level_number_ < 3) {
       level_number_++;
     }
-    if (is_language_rus_) {
+    if (language_ == Language::kRussian) {
       choose_level_number_->setText(
           "УРОВЕНЬ " + QString::number(level_number_));
     } else {
@@ -78,7 +77,7 @@ void ButtonHandler::CreateMainMenuButtons() {
     if (level_number_ > 1) {
       level_number_--;
     }
-    if (is_language_rus_) {
+    if (language_ == Language::kRussian) {
       choose_level_number_->setText(
           "УРОВЕНЬ " + QString::number(level_number_));
     } else {
@@ -103,38 +102,37 @@ void ButtonHandler::MoveMainMenuButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  language_button_ = new MenuButton("", short_button_size_,
-      main_window_,
+  language_button_ = new MenuButton("", short_button_size_, main_window_,
       ":resources/buttons_resources/language_button_eng.png");
   auto language_button_click = [&]() {
     ChangeLanguage();
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
 
-  sound_button_ = new MenuButton("", short_button_size_,
-      main_window_, ":resources/buttons_resources/sound_button_on.png");
+  sound_button_ = new MenuButton("", short_button_size_, main_window_,
+       ":resources/buttons_resources/sound_button_on.png");
   auto sound_button_click = [&]() {
     // changing sound
-    if (is_sound_on) {
+    if (is_sound_on_) {
       sound_button_->setIcon(QIcon(
           ":resources/buttons_resources/sound_button_off.png"));
     } else {
       sound_button_->setIcon(QIcon(
           ":resources/buttons_resources/sound_button_on.png"));
     }
-    is_sound_on = 1 - is_sound_on;
+    is_sound_on_ = 1 - is_sound_on_;
   };
   connect(sound_button_, &QPushButton::clicked, sound_button_click);
 
   reset_game_button_ = new MenuButton(
-      "СБРОСИТЬ ПРОГРЕСС", long_button_size_, main_window_);
+      tr("СБРОСИТЬ ПРОГРЕСС"), long_button_size_, main_window_);
   auto reset_game_click = [&]() {
     // reseting game, will be updated when saving is done
   };
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);
 
   to_main_menu_button_ = new MenuButton(
-      "ВЕРНУТЬСЯ В МЕНЮ", long_button_size_, main_window_);
+      tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_);
   auto back_to_main_menu_click = [&]() {
     if (window_type_ == WindowType::kPauseMenu) {
       controller_->EndGame(Exit::kMenu);
@@ -180,7 +178,7 @@ void ButtonHandler::CreateGameButtons() {
   pause_button_ = new MenuButton("", short_button_size_,
       main_window_, ":resources/buttons_resources/pause_button.png");
   auto pause_button_click = [&]() {
-    controller_->ZeroSpeed();
+    controller_->SetSpeed(Speed::kZeroSpeed);
     window_type_ = WindowType::kPauseMenu;
   };
   connect(pause_button_, &QPushButton::clicked, pause_button_click);
@@ -188,14 +186,14 @@ void ButtonHandler::CreateGameButtons() {
   zero_speed_button_ = new MenuButton("", short_button_size_,
       main_window_, ":resources/buttons_resources/zero_speed_button.png");
   auto zero_speed_button_click = [&]() {
-    controller_->ZeroSpeed();
+    controller_->SetSpeed(Speed::kZeroSpeed);
   };
   connect(zero_speed_button_, &QPushButton::clicked, zero_speed_button_click);
 
   normal_speed_button_ = new MenuButton("", short_button_size_,
       main_window_, ":resources/buttons_resources/normal_speed_button.png");
   auto normal_speed_button_click = [&]() {
-    controller_->NormalSpeed();
+    controller_->SetSpeed(Speed::kNormalSpeed);
   };
   connect(normal_speed_button_,
           &QPushButton::clicked,
@@ -204,7 +202,7 @@ void ButtonHandler::CreateGameButtons() {
   double_speed_button_ = new MenuButton("", short_button_size_,
       main_window_, ":resources/buttons_resources/double_speed_button.png");
   auto double_speed_button_click = [&]() {
-    controller_->DoubleSpeed();
+    controller_->SetSpeed(Speed::kDoubleSpeed);
   };
   connect(double_speed_button_,
           &QPushButton::clicked,
@@ -241,20 +239,20 @@ void ButtonHandler::DisableGameUi() {
 
 void ButtonHandler::CreatePauseMenuButtons() {
   restart_button_ = new MenuButton(
-      "НАЧАТЬ УРОВЕНЬ ЗАНОВО", long_button_size_, main_window_);
+      tr("НАЧАТЬ УРОВЕНЬ ЗАНОВО"), long_button_size_, main_window_);
   auto restart_button_click = [&]() {
     controller_->EndGame(Exit::kLose);
     controller_->StartGame(level_number_);
-    controller_->NormalSpeed();
+    controller_->SetSpeed(Speed::kNormalSpeed);
     window_type_ = WindowType::kGame;
     DisablePauseMenuUi();
   };
   connect(restart_button_, &QPushButton::clicked, restart_button_click);
 
   continue_button_ = new MenuButton(
-      "ПРОДОЛЖИТЬ", long_button_size_, main_window_);
+      tr("ПРОДОЛЖИТЬ"), long_button_size_, main_window_);
   auto continue_button_click = [&]() {
-    controller_->NormalSpeed();
+    controller_->SetSpeed(Speed::kNormalSpeed);
     window_type_ = WindowType::kGame;
     DisablePauseMenuUi();
   };
@@ -296,29 +294,30 @@ void ButtonHandler::MoveButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::ChangeLanguage() {
-  if (is_language_rus_) {
-    start_game_button_->setText("START GAME");
-    choose_level_number_->setText("LEVEL " + QString::number(level_number_));
-    settings_button_->setText("SETTINGS");
-    exit_button_->setText("EXIT");
-    reset_game_button_->setText("RESET PROGRESS");
-    to_main_menu_button_->setText("BACK TO MAIN MENU");
-    continue_button_->setText("CONTINUE");
-    restart_button_->setText("RESTART");
+  if (language_ == Language::kRussian) {
+    start_game_button_->setText(tr("START GAME"));
+    choose_level_number_->setText(tr("LEVEL ") + QString::number(level_number_));
+    settings_button_->setText(tr("SETTINGS"));
+    exit_button_->setText(tr("EXIT"));
+    reset_game_button_->setText(tr("RESET PROGRESS"));
+    to_main_menu_button_->setText(tr("BACK TO MAIN MENU"));
+    continue_button_->setText(tr("CONTINUE"));
+    restart_button_->setText(tr("RESTART"));
     language_button_->setIcon(
         QIcon(":resources/buttons_resources/language_button_rus.png"));
-    is_language_rus_ = false;
-  } else {
-    start_game_button_->setText("НАЧАТЬ ИГРУ");
-    choose_level_number_->setText("УРОВЕНЬ " + QString::number(level_number_));
-    settings_button_->setText("НАСТРОЙКИ");
-    exit_button_->setText("ВЫЙТИ ИЗ ИГРЫ");
-    reset_game_button_->setText("СБРОСИТЬ ПРОГРЕСС");
-    to_main_menu_button_->setText("ВЕРНУТЬСЯ В МЕНЮ");
-    continue_button_->setText("ПРОДОЛЖИТЬ");
-    restart_button_->setText("НАЧАТЬ УРОВЕНЬ ЗАНОВО");
+    language_ = Language::kEnglish;
+  }
+  if (language_ == Language::kEnglish) {
+    start_game_button_->setText(tr("НАЧАТЬ ИГРУ"));
+    choose_level_number_->setText(tr("УРОВЕНЬ ") + QString::number(level_number_));
+    settings_button_->setText(tr("НАСТРОЙКИ"));
+    exit_button_->setText(tr("ВЫЙТИ ИЗ ИГРЫ"));
+    reset_game_button_->setText(tr("СБРОСИТЬ ПРОГРЕСС"));
+    to_main_menu_button_->setText(tr("ВЕРНУТЬСЯ В МЕНЮ"));
+    continue_button_->setText(tr("ПРОДОЛЖИТЬ"));
+    restart_button_->setText(tr("НАЧАТЬ УРОВЕНЬ ЗАНОВО"));
     language_button_->setIcon(
         QIcon(":resources/buttons_resources/language_button_eng.png"));
-    is_language_rus_ = true;
+    language_ = Language::kRussian;
   }
 }

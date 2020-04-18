@@ -1,5 +1,5 @@
-#include "controller.h"
 #include <QDebug>
+#include "controller.h"
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)),
@@ -300,13 +300,12 @@ int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
 
-void Controller::ZeroSpeed() {
-  view_->ChangeGameSpeed(0);
-}
-void Controller::NormalSpeed() {
-  view_->ChangeGameSpeed(1);
-}
-
-void Controller::DoubleSpeed() {
-  view_->ChangeGameSpeed(2);
+void Controller::SetSpeed(Speed speed) {
+  if (speed == Speed::kZeroSpeed) {
+    view_->ChangeGameSpeed(0);
+  } else if (speed == Speed::kNormalSpeed) {
+    view_->ChangeGameSpeed(1);
+  } else if (speed == Speed::kDoubleSpeed) {
+    view_->ChangeGameSpeed(2);
+  }
 }

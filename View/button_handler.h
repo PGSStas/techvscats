@@ -18,6 +18,11 @@ enum class WindowType {
   kPauseMenu
 };
 
+enum class Language {
+  kRussian,
+  kEnglish
+};
+
 class ButtonHandler : QObject {
  public:
   explicit ButtonHandler(QMainWindow* main_window);
@@ -50,6 +55,8 @@ class ButtonHandler : QObject {
   void CreatePauseMenuButtons();
   void MovePauseMenuButtons(SizeHandler size_handler);
 
+  void ChangeLanguage();
+
  private:
   QMainWindow* main_window_;
   WindowType window_type_;
@@ -80,16 +87,14 @@ class ButtonHandler : QObject {
   MenuButton* restart_button_;
   // to_main_menu_button_ is also here
 
-  void ChangeLanguage();
-
   int level_number_ = 1;
   Size long_button_size_ = Size(kLongButtonWidth, kLongButtonHeight);
   Size short_button_size_ = Size(kShortButtonSize, kShortButtonSize);
   Coordinate first_button_coordinate_ =
       Coordinate(kFirstButtonCoordinateX, kFirstButtonCoordinateY);
   int shift_ = kShift;
-  bool is_language_rus_ = true;
-  bool is_sound_on = true;
+  Language language_;
+  bool is_sound_on_ = true;
 };
 
 #endif  // VIEW_BUTTON_HANDLER_H_
