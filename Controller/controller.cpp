@@ -231,13 +231,11 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
 
     model_->AddTextNotification(std::make_shared<TextNotification>(
         "- " + QString::number(settle_cost) + " gold", Size(70, 30),
-        base->GetGoldPosition(), Qt::red, current_game_time_
-    ));
+        base->GetGoldPosition(), Qt::red, current_game_time_));
   } else {
     model_->AddTextNotification(std::make_shared<TextNotification>(
         "Not enough gold", Size(70, 30),
-        base->GetGoldPosition(), Qt::blue, current_game_time_
-    ));
+        base->GetGoldPosition(), Qt::blue, current_game_time_));
   }
 }
 
@@ -336,7 +334,6 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   int reward = enemy.ComputeReward();
   model_->AddTextNotification(std::make_shared<TextNotification>(
       QString::number(reward) + " gold", Size(70, 30),
-      enemy.GetPosition(), Qt::yellow, current_game_time_
-  ));
+      enemy.GetPosition(), Qt::yellow, current_game_time_));
   model_->GetBase()->AddGoldAmount(reward);
 }

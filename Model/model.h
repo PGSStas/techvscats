@@ -62,6 +62,7 @@ class Model {
   int GetRoundsCount() const;
   int GetPrepairTimeBetweenRounds() const;
   int GetCurrentRoundNumber() const;
+  
  private:
   void LoadLevelFromJson(int level);
   void LoadDatabaseFromJson();
