@@ -32,6 +32,7 @@ SOURCES += \
         Model/road.cpp \
         Model/size.cpp \
         View/size_handler.cpp \
+        View/text_notification.cpp \
         View/tower_menu.cpp \
         View/tower_menu_option.cpp \
         View/view.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
         Model/road.h \
         Model/size.h \
         View/size_handler.h \
+        View/text_notification.h \
         View/tower_menu.h \
         View/tower_menu_option.h \
         View/view.h \
