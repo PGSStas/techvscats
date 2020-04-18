@@ -5,10 +5,10 @@
 #include <memory>
 #include <vector>
 
-#include "GameObject/enemy.h"
 #include "GameObject/abstract_projectile.h"
-#include "GameObject/building.h"
 #include "GameObject/base.h"
+#include "GameObject/building.h"
+#include "GameObject/enemy.h"
 
 enum class Exit {
   kWin,

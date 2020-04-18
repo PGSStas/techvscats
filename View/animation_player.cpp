@@ -12,18 +12,6 @@ const QImage& AnimationPlayer::GetNextFrame(int time) {
   return (*frames_)[current_frame_];
 }
 
-AnimationPlayer::AnimationPlayer(const AnimationPlayer& other) :
-  frames_(other.frames_), time_between_frames_(other.time_between_frames_) {}
-
-AnimationPlayer& AnimationPlayer::operator=(const AnimationPlayer& other) {
-  if (&other == this) {
-    return *this;
-  }
-  frames_ = other.frames_;
-  time_between_frames_ = other.time_between_frames_;
-  return *this;
-}
-
 const QImage& AnimationPlayer::GetCurrentFrame() const {
   return (*frames_)[current_frame_];
 }

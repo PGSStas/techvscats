@@ -14,8 +14,6 @@ class AnimationPlayer {
   AnimationPlayer() = default;
   AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
       int time_between_frames);
-  AnimationPlayer(const AnimationPlayer& other);
-  AnimationPlayer& operator=(const AnimationPlayer& other);
 
   const QImage& GetNextFrame(int time);
   const QImage& GetCurrentFrame() const;
