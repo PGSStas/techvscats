@@ -1,6 +1,7 @@
 #ifndef GAMEOBJECT_GAME_OBJECT_H_
 #define GAMEOBJECT_GAME_OBJECT_H_
 
+#include <algorithm>
 #include <memory>
 #include <QPainter>
 
@@ -10,21 +11,26 @@
 
 class GameObject {
  public:
-  GameObject() = default;
-  GameObject(Coordinate position, Size size);
+  explicit GameObject(Size size, Coordinate position = {0, 0});
+  virtual ~GameObject() = default;
 
+  virtual void Tick(int current_time) = 0;
+  void UpdateTime(int current_time);
   virtual void Draw(QPainter* painter,
-      const std::shared_ptr<SizeHandler>& size_handler) const = 0;
-  virtual void Tick(int time) = 0;
+                    const SizeHandler& size_handler) const = 0;
 
-  Coordinate GetPosition() const;
   void SetPosition(Coordinate position);
+  Coordinate GetPosition() const;
   Size GetSize() const;
-  void SetSize(Size size);
 
  protected:
-  Coordinate position_;
+  int delta_tick_time_ = 0;
+  int object_life_time_ = 0;
   Size size_;
+  Coordinate position_;
+
+ private:
+  int object_last_time_ = 0;
 };
 
 #endif  // GAMEOBJECT_GAME_OBJECT_H_

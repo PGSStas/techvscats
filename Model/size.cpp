@@ -1,6 +1,6 @@
 #include "size.h"
 
-Size::Size(double x, double y) : width(x), height(y) {}
+Size::Size(double x, double y) noexcept : width(x), height(y) {}
 
 double Size::GetLength() const {
   return std::sqrt(width * width + height * height);
@@ -14,9 +14,14 @@ Size Size::operator/(double right) const {
   return Size(width / right, height / right);
 }
 
-bool Size::operator==(Size right) const {
-  return (width - right.width < constants::kEpsilon)
-      && (height - right.height < constants::kEpsilon);
+Size& Size::operator*=(double right) {
+  *this = *this * right;
+  return *this;
+}
+
+Size& Size::operator/=(double right) {
+  *this = *this / right;
+  return *this;
 }
 
 Size Size::operator+(Size right) const {
@@ -32,17 +37,12 @@ Size& Size::operator+=(Size right) {
   return *this;
 }
 
-Size& Size::operator*=(double right) {
-  *this = *this * right;
-  return *this;
-}
-
-Size& Size::operator/=(double right) {
-  *this = *this / right;
-  return *this;
-}
-
 Size& Size::operator-=(Size right) {
   *this = *this - right;
   return *this;
+}
+
+bool Size::operator==(Size right) const {
+  return (width - right.width < constants::kEpsilon)
+      && (height - right.height < constants::kEpsilon);
 }

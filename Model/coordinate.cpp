@@ -1,11 +1,18 @@
 #include "coordinate.h"
 
-Coordinate::Coordinate(double x, double y)
+Coordinate::Coordinate(double x, double y) noexcept
     : x(x), y(y) {}
 
-bool Coordinate::operator==(Coordinate right) const {
-  return (std::abs(x - right.x) < constants::kEpsilon)
-      && (std::abs(y - right.y) < constants::kEpsilon);
+Size Coordinate::GetVectorTo(Coordinate right) const {
+  return Size(right.x - x, right.y - y);
+}
+
+Coordinate Coordinate::operator*(double right) const {
+  return Coordinate(x * right, y * right);
+}
+
+Coordinate Coordinate::operator/(double right) const {
+  return Coordinate(x / right, y / right);
 }
 
 Coordinate& Coordinate::operator*=(double right) {
@@ -20,32 +27,25 @@ Coordinate& Coordinate::operator/=(double right) {
   return *this;
 }
 
-Coordinate Coordinate::operator*(double right) const {
-  return Coordinate(x * right, y * right);
-}
-
-Coordinate Coordinate::operator/(double right) const {
-  return Coordinate(x / right, y / right);
-}
-
-Size Coordinate::GetDistanceTo(Coordinate right) {
-  return Size(right.x - x, right.y - y);
+Coordinate& Coordinate::operator+=(Size right) {
+  *this = *this + right;
+  return *this;
 }
 
 Coordinate Coordinate::operator+(Size right) const {
   return Coordinate(x + right.width, y + right.height);
 }
 
+Coordinate& Coordinate::operator-=(Size right) {
+  *this = *this - right;
+  return *this;
+}
+
 Coordinate Coordinate::operator-(Size right) const {
   return Coordinate(x - right.width, y - right.height);
 }
 
-Coordinate& Coordinate::operator+=(Size right) {
-  *this = *this + right;
-  return *this;
-}
-
-Coordinate& Coordinate::operator-=(Size right) {
-  *this = *this - right;
-  return *this;
+bool Coordinate::operator==(Coordinate right) const {
+  return (std::abs(x - right.x) < constants::kEpsilon)
+      && (std::abs(y - right.y) < constants::kEpsilon);
 }

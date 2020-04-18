@@ -1,42 +1,57 @@
 #ifndef GAMEOBJECT_ENEMY_H_
 #define GAMEOBJECT_ENEMY_H_
 
+#include <algorithm>
+#include <chrono>
 #include <memory>
-#include <View/animation_player.h>
+#include <random>
 
+#include "auric_field.h"
+#include "effect.h"
 #include "moving_object.h"
 #include "Model/road.h"
+#include "View/animation_player.h"
 
 class Enemy : public MovingObject {
  public:
-  Enemy() = default;
+  Enemy(Size size, double speed, double damage,
+        double armor, int reward, double max_health,
+        AuricField auric_field = AuricField(-1, -1));
   Enemy(const Enemy& enemy_instance);
-  Enemy& operator=(const Enemy& enemy_instance);
-  void Tick(int time) override;
+  ~Enemy() override = default;
 
-  void SetParameters(double speed);
-  void SetAnimationPlayer(const AnimationPlayer& player);
+  void Tick(int current_time) override;
   void Move() override;
-  void Draw(QPainter* painter,
-            const std::shared_ptr<SizeHandler>& size_handler) const override;
+  void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
+  void DrawHealthBar(QPainter* painter, const SizeHandler& size_handler) const;
+
+  void SetAnimationPlayer(const AnimationPlayer& player);
   void SetRoad(const Road& road);
-  bool IsDead() const;
+
+  const AuricField& GetAuricField() const;
+  Effect* GetAppliedEffect();
+  double GetDamage() const;
+  void ReceiveDamage(double damage);
 
  private:
-  double damage_ = 0;
-  double armor_ = 0;
-  int enemy_id_ = 0;
-  int reward_ = 0;
-  double current_health_ = 0;
-  double max_health_ = 0;
-  bool is_dead_ = false;
+  double damage_;
+  double armor_;
+  int reward_;
+  double max_health_;
+  double current_health_;
 
+  AuricField auric_field_;
+  Effect applied_effect_ = Effect(EffectTarget::kEnemy);
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
 
   AnimationPlayer player_;
 
-  const int kMoveShift_ = 30;
+  static std::mt19937 random_generator_;
+
+  const int kMoveShift = 25;
+  const Size kHealthBarShift = {18, 24};
+  const Size kHealthBar = {36, 5};
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_

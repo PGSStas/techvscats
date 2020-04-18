@@ -5,19 +5,20 @@
 
 class MovingObject : public GameObject {
  public:
-  MovingObject() = default;
+  MovingObject(Size size, double speed, Coordinate position = {0, 0},
+               Coordinate destination = {0, 0});
+  ~MovingObject() override = default;
 
-  // returns moving vector
+  void MoveToDestination();
   virtual void Move() = 0;
-  void SetSpeedCoefficient(double speed_coefficient);
-  bool HasReached() const;
-  double GetSpeed() const;
-
+  virtual bool IsDead() const;
+  bool IsEndReached() const;
  protected:
-  bool has_reached_ = false;
+  double speed_;
   Size moving_vector_;
   Coordinate destination_;
-  double speed_;
+  bool is_end_reached_ = false;
+  bool is_dead_ = false;
   double speed_coefficient_ = 1;
 };
 

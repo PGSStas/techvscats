@@ -1,7 +1,14 @@
 {
-  "time_between_rounds": 5000,
+  "prepair_time_between_rounds_": 2000,
   "gold": 100,
   "score": 0,
+  "base": {
+    "max_health": 300,
+    "position": {
+      "x": 1700,
+      "y": 187
+    }
+  },
   "roads": [
     [
       {
@@ -160,12 +167,30 @@
         "x": 1700,
         "y": 187
       }
+    ],
+    [
+      {
+        "x": 200,
+        "y": 50
+      },
+      {
+        "x": 500,
+        "y": 150
+      },
+      {
+        "x": 600,
+        "y": 500
+      },
+      {
+        "x": 1060,
+        "y": 660
+      }
     ]
   ],
   "rounds": [
     [
       {
-        "spawn_period": 400,
+        "spawn_period": 1400,
         "enemy_id": 0,
         "time_of_next_spawn": 15,
         "group_size": 10,
@@ -173,18 +198,70 @@
       },
       {
         "spawn_period": 500,
-        "enemy_id": 1,
+        "enemy_id": 4,
         "time_of_next_spawn": 20,
         "group_size": 4,
         "road_to_spawn": 1
       },
       {
         "spawn_period": 500,
-        "enemy_id": 1,
+        "enemy_id": 2,
         "time_of_next_spawn": 20,
         "group_size": 4,
         "road_to_spawn": 2
       }
     ]
+  ],
+  "empty_towers": [
+    {
+      "x": 420,
+      "y": 310
+    },
+    {
+      "x": 720,
+      "y": 330
+    },
+    {
+      "x": 480,
+      "y": 675},
+    {
+      "x": 480,
+      "y": 800
+    },
+    {
+      "x": 775,
+      "y": 565
+    },
+    {
+      "x": 940,
+      "y": 565
+    },
+    {
+      "x": 1105,
+      "y": 565
+    },
+    {
+      "x": 765,
+      "y": 775
+    },
+    {
+      "x": 1225,
+      "y": 775
+    }, {
+      "x": 1570,
+      "y": 775
+    },
+    {
+      "x": 1730,
+      "y": 600
+    },
+    {
+      "x": 1400,
+      "y": 540
+    },
+    {
+      "x": 1430,
+      "y": 310
+    }
   ]
 }

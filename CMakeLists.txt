@@ -19,21 +19,28 @@ add_executable(techvscats
         main.cpp
         Controller/controller.cpp
         Controller/spawner.cpp
-        GameObject/projectile.cpp
+        GameObject/abstract_projectile.cpp
+        GameObject/aimed_projectile.cpp
+        GameObject/auric_field.cpp
+        GameObject/base.cpp
+        GameObject/bomb_projectile.cpp
+        GameObject/building.cpp
+        GameObject/effect.cpp
         GameObject/enemy.cpp
         GameObject/game_object.cpp
+        GameObject/laser_projectile.cpp
         GameObject/moving_object.cpp
-        GameObject/building.cpp
+        Model/coordinate.cpp
         Model/model.cpp
         Model/road.cpp
-        Model/coordinate.cpp
         Model/size.cpp
-        View/view.cpp
+        resources.qrc
+        View/animation_player.cpp
+        View/size_handler.cpp
         View/tower_menu.cpp
         View/tower_menu_option.cpp
-        View/size_handler.cpp
-        View/animation_player.cpp
-        resources.qrc)
+        View/view.cpp
+        )
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

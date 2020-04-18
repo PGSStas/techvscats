@@ -1,17 +1,15 @@
 #ifndef  VIEW_SIZE_HANDLER_H_
 #define  VIEW_SIZE_HANDLER_H_
 
-#include <QMainWindow>
-#include <QDebug>
 #include <algorithm>
+#include <QDebug>
+#include <QMainWindow>
 
 #include "Model/coordinate.h"
 #include "Model/size.h"
 
 class SizeHandler {
  public:
-  SizeHandler();
-
   void ChangeSystem(double window_width, double window_height);
 
   Coordinate WindowToGameCoordinate(Coordinate window_coordinate) const;
@@ -22,12 +20,10 @@ class SizeHandler {
   Size GetGameSize() const;
 
  private:
+  Size origin_offset_ = {0, 0};
   // The ratio of game coordinates to real
-  double scaling_coefficient_;
-
-  Size origin_offset_;
-
-  const Size game_size_ = Size(constants::kGameWidth, constants::kGameHeight);
+  double scaling_coefficient_ = 3;
+  const Size game_size_ = {constants::kGameWidth, constants::kGameHeight};
 };
 
 #endif  // VIEW_SIZE_HANDLER_H_

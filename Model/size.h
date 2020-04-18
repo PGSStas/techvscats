@@ -2,6 +2,7 @@
 #define MODEL_SIZE_H_
 
 #include <cmath>
+
 #include "constants.h"
 
 struct Size {
@@ -9,7 +10,7 @@ struct Size {
   double height;
 
   Size() = default;
-  Size(double x, double y);
+  Size(double x, double y) noexcept;
 
   double GetLength() const;
 
