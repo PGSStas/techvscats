@@ -73,7 +73,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   connect(inc_level_button_, &QPushButton::clicked, inc_level_button_click);
 
   dec_level_button_ = new MenuButton("", short_button_size_,
-      main_window_,":resources/buttons_resources/dec_level_button.png");
+      main_window_, ":resources/buttons_resources/dec_level_button.png");
   auto dec_level_button_click = [&]() {
     if (level_number_ > 1) {
       level_number_--;
@@ -112,7 +112,7 @@ void ButtonHandler::CreateSettingsButtons() {
   connect(language_button_, &QPushButton::clicked, language_button_click);
 
   sound_button_ = new MenuButton("", short_button_size_,
-      main_window_,":resources/buttons_resources/sound_button_on.png");
+      main_window_, ":resources/buttons_resources/sound_button_on.png");
   auto sound_button_click = [&]() {
     // changing sound
     if (is_sound_on) {
@@ -177,8 +177,8 @@ void ButtonHandler::DisableSettingsUi() {
 }
 
 void ButtonHandler::CreateGameButtons() {
-  pause_button_ = new MenuButton("",short_button_size_,
-      main_window_,":resources/buttons_resources/pause_button.png");
+  pause_button_ = new MenuButton("", short_button_size_,
+      main_window_, ":resources/buttons_resources/pause_button.png");
   auto pause_button_click = [&]() {
     controller_->ZeroSpeed();
     window_type_ = WindowType::kPauseMenu;
@@ -186,14 +186,14 @@ void ButtonHandler::CreateGameButtons() {
   connect(pause_button_, &QPushButton::clicked, pause_button_click);
 
   zero_speed_button_ = new MenuButton("", short_button_size_,
-      main_window_,":resources/buttons_resources/zero_speed_button.png");
+      main_window_, ":resources/buttons_resources/zero_speed_button.png");
   auto zero_speed_button_click = [&]() {
     controller_->ZeroSpeed();
   };
   connect(zero_speed_button_, &QPushButton::clicked, zero_speed_button_click);
 
   normal_speed_button_ = new MenuButton("", short_button_size_,
-      main_window_,":resources/buttons_resources/normal_speed_button.png");
+      main_window_, ":resources/buttons_resources/normal_speed_button.png");
   auto normal_speed_button_click = [&]() {
     controller_->NormalSpeed();
   };
@@ -202,7 +202,7 @@ void ButtonHandler::CreateGameButtons() {
           normal_speed_button_click);
 
   double_speed_button_ = new MenuButton("", short_button_size_,
-      main_window_,":resources/buttons_resources/double_speed_button.png");
+      main_window_, ":resources/buttons_resources/double_speed_button.png");
   auto double_speed_button_click = [&]() {
     controller_->DoubleSpeed();
   };

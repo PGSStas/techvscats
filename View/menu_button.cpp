@@ -20,9 +20,9 @@ MenuButton::MenuButton(const QString& text, const Size& button_size,
 void MenuButton::Move(Coordinate game_coordinate, SizeHandler size_handler) {
   Coordinate
       window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);
-  move(window_coordinate.x, window_coordinate.y);
+  this->move(window_coordinate.x, window_coordinate.y);
   Size window_size = size_handler.GameToWindowSize(button_size_);
-  resize(window_size.width, window_size.height);
+  this->resize(window_size.width, window_size.height);
   setIconSize(QSize(window_size.width, window_size.height));
 
   auto font = this->font();

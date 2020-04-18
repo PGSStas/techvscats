@@ -20,7 +20,7 @@ enum class WindowType {
 
 class ButtonHandler : QObject {
  public:
-  ButtonHandler(QMainWindow* main_window);
+  explicit ButtonHandler(QMainWindow* main_window);
 
   void EnableMainMenuUi();
   void DisableMainMenuUi();
