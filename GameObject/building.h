@@ -18,7 +18,7 @@ enum class Action {
 
 class Building : public GameObject {
  public:
-  explicit Building(int id = 0, int settle_cost = 0, Size size = {45, 45},
+  explicit Building(int id = 0, int settle_cost = 0, Size size = {85, 85},
                     AuricField aura = AuricField(-1, -1));
   Building(const Building& other);
   ~Building() override = default;
@@ -28,9 +28,9 @@ class Building : public GameObject {
   void Draw(QPainter* painter,
             const SizeHandler& size_handler) const override;
 
-  void SetAnimationParameters(const QColor& reload_color,
-                              const QColor& pre_color ,
-                              const QColor& post_color ,
+  void SetAnimationParameters(const AnimationPlayer& reload_player,
+                              const AnimationPlayer& pre_player ,
+                              const AnimationPlayer& post_player ,
                               const std::vector<int>& action_time);
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
                      int max_aims);
@@ -59,10 +59,6 @@ class Building : public GameObject {
   int wait_time_ = 0;
 
   std::vector<int> action_time_;
-  // TODO(some body)  here should be Images to draw
-  QColor reload_color_ = QColor("black");
-  QColor before_fire_color_ = QColor("black");
-  QColor after_fire_color_ = QColor("black");
 
   int projectile_id_ = 0;
   int attack_range_ = 0;
@@ -71,6 +67,10 @@ class Building : public GameObject {
   bool is_ready_to_create_projectiles_ = false;
   bool is_ready_to_shoot_ = false;
   std::list<std::shared_ptr<Enemy>> aims_;
+
+  AnimationPlayer reload_player_;
+  AnimationPlayer before_fire_player_;
+  AnimationPlayer after_fire_player_;
 };
 
 #endif  // GAMEOBJECT_BUILDING_H_

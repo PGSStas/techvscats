@@ -24,28 +24,51 @@ void Model::SetGameLevel(int level_id) {
   id_to_projectile_.push_back(std::make_shared<LaserProjectile>(
       projectile_instance_lazer));
 
+  auto frames = std::make_shared<std::vector<QImage>>();
+  frames->emplace_back(":resources/images/default_tower_reload_1.png");
+  frames->emplace_back(":resources/images/default_tower_reload_2.png");
+  frames->emplace_back(":resources/images/default_tower_reload_3.png");
+  frames->emplace_back(":resources/images/default_tower_reload_2.png");
+  AnimationPlayer reload = AnimationPlayer(frames);
+
+  frames = std::make_shared<std::vector<QImage>>();
+  frames->emplace_back(":resources/images/default_tower_pre_1.png");
+  frames->emplace_back(":resources/images/default_tower_pre_2.png");
+  frames->emplace_back(":resources/images/default_tower_pre_3.png");
+  frames->emplace_back(":resources/images/default_tower_pre_2.png");
+  AnimationPlayer pre = AnimationPlayer(frames,
+      constants::kDefaultTimeBetweenFrames, false);
+
+  frames = std::make_shared<std::vector<QImage>>();
+  frames->emplace_back(":resources/images/default_tower_post_1.png");
+  frames->emplace_back(":resources/images/default_tower_post_2.png");
+  frames->emplace_back(":resources/images/default_tower_post_3.png");
+  frames->emplace_back(":resources/images/default_tower_post_2.png");
+  AnimationPlayer post = AnimationPlayer(frames,
+      constants::kDefaultTimeBetweenFrames, false);
+
   Building building_instance(0, 0);
-  building_instance.SetAnimationParameters(Qt::gray, Qt::gray, Qt::gray,
+  building_instance.SetAnimationParameters(reload, reload, reload,
                                            {0, 0, 0});
 
   upgrades_tree_.push_back({1, 2});
 
   Building building_instance2(1, 24);
   building_instance2.SetProjectile(0, 10, 175, 2);
-  building_instance2.SetAnimationParameters(Qt::blue, Qt::red, Qt::darkYellow,
+  building_instance2.SetAnimationParameters(reload, pre, post,
                                             {1000, 300, 300});
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3(2, 24, Size(45, 45), AuricField(200, 2));
+  Building building_instance3(2, 24, Size(85, 85), AuricField(200, 2));
   building_instance3.SetProjectile(2, 3, 215, 3);
-  building_instance3.SetAnimationParameters(Qt::yellow, Qt::red, Qt::darkYellow,
+  building_instance3.SetAnimationParameters(reload, pre, post,
                                             {100, 50, 10});
 
   upgrades_tree_.push_back({3, 1, 0});
 
   Building building_instance4(3, 24);
   building_instance4.SetProjectile(1, 54, 275, 1);
-  building_instance4.SetAnimationParameters(Qt::green, Qt::red, Qt::darkGreen,
+  building_instance4.SetAnimationParameters(reload, pre, post,
                                             {1000, 300, 100});
   upgrades_tree_.push_back({1, 0});
 

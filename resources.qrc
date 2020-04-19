@@ -9,6 +9,15 @@
     <file>resources/images/mouse_1.png</file>
     <file>resources/images/mouse_2.png</file>
     <file>resources/images/mouse_3.png</file>
+    <file>resources/images/default_tower_reload_1.png</file>
+    <file>resources/images/default_tower_reload_2.png</file>
+    <file>resources/images/default_tower_reload_3.png</file>
+    <file>resources/images/default_tower_pre_1.png</file>
+    <file>resources/images/default_tower_pre_2.png</file>
+    <file>resources/images/default_tower_pre_3.png</file>
+    <file>resources/images/default_tower_post_1.png</file>
+    <file>resources/images/default_tower_post_2.png</file>
+    <file>resources/images/default_tower_post_3.png</file>
     <file>resources/images/map_level_1.png</file>
 </qresource>
 </RCC>

@@ -12,8 +12,8 @@ Building::Building(const Building& other) :
     Building(other.id_, other.cost_, other.size_, other.auric_field_) {
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
-  SetAnimationParameters(other.reload_color_, other.before_fire_color_,
-                         other.after_fire_color_, other.action_time_);
+  SetAnimationParameters(other.reload_player_, other.before_fire_player_,
+                         other.after_fire_player_, other.action_time_);
 }
 
 void Building::Tick(int current_time) {
@@ -29,27 +29,36 @@ void Building::Tick(int current_time) {
         if (is_ready_to_shoot_) {
           wait_time_ = 0;
           action_ = Action::kBeforeFire;
+          before_fire_player_.Reset(current_time);
+          break;
         }
       }
+      reload_player_.Tick(current_time);
       break;
     }
     case Action::kBeforeFire: {
       if (!is_ready_to_shoot_) {
         action_ = Action::kReload;
         wait_time_ = action_time_[static_cast<int>(Action::kReload)];
-        return;
+        reload_player_.Reset(current_time);
+        break;
       }
       if (wait_time_ > action_time_[static_cast<int>(Action::kBeforeFire)]) {
         is_ready_to_create_projectiles_ = true;
         action_ = Action::kAfterFire;
         wait_time_ = 0;
+        after_fire_player_.Reset(current_time);
+        break;
       }
+      before_fire_player_.Tick(current_time);
       break;
     }
     case Action::kAfterFire: {
       if (wait_time_ > action_time_[static_cast<int>(Action::kAfterFire)]) {
         action_ = Action::kReload;
+        reload_player_.Reset(current_time);
       }
+      after_fire_player_.Tick(current_time);
       break;
     }
   }
@@ -101,35 +110,37 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
 
 void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
+
+  Coordinate point =
+      size_handler.GameToWindowCoordinate(position_ - size_ / 2);
+  Size size = size_handler.GameToWindowSize(size_);
+  painter->translate(point.x, point.y);
   switch (action_) {
     case Action::kReload: {
-      painter->setBrush(reload_color_);
+      painter->drawImage(QRect(0, 0, size.width, size.height),
+                         reload_player_.GetCurrentFrame());
       break;
     }
     case Action::kBeforeFire: {
-      painter->setBrush(before_fire_color_);
+      painter->drawImage(QRect(0, 0, size.width, size.height),
+                         before_fire_player_.GetCurrentFrame());
       break;
     }
     case Action::kAfterFire: {
-      painter->setBrush(after_fire_color_);
+      painter->drawImage(QRect(0, 0, size.width, size.height),
+                         after_fire_player_.GetCurrentFrame());
       break;
     }
   }
-
-  Coordinate center = size_handler.GameToWindowCoordinate(position_);
-  Size size = size_handler.GameToWindowSize(size_);
-  painter->drawEllipse(QPointF(center.x, center.y),
-                       size.width / 2,
-                       size.height / 2);
   painter->restore();
 }
 
 void Building::SetAnimationParameters(
-    const QColor& reload_color, const QColor& pre_color,
-    const QColor& post_color, const std::vector<int>& action_time) {
-  reload_color_ = reload_color;
-  before_fire_color_ = pre_color;
-  after_fire_color_ = post_color;
+    const AnimationPlayer& reload_player, const AnimationPlayer& pre_player,
+    const AnimationPlayer& post_player, const std::vector<int>& action_time) {
+  reload_player_ = reload_player;
+  before_fire_player_ = pre_player;
+  after_fire_player_ = post_player;
   action_time_ = action_time;
 }
 

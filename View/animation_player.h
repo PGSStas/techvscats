@@ -13,9 +13,11 @@ class AnimationPlayer {
  public:
   AnimationPlayer() = default;
   explicit AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
-      int time_between_frames = constants::kDefaultTimeBetweenFrames);
+      int time_between_frames = constants::kDefaultTimeBetweenFrames,
+      bool cycled = true);
 
   void Tick(int time);
+  void Reset(int time);
   const QImage& GetCurrentFrame() const;
 
   void SetTimeBetweenFrames(int new_time);
@@ -23,6 +25,7 @@ class AnimationPlayer {
  private:
   int current_frame_ = 0;
   int last_frame_change_time_ = 0;
+  bool cycled_;
 
   std::shared_ptr<std::vector<QImage>> frames_;
   int time_between_frames_ = constants::kDefaultTimeBetweenFrames;

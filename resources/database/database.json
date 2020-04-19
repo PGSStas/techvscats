@@ -23,11 +23,7 @@
       "damage": 6,
       "armor": 6,
       "reward": 10,
-      "max_health": 18,
-      "aura": {
-        "radius": 250,
-        "effect_id": 1
-      }
+      "max_health": 18
     },
     {
       "speed": 15,
