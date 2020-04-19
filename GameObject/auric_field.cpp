@@ -3,25 +3,27 @@
 AuricField::AuricField(double effect_radius, int effect_id)
     : effect_radius_(effect_radius), effect_id_(effect_id) {}
 
-void AuricField::Draw(QPainter* painter,
-                      const SizeHandler& size_handler) const {
-  if (!IsValid()) {
+void AuricField::Draw(QPainter* painter, const SizeHandler& size_handler,
+                      Coordinate position) const {
+  if (!IsValid() && position == Coordinate(-1000, -1000)) {
     return;
   }
   painter->save();
 
-  painter->setPen(Qt::transparent);
-  Coordinate point = size_handler.GameToWindowCoordinate(
-      *carrier_coordinate_
-          - Size(effect_radius_, effect_radius_ * kSemiMinorCoefficient));
-  Size size = size_handler.GameToWindowSize(
-      Size(effect_radius_ * 2, effect_radius_ * 2));
+  if (position == Coordinate(-1000, -1000)) {
+    position = *carrier_coordinate_;
+  }
 
-  Coordinate gradient_center = size_handler.GameToWindowCoordinate(
-      *carrier_coordinate_);
+  painter->setPen(Qt::transparent);
+  Coordinate point = size_handler.GameToWindowCoordinate(position);
+  Size size = size_handler.GameToWindowSize(
+      Size(effect_radius_, effect_radius_));
+
+  Coordinate gradient_center = size_handler.GameToWindowCoordinate(position);
 
   QRadialGradient gradient(gradient_center.x,
-      gradient_center.y * 1 / kSemiMinorCoefficient, size.width / 2);
+                           gradient_center.y * 1 / kSemiMinorCoefficient,
+                           size.width);
 
   QColor color(Qt::blue);
   color.setAlpha(60);
@@ -31,7 +33,7 @@ void AuricField::Draw(QPainter* painter,
   painter->setBrush(gradient);
   painter->scale(1, kSemiMinorCoefficient);
 
-  painter->drawEllipse(point.x, point.y * 1 / kSemiMinorCoefficient,
+  painter->drawEllipse(QPointF(point.x, point.y * 1 / kSemiMinorCoefficient),
                        size.width, size.height);
   painter->restore();
 }

@@ -23,7 +23,6 @@ class TowerMenu {
 
   std::shared_ptr<TowerMenuOption> GetButtonInside(Coordinate position) const;
   const Building& GetTower() const;
-  void DrawAttackRange(QPainter* painter, const SizeHandler& size_handler) const;
 
  private:
   std::shared_ptr<TowerMenuOption> hovered_option_;

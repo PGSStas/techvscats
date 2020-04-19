@@ -18,15 +18,17 @@ void TowerMenu::Draw(QPainter* painter,
   painter->save();
   Coordinate center = size_handler.GameToWindowCoordinate(
       tower_.GetPosition());
-  tower_.GetAuricField().Draw(painter, size_handler);
   Size radius;
   if (hovered_option_ == nullptr) {
     radius = size_handler.GameToWindowSize(
         Size(tower_.GetAttackRange(), tower_.GetAttackRange()));
+    tower_.GetAuricField().Draw(painter, size_handler);
   } else {
-    radius = size_handler.GameToWindowSize(
-        Size(hovered_option_->GetReplacingTower().GetAttackRange(),
-             hovered_option_->GetReplacingTower().GetAttackRange()));
+    const auto& replacing_tower = hovered_option_->GetReplacingTower();
+    int attack_range = replacing_tower.GetAttackRange();
+    radius = size_handler.GameToWindowSize(Size(attack_range, attack_range));
+    replacing_tower.GetAuricField().Draw(
+        painter, size_handler, tower_.GetPosition());
   }
 
   painter->save();

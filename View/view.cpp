@@ -109,8 +109,7 @@ void View::paintEvent(QPaintEvent*) {
 
     DrawWindow(&painter, QColor("#53a661"));
     DrawBackground(&painter);
-
-    DrawAuras(&painter);
+    
     DrawEnemies(&painter);
     DrawProjectiles(&painter);
     DrawTowers(&painter);
@@ -162,13 +161,6 @@ void View::DrawBackground(QPainter* painter) {
     }
   }
   painter->restore();
-}
-
-void View::DrawAuras(QPainter* painter) {
-  // const auto& buildings_list = controller_->GetBuildings();
-  // for (const auto& building : buildings_list) {
-  //   building->GetAuricField().Draw(painter, size_handler_);
-  // }
 }
 
 void View::DrawEnemies(QPainter* painter) {
