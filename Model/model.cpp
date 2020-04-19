@@ -322,8 +322,7 @@ void Model::LoadDatabase() {
   mouse_images->emplace_back(":resources/images/mouse_3.png");
   mouse_images->push_back((*mouse_images)[1]);
 
-  AnimationPlayer enemy_player(toaster_images,
-      constants::kDefaultTimeBetweenFrames);
+  AnimationPlayer enemy_player(toaster_images);
   AnimationPlayer enemy_player2(mouse_images,
       constants::kDefaultTimeBetweenFrames * 2 / 3);
   id_to_enemy_[0].SetAnimationPlayer(enemy_player);
