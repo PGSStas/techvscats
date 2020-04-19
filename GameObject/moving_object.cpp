@@ -23,9 +23,7 @@ void MovingObject::MoveToDestination() {
   if ((position_ + move_direction).GetVectorTo(destination_).width
       * position_.GetVectorTo(destination_).width <= 0) {
     position_ = destination_;
-    moving_vector_ = {0, 0};
   } else {
     position_ += move_direction;
-    moving_vector_ = move_direction;
   }
 }

@@ -15,7 +15,6 @@ class MovingObject : public GameObject {
   bool IsEndReached() const;
  protected:
   double speed_;
-  Size moving_vector_;
   Coordinate destination_;
   bool is_end_reached_ = false;
   bool is_dead_ = false;

@@ -271,10 +271,6 @@ void Controller::MouseMove(Coordinate position) {
   view_->GetTowerMenu()->Hover(button);
 }
 
-const std::vector<Road>& Controller::GetRoads() const {
-  return model_->GetRoads();
-}
-
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
   return *model_->GetEnemies();
 }

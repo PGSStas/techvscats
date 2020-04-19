@@ -15,19 +15,19 @@ Enemy::Enemy(const Enemy& enemy_instance)
       damage_(enemy_instance.damage_), armor_(enemy_instance.armor_),
       reward_(enemy_instance.reward_), max_health_(enemy_instance.max_health_),
       current_health_(enemy_instance.max_health_),
-      auric_field_(enemy_instance.auric_field_) {
+      auric_field_(enemy_instance.auric_field_), node_number_(0),
+      player_(enemy_instance.player_) {
   auric_field_.SetCarrierCoordinate(&position_);
   node_number_ = 0;
   if (enemy_instance.road_ != nullptr) {
     SetRoad(*enemy_instance.road_);
   }
-  player_ = enemy_instance.player_;
 }
 
 void Enemy::Tick(int current_time) {
   UpdateTime(current_time);
   Move();
-  player_.GetNextFrame(current_time);
+  player_.NextFrame(current_time);
 }
 
 void Enemy::Move() {
@@ -62,7 +62,7 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   Size size = size_handler.GameToWindowSize({60, 60});
 
   painter->translate(point.x, point.y);
-  if (moving_vector_.width < 0) {
+  if (position_.GetVectorTo(destination_).width < 0) {
     painter->translate(size.width, 0);
     // mirroring the image
     painter->scale(-1.0, 1.0);

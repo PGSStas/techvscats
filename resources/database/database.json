@@ -37,7 +37,7 @@
       "max_health": 100
     },
     {
-      "speed": 6,
+      "speed": 30,
       "damage": 6,
       "armor": 6,
       "reward": 10,

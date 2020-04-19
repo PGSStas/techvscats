@@ -92,8 +92,6 @@ class Model {
 
   // Images
   QPixmap map_;
-  std::vector<QImage> toaster_images_;
-  std::vector<QImage> mouse_images_;
 };
 
 #endif  // MODEL_MODEL_H_

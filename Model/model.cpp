@@ -310,22 +310,22 @@ void Model::LoadDatabase() {
   }
 
   // todo(PGS): read from json :)
-  toaster_images_.emplace_back(":resources/images/toster_1.png");
-  toaster_images_.emplace_back(":resources/images/toster_2.png");
-  toaster_images_.emplace_back(":resources/images/toster_3.png");
-  toaster_images_.push_back(toaster_images_[1]);
+  auto toaster_images = std::make_shared<std::vector<QImage>>();
+  toaster_images->emplace_back(":resources/images/toster_1.png");
+  toaster_images->emplace_back(":resources/images/toster_2.png");
+  toaster_images->emplace_back(":resources/images/toster_3.png");
+  toaster_images->push_back((*toaster_images)[1]);
 
-  mouse_images_.emplace_back(":resources/images/mouse_1.png");
-  mouse_images_.emplace_back(":resources/images/mouse_2.png");
-  mouse_images_.emplace_back(":resources/images/mouse_3.png");
-  mouse_images_.push_back(mouse_images_[1]);
+  auto mouse_images = std::make_shared<std::vector<QImage>>();
+  mouse_images->emplace_back(":resources/images/mouse_1.png");
+  mouse_images->emplace_back(":resources/images/mouse_2.png");
+  mouse_images->emplace_back(":resources/images/mouse_3.png");
+  mouse_images->push_back((*mouse_images)[1]);
 
-  AnimationPlayer enemy_player(
-      std::make_shared<std::vector<QImage>>(toaster_images_),
+  AnimationPlayer enemy_player(toaster_images,
       constants::kDefaultTimeBetweenFrames);
-  AnimationPlayer enemy_player2(
-      std::make_shared<std::vector<QImage>>(mouse_images_),
-      constants::kDefaultTimeBetweenFrames);
+  AnimationPlayer enemy_player2(mouse_images,
+      constants::kDefaultTimeBetweenFrames * 2 / 3);
   id_to_enemy_[0].SetAnimationPlayer(enemy_player);
   id_to_enemy_[1].SetAnimationPlayer(enemy_player);
   id_to_enemy_[2].SetAnimationPlayer(enemy_player);
