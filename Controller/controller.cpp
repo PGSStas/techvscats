@@ -301,11 +301,5 @@ int Controller::GetCurrentTime() const {
 }
 
 void Controller::SetSpeed(Speed speed) {
-  if (speed == Speed::kZeroSpeed) {
-    view_->ChangeGameSpeed(0);
-  } else if (speed == Speed::kNormalSpeed) {
-    view_->ChangeGameSpeed(1);
-  } else if (speed == Speed::kDoubleSpeed) {
-    view_->ChangeGameSpeed(2);
-  }
+    view_->ChangeGameSpeed(static_cast<int>(speed));
 }

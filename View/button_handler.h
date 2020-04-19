@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QLabel>
+#include <QLayout>
 #include <QObject>
 #include <QPixmap>
 #include <QString>
@@ -25,7 +26,8 @@ enum class Language {
 
 class ButtonHandler : QObject {
  public:
-  explicit ButtonHandler(QMainWindow* main_window);
+  explicit ButtonHandler(QMainWindow* main_window,
+                         AbstractController* controller);
 
   void EnableMainMenuUi();
   void DisableMainMenuUi();
@@ -54,8 +56,6 @@ class ButtonHandler : QObject {
   // creating pause menu
   void CreatePauseMenuButtons();
   void MovePauseMenuButtons(SizeHandler size_handler);
-
-  void ChangeLanguage();
 
  private:
   QMainWindow* main_window_;

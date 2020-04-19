@@ -1,7 +1,9 @@
 #include "button_handler.h"
 
-ButtonHandler::ButtonHandler(QMainWindow* main_window) : main_window_(
-    main_window) {}
+ButtonHandler::ButtonHandler(QMainWindow* main_window, AbstractController* controller) :
+main_window_(main_window), controller_(controller) {
+  CreateButtons(controller_);
+}
 
 void ButtonHandler::EnableMainMenuUi() {
   window_type_ = WindowType::kMainMenu;
@@ -105,7 +107,7 @@ void ButtonHandler::CreateSettingsButtons() {
   language_button_ = new MenuButton("", short_button_size_, main_window_,
       ":resources/buttons_resources/language_button_eng.png");
   auto language_button_click = [&]() {
-    ChangeLanguage();
+    // changing language
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
 
@@ -291,35 +293,4 @@ void ButtonHandler::MoveButtons(SizeHandler size_handler) {
   MoveSettingsButtons(size_handler);
   MoveGameButtons(size_handler);
   MovePauseMenuButtons(size_handler);
-}
-
-void ButtonHandler::ChangeLanguage() {
-  if (language_ == Language::kRussian) {
-    start_game_button_->setText(tr("START GAME"));
-    choose_level_number_->setText(tr("LEVEL ") + QString::number(
-        level_number_));
-    settings_button_->setText(tr("SETTINGS"));
-    exit_button_->setText(tr("EXIT"));
-    reset_game_button_->setText(tr("RESET PROGRESS"));
-    to_main_menu_button_->setText(tr("BACK TO MAIN MENU"));
-    continue_button_->setText(tr("CONTINUE"));
-    restart_button_->setText(tr("RESTART"));
-    language_button_->setIcon(
-        QIcon(":resources/buttons_resources/language_button_rus.png"));
-    language_ = Language::kEnglish;
-  }
-  if (language_ == Language::kEnglish) {
-    start_game_button_->setText(tr("НАЧАТЬ ИГРУ"));
-    choose_level_number_->setText(tr("УРОВЕНЬ ") + QString::number(
-        level_number_));
-    settings_button_->setText(tr("НАСТРОЙКИ"));
-    exit_button_->setText(tr("ВЫЙТИ ИЗ ИГРЫ"));
-    reset_game_button_->setText(tr("СБРОСИТЬ ПРОГРЕСС"));
-    to_main_menu_button_->setText(tr("ВЕРНУТЬСЯ В МЕНЮ"));
-    continue_button_->setText(tr("ПРОДОЛЖИТЬ"));
-    restart_button_->setText(tr("НАЧАТЬ УРОВЕНЬ ЗАНОВО"));
-    language_button_->setIcon(
-        QIcon(":resources/buttons_resources/language_button_eng.png"));
-    language_ = Language::kRussian;
-  }
 }
