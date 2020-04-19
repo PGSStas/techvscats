@@ -300,7 +300,7 @@ void Model::LoadDatabase() {
                         enemy["aura"].toObject()["effect_id"].toInt());
     }
     // TODO(PGS): size of enemy please. Also i put speed on the second place.
-    id_to_enemy_.emplace_back(Size(30, 30),
+    id_to_enemy_.emplace_back(Size(60, 60),
                               enemy["speed"].toInt(),
                               enemy["damage"].toInt(),
                               enemy["armor"].toInt(),

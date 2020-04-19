@@ -3,10 +3,11 @@
 std::mt19937 Enemy::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
-Enemy::Enemy(Size size, double speed, double damage, double armor, int reward,
-             double max_health, AuricField auric_field)
+Enemy::Enemy(double speed, double damage, double armor, int reward,
+             double max_health, Size size, AuricField auric_field)
     : MovingObject(size, speed), damage_(damage), armor_(armor),
-      reward_(reward), max_health_(max_health), auric_field_(auric_field) {
+      reward_(reward), max_health_(max_health), current_health_(max_health_),
+      auric_field_(auric_field) {
   auric_field.SetCarrierCoordinate(&position_);
 }
 
@@ -27,7 +28,7 @@ Enemy::Enemy(const Enemy& enemy_instance)
 void Enemy::Tick(int current_time) {
   UpdateTime(current_time);
   Move();
-  player_.NextFrame(current_time);
+  player_.Tick(current_time);
 }
 
 void Enemy::Move() {
@@ -58,8 +59,8 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
   Coordinate point =
-      size_handler.GameToWindowCoordinate(position_ - Size(30, 30));
-  Size size = size_handler.GameToWindowSize({60, 60});
+      size_handler.GameToWindowCoordinate(position_ - size_ / 2);
+  Size size = size_handler.GameToWindowSize(size_);
 
   painter->translate(point.x, point.y);
   if (position_.GetVectorTo(destination_).width < 0) {

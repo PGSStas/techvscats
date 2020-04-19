@@ -14,8 +14,8 @@
 
 class Enemy : public MovingObject {
  public:
-  Enemy(Size size, double speed, double damage,
-        double armor, int reward, double max_health,
+  Enemy(double speed, double damage,
+        double armor, int reward, double max_health, Size size = {60, 60},
         AuricField auric_field = AuricField(-1, -1));
   Enemy(const Enemy& enemy_instance);
   ~Enemy() override = default;

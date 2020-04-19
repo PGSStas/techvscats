@@ -15,7 +15,7 @@ class AnimationPlayer {
   explicit AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
       int time_between_frames = constants::kDefaultTimeBetweenFrames);
 
-  void NextFrame(int time);
+  void Tick(int time);
   const QImage& GetCurrentFrame() const;
 
   void SetTimeBetweenFrames(int new_time);

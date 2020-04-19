@@ -4,7 +4,7 @@ AnimationPlayer::AnimationPlayer
   (const std::shared_ptr<std::vector<QImage>>& frames, int time_between_frames)
   : frames_(frames), time_between_frames_(time_between_frames) {}
 
-void AnimationPlayer::NextFrame(int time) {
+void AnimationPlayer::Tick(int time) {
   if (time - last_frame_change_time_ >= time_between_frames_) {
     current_frame_ = (current_frame_ + 1) % frames_->size();
     last_frame_change_time_ = time;
