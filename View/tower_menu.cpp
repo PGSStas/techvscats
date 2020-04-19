@@ -16,21 +16,36 @@ void TowerMenu::Hover(const std::shared_ptr<TowerMenuOption>& option) {
 void TowerMenu::Draw(QPainter* painter,
                      const SizeHandler& size_handler, int current_time) const {
   painter->save();
-  painter->setBrush(QColor(148, 148, 148, 0.33 * 255));
   Coordinate center = size_handler.GameToWindowCoordinate(
       tower_.GetPosition());
+  tower_.GetAuricField().Draw(painter, size_handler);
+  Size radius;
   if (hovered_option_ == nullptr) {
-    Size radius = size_handler.GameToWindowSize(
+    radius = size_handler.GameToWindowSize(
         Size(tower_.GetAttackRange(), tower_.GetAttackRange()));
-    painter->drawEllipse(QPointF(center.x, center.y),
-                         radius.width, radius.height);
   } else {
-    Size radius = size_handler.GameToWindowSize(
+    radius = size_handler.GameToWindowSize(
         Size(hovered_option_->GetReplacingTower().GetAttackRange(),
              hovered_option_->GetReplacingTower().GetAttackRange()));
-    painter->drawEllipse(QPointF(center.x, center.y),
-                         radius.width, radius.height);
   }
+
+  painter->save();
+  QRadialGradient gradient(
+      center.x, center.y * 1 / kSemiMinorCoefficient, radius.width);
+
+  QColor gradient_color(Qt::yellow);
+  gradient_color.setAlpha(60);
+  gradient.setColorAt(0, Qt::transparent);
+  gradient.setColorAt(0.80, Qt::transparent);
+  gradient.setColorAt(1, gradient_color);
+
+  painter->setPen(Qt::transparent);
+  painter->setBrush(gradient);
+  painter->scale(1, kSemiMinorCoefficient);
+  painter->drawEllipse(QPointF(
+      center.x, center.y * 1 / kSemiMinorCoefficient),
+                       radius.width, radius.height);
+  painter->restore();
 
   int time_delta = std::min(current_time - creation_time_, kAnimationDuration);
   int button_size = (time_delta * 1.0 / kAnimationDuration) *
