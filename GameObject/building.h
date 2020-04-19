@@ -18,7 +18,7 @@ enum class Action {
 
 class Building : public GameObject {
  public:
-  explicit Building(Size size = {45, 45}, int id = 0, int settle_cost = 0,
+  explicit Building(int id = 0, int settle_cost = 0, Size size = {45, 45},
                     AuricField aura = AuricField(-1, -1));
   Building(const Building& other);
   ~Building() override = default;

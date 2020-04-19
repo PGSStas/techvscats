@@ -3,13 +3,13 @@
 
 #include "building.h"
 
-Building::Building(Size size, int id, int settle_cost, AuricField aura) :
+Building::Building(int id, int settle_cost, Size size, AuricField aura) :
     GameObject(size), auric_field_(aura), id_(id), cost_(settle_cost) {
   auric_field_.SetCarrierCoordinate(&position_);
 }
 
 Building::Building(const Building& other) :
-    Building(other.size_, other.id_, other.cost_, other.auric_field_) {
+    Building(other.id_, other.cost_, other.size_, other.auric_field_) {
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
   SetAnimationParameters(other.reload_color_, other.before_fire_color_,

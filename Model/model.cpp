@@ -36,7 +36,7 @@ void Model::SetGameLevel(int level_id) {
                                             {1000, 300, 300});
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3(2, 24, AuricField(200, 2));
+  Building building_instance3(2, 24, Size(45, 45), AuricField(200, 2));
   building_instance3.SetProjectile(2, 3, 215, 3);
   building_instance3.SetAnimationParameters(Qt::yellow, Qt::red, Qt::darkYellow,
                                             {100, 50, 10});
@@ -300,12 +300,12 @@ void Model::LoadDatabase() {
                         enemy["aura"].toObject()["effect_id"].toInt());
     }
     // TODO(PGS): size of enemy please. Also i put speed on the second place.
-    id_to_enemy_.emplace_back(Size(60, 60),
-                              enemy["speed"].toInt(),
+    id_to_enemy_.emplace_back(enemy["speed"].toInt(),
                               enemy["damage"].toInt(),
                               enemy["armor"].toInt(),
                               enemy["reward"].toInt(),
                               enemy["max_health"].toInt(),
+                              Size(60, 60),
                               aura);
   }
 
