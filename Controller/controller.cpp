@@ -184,7 +184,7 @@ void Controller::TickTextNotifications() {
         return text_notification->IsDead();
       });
   for (auto& notification : *text_notifications) {
-    notification->Tick(current_game_time_);
+    notification->Tick(current_game_time_, view_->GetSizeHandler());
   }
 }
 

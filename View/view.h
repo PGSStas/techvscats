@@ -37,6 +37,8 @@ class View : public QMainWindow {
   void UpdateRounds(int current_round_number, int number_of_rounds);
 
   std::shared_ptr<TowerMenu> GetTowerMenu();
+  const SizeHandler& GetSizeHandler() const;
+
   bool IsTowerMenuEnabled() const;
   void DisableTowerMenu();
 

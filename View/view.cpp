@@ -66,6 +66,10 @@ std::shared_ptr<TowerMenu> View::GetTowerMenu() {
   return tower_menu_;
 }
 
+const SizeHandler& View::GetSizeHandler() const {
+  return size_handler_;
+}
+
 bool View::IsTowerMenuEnabled() const {
   return is_tower_menu_enabled_;
 }
