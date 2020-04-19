@@ -4,6 +4,7 @@
 #include <memory>
 #include <QPainter>
 
+#include "Model/constants.h"
 #include "Model/coordinate.h"
 #include "View/size_handler.h"
 
@@ -23,8 +24,6 @@ class AuricField {
   double effect_radius_;
   int effect_id_;
   Coordinate* carrier_coordinate_ = nullptr;
-
-  static const double kSemiMinorCoefficient;
 };
 
 #endif  // GAMEOBJECT_AURIC_FIELD_H_

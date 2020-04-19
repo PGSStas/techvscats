@@ -1,7 +1,5 @@
 #include "auric_field.h"
 
-const double AuricField::kSemiMinorCoefficient = 0.9;
-
 AuricField::AuricField(double effect_radius, int effect_id)
     : effect_radius_(effect_radius), effect_id_(effect_id) {}
 
@@ -31,7 +29,7 @@ void AuricField::Draw(QPainter* painter,
   gradient.setColorAt(0.80, Qt::transparent);
   gradient.setColorAt(1, color);
   painter->setBrush(gradient);
-  painter->scale(1, 0.9);
+  painter->scale(1, kSemiMinorCoefficient);
 
   painter->drawEllipse(point.x, point.y * 1 / kSemiMinorCoefficient,
                        size.width, size.height);
