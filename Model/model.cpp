@@ -33,7 +33,7 @@ void Model::AddSpawner(const EnemyGroup& enemy_group) {
 
 void Model::AddTextNotification(
     const std::shared_ptr<TextNotification>& text_notification) {
-  text_notifications_.emplace_back(text_notification);
+  text_notifications_.push_back(text_notification);
 }
 
 void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {

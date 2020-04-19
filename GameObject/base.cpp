@@ -1,8 +1,8 @@
 #include "base.h"
 
 const Size Base::kBaseSize = Size(50, 50);
-const Coordinate Base::kHealthPosition = Coordinate(1750, 1000);
-const Coordinate Base::kGoldPosition = Coordinate(1850, 1000);
+const Coordinate Base::kHealthPosition = Coordinate(1700, 1000);
+const Coordinate Base::kGoldPosition = Coordinate(1800, 1000);
 const double Base::kFontSize = 18;
 
 Base::Base(int gold, double max_health, Coordinate position)
