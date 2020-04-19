@@ -8,20 +8,19 @@
 #include "GameObject/game_object.h"
 #include "Model/coordinate.h"
 
-class TextNotification : public GameObject {
+class TextNotification {
  public:
-  TextNotification(const QString& message, Size size,
+  TextNotification(const QString& message, QMainWindow* main_window,
                    Coordinate start_position, QColor color, int creation_time,
                    Size moving_vector = Size(0, -8), int life_time = 1000);
-  ~TextNotification() override = default;
 
-  void Tick(int current_time) override;
-  void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
+  void Tick(int current_time);
 
   bool IsDead() const;
 
  private:
-  QString message_;
+  QLabel* label_;
+  Coordinate position_;
   Size moving_vector_;
   QColor color_;
   int creation_time_;

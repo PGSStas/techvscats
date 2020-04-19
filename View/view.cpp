@@ -217,9 +217,4 @@ void View::DrawAdditionalInfo(QPainter* painter) {
   if (is_tower_menu_enabled_) {
     tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
   }
-
-  const auto& text_notifications = controller_->GetTextNotifications();
-  for (auto& notification : text_notifications) {
-    notification->Draw(painter, size_handler_);
-  }
 }
