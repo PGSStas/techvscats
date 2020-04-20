@@ -31,7 +31,8 @@ void Model::AddSpawner(const EnemyGroup& enemy_group) {
   spawners_.emplace_back(enemy_group);
 }
 
-void Model::AddTextNotification(const TextNotification& text_notification) {
+void Model::AddTextNotification(
+    const std::shared_ptr<TextNotification>& text_notification) {
   text_notifications_.push_back(text_notification);
 }
 
@@ -102,7 +103,7 @@ std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
   return &projectiles_;
 }
 
-std::list<TextNotification>* Model::GetTextNotifications() {
+std::list<std::shared_ptr<TextNotification>>* Model::GetTextNotifications() {
   return &text_notifications_;
 }
 

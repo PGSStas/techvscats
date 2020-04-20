@@ -19,7 +19,7 @@ class TextNotification {
   bool IsDead() const;
 
  private:
-  std::shared_ptr<QLabel> label_;
+  QLabel label_;
   Coordinate position_;
   Size moving_vector_;
   QColor color_;
@@ -28,8 +28,8 @@ class TextNotification {
 
   bool is_dead_ = false;
 
-  static const double kFontSize;
-  static const double kSlowdownCoefficient;
+  const double kFontSize = 15;
+  const double kSlowdownCoefficient = 0.9;
 };
 
 #endif  // VIEW_TEXT_NOTIFICATION_H_

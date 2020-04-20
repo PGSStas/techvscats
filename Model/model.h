@@ -34,7 +34,8 @@ class Model {
 
   void SetGameLevel(int level);
   void AddSpawner(const EnemyGroup& enemy_group);
-  void AddTextNotification(const TextNotification& text_notification);
+  void AddTextNotification(
+      const std::shared_ptr<TextNotification>& text_notification);
   void AddEnemyFromInstance(const Enemy& enemy_instance);
   void CreateBuildingAtIndex(int i, int id);
   void CreateProjectile(const std::shared_ptr<Enemy>& aim,
@@ -46,7 +47,7 @@ class Model {
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   std::list<std::shared_ptr<AbstractProjectile>>* GetProjectiles();
-  std::list<TextNotification>* GetTextNotifications();
+  std::list<std::shared_ptr<TextNotification>>* GetTextNotifications();
 
   const std::vector<Road>& GetRoads() const;
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
@@ -72,7 +73,7 @@ class Model {
   std::list<std::shared_ptr<Enemy>> enemies_;
   std::vector<std::shared_ptr<Building>> buildings_;
   std::list<std::shared_ptr<AbstractProjectile>> projectiles_;
-  std::list<TextNotification> text_notifications_;
+  std::list<std::shared_ptr<TextNotification>> text_notifications_;
 
   int current_round_number_ = 0;
   int score_ = 0;

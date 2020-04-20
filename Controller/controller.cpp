@@ -179,11 +179,12 @@ void Controller::TickAuras() {
 
 void Controller::TickTextNotifications() {
   auto text_notifications = model_->GetTextNotifications();
-  text_notifications->remove_if([](const TextNotification& text_notification) {
-    return text_notification.IsDead();
-  });
+  text_notifications->remove_if(
+      [](const std::shared_ptr<TextNotification>& text_notification) {
+        return text_notification->IsDead();
+      });
   for (auto& notification : *text_notifications) {
-    notification.Tick(current_game_time_, view_->GetSizeHandler());
+    notification->Tick(current_game_time_, view_->GetSizeHandler());
   }
 }
 
@@ -227,13 +228,13 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   if (base->GetGold() >= settle_cost) {
     model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
     base->SubtractGoldAmount(settle_cost);
-    model_->AddTextNotification(TextNotification(
+    model_->AddTextNotification(std::make_shared<TextNotification>(
         "- " + QString::number(settle_cost) + " gold", view_.get(),
         base->GetGoldPosition(), Qt::red, current_game_time_));
   } else {
-    model_->AddTextNotification(TextNotification(
-        "Not enough gold", view_.get(),
-        base->GetGoldPosition(), Qt::blue, current_game_time_));
+    model_->AddTextNotification(std::make_shared<TextNotification>(
+        "Not enough gold", view_.get(), base->GetGoldPosition(),
+        Qt::blue, current_game_time_));
   }
 }
 
@@ -315,6 +316,11 @@ Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }
 
+const std::list<std::shared_ptr<TextNotification>>&
+Controller::GetTextNotifications() const {
+  return *model_->GetTextNotifications();
+}
+
 const Base& Controller::GetBase() const {
   return *model_->GetBase();
 }
@@ -325,7 +331,7 @@ int Controller::GetCurrentTime() const {
 
 void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   int reward = enemy.ComputeReward();
-  model_->AddTextNotification(TextNotification(
+  model_->AddTextNotification(std::make_shared<TextNotification>(
       QString::number(reward) + " gold", view_.get(),
       enemy.GetPosition(), Qt::yellow, current_game_time_));
   model_->GetBase()->AddGoldAmount(reward);
