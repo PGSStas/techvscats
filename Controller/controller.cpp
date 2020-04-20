@@ -225,12 +225,23 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   int settle_cost = model_->GetBuildingById(replacing_id).GetCost();
   auto base = model_->GetBase();
   if (base->GetGold() >= settle_cost) {
-    model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
-    base->SubtractGoldAmount(settle_cost);
+    if (replacing_id == 0) {
+      int sell_cost = model_->GetBuildings()[index_in_buildings]->GetSellCost()
+          * kRefundCoefficient;
 
-    model_->AddTextNotification(TextNotification(
-        "- " + QString::number(settle_cost) + " gold", Size(70, 30),
-        base->GetGoldPosition(), Qt::red, current_game_time_));
+      model_->AddTextNotification(TextNotification(
+          "+ " + QString::number(sell_cost) + " gold", Size(70, 30),
+          base->GetGoldPosition(), Qt::green, current_game_time_));
+      base->AddGoldAmount(sell_cost);
+      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+    } else {
+      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+      base->SubtractGoldAmount(settle_cost);
+
+      model_->AddTextNotification(TextNotification(
+          "- " + QString::number(settle_cost) + " gold", Size(70, 30),
+          base->GetGoldPosition(), Qt::red, current_game_time_));
+    }
   } else {
     model_->AddTextNotification(TextNotification(
         "Not enough gold", Size(70, 30),

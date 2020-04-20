@@ -35,12 +35,14 @@ class Building : public GameObject {
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
                      int max_aims);
   void SetReadyToCreateProjectileToFalse();
+  void SetSellCost(int sell_cost);
 
   int GetId() const;
   int GetAttackRange() const;
   int GetProjectileId() const;
   double GetDamage() const;
   int GetCost() const;
+  int GetSellCost() const;
 
   double GetProjectileSpeedCoefficient() const;
   Effect* GetAppliedEffect();
@@ -55,6 +57,7 @@ class Building : public GameObject {
 
   int id_ = 0;
   int cost_ = 0;
+  int sell_cost_ = 0;
 
   // action part
   Action action_ = Action::kReload;

@@ -145,6 +145,10 @@ void Building::SetReadyToCreateProjectileToFalse() {
   is_ready_to_create_projectiles_ = false;
 }
 
+void Building::SetSellCost(int sell_cost) {
+  sell_cost_ = sell_cost;
+}
+
 int Building::GetId() const {
   return id_;
 }
@@ -163,6 +167,10 @@ double Building::GetDamage() const {
 
 int Building::GetCost() const {
   return cost_;
+}
+
+int Building::GetSellCost() const {
+  return sell_cost_;
 }
 
 double Building::GetProjectileSpeedCoefficient() const {
