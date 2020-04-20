@@ -3,7 +3,7 @@
 const Size Base::kBaseSize = Size(50, 50);
 const Coordinate Base::kHealthPosition = Coordinate(1700, 1000);
 const Coordinate Base::kGoldPosition = Coordinate(1800, 1000);
-const double Base::kFontSize = 18;
+const double Base::kFontSize = 22;
 
 Base::Base(int gold, double max_health, Coordinate position)
     : GameObject(Size(0, 0), position), gold_(gold),
@@ -17,7 +17,7 @@ void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
   auto font = painter->font();
-  font.setPointSize(size_handler.GameToWindowLength(kFontSize));
+  font.setPixelSize(size_handler.GameToWindowLength(kFontSize));
   painter->setFont(font);
 
   Coordinate health_top_corner =

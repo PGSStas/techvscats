@@ -29,7 +29,7 @@ class TextNotification : public GameObject {
 
   bool is_dead_ = false;
 
-  const double kFontSize = 15;
+  const double kFontSize = 18;
   const double kSlowdownCoefficient = 0.9;
 };
 
