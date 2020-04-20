@@ -40,7 +40,7 @@ add_executable(techvscats
         View/tower_menu.cpp
         View/tower_menu_option.cpp
         View/view.cpp
-        )
+        View/particle_handler.cpp View/particle_handler.h View/particle.cpp View/particle.h)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

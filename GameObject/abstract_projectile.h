@@ -4,6 +4,7 @@
 #include <memory>
 #include <utility>
 
+#include "View/particle_handler.h"
 #include "enemy.h"
 
 class AbstractProjectile : public MovingObject {
@@ -20,9 +21,11 @@ class AbstractProjectile : public MovingObject {
   void SetAnimationParameters(const QColor& draw_color, int iteration_time);
 
   double GetDamage() const;
+  ParticleHandler* GetParticleHandler();
   virtual bool IsInAffectedArea(const Enemy& enemy);
 
  protected:
+  ParticleHandler particle_handler;
   std::shared_ptr<Enemy> aim_ = {};
   double damage_ = 0;
 

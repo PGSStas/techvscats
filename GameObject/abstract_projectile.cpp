@@ -34,12 +34,17 @@ void AbstractProjectile::SetAnimationParameters(
   iteration_time_ = iteration_time;
 }
 
+double AbstractProjectile::GetDamage() const {
+  return damage_;
+}
+
+ParticleHandler* AbstractProjectile::GetParticleHandler() {
+  return &particle_handler;
+}
+
 bool AbstractProjectile::IsInAffectedArea(const Enemy& enemy) {
   return position_.GetVectorTo(enemy.GetPosition()).GetLength()
       <= constants::kEpsilon;
 }
 
-double AbstractProjectile::GetDamage() const {
-  return damage_;
-}
 
