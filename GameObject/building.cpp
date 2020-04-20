@@ -184,13 +184,5 @@ bool Building::IsReadyToCreateProjectiles() const {
 
 bool Building::IsInAttackRange(Coordinate coordinate) const {
   double result_range = attack_range_ * applied_effect_.GetRangeCoefficient();
-  double foci_coefficient = std::sqrt(
-      1 - kSemiMinorCoefficient * kSemiMinorCoefficient);
-  Coordinate first_foci(position_.x + foci_coefficient * result_range,
-                        position_.y);
-  Coordinate second_foci(position_.x - foci_coefficient * result_range,
-                         position_.y);
-  return coordinate.GetVectorTo(first_foci).GetLength() +
-      coordinate.GetVectorTo(second_foci).GetLength()
-      <= 2 * result_range + kEpsilon;
+  return coordinate.IsInEllipse(position_, result_range);
 }

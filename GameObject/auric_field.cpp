@@ -47,17 +47,7 @@ int AuricField::GetEffectId() const {
 }
 
 bool AuricField::IsInRadius(const Coordinate& coordinate) const {
-  // Now, our aura have shape of ellipse.
-  // Our focal distance - sqrt(a^2 - b^2) of effect radius.
-  double foci_coefficient =
-      std::sqrt(1 - kSemiMinorCoefficient * kSemiMinorCoefficient);
-  Coordinate first_foci(carrier_coordinate_->x +
-      foci_coefficient * effect_radius_, carrier_coordinate_->y);
-  Coordinate second_foci(carrier_coordinate_->x -
-      foci_coefficient * effect_radius_, carrier_coordinate_->y);
-  return coordinate.GetVectorTo(first_foci).GetLength()
-      + coordinate.GetVectorTo(second_foci).GetLength()
-      <= 2 * effect_radius_ + kEpsilon;
+  return coordinate.IsInEllipse(*carrier_coordinate_, effect_radius_);
 }
 
 bool AuricField::IsValid() const {
