@@ -104,7 +104,8 @@ void View::paintEvent(QPaintEvent*) {
     return_menu_button_->move(return_menu_button_position.x,
                               return_menu_button_position.y);
 
-    painter.drawPixmap(background, controller_->GetMapImage());
+    painter.drawImage(origin.x, origin.y,
+        controller_->GetMap().GetCurrentFrame());
     DrawAuras(&painter);
     DrawEnemies(&painter);
     DrawProjectiles(&painter);

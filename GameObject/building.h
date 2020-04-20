@@ -70,9 +70,7 @@ class Building : public GameObject {
   bool is_ready_to_shoot_ = false;
   std::list<std::shared_ptr<Enemy>> aims_;
 
-  AnimationPlayer reload_player_;
-  AnimationPlayer before_fire_player_;
-  AnimationPlayer after_fire_player_;
+  std::vector<AnimationPlayer> players_;
 };
 
 #endif  // GAMEOBJECT_BUILDING_H_

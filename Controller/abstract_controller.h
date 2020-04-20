@@ -39,7 +39,7 @@ class AbstractController {
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
 
-  virtual const QPixmap& GetMapImage() const = 0;
+  virtual const AnimationPlayer& GetMap() const = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

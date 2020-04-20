@@ -31,7 +31,7 @@ class Controller : public AbstractController {
   const Base& GetBase() const override;
   int GetCurrentTime() const override;
 
-  const QPixmap& GetMapImage() const override;
+  const AnimationPlayer& GetMap() const override;
 
  private:
   std::unique_ptr<Model> model_;

@@ -12,8 +12,8 @@ Building::Building(const Building& other) :
     Building(other.id_, other.cost_, other.size_, other.auric_field_) {
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
-  SetAnimationParameters(other.reload_player_, other.before_fire_player_,
-                         other.after_fire_player_, other.action_time_);
+  SetAnimationParameters(other.players_[0], other.players_[1],
+      other.players_[2], other.action_time_);
 }
 
 void Building::Tick(int current_time) {
@@ -23,44 +23,43 @@ void Building::Tick(int current_time) {
   UpdateTime(current_time);
   wait_time_ += delta_tick_time_ * applied_effect_.GetAttackRateCoefficient();
 
+  Action old_action = action_;
   switch (action_) {
     case Action::kReload: {
       if (wait_time_ > action_time_[static_cast<int>(Action::kReload)]) {
         if (is_ready_to_shoot_) {
           wait_time_ = 0;
           action_ = Action::kBeforeFire;
-          before_fire_player_.Reset(current_time);
           break;
         }
       }
-      reload_player_.Tick(current_time);
       break;
     }
     case Action::kBeforeFire: {
       if (!is_ready_to_shoot_) {
         action_ = Action::kReload;
         wait_time_ = action_time_[static_cast<int>(Action::kReload)];
-        reload_player_.Reset(current_time);
         break;
       }
       if (wait_time_ > action_time_[static_cast<int>(Action::kBeforeFire)]) {
         is_ready_to_create_projectiles_ = true;
         action_ = Action::kAfterFire;
         wait_time_ = 0;
-        after_fire_player_.Reset(current_time);
         break;
       }
-      before_fire_player_.Tick(current_time);
       break;
     }
     case Action::kAfterFire: {
       if (wait_time_ > action_time_[static_cast<int>(Action::kAfterFire)]) {
         action_ = Action::kReload;
-        reload_player_.Reset(current_time);
       }
-      after_fire_player_.Tick(current_time);
       break;
     }
+  }
+  if (old_action == action_) {
+    players_[static_cast<int>(action_)].Tick(current_time);
+  } else {
+    players_[static_cast<int>(action_)].Reset(current_time);
   }
 }
 
@@ -114,29 +113,18 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   Coordinate point =
       size_handler.GameToWindowCoordinate(position_ - size_ / 2);
   painter->translate(point.x, point.y);
-  switch (action_) {
-    case Action::kReload: {
-      painter->drawImage(0, 0, reload_player_.GetCurrentFrame());
-      break;
-    }
-    case Action::kBeforeFire: {
-      painter->drawImage(0, 0, before_fire_player_.GetCurrentFrame());
-      break;
-    }
-    case Action::kAfterFire: {
-      painter->drawImage(0, 0, after_fire_player_.GetCurrentFrame());
-      break;
-    }
-  }
+  painter->drawImage(0, 0,
+      players_[static_cast<int>(action_)].GetCurrentFrame());
   painter->restore();
 }
 
 void Building::SetAnimationParameters(
     const AnimationPlayer& reload_player, const AnimationPlayer& pre_player,
     const AnimationPlayer& post_player, const std::vector<int>& action_time) {
-  reload_player_ = reload_player;
-  before_fire_player_ = pre_player;
-  after_fire_player_ = post_player;
+  players_.clear();
+  players_.push_back(reload_player);
+  players_.push_back(pre_player);
+  players_.push_back(post_player);
   action_time_ = action_time;
 }
 
@@ -193,7 +181,7 @@ bool Building::IsReadyToCreateProjectiles() const {
 }
 
 void Building::Rescale(Size to_size) {
-  reload_player_.Rescale(to_size);
-  before_fire_player_.Rescale(to_size);
-  after_fire_player_.Rescale(to_size);
+  for (auto& player : players_) {
+    player.Rescale(to_size);
+  }
 }

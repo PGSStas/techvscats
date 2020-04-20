@@ -293,8 +293,8 @@ int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
 
-const QPixmap& Controller::GetMapImage() const {
-  return model_->GetMapImage();
+const AnimationPlayer& Controller::GetMap() const {
+  return model_->GetMap();
 }
 
 void Controller::RescaleObjects(const SizeHandler& size_handler) {

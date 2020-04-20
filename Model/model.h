@@ -60,7 +60,7 @@ class Model {
   int GetPrepairTimeBetweenRounds() const;
   int GetCurrentRoundNumber() const;
 
-  const QPixmap& GetMapImage() const;
+  const AnimationPlayer& GetMap() const;
 
  private:
   void LoadLevel(int level);
@@ -92,7 +92,7 @@ class Model {
   std::vector<Effect> id_to_effect_;
 
   // Images
-  QPixmap map_;
+  AnimationPlayer map_;
 };
 
 #endif  // MODEL_MODEL_H_

@@ -277,11 +277,13 @@ void Model::LoadLevel(int level) {
                                           json_empty_tower["y"].toDouble());
   }
 
-  map_ = QPixmap(":resources/images/map_level_" +
-      QString::number(level) + ".png");
+  auto map_vector = std::make_shared<std::vector<QImage>>();
+  map_vector->push_back(QImage(":resources/images/map_level_" +
+      QString::number(level) + ".png"));
+  map_ = AnimationPlayer(map_vector);
 }
 
-const QPixmap& Model::GetMapImage() const {
+const AnimationPlayer& Model::GetMap() const {
   return map_;
 }
 
@@ -347,8 +349,7 @@ void Model::LoadDatabase() {
   mouse_images->push_back((*mouse_images)[1]);
 
   AnimationPlayer enemy_player(toaster_images);
-  AnimationPlayer enemy_player2(mouse_images,
-      constants::kDefaultTimeBetweenFrames * 2 / 3);
+  AnimationPlayer enemy_player2(mouse_images, 2. / 3);
   id_to_enemy_[0].SetAnimationPlayer(enemy_player);
   id_to_enemy_[1].SetAnimationPlayer(enemy_player);
   id_to_enemy_[2].SetAnimationPlayer(enemy_player);
@@ -363,6 +364,8 @@ void Model::LoadDatabase() {
                               {Qt::darkRed, Qt::magenta},
                               {Qt::white, Qt::yellow}};
   Effect::SetEffectVisualizations(effect_visualization);
+
+  map_ = AnimationPlayer(std::make_shared<std::vector<QImage>>());
 }
 
 void Model::InitializeTowerSlots() {
@@ -381,5 +384,6 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   for (auto& building : id_to_building_) {
     building.Rescale(size_handler.GameToWindowSize(building.GetSize()));
   }
+  map_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
 }
 
