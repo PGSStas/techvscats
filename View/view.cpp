@@ -6,7 +6,6 @@ View::View(AbstractController* controller)
       button_handler_(std::make_unique<ButtonHandler>(this, controller)) {
   setMinimumSize(1080, 720);
   setMouseTracking(true);
-  button_handler_->CreateButtons(controller);
   show();
 
   view_timer_.start();
@@ -194,7 +193,7 @@ void View::mouseMoveEvent(QMouseEvent* event) {
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
-  // button_handler_->MoveButtons(size_handler_);
+  button_handler_->MoveButtons(size_handler_);
 }
 
 void View::EnableGameUi() {

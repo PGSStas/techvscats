@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include "constants.h"
+const double kSizeEpsilon = 0.0001;
 
 struct Size {
   double width;

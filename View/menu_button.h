@@ -11,6 +11,15 @@
 #include "size_handler.h"
 #include "Model/constants.h"
 
+namespace buttonconstants {
+const int kMenuBorderSize = 12;
+const Size kLongButtonSize(640, 72);
+const Size kShortButtonSize(72, 72);
+const int kMenuFontSize = 36;
+const Coordinate kFirstButtonCoordinate(640, 360);
+const int kShift = 8;
+}
+
 class MenuButton : public QPushButton {
  public:
   MenuButton() : button_size_(0, 0), border_size_(0) {}

@@ -7,6 +7,7 @@
 
 #include "Model/coordinate.h"
 #include "Model/size.h"
+#include "Model/constants.h"
 
 class SizeHandler {
  public:

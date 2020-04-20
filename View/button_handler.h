@@ -3,11 +3,8 @@
 
 #include <QMainWindow>
 #include <QPushButton>
-#include <QLabel>
-#include <QLayout>
-#include <QObject>
-#include <QPixmap>
 #include <QString>
+
 #include "Controller/abstract_controller.h"
 #include "menu_button.h"
 #include "size_handler.h"
@@ -19,15 +16,13 @@ enum class WindowType {
   kPauseMenu
 };
 
-enum class Language {
-  kRussian,
-  kEnglish
-};
-
 class ButtonHandler : QObject {
  public:
   explicit ButtonHandler(QMainWindow* main_window,
                          AbstractController* controller);
+
+  void CreateButtons(AbstractController* controller);
+  void MoveButtons(SizeHandler size_handler);
 
   void EnableMainMenuUi();
   void DisableMainMenuUi();
@@ -38,10 +33,7 @@ class ButtonHandler : QObject {
   void EnablePauseMenuUi();
   void DisablePauseMenuUi();
 
-  void CreateButtons(AbstractController* controller);
-  void MoveButtons(SizeHandler size_handler);
-
-  WindowType GetWindowType();
+  WindowType GetWindowType() const;
 
  private:
   // creating main menu
@@ -88,12 +80,10 @@ class ButtonHandler : QObject {
   // to_main_menu_button_ is also here
 
   int level_number_ = 1;
-  Size long_button_size_ = Size(kLongButtonWidth, kLongButtonHeight);
-  Size short_button_size_ = Size(kShortButtonSize, kShortButtonSize);
-  Coordinate first_button_coordinate_ =
-      Coordinate(kFirstButtonCoordinateX, kFirstButtonCoordinateY);
-  int shift_ = kShift;
-  Language language_;
+  Size long_button_size_ = buttonconstants::kLongButtonSize;
+  Size short_button_size_ = buttonconstants::kShortButtonSize;
+  Coordinate first_button_coordinate_ = buttonconstants::kFirstButtonCoordinate;
+  int shift_ = buttonconstants::kShift;
   bool is_sound_on_ = true;
 };
 

@@ -18,7 +18,7 @@ class Controller : public AbstractController {
   void StartGame(int level) override;
   void EndGame(Exit exit) override;
   void Tick(int current_time) override;
-  void SetSpeed(Speed speed) override;
+  void SetSpeedCoefficient(Speed speed) override;
 
   void MousePress(Coordinate position) override;
   void MouseMove(Coordinate position) override;

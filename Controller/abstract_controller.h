@@ -31,7 +31,7 @@ class AbstractController {
   virtual void StartGame(int level) = 0;
   virtual void Tick(int current_time) = 0;
   virtual void EndGame(Exit exit) = 0;
-  virtual void SetSpeed(Speed speed) = 0;
+  virtual void SetSpeedCoefficient(Speed speed) = 0;
 
   virtual void MousePress(Coordinate position) = 0;
   virtual void MouseMove(Coordinate position) = 0;

@@ -26,11 +26,13 @@ void MenuButton::Move(Coordinate game_coordinate, SizeHandler size_handler) {
   setIconSize(QSize(window_size.width, window_size.height));
 
   auto font = this->font();
-  font.setPointSize(size_handler.GameToWindowLength(kMenuFontSize));
+  font.setPixelSize(size_handler.GameToWindowLength(
+      buttonconstants::kMenuFontSize));
   font.setBold(true);
   setFont(font);
 
-  border_size_ = size_handler.GameToWindowLength(kMenuBorderSize);
+  border_size_ =
+      size_handler.GameToWindowLength(buttonconstants::kMenuBorderSize);
   QString style_sheet =
       "border: " + QString::number(border_size_) + "px solid #000000;";
   setStyleSheet(style_sheet);

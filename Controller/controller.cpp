@@ -13,6 +13,7 @@ void Controller::StartGame(int level_id) {
 
   model_->SetGameLevel(level_id);
 
+  SetSpeedCoefficient(Speed::kNormalSpeed);
   view_->DisableMainMenuUi();
   view_->EnableGameUi();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
@@ -40,6 +41,10 @@ void Controller::Tick(int current_time) {
       break;
     }
   }
+}
+
+void Controller::SetSpeedCoefficient(Speed speed) {
+  view_->ChangeGameSpeed(static_cast<int>(speed));
 }
 
 void Controller::GameProcess() {
@@ -298,8 +303,4 @@ const Base& Controller::GetBase() const {
 
 int Controller::GetCurrentTime() const {
   return current_game_time_;
-}
-
-void Controller::SetSpeed(Speed speed) {
-    view_->ChangeGameSpeed(static_cast<int>(speed));
 }

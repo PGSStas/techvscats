@@ -1,8 +1,24 @@
 #include "button_handler.h"
 
-ButtonHandler::ButtonHandler(QMainWindow* main_window, AbstractController* controller) :
-main_window_(main_window), controller_(controller) {
+ButtonHandler::ButtonHandler(QMainWindow* main_window,
+                             AbstractController* controller) :
+    main_window_(main_window), controller_(controller) {
   CreateButtons(controller_);
+}
+
+void ButtonHandler::CreateButtons(AbstractController* controller) {
+  controller_ = controller;
+  CreateMainMenuButtons();
+  CreateSettingsButtons();
+  CreateGameButtons();
+  CreatePauseMenuButtons();
+}
+
+void ButtonHandler::MoveButtons(SizeHandler size_handler) {
+  MoveMainMenuButtons(size_handler);
+  MoveSettingsButtons(size_handler);
+  MoveGameButtons(size_handler);
+  MovePauseMenuButtons(size_handler);
 }
 
 void ButtonHandler::EnableMainMenuUi() {
@@ -24,7 +40,50 @@ void ButtonHandler::DisableMainMenuUi() {
   exit_button_->hide();
 }
 
-WindowType ButtonHandler::GetWindowType() {
+void ButtonHandler::EnableSettingsUi() {
+  window_type_ = WindowType::kSettings;
+  language_button_->show();
+  sound_button_->show();
+  reset_game_button_->show();
+  to_main_menu_button_->show();
+}
+
+void ButtonHandler::DisableSettingsUi() {
+  language_button_->hide();
+  sound_button_->hide();
+  reset_game_button_->hide();
+  to_main_menu_button_->hide();
+}
+
+void ButtonHandler::EnableGameUi() {
+  window_type_ = WindowType::kGame;
+  pause_button_->show();
+  zero_speed_button_->show();
+  normal_speed_button_->show();
+  double_speed_button_->show();
+}
+
+void ButtonHandler::DisableGameUi() {
+  pause_button_->hide();
+  zero_speed_button_->hide();
+  normal_speed_button_->hide();
+  double_speed_button_->hide();
+}
+
+void ButtonHandler::EnablePauseMenuUi() {
+  window_type_ = WindowType::kPauseMenu;
+  continue_button_->show();
+  restart_button_->show();
+  to_main_menu_button_->show();
+}
+
+void ButtonHandler::DisablePauseMenuUi() {
+  continue_button_->hide();
+  restart_button_->hide();
+  to_main_menu_button_->hide();
+}
+
+WindowType ButtonHandler::GetWindowType() const {
   return window_type_;
 }
 
@@ -32,7 +91,6 @@ void ButtonHandler::CreateMainMenuButtons() {
   start_game_button_ = new MenuButton(
       tr("НАЧАТЬ ИГРУ"), long_button_size_, main_window_);
   auto start_game_button_click = [&]() {
-    controller_->SetSpeed(Speed::kNormalSpeed);
     controller_->StartGame(level_number_);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
@@ -64,12 +122,8 @@ void ButtonHandler::CreateMainMenuButtons() {
     if (level_number_ < 3) {
       level_number_++;
     }
-    if (language_ == Language::kRussian) {
-      choose_level_number_->setText(
+    choose_level_number_->setText(
           "УРОВЕНЬ " + QString::number(level_number_));
-    } else {
-      choose_level_number_->setText("LEVEL " + QString::number(level_number_));
-    }
   };
   connect(inc_level_button_, &QPushButton::clicked, inc_level_button_click);
 
@@ -79,12 +133,8 @@ void ButtonHandler::CreateMainMenuButtons() {
     if (level_number_ > 1) {
       level_number_--;
     }
-    if (language_ == Language::kRussian) {
-      choose_level_number_->setText(
+    choose_level_number_->setText(
           "УРОВЕНЬ " + QString::number(level_number_));
-    } else {
-      choose_level_number_->setText("LEVEL " + QString::number(level_number_));
-    }
   };
   connect(dec_level_button_, &QPushButton::clicked, dec_level_button_click);
 }
@@ -104,15 +154,15 @@ void ButtonHandler::MoveMainMenuButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  language_button_ = new MenuButton("", short_button_size_, main_window_,
-      ":resources/buttons_resources/language_button_eng.png");
+  language_button_ = new MenuButton("", short_button_size_,
+      main_window_, ":resources/buttons_resources/language_button_eng.png");
   auto language_button_click = [&]() {
     // changing language
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
 
-  sound_button_ = new MenuButton("", short_button_size_, main_window_,
-       ":resources/buttons_resources/sound_button_on.png");
+  sound_button_ = new MenuButton("", short_button_size_,
+      main_window_, ":resources/buttons_resources/sound_button_on.png");
   auto sound_button_click = [&]() {
     // changing sound
     if (is_sound_on_) {
@@ -161,26 +211,11 @@ void ButtonHandler::MoveSettingsButtons(SizeHandler size_handler) {
                              size_handler);
 }
 
-void ButtonHandler::EnableSettingsUi() {
-  window_type_ = WindowType::kSettings;
-  language_button_->show();
-  sound_button_->show();
-  reset_game_button_->show();
-  to_main_menu_button_->show();
-}
-
-void ButtonHandler::DisableSettingsUi() {
-  language_button_->hide();
-  sound_button_->hide();
-  reset_game_button_->hide();
-  to_main_menu_button_->hide();
-}
-
 void ButtonHandler::CreateGameButtons() {
   pause_button_ = new MenuButton("", short_button_size_,
       main_window_, ":resources/buttons_resources/pause_button.png");
   auto pause_button_click = [&]() {
-    controller_->SetSpeed(Speed::kZeroSpeed);
+    controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
     window_type_ = WindowType::kPauseMenu;
   };
   connect(pause_button_, &QPushButton::clicked, pause_button_click);
@@ -188,14 +223,14 @@ void ButtonHandler::CreateGameButtons() {
   zero_speed_button_ = new MenuButton("", short_button_size_,
       main_window_, ":resources/buttons_resources/zero_speed_button.png");
   auto zero_speed_button_click = [&]() {
-    controller_->SetSpeed(Speed::kZeroSpeed);
+    controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
   };
   connect(zero_speed_button_, &QPushButton::clicked, zero_speed_button_click);
 
   normal_speed_button_ = new MenuButton("", short_button_size_,
       main_window_, ":resources/buttons_resources/normal_speed_button.png");
   auto normal_speed_button_click = [&]() {
-    controller_->SetSpeed(Speed::kNormalSpeed);
+    controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
   };
   connect(normal_speed_button_,
           &QPushButton::clicked,
@@ -204,7 +239,7 @@ void ButtonHandler::CreateGameButtons() {
   double_speed_button_ = new MenuButton("", short_button_size_,
       main_window_, ":resources/buttons_resources/double_speed_button.png");
   auto double_speed_button_click = [&]() {
-    controller_->SetSpeed(Speed::kDoubleSpeed);
+    controller_->SetSpeedCoefficient(Speed::kDoubleSpeed);
   };
   connect(double_speed_button_,
           &QPushButton::clicked,
@@ -224,20 +259,6 @@ void ButtonHandler::MoveGameButtons(SizeHandler size_handler) {
                              size_handler);
 }
 
-void ButtonHandler::EnableGameUi() {
-  window_type_ = WindowType::kGame;
-  pause_button_->show();
-  zero_speed_button_->show();
-  normal_speed_button_->show();
-  double_speed_button_->show();
-}
-
-void ButtonHandler::DisableGameUi() {
-  pause_button_->hide();
-  zero_speed_button_->hide();
-  normal_speed_button_->hide();
-  double_speed_button_->hide();
-}
 
 void ButtonHandler::CreatePauseMenuButtons() {
   restart_button_ = new MenuButton(
@@ -245,7 +266,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   auto restart_button_click = [&]() {
     controller_->EndGame(Exit::kLose);
     controller_->StartGame(level_number_);
-    controller_->SetSpeed(Speed::kNormalSpeed);
+    controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
     window_type_ = WindowType::kGame;
     DisablePauseMenuUi();
   };
@@ -254,7 +275,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   continue_button_ = new MenuButton(
       tr("ПРОДОЛЖИТЬ"), long_button_size_, main_window_);
   auto continue_button_click = [&]() {
-    controller_->SetSpeed(Speed::kNormalSpeed);
+    controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
     window_type_ = WindowType::kGame;
     DisablePauseMenuUi();
   };
@@ -265,32 +286,4 @@ void ButtonHandler::MovePauseMenuButtons(SizeHandler size_handler) {
   Size shift = Size({0, long_button_size_.height + shift_});
   continue_button_->Move(first_button_coordinate_, size_handler);
   restart_button_->Move(first_button_coordinate_ + shift, size_handler);
-}
-
-void ButtonHandler::EnablePauseMenuUi() {
-  window_type_ = WindowType::kPauseMenu;
-  continue_button_->show();
-  restart_button_->show();
-  to_main_menu_button_->show();
-}
-
-void ButtonHandler::DisablePauseMenuUi() {
-  continue_button_->hide();
-  restart_button_->hide();
-  to_main_menu_button_->hide();
-}
-
-void ButtonHandler::CreateButtons(AbstractController* controller) {
-  controller_ = controller;
-  CreateMainMenuButtons();
-  CreateSettingsButtons();
-  CreateGameButtons();
-  CreatePauseMenuButtons();
-}
-
-void ButtonHandler::MoveButtons(SizeHandler size_handler) {
-  MoveMainMenuButtons(size_handler);
-  MoveSettingsButtons(size_handler);
-  MoveGameButtons(size_handler);
-  MovePauseMenuButtons(size_handler);
 }
