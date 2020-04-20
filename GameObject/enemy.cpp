@@ -68,8 +68,7 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     // mirroring the image
     painter->scale(-1.0, 1.0);
   }
-  painter->drawImage(QRect(0, 0, size.width, size.height),
-      player_.GetCurrentFrame());
+  painter->drawImage(0, 0, player_.GetCurrentFrame());
 
   painter->restore();
 }
@@ -117,4 +116,8 @@ void Enemy::ReceiveDamage(double damage) {
 
 void Enemy::SetAnimationPlayer(const AnimationPlayer& player) {
   player_ = player;
+}
+
+void Enemy::Rescale(Size to_size) {
+  player_.Rescale(to_size);
 }

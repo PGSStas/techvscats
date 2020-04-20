@@ -26,6 +26,8 @@ class Enemy : public MovingObject {
   void DrawHealthBar(QPainter* painter, const SizeHandler& size_handler) const;
 
   void SetAnimationPlayer(const AnimationPlayer& player);
+  void Rescale(Size to_size);
+
   void SetRoad(const Road& road);
 
   const AuricField& GetAuricField() const;

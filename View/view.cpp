@@ -8,6 +8,7 @@ View::View(AbstractController* controller) : controller_(controller) {
   start_game_button_->setText(tr("Начать"));
   auto start_game_button_click = [this]() {
     controller_->StartGame(1);
+    controller_->RescaleObjects(size_handler_);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
@@ -115,7 +116,7 @@ void View::paintEvent(QPaintEvent*) {
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
-  repaint();
+  controller_->RescaleObjects(size_handler_);
 }
 
 void View::timerEvent(QTimerEvent* event) {

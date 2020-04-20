@@ -32,6 +32,8 @@ class Building : public GameObject {
                               const AnimationPlayer& pre_player ,
                               const AnimationPlayer& post_player ,
                               const std::vector<int>& action_time);
+  void Rescale(Size to_size);
+
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
                      int max_aims);
   void SetReadyToCreateProjectileToFalse();

@@ -113,22 +113,18 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
 
   Coordinate point =
       size_handler.GameToWindowCoordinate(position_ - size_ / 2);
-  Size size = size_handler.GameToWindowSize(size_);
   painter->translate(point.x, point.y);
   switch (action_) {
     case Action::kReload: {
-      painter->drawImage(QRect(0, 0, size.width, size.height),
-                         reload_player_.GetCurrentFrame());
+      painter->drawImage(0, 0, reload_player_.GetCurrentFrame());
       break;
     }
     case Action::kBeforeFire: {
-      painter->drawImage(QRect(0, 0, size.width, size.height),
-                         before_fire_player_.GetCurrentFrame());
+      painter->drawImage(0, 0, before_fire_player_.GetCurrentFrame());
       break;
     }
     case Action::kAfterFire: {
-      painter->drawImage(QRect(0, 0, size.width, size.height),
-                         after_fire_player_.GetCurrentFrame());
+      painter->drawImage(0, 0, after_fire_player_.GetCurrentFrame());
       break;
     }
   }
@@ -194,4 +190,10 @@ bool Building::IsInside(Coordinate point) const {
 
 bool Building::IsReadyToCreateProjectiles() const {
   return is_ready_to_create_projectiles_;
+}
+
+void Building::Rescale(Size to_size) {
+  reload_player_.Rescale(to_size);
+  before_fire_player_.Rescale(to_size);
+  after_fire_player_.Rescale(to_size);
 }

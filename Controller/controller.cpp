@@ -116,7 +116,7 @@ void Controller::TickEnemies() {
 
 void Controller::TickBuildings() {
   const auto& buildings = model_->GetBuildings();
-  for (const auto& building : buildings) {
+  for (const auto& building : *buildings) {
     building->Tick(current_game_time_);
     building->UpdateAim(*model_->GetEnemies());
     if (!building->IsReadyToCreateProjectiles()) {
@@ -160,7 +160,7 @@ void Controller::TickAuras() {
   }
 
   const auto& buildings = model_->GetBuildings();
-  for (const auto& building : buildings) {
+  for (const auto& building : *buildings) {
     building->GetAppliedEffect()->ResetEffect();
   }
 
@@ -168,7 +168,7 @@ void Controller::TickAuras() {
     ApplyEffectToAllInstances(enemy->GetAuricField());
   }
 
-  for (const auto& building : buildings) {
+  for (const auto& building : *buildings) {
     ApplyEffectToAllInstances(building->GetAuricField());
   }
 }
@@ -195,7 +195,7 @@ void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
       || effect_target == EffectTarget::kBuilding) {
     const auto& buildings = model_->GetBuildings();
 
-    for (const auto& building : buildings) {
+    for (const auto& building : *buildings) {
       if (aura.IsInRadius(building->GetPosition())) {
         *building->GetAppliedEffect() += effect;
       }
@@ -213,7 +213,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
 
 void Controller::CreateTowerMenu(int tower_index) {
   std::vector<std::shared_ptr<TowerMenuOption>> options;
-  const auto& buildings = model_->GetBuildings();
+  const auto& buildings = *model_->GetBuildings();
   const auto& building = buildings[tower_index];
   const auto& upgrade_tree = model_->GetUpgradesTree();
   int building_id = buildings[tower_index]->GetId();
@@ -233,8 +233,8 @@ void Controller::CreateTowerMenu(int tower_index) {
 void Controller::MousePress(Coordinate position) {
   // Check if some tower was pressed
   const auto& buildings = model_->GetBuildings();
-  for (size_t i = 0; i < buildings.size(); i++) {
-    const auto& building = buildings[i];
+  for (size_t i = 0; i < buildings->size(); i++) {
+    const auto& building = (*buildings)[i];
     if (!building->IsInside(position)) {
       continue;
     }
@@ -277,7 +277,7 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
 
 const std::vector<std::shared_ptr<Building>>&
 Controller::GetBuildings() const {
-  return model_->GetBuildings();
+  return *model_->GetBuildings();
 }
 
 const std::list<std::shared_ptr<AbstractProjectile>>&
@@ -295,4 +295,14 @@ int Controller::GetCurrentTime() const {
 
 const QPixmap& Controller::GetMapImage() const {
   return model_->GetMapImage();
+}
+
+void Controller::RescaleObjects(const SizeHandler& size_handler) {
+  for (auto& enemy : *model_->GetEnemies()) {
+    enemy->Rescale(size_handler.GameToWindowSize(enemy->GetSize()));
+  }
+  for (auto& building : *model_->GetBuildings()) {
+    building->Rescale(size_handler.GameToWindowSize(building->GetSize()));
+  }
+  model_->RescaleDatabase(size_handler);
 }

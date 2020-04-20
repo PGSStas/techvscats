@@ -48,6 +48,7 @@ void Model::SetGameLevel(int level_id) {
       constants::kDefaultTimeBetweenFrames, false);
 
   Building building_instance(0, 0);
+  reload.Rescale(building_instance.GetSize());
   building_instance.SetAnimationParameters(reload, reload, reload,
                                            {0, 0, 0});
 
@@ -162,8 +163,8 @@ const std::vector<std::vector<int>>& Model::GetUpgradesTree() const {
   return upgrades_tree_;
 }
 
-const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
-  return buildings_;
+std::vector<std::shared_ptr<Building>>* Model::GetBuildings() {
+  return &buildings_;
 }
 
 const Road& Model::GetRoad(int i) const {
@@ -370,6 +371,15 @@ void Model::InitializeTowerSlots() {
     auto empty_place = std::make_shared<Building>(id_to_building_[0]);
     empty_place->SetPosition(coordinate);
     buildings_.push_back(empty_place);
+  }
+}
+
+void Model::RescaleDatabase(const SizeHandler& size_handler) {
+  for (auto& enemy : id_to_enemy_) {
+    enemy.Rescale(size_handler.GameToWindowSize(enemy.GetSize()));
+  }
+  for (auto& building : id_to_building_) {
+    building.Rescale(size_handler.GameToWindowSize(building.GetSize()));
   }
 }
 
