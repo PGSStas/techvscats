@@ -1,34 +1,34 @@
 #include "text_notification.h"
 
-TextNotification::TextNotification(const QString& message,
-                                   QMainWindow* main_window,
+TextNotification::TextNotification(const QString& message, Size size,
                                    Coordinate start_position, QColor color,
                                    int creation_time, Size moving_vector,
                                    int life_time) :
-    label_(message, main_window), position_(start_position),
+    GameObject(size, start_position), message_(message),
     moving_vector_(moving_vector), color_(color),
-    creation_time_(creation_time), life_time_(life_time) {
-  label_.show();
+    creation_time_(creation_time), life_time_(life_time) {}
 
-  auto pallete = label_.palette();
-  pallete.setColor(label_.backgroundRole(), color);
-  pallete.setColor(label_.foregroundRole(), color);
-  label_.setPalette(pallete);
-}
-
-void TextNotification::Tick(int current_time, const SizeHandler& size_handler) {
+void TextNotification::Tick(int current_time) {
   position_ += moving_vector_;
   moving_vector_ *= kSlowdownCoefficient;
   if ((current_time - creation_time_ > life_time_)) {
     is_dead_ = true;
   }
+}
 
-  Coordinate point = size_handler.GameToWindowCoordinate(position_);
-  label_.setGeometry(point.x, point.y, label_.width(), label_.height());
+void TextNotification::Draw(QPainter* painter,
+                            const SizeHandler& size_handler) const {
+  painter->save();
 
-  auto font = label_.font();
+  painter->setPen(color_);
+  auto font = painter->font();
   font.setPointSize(size_handler.GameToWindowLength(kFontSize));
-  label_.setFont(font);
+  painter->setFont(font);
+
+  Coordinate point = size_handler.GameToWindowCoordinate(position_ - size_ / 2);
+  painter->drawText(point.x, point.y, message_);
+
+  painter->restore();
 }
 
 bool TextNotification::IsDead() const {

@@ -5,22 +5,23 @@
 #include <QLabel>
 #include <QString>
 
-#include "Model/coordinate.h"
+#include "GameObject/game_object.h"
 #include "size_handler.h"
 
-class TextNotification {
+class TextNotification : public GameObject {
  public:
-  TextNotification(const QString& message, QMainWindow* main_window,
+  TextNotification(const QString& message, Size size,
                    Coordinate start_position, QColor color, int creation_time,
                    Size moving_vector = Size(0, -8), int life_time = 1000);
+  ~TextNotification() override = default;
 
-  void Tick(int current_time, const SizeHandler& size_handler);
+  void Tick(int current_time) override;
+  void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
 
   bool IsDead() const;
 
  private:
-  QLabel label_;
-  Coordinate position_;
+  QString message_;
   Size moving_vector_;
   QColor color_;
   int creation_time_;
