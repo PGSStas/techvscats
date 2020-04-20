@@ -34,5 +34,3 @@ void TextNotification::Draw(QPainter* painter,
 bool TextNotification::IsDead() const {
   return is_dead_;
 }
-
-
