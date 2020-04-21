@@ -30,7 +30,7 @@ class GameObject {
 
  protected:
   std::vector<AnimationPlayer> animation_players_;
-  std::vector<int> action_timmings_;
+  std::vector<int> action_timings_;
   Size size_;
   Coordinate position_;
   int object_life_time_ = 0;

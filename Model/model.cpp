@@ -167,7 +167,7 @@ const std::vector<std::vector<int>>& Model::GetUpgradesTree() const {
   return upgrades_tree_;
 }
 
-const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() {
+const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const{
   return buildings_;
 }
 

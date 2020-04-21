@@ -7,9 +7,7 @@ AnimationPlayer::AnimationPlayer(
 
 AnimationPlayer::AnimationPlayer(
     const std::shared_ptr<std::vector<QImage>>& frames, int animation_duration)
-    : frames_(frames) {
-  frames_rescaled_ = *frames;
-
+    : frames_(frames),frames_rescaled_(*frames) {
   time_between_frames_ = 1.0 * animation_duration / frames->size();
 }
 

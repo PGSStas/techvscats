@@ -19,8 +19,8 @@ void GameObject::SetPosition(Coordinate position) {
 void GameObject::SetAnimationPlayers(
     const std::vector<AnimationPlayer>& animation_players) {
   animation_players_ = animation_players;
-  for (uint i = 0; i < animation_players.size(); i++) {
-    action_timmings_.push_back(animation_players[i].GetAnimationDuration());
+  for (const auto& animation_player: animation_players_) {
+    action_timings_.push_back(animation_player.GetAnimationDuration());
   }
 }
 
