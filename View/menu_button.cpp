@@ -44,7 +44,8 @@ void MenuButton::Move(Coordinate game_coordinate, SizeHandler size_handler) {
 void MenuButton::enterEvent(QEvent*) {
   QString style_sheet =
       "border: " + QString::number(border_size_) + "px solid #000000;";
-  style_sheet += "background-color: " + QColor::fromRgb(QRandomGenerator::global()->generate()).name() + ";";
+  style_sheet += "background-color: " +
+      QColor::fromRgb(QRandomGenerator::global()->generate()).name() + ";";
   setStyleSheet(style_sheet);
   setIcon(QIcon(active_icon_));
 }
