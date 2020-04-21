@@ -102,7 +102,23 @@ void Controller::TickSpawners() {
 }
 
 void Controller::TickParticlesHandlers() {
- ////////////////////////////////////!!!!!!!!!!!!!!!!!!!!
+  // const auto& enemies = *model_->GetEnemies();
+  // for (const auto& enemy : enemies) {
+  //   enemy->GetParticleHandler()->ResetEffect();
+  // }
+  //
+  // const auto& buildings = model_->GetBuildings();
+  // for (const auto& building : buildings) {
+  //   building->GetAppliedEffect()->ResetEffect();
+  // }
+  //
+  // for (const auto& enemy : enemies) {
+  //   ApplyEffectToAllInstances(enemy->GetAuricField());
+  // }
+  //
+  // for (const auto& building : buildings) {
+  //   ApplyEffectToAllInstances(building->GetAuricField());
+  // }
 }
 
 void Controller::TickParticles() {
