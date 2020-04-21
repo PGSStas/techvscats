@@ -22,7 +22,8 @@ MenuButton::MenuButton(const QString& text, const Size& button_size,
   setCursor(Qt::PointingHandCursor);
 }
 
-void MenuButton::SetGeometry(Coordinate game_coordinate, SizeHandler size_handler) {
+void MenuButton::SetGeometry(
+    Coordinate game_coordinate, SizeHandler size_handler) {
   Coordinate
       window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);
   this->move(window_coordinate.x, window_coordinate.y);

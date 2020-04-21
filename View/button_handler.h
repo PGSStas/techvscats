@@ -22,7 +22,7 @@ class ButtonHandler : QObject {
                          AbstractController* controller);
   virtual ~ButtonHandler() = default;
 
-  void CreateButtons(AbstractController* controller);
+  void CreateButtons();
   void SetButtonsGeometry(SizeHandler size_handler);
 
   void SetMainMenuUiVisible(bool visible);
@@ -80,7 +80,8 @@ class ButtonHandler : QObject {
   int level_number_ = 1;
   Size long_button_size_ = button_constants::kLongButtonSize;
   Size short_button_size_ = button_constants::kShortButtonSize;
-  Coordinate first_button_coordinate_ = button_constants::kFirstButtonCoordinate;
+  Coordinate first_button_coordinate_ =
+      button_constants::kFirstButtonCoordinate;
   int shift_ = button_constants::kShift;
   bool is_sound_on_ = true;
 };

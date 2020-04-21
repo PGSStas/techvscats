@@ -3,11 +3,11 @@
 ButtonHandler::ButtonHandler(QMainWindow* main_window,
                              AbstractController* controller)
     : QObject(main_window), main_window_(main_window), controller_(controller) {
-  CreateButtons(controller_);
+  CreateButtons();
   window_type_ = WindowType::kMainMenu;
 }
 
-void ButtonHandler::CreateButtons(AbstractController* controller) {
+void ButtonHandler::CreateButtons() {
   CreateMainMenuButtons();
   CreateSettingsButtons();
   CreateGameButtons();
@@ -85,11 +85,9 @@ void ButtonHandler::CreateMainMenuButtons() {
   choose_level_number_ = new MenuButton(
       tr("УРОВЕНЬ 1"), choose_level_number_size, main_window_);
 
-  inc_level_button_ = new MenuButton("",
-                                     short_button_size_,
-                                     main_window_,
-                                     ":resources/buttons_resources/inc_level_button.png",
-                                     ":resources/buttons_resources/inc_level_button_active.png");
+  inc_level_button_ = new MenuButton("", short_button_size_, main_window_,
+      ":resources/buttons_resources/inc_level_button.png",
+      ":resources/buttons_resources/inc_level_button_active.png");
   auto inc_level_button_click = [this]() {
     if (level_number_ < 3) {
       level_number_++;
@@ -99,11 +97,9 @@ void ButtonHandler::CreateMainMenuButtons() {
   };
   connect(inc_level_button_, &QPushButton::clicked, inc_level_button_click);
 
-  dec_level_button_ = new MenuButton("",
-                                     short_button_size_,
-                                     main_window_,
-                                     ":resources/buttons_resources/dec_level_button.png",
-                                     ":resources/buttons_resources/dec_level_button_active.png");
+  dec_level_button_ = new MenuButton("", short_button_size_, main_window_,
+      ":resources/buttons_resources/dec_level_button.png",
+      ":resources/buttons_resources/dec_level_button_active.png");
   auto dec_level_button_click = [this]() {
     if (level_number_ > 1) {
       level_number_--;
@@ -118,7 +114,8 @@ void ButtonHandler::SetMainMenuButtonsGeometry(SizeHandler size_handler) {
   Size shift = Size(0, long_button_size_.height + shift_);
 
   start_game_button_->SetGeometry(first_button_coordinate_, size_handler);
-  dec_level_button_->SetGeometry(first_button_coordinate_ + shift, size_handler);
+  dec_level_button_->SetGeometry(
+      first_button_coordinate_ + shift, size_handler);
   choose_level_number_->SetGeometry(
       first_button_coordinate_ + shift + Size(shift.height, 0), size_handler);
   inc_level_button_->SetGeometry(
@@ -130,21 +127,17 @@ void ButtonHandler::SetMainMenuButtonsGeometry(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  language_button_ = new MenuButton("",
-                                    short_button_size_,
-                                    main_window_,
-                                    ":resources/buttons_resources/language_button_eng.png",
-                                    ":resources/buttons_resources/language_button_eng_active.png");
+  language_button_ = new MenuButton("", short_button_size_, main_window_,
+      ":resources/buttons_resources/language_button_eng.png",
+      ":resources/buttons_resources/language_button_eng_active.png");
   auto language_button_click = [this]() {
     // changing language
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
 
-  sound_button_ = new MenuButton("",
-                                 short_button_size_,
-                                 main_window_,
-                                 ":resources/buttons_resources/sound_button_on.png",
-                                 ":resources/buttons_resources/sound_button_on_active.png");
+  sound_button_ = new MenuButton("", short_button_size_, main_window_,
+      ":resources/buttons_resources/sound_button_on.png",
+      ":resources/buttons_resources/sound_button_on_active.png");
   auto sound_button_click = [this]() {
     // changing sound
     if (is_sound_on_) {
@@ -199,33 +192,27 @@ void ButtonHandler::SetSettingsButtonsGeometry(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateGameButtons() {
-  pause_button_ = new MenuButton("",
-                                 short_button_size_,
-                                 main_window_,
-                                 ":resources/buttons_resources/pause_button.png",
-                                 ":resources/buttons_resources/pause_button_active.png");
+  pause_button_ = new MenuButton("", short_button_size_, main_window_,
+      ":resources/buttons_resources/pause_button.png",
+      ":resources/buttons_resources/pause_button_active.png");
   auto pause_button_click = [this]() {
     window_type_ = WindowType::kPauseMenu;
     controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
   };
   connect(pause_button_, &QPushButton::clicked, pause_button_click);
 
-  zero_speed_button_ = new MenuButton("",
-                                      short_button_size_,
-                                      main_window_,
-                                      ":resources/buttons_resources/zero_speed_button.png",
-                                      ":resources/buttons_resources/zero_speed_button_active.png");
+  zero_speed_button_ = new MenuButton("", short_button_size_, main_window_,
+      ":resources/buttons_resources/zero_speed_button.png",
+      ":resources/buttons_resources/zero_speed_button_active.png");
   auto zero_speed_button_click = [this]() {
     controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
     SetSpeedButtonState(Speed::kZeroSpeed);
   };
   connect(zero_speed_button_, &QPushButton::clicked, zero_speed_button_click);
 
-  normal_speed_button_ = new MenuButton("",
-                                        short_button_size_,
-                                        main_window_,
-                                        ":resources/buttons_resources/normal_speed_button.png",
-                                        ":resources/buttons_resources/normal_speed_button_active.png");
+  normal_speed_button_ = new MenuButton("", short_button_size_, main_window_,
+      ":resources/buttons_resources/normal_speed_button.png",
+      ":resources/buttons_resources/normal_speed_button_active.png");
   auto normal_speed_button_click = [this]() {
     controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
     SetSpeedButtonState(Speed::kNormalSpeed);
@@ -235,11 +222,9 @@ void ButtonHandler::CreateGameButtons() {
           normal_speed_button_click);
   normal_speed_button_->setDisabled(true);
 
-  double_speed_button_ = new MenuButton("",
-                                        short_button_size_,
-                                        main_window_,
-                                        ":resources/buttons_resources/double_speed_button.png",
-                                        ":resources/buttons_resources/double_speed_button_active.png");
+  double_speed_button_ = new MenuButton("", short_button_size_, main_window_,
+      ":resources/buttons_resources/double_speed_button.png",
+      ":resources/buttons_resources/double_speed_button_active.png");
   auto double_speed_button_click = [this]() {
     controller_->SetSpeedCoefficient(Speed::kDoubleSpeed);
     SetSpeedButtonState(Speed::kDoubleSpeed);
