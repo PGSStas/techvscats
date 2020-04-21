@@ -36,16 +36,14 @@ void Model::SetGameLevel(int level_id) {
   frames->emplace_back(":resources/images/towers/default_tower_pre_2.png");
   frames->emplace_back(":resources/images/towers/default_tower_pre_3.png");
   frames->emplace_back(":resources/images/towers/default_tower_pre_2.png");
-  AnimationPlayer pre = AnimationPlayer(frames,
-      constants::kDefaultTimeBetweenFrames, false);
+  AnimationPlayer pre = AnimationPlayer(frames, 1.0, false);
 
   frames = std::make_shared<std::vector<QImage>>();
   frames->emplace_back(":resources/images/towers/default_tower_post_1.png");
   frames->emplace_back(":resources/images/towers/default_tower_post_2.png");
   frames->emplace_back(":resources/images/towers/default_tower_post_3.png");
   frames->emplace_back(":resources/images/towers/default_tower_post_2.png");
-  AnimationPlayer post = AnimationPlayer(frames,
-      constants::kDefaultTimeBetweenFrames, false);
+  AnimationPlayer post = AnimationPlayer(frames, 1.0, false);
 
   Building building_instance(0, 0);
   reload.Rescale(building_instance.GetSize());
@@ -62,15 +60,19 @@ void Model::SetGameLevel(int level_id) {
 
   Building building_instance3(2, 24, Size(85, 85), AuricField(200, 2));
   building_instance3.SetProjectile(2, 3, 215, 3);
-  building_instance3.SetAnimationParameters(reload, pre, post,
-                                            {100, 50, 10});
+  std::vector<int> action_time = {100, 50, 10};
+  pre.SetAnimationDuration(action_time[1]);
+  post.SetAnimationDuration(action_time[2]);
+  building_instance3.SetAnimationParameters(reload, pre, post, action_time);
 
   upgrades_tree_.push_back({3, 1, 0});
 
   Building building_instance4(3, 24);
   building_instance4.SetProjectile(1, 54, 275, 1);
-  building_instance4.SetAnimationParameters(reload, pre, post,
-                                            {1000, 300, 100});
+  action_time = {1000, 300, 100};
+  pre.SetAnimationDuration(action_time[1]);
+  post.SetAnimationDuration(action_time[2]);
+  building_instance4.SetAnimationParameters(reload, pre, post, action_time);
   upgrades_tree_.push_back({1, 0});
 
   id_to_building_.push_back(building_instance);

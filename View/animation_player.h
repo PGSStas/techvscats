@@ -13,11 +13,9 @@ class AnimationPlayer {
  public:
   AnimationPlayer() = default;
   explicit AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
-      double fps_coefficient = 1,
-      bool cycled = true);
+      double mspf_coefficient = 1, bool cycled = true);
   AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
-                           int animation_duration,
-                           bool cycled = true);
+      int animation_duration, bool cycled = true);
 
   void Tick(int time);
   void Reset(int time);

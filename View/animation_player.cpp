@@ -2,8 +2,8 @@
 
 AnimationPlayer::AnimationPlayer(
     const std::shared_ptr<std::vector<QImage>>& frames,
-    double fps_coefficient, bool cycled) : frames_(frames), cycled_(cycled) {
-  time_between_frames_ = fps_coefficient * constants::kDefaultTimeBetweenFrames;
+    double mspf_coefficient, bool cycled) : frames_(frames), cycled_(cycled) {
+  time_between_frames_ = mspf_coefficient * constants::kDefaultTimeBetweenFrames;
   frames_rescaled_ = std::make_shared<std::vector<QImage>>(*frames);
 }
 
