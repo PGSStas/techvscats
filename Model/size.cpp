@@ -43,6 +43,6 @@ Size& Size::operator-=(Size right) {
 }
 
 bool Size::operator==(Size right) const {
-  return (width - right.width < kSizeEpsilon)
-      && (height - right.height < kSizeEpsilon);
+  return (width - right.width < kEpsilon)
+      && (height - right.height < kEpsilon);
 }

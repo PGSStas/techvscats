@@ -2,8 +2,7 @@
 #define MODEL_SIZE_H_
 
 #include <cmath>
-
-const double kSizeEpsilon = 0.0001;
+#include "constants.h"
 
 struct Size {
   double width;

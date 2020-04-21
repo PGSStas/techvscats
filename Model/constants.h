@@ -1,7 +1,5 @@
 #ifndef MODEL_CONSTANTS_H_
 #define MODEL_CONSTANTS_H_
-#include "size.h"
-#include "coordinate.h"
 
 const double kEpsilon = 0.0001;
 
