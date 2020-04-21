@@ -12,9 +12,9 @@ Building::Building(const Building& other) :
     Building(other.id_, other.cost_, other.size_, other.auric_field_) {
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
-  SetAnimationParameters({other.animation_players_[0],
-      other.animation_players_[1], other.animation_players_[2]},
-      other.action_time_);
+  SetAnimationPlayers({other.animation_players_[0],
+                       other.animation_players_[1],
+                       other.animation_players_[2]});
 }
 
 void Building::Tick(int current_time) {
@@ -27,7 +27,7 @@ void Building::Tick(int current_time) {
   Action old_action = action_;
   switch (action_) {
     case Action::kReload: {
-      if (wait_time_ > action_time_[static_cast<int>(Action::kReload)]) {
+      if (wait_time_ > action_timmings_[static_cast<int>(Action::kReload)]) {
         if (is_ready_to_shoot_) {
           wait_time_ = 0;
           action_ = Action::kBeforeFire;
@@ -39,10 +39,10 @@ void Building::Tick(int current_time) {
     case Action::kBeforeFire: {
       if (!is_ready_to_shoot_) {
         action_ = Action::kReload;
-        wait_time_ = action_time_[static_cast<int>(Action::kReload)];
+        wait_time_ = action_timmings_[static_cast<int>(Action::kReload)];
         break;
       }
-      if (wait_time_ > action_time_[static_cast<int>(Action::kBeforeFire)]) {
+      if (wait_time_ > action_timmings_[static_cast<int>(Action::kBeforeFire)]) {
         is_ready_to_create_projectiles_ = true;
         action_ = Action::kAfterFire;
         wait_time_ = 0;
@@ -51,7 +51,7 @@ void Building::Tick(int current_time) {
       break;
     }
     case Action::kAfterFire: {
-      if (wait_time_ > action_time_[static_cast<int>(Action::kAfterFire)]) {
+      if (wait_time_ > action_timmings_[static_cast<int>(Action::kAfterFire)]) {
         action_ = Action::kReload;
       }
       break;
@@ -65,7 +65,7 @@ void Building::Tick(int current_time) {
 }
 
 void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
-  if ((wait_time_ < action_time_[static_cast<int>(Action::kReload)]
+  if ((wait_time_ < action_timmings_[static_cast<int>(Action::kReload)]
       && action_ == Action::kReload) || action_ == Action::kAfterFire) {
     return;
   }
@@ -110,7 +110,6 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
 
 void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
-
   Coordinate point =
       size_handler.GameToWindowCoordinate(position_ - size_ / 2);
   painter->translate(point.x, point.y);

@@ -16,11 +16,12 @@ void GameObject::SetPosition(Coordinate position) {
   position_ = position;
 }
 
-void GameObject::SetAnimationParameters(
-    const std::vector<std::shared_ptr<std::vector<QImage>>>& animation_images_,
-    const std::vector<int>& action_time) {
-  for (int i = 0; i < action_time.size(); i++) {
-    animation_players_.emplace_back(animation_images_[i], action_time[i]);
+void GameObject::SetAnimationPlayers(
+    const std::vector<AnimationPlayer>& animation_players) {
+  animation_players_ = animation_players;
+  for (uint i = 0; i < animation_players.size(); i++) {
+    action_timmings_.push_back(animation_players[i].GetAnimationDuration());
+    animation_players_[i].Rescale(size_);
   }
 }
 

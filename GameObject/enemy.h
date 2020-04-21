@@ -16,7 +16,7 @@ class Enemy : public MovingObject {
   Enemy(double speed, double damage,
         double armor, int reward, double max_health, Size size = {60, 60},
         AuricField auric_field = AuricField(-1, -1));
-  Enemy(const Enemy& enemy_instance);
+  Enemy(const Enemy& other);
   ~Enemy() override = default;
 
   void Tick(int current_time) override;

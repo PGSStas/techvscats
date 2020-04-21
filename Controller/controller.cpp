@@ -2,7 +2,8 @@
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)),
-                           game_mode_(WindowType::kMainMenu) {}
+                           game_mode_(WindowType::kMainMenu) {
+}
 
 void Controller::StartGame(int level_id) {
   current_game_time_ = 0;

@@ -20,9 +20,8 @@ class GameObject {
   virtual void Draw(QPainter* painter,
                     const SizeHandler& size_handler) const = 0;
 
-  void SetAnimationParameters(
-      const std::vector<std::shared_ptr<std::vector<QImage>>>& animation_images,
-      const std::vector<int>& action_time);
+  void SetAnimationPlayers(
+      const std::vector<AnimationPlayer>& animation_players);
   void Rescale(Size to_size);
 
   void SetPosition(Coordinate position);
@@ -31,7 +30,7 @@ class GameObject {
 
  protected:
   std::vector<AnimationPlayer> animation_players_;
-  std::vector<int> action_time_;
+  std::vector<int> action_timmings_;
   Size size_;
   Coordinate position_;
   int object_life_time_ = 0;

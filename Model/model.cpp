@@ -24,53 +24,39 @@ void Model::SetGameLevel(int level_id) {
   id_to_projectile_.push_back(std::make_shared<LaserProjectile>(
       projectile_instance_lazer));
 
-  auto frames = std::make_shared<std::vector<QImage>>();
-  frames->emplace_back(":resources/images/towers/default_tower_reload_1.png");
-  frames->emplace_back(":resources/images/towers/default_tower_reload_2.png");
-  frames->emplace_back(":resources/images/towers/default_tower_reload_3.png");
-  frames->emplace_back(":resources/images/towers/default_tower_reload_4.png");
-  AnimationPlayer reload = AnimationPlayer(frames);
-
-  frames = std::make_shared<std::vector<QImage>>();
-  frames->emplace_back(":resources/images/towers/default_tower_pre_1.png");
-  frames->emplace_back(":resources/images/towers/default_tower_pre_2.png");
-  frames->emplace_back(":resources/images/towers/default_tower_pre_3.png");
-  AnimationPlayer pre = AnimationPlayer(frames, 1.0, false);
-
-  frames = std::make_shared<std::vector<QImage>>();
-  frames->emplace_back(":resources/images/towers/default_tower_post_1.png");
-  frames->emplace_back(":resources/images/towers/default_tower_post_2.png");
-  frames->emplace_back(":resources/images/towers/default_tower_post_3.png");
-  AnimationPlayer post = AnimationPlayer(frames, 1.0, false);
-
   Building building_instance(0, 0);
-  reload.Rescale(building_instance.GetSize());
-  building_instance.SetAnimationParameters(reload, reload, reload,
-                                           {0, 0, 0});
+  SetAnimationToGameObject(&building_instance, {0, 0, 0}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_reload_4",
+      "towers/default_tower_reload_4"});
 
   upgrades_tree_.push_back({1, 2});
 
   Building building_instance2(1, 24);
   building_instance2.SetProjectile(0, 10, 175, 2);
-  building_instance2.SetAnimationParameters(reload, pre, post,
-                                            {1000, 300, 300});
+  SetAnimationToGameObject(&building_instance2, {1000, 300, 300}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_pos_3",
+  });
   upgrades_tree_.push_back({3, 0});
 
   Building building_instance3(2, 24, Size(85, 85), AuricField(200, 2));
   building_instance3.SetProjectile(2, 3, 215, 3);
-  std::vector<int> action_time = {100, 50, 10};
-  pre.SetAnimationDuration(action_time[1]);
-  post.SetAnimationDuration(action_time[2]);
-  building_instance3.SetAnimationParameters(reload, pre, post, action_time);
-
+  SetAnimationToGameObject(&building_instance3, {100, 50, 10}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_pos_3",
+  });
   upgrades_tree_.push_back({3, 1, 0});
 
   Building building_instance4(3, 24);
   building_instance4.SetProjectile(1, 54, 275, 1);
-  action_time = {1000, 300, 100};
-  pre.SetAnimationDuration(action_time[1]);
-  post.SetAnimationDuration(action_time[2]);
-  building_instance4.SetAnimationParameters(reload, pre, post, action_time);
+  SetAnimationToGameObject(&building_instance4, {100, 50, 10}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_pos_3",
+  });
   upgrades_tree_.push_back({1, 0});
 
   id_to_building_.push_back(building_instance);
@@ -117,6 +103,16 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
   projectiles_.back()->SetParameters(aim, building.GetPosition(),
                                      building.GetProjectileSpeedCoefficient(),
                                      building.GetDamage());
+}
+
+void Model::RescaleDatabase(const SizeHandler& size_handler) {
+  for (auto& enemy : enemies_) {
+    enemy->Rescale(size_handler.GameToWindowSize(enemy->GetSize()));
+  }
+  for (auto& building : buildings_) {
+    building->Rescale(size_handler.GameToWindowSize(building->GetSize()));
+  }
+  map_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
 }
 
 void Model::IncreaseCurrentRoundNumber() {
@@ -276,11 +272,9 @@ void Model::LoadLevel(int level) {
     empty_places_for_towers_.emplace_back(json_empty_tower["x"].toDouble(),
                                           json_empty_tower["y"].toDouble());
   }
-
-  auto map_vector = std::make_shared<std::vector<QImage>>();
-  map_vector->push_back(QImage(":resources/images/map_level_" +
-      QString::number(level) + ".png"));
-  map_ = AnimationPlayer(map_vector);
+  map_ = AnimationPlayer(
+      GetImagesByFramePath("map_level_" +
+          QString::number(level) + "_1"));
 }
 
 const AnimationPlayer& Model::GetMap() const {
@@ -335,26 +329,10 @@ void Model::LoadDatabase() {
                               aura);
   }
 
-  // todo(PGS): read from json :)
-  auto toaster_images = std::make_shared<std::vector<QImage>>();
-  toaster_images->emplace_back(":resources/images/enemies/toster_1.png");
-  toaster_images->emplace_back(":resources/images/enemies/toster_2.png");
-  toaster_images->emplace_back(":resources/images/enemies/toster_3.png");
-  toaster_images->push_back((*toaster_images)[1]);
-
-  auto mouse_images = std::make_shared<std::vector<QImage>>();
-  mouse_images->emplace_back(":resources/images/enemies/mouse_1.png");
-  mouse_images->emplace_back(":resources/images/enemies/mouse_2.png");
-  mouse_images->emplace_back(":resources/images/enemies/mouse_3.png");
-  mouse_images->push_back((*mouse_images)[1]);
-
-  AnimationPlayer enemy_player(toaster_images);
-  AnimationPlayer enemy_player2(mouse_images, 2. / 3);
-  id_to_enemy_[0].SetAnimationPlayer(enemy_player);
-  id_to_enemy_[1].SetAnimationPlayer(enemy_player);
-  id_to_enemy_[2].SetAnimationPlayer(enemy_player);
-  id_to_enemy_[3].SetAnimationPlayer(enemy_player2);
-  id_to_enemy_[4].SetAnimationPlayer(enemy_player2);
+  SetAnimationToGameObject(&id_to_enemy_[0], {1000}, {"enemies/toster_3"});
+  SetAnimationToGameObject(&id_to_enemy_[2], {1242}, {"enemies/toster_3"});
+  SetAnimationToGameObject(&id_to_enemy_[3], {1242}, {"enemies/mouse_3"});
+  SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
 
   // Temporary part
   std::vector<EffectVisualization>
@@ -364,8 +342,6 @@ void Model::LoadDatabase() {
                               {Qt::darkRed, Qt::magenta},
                               {Qt::white, Qt::yellow}};
   Effect::SetEffectVisualizations(effect_visualization);
-
-  map_ = AnimationPlayer(std::make_shared<std::vector<QImage>>());
 }
 
 void Model::InitializeTowerSlots() {
@@ -377,19 +353,30 @@ void Model::InitializeTowerSlots() {
   }
 }
 
-void Model::RescaleDatabase(const SizeHandler& size_handler) {
-  for (auto& enemy : enemies_) {
-    enemy->Rescale(size_handler.GameToWindowSize(enemy->GetSize()));
+void Model::SetAnimationToGameObject(
+    GameObject* object, std::vector<int> timmings,
+    std::vector<QString> paths) {
+  std::vector<AnimationPlayer> animations;
+  for (uint i = 0; i < timmings.size(); i++) {
+    animations.emplace_back(GetImagesByFramePath(paths[i]));
   }
-  for (auto& building : buildings_) {
-    building->Rescale(size_handler.GameToWindowSize(building->GetSize()));
-  }
-  for (auto& enemy : id_to_enemy_) {
-    enemy.Rescale(size_handler.GameToWindowSize(enemy.GetSize()));
-  }
-  for (auto& building : id_to_building_) {
-    building.Rescale(size_handler.GameToWindowSize(building.GetSize()));
-  }
-  map_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
+  object->SetAnimationPlayers(animations);
 }
 
+std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
+    QString animation_last_frames, QString picture_type) const {
+
+  QString clear_path = ":resources/images/" + animation_last_frames;
+  QStringList splitted_path = clear_path.split("_");
+
+  auto images = std::make_shared<std::vector<QImage>>();
+  int count = splitted_path.back().toInt();
+
+  while (count) {
+    splitted_path.back() = QString::number(count);
+    images->emplace_back(splitted_path.join("_") + picture_type);
+    --count;
+  }
+
+  return images;
+}

@@ -11,24 +11,24 @@ Enemy::Enemy(double speed, double damage, double armor, int reward,
   auric_field.SetCarrierCoordinate(&position_);
 }
 
-Enemy::Enemy(const Enemy& enemy_instance)
-    : MovingObject(enemy_instance.GetSize(), enemy_instance.speed_),
-      damage_(enemy_instance.damage_), armor_(enemy_instance.armor_),
-      reward_(enemy_instance.reward_), max_health_(enemy_instance.max_health_),
-      current_health_(enemy_instance.max_health_),
-      auric_field_(enemy_instance.auric_field_), node_number_(0),
-      animation_player_(enemy_instance.animation_player_) {
+Enemy::Enemy(const Enemy& other)
+    : MovingObject(other.GetSize(), other.speed_),
+      damage_(other.damage_), armor_(other.armor_),
+      reward_(other.reward_), max_health_(other.max_health_),
+      current_health_(other.max_health_),
+      auric_field_(other.auric_field_), node_number_(0){
+  SetAnimationPlayers(other.animation_players_);
   auric_field_.SetCarrierCoordinate(&position_);
   node_number_ = 0;
-  if (enemy_instance.road_ != nullptr) {
-    SetRoad(*enemy_instance.road_);
+  if (other.road_ != nullptr) {
+    SetRoad(*other.road_);
   }
 }
 
 void Enemy::Tick(int current_time) {
   UpdateTime(current_time);
   Move();
-  animation_player_.Tick(current_time);
+  animation_players_[0].Tick(current_time);
 }
 
 void Enemy::Move() {

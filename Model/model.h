@@ -37,8 +37,8 @@ class Model {
   void CreateBuildingAtIndex(int i, int id);
   void CreateProjectile(const std::shared_ptr<Enemy>& aim,
                         const Building& building);
-  void IncreaseCurrentRoundNumber();
   void RescaleDatabase(const SizeHandler& size_handler);
+  void IncreaseCurrentRoundNumber();
   void ClearGameModel();
 
   Base* GetBase();
@@ -66,6 +66,11 @@ class Model {
   void LoadLevel(int level);
   void LoadDatabase();
   void InitializeTowerSlots();
+  void SetAnimationToGameObject(
+      GameObject* object, std::vector<int> timmings,
+      std::vector<QString> paths);
+  std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(
+      QString path, QString picture_type = ".png") const;
 
   // Database which is updated by Controller all time
   std::list<Spawner> spawners_;

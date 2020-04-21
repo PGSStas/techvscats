@@ -105,7 +105,7 @@ void View::paintEvent(QPaintEvent*) {
                               return_menu_button_position.y);
 
     painter.drawImage(origin.x, origin.y,
-        controller_->GetMap().GetCurrentFrame());
+                      controller_->GetMap().GetCurrentFrame());
     DrawAuras(&painter);
     DrawEnemies(&painter);
     DrawProjectiles(&painter);
@@ -117,7 +117,9 @@ void View::paintEvent(QPaintEvent*) {
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
-  controller_->RescaleObjects(size_handler_);
+  if (window_type_ == WindowType::kGame) {
+    controller_->RescaleObjects(size_handler_);
+  }
 }
 
 void View::timerEvent(QTimerEvent* event) {
