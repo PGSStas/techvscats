@@ -10,7 +10,6 @@
 #include "effect.h"
 #include "moving_object.h"
 #include "Model/road.h"
-#include "View/animation_player.h"
 
 class Enemy : public MovingObject {
  public:
@@ -24,9 +23,6 @@ class Enemy : public MovingObject {
   void Move() override;
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
   void DrawHealthBar(QPainter* painter, const SizeHandler& size_handler) const;
-
-  void SetAnimationPlayer(const AnimationPlayer& player);
-  void Rescale(Size to_size);
 
   void SetRoad(const Road& road);
 
@@ -46,8 +42,6 @@ class Enemy : public MovingObject {
   Effect applied_effect_ = Effect(EffectTarget::kEnemy);
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
-
-  AnimationPlayer animation_player_;
 
   static std::mt19937 random_generator_;
 

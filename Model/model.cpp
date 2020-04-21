@@ -28,21 +28,19 @@ void Model::SetGameLevel(int level_id) {
   frames->emplace_back(":resources/images/towers/default_tower_reload_1.png");
   frames->emplace_back(":resources/images/towers/default_tower_reload_2.png");
   frames->emplace_back(":resources/images/towers/default_tower_reload_3.png");
-  frames->emplace_back(":resources/images/towers/default_tower_reload_2.png");
+  frames->emplace_back(":resources/images/towers/default_tower_reload_4.png");
   AnimationPlayer reload = AnimationPlayer(frames);
 
   frames = std::make_shared<std::vector<QImage>>();
   frames->emplace_back(":resources/images/towers/default_tower_pre_1.png");
   frames->emplace_back(":resources/images/towers/default_tower_pre_2.png");
   frames->emplace_back(":resources/images/towers/default_tower_pre_3.png");
-  frames->emplace_back(":resources/images/towers/default_tower_pre_2.png");
   AnimationPlayer pre = AnimationPlayer(frames, 1.0, false);
 
   frames = std::make_shared<std::vector<QImage>>();
   frames->emplace_back(":resources/images/towers/default_tower_post_1.png");
   frames->emplace_back(":resources/images/towers/default_tower_post_2.png");
   frames->emplace_back(":resources/images/towers/default_tower_post_3.png");
-  frames->emplace_back(":resources/images/towers/default_tower_post_2.png");
   AnimationPlayer post = AnimationPlayer(frames, 1.0, false);
 
   Building building_instance(0, 0);

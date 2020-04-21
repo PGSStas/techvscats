@@ -8,6 +8,7 @@
 #include "Model/coordinate.h"
 #include "Model/size.h"
 #include "View/size_handler.h"
+#include "View/animation_player.h"
 
 class GameObject {
  public:
@@ -19,15 +20,22 @@ class GameObject {
   virtual void Draw(QPainter* painter,
                     const SizeHandler& size_handler) const = 0;
 
+  void SetAnimationParameters(
+      const std::vector<std::shared_ptr<std::vector<QImage>>>& animation_images,
+      const std::vector<int>& action_time);
+  void Rescale(Size to_size);
+
   void SetPosition(Coordinate position);
   Coordinate GetPosition() const;
   Size GetSize() const;
 
  protected:
-  int delta_tick_time_ = 0;
-  int object_life_time_ = 0;
+  std::vector<AnimationPlayer> animation_players_;
+  std::vector<int> action_time_;
   Size size_;
   Coordinate position_;
+  int object_life_time_ = 0;
+  int delta_tick_time_ = 0;
 
  private:
   int object_last_time_ = 0;

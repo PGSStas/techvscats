@@ -68,7 +68,7 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     // mirroring the image
     painter->scale(-1.0, 1.0);
   }
-  painter->drawImage(0, 0, animation_player_.GetCurrentFrame());
+  painter->drawImage(0, 0, animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }
@@ -112,12 +112,4 @@ void Enemy::ReceiveDamage(double damage) {
   if (current_health_ <= constants::kEpsilon) {
     is_dead_ = true;
   }
-}
-
-void Enemy::SetAnimationPlayer(const AnimationPlayer& player) {
-  animation_player_ = player;
-}
-
-void Enemy::Rescale(Size to_size) {
-  animation_player_.Rescale(to_size);
 }

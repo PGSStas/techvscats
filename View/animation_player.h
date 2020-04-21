@@ -11,28 +11,22 @@
 
 class AnimationPlayer {
  public:
-  AnimationPlayer() = default;
-  explicit AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
-      double mspf_coefficient = 1, bool cycled = true);
-  AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
-      int animation_duration, bool cycled = true);
+  explicit AnimationPlayer(const std::vector<QImage>& frames, double mspf_ = 1);
+  AnimationPlayer(const std::vector<QImage>& frames, int animation_duration);
 
   void Tick(int time);
   void Reset(int time);
   const QImage& GetCurrentFrame() const;
 
   void Rescale(Size to_size);
-  void SetTimeBetweenFrames(int new_time);
-  void SetAnimationDuration(int duration);
 
  private:
   int current_frame_ = 0;
   int last_frame_change_time_ = 0;
 
-  std::shared_ptr<std::vector<QImage>> frames_;
-  std::shared_ptr<std::vector<QImage>> frames_rescaled_;
-  int time_between_frames_;
-  bool cycled_;
+  const std::vector<QImage>& frames_;
+  std::vector<QImage> frames_rescaled_;
+  double time_between_frames_;
 };
 
 #endif  // VIEW_ANIMATION_PLAYER_H_

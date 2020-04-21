@@ -28,12 +28,6 @@ class Building : public GameObject {
   void Draw(QPainter* painter,
             const SizeHandler& size_handler) const override;
 
-  void SetAnimationParameters(const AnimationPlayer& reload_player,
-                              const AnimationPlayer& before_fire_player,
-                              const AnimationPlayer& after_fire_player,
-                              const std::vector<int>& action_time);
-  void Rescale(Size to_size);
-
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
                      int max_aims);
   void SetReadyToCreateProjectileToFalse();
@@ -60,8 +54,6 @@ class Building : public GameObject {
   Action action_ = Action::kReload;
   int wait_time_ = 0;
 
-  std::vector<int> action_time_;
-
   int projectile_id_ = 0;
   int attack_range_ = 0;
   uint max_aims_ = 1;
@@ -70,7 +62,6 @@ class Building : public GameObject {
   bool is_ready_to_shoot_ = false;
   std::list<std::shared_ptr<Enemy>> aims_;
 
-  std::vector<AnimationPlayer> animation_players_;
 };
 
 #endif  // GAMEOBJECT_BUILDING_H_

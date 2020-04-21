@@ -9,7 +9,6 @@ const int kGameWidth = 1920;
 const int kGameHeight = 1080;
 const int kTimeBetweenTicks = 17;
 const int kTimeScale = 100;
-const int kDefaultTimeBetweenFrames = 100;
 }
 
 #endif  // MODEL_CONSTANTS_H_

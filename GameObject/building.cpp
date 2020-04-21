@@ -12,8 +12,8 @@ Building::Building(const Building& other) :
     Building(other.id_, other.cost_, other.size_, other.auric_field_) {
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
-  SetAnimationParameters(other.animation_players_[0],
-      other.animation_players_[1], other.animation_players_[2],
+  SetAnimationParameters({other.animation_players_[0],
+      other.animation_players_[1], other.animation_players_[2]},
       other.action_time_);
 }
 
@@ -119,17 +119,6 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->restore();
 }
 
-void Building::SetAnimationParameters(const AnimationPlayer& reload_player,
-    const AnimationPlayer& before_fire_player,
-    const AnimationPlayer& after_fire_player,
-    const std::vector<int>& action_time) {
-  animation_players_.clear();
-  animation_players_.push_back(reload_player);
-  animation_players_.push_back(before_fire_player);
-  animation_players_.push_back(after_fire_player);
-  action_time_ = action_time;
-}
-
 void Building::SetProjectile(int projectile_id, double attack_damage,
                              int attack_range, int max_aims) {
   projectile_id_ = projectile_id;
@@ -180,10 +169,4 @@ bool Building::IsInside(Coordinate point) const {
 
 bool Building::IsReadyToCreateProjectiles() const {
   return is_ready_to_create_projectiles_;
-}
-
-void Building::Rescale(Size to_size) {
-  for (auto& player : animation_players_) {
-    player.Rescale(to_size);
-  }
 }
