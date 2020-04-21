@@ -54,5 +54,6 @@ void AnimationPlayer::Rescale(Size to_size) {
 }
 
 void AnimationPlayer::SetAnimationDuration(int duration) {
-  time_between_frames_ = constants::kDefaultTimeBetweenFrames * (1.0 * duration / frames_->size());
+  time_between_frames_ = constants::kDefaultTimeBetweenFrames *
+      (1.0 * duration / frames_->size());
 }
