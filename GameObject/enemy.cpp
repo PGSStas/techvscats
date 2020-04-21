@@ -17,7 +17,7 @@ Enemy::Enemy(const Enemy& enemy_instance)
       reward_(enemy_instance.reward_), max_health_(enemy_instance.max_health_),
       current_health_(enemy_instance.max_health_),
       auric_field_(enemy_instance.auric_field_), node_number_(0),
-      player_(enemy_instance.player_) {
+      animation_player_(enemy_instance.animation_player_) {
   auric_field_.SetCarrierCoordinate(&position_);
   node_number_ = 0;
   if (enemy_instance.road_ != nullptr) {
@@ -28,7 +28,7 @@ Enemy::Enemy(const Enemy& enemy_instance)
 void Enemy::Tick(int current_time) {
   UpdateTime(current_time);
   Move();
-  player_.Tick(current_time);
+  animation_player_.Tick(current_time);
 }
 
 void Enemy::Move() {
@@ -68,7 +68,7 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     // mirroring the image
     painter->scale(-1.0, 1.0);
   }
-  painter->drawImage(0, 0, player_.GetCurrentFrame());
+  painter->drawImage(0, 0, animation_player_.GetCurrentFrame());
 
   painter->restore();
 }
@@ -115,9 +115,9 @@ void Enemy::ReceiveDamage(double damage) {
 }
 
 void Enemy::SetAnimationPlayer(const AnimationPlayer& player) {
-  player_ = player;
+  animation_player_ = player;
 }
 
 void Enemy::Rescale(Size to_size) {
-  player_.Rescale(to_size);
+  animation_player_.Rescale(to_size);
 }

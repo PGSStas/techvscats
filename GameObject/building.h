@@ -29,8 +29,8 @@ class Building : public GameObject {
             const SizeHandler& size_handler) const override;
 
   void SetAnimationParameters(const AnimationPlayer& reload_player,
-                              const AnimationPlayer& pre_player ,
-                              const AnimationPlayer& post_player ,
+                              const AnimationPlayer& before_fire_player,
+                              const AnimationPlayer& after_fire_player,
                               const std::vector<int>& action_time);
   void Rescale(Size to_size);
 
@@ -70,7 +70,7 @@ class Building : public GameObject {
   bool is_ready_to_shoot_ = false;
   std::list<std::shared_ptr<Enemy>> aims_;
 
-  std::vector<AnimationPlayer> players_;
+  std::vector<AnimationPlayer> animation_players_;
 };
 
 #endif  // GAMEOBJECT_BUILDING_H_

@@ -47,7 +47,7 @@ class Enemy : public MovingObject {
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
 
-  AnimationPlayer player_;
+  AnimationPlayer animation_player_;
 
   static std::mt19937 random_generator_;
 

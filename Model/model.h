@@ -44,12 +44,12 @@ class Model {
   Base* GetBase();
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
-  std::vector<std::shared_ptr<Building>>* GetBuildings();
   std::list<std::shared_ptr<AbstractProjectile>>* GetProjectiles();
 
   const std::vector<Road>& GetRoads() const;
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
   const std::vector<std::vector<int>>& GetUpgradesTree() const;
+  const std::vector<std::shared_ptr<Building>>& GetBuildings();
 
   const Road& GetRoad(int i) const;
   const Enemy& GetEnemyById(int id) const;

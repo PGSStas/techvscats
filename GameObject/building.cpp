@@ -12,8 +12,9 @@ Building::Building(const Building& other) :
     Building(other.id_, other.cost_, other.size_, other.auric_field_) {
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
-  SetAnimationParameters(other.players_[0], other.players_[1],
-      other.players_[2], other.action_time_);
+  SetAnimationParameters(other.animation_players_[0],
+      other.animation_players_[1], other.animation_players_[2],
+      other.action_time_);
 }
 
 void Building::Tick(int current_time) {
@@ -57,9 +58,9 @@ void Building::Tick(int current_time) {
     }
   }
   if (old_action == action_) {
-    players_[static_cast<int>(action_)].Tick(current_time);
+    animation_players_[static_cast<int>(action_)].Tick(current_time);
   } else {
-    players_[static_cast<int>(action_)].Reset(current_time);
+    animation_players_[static_cast<int>(action_)].Reset(current_time);
   }
 }
 
@@ -114,17 +115,18 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
       size_handler.GameToWindowCoordinate(position_ - size_ / 2);
   painter->translate(point.x, point.y);
   painter->drawImage(0, 0,
-      players_[static_cast<int>(action_)].GetCurrentFrame());
+      animation_players_[static_cast<int>(action_)].GetCurrentFrame());
   painter->restore();
 }
 
-void Building::SetAnimationParameters(
-    const AnimationPlayer& reload_player, const AnimationPlayer& pre_player,
-    const AnimationPlayer& post_player, const std::vector<int>& action_time) {
-  players_.clear();
-  players_.push_back(reload_player);
-  players_.push_back(pre_player);
-  players_.push_back(post_player);
+void Building::SetAnimationParameters(const AnimationPlayer& reload_player,
+    const AnimationPlayer& before_fire_player,
+    const AnimationPlayer& after_fire_player,
+    const std::vector<int>& action_time) {
+  animation_players_.clear();
+  animation_players_.push_back(reload_player);
+  animation_players_.push_back(before_fire_player);
+  animation_players_.push_back(after_fire_player);
   action_time_ = action_time;
 }
 
@@ -181,7 +183,7 @@ bool Building::IsReadyToCreateProjectiles() const {
 }
 
 void Building::Rescale(Size to_size) {
-  for (auto& player : players_) {
+  for (auto& player : animation_players_) {
     player.Rescale(to_size);
   }
 }

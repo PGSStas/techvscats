@@ -8,20 +8,8 @@ AnimationPlayer::AnimationPlayer(
 }
 
 AnimationPlayer::AnimationPlayer(
-    const std::shared_ptr<std::vector<QImage>>& frames, Size size,
-    double fps_coefficient, bool cycled) :
-    AnimationPlayer(frames, fps_coefficient, cycled) {
-  Rescale(size);
-}
-
-AnimationPlayer::AnimationPlayer(
     const std::shared_ptr<std::vector<QImage>>& frames, int animation_duration,
     bool cycled) : AnimationPlayer(frames,
-        1.0 * animation_duration / frames->size(), cycled) {}
-
-AnimationPlayer::AnimationPlayer(
-    const std::shared_ptr<std::vector<QImage>>& frames, Size size,
-    int animation_duration, bool cycled) : AnimationPlayer(frames, size,
         1.0 * animation_duration / frames->size(), cycled) {}
 
 void AnimationPlayer::Tick(int time) {
@@ -54,6 +42,5 @@ void AnimationPlayer::Rescale(Size to_size) {
 }
 
 void AnimationPlayer::SetAnimationDuration(int duration) {
-  time_between_frames_ = constants::kDefaultTimeBetweenFrames *
-      (1.0 * duration / frames_->size());
+  time_between_frames_ = 1.0 * duration / frames_->size();
 }

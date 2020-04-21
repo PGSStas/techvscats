@@ -25,25 +25,25 @@ void Model::SetGameLevel(int level_id) {
       projectile_instance_lazer));
 
   auto frames = std::make_shared<std::vector<QImage>>();
-  frames->emplace_back(":resources/images/default_tower_reload_1.png");
-  frames->emplace_back(":resources/images/default_tower_reload_2.png");
-  frames->emplace_back(":resources/images/default_tower_reload_3.png");
-  frames->emplace_back(":resources/images/default_tower_reload_2.png");
+  frames->emplace_back(":resources/images/towers/default_tower_reload_1.png");
+  frames->emplace_back(":resources/images/towers/default_tower_reload_2.png");
+  frames->emplace_back(":resources/images/towers/default_tower_reload_3.png");
+  frames->emplace_back(":resources/images/towers/default_tower_reload_2.png");
   AnimationPlayer reload = AnimationPlayer(frames);
 
   frames = std::make_shared<std::vector<QImage>>();
-  frames->emplace_back(":resources/images/default_tower_pre_1.png");
-  frames->emplace_back(":resources/images/default_tower_pre_2.png");
-  frames->emplace_back(":resources/images/default_tower_pre_3.png");
-  frames->emplace_back(":resources/images/default_tower_pre_2.png");
+  frames->emplace_back(":resources/images/towers/default_tower_pre_1.png");
+  frames->emplace_back(":resources/images/towers/default_tower_pre_2.png");
+  frames->emplace_back(":resources/images/towers/default_tower_pre_3.png");
+  frames->emplace_back(":resources/images/towers/default_tower_pre_2.png");
   AnimationPlayer pre = AnimationPlayer(frames,
       constants::kDefaultTimeBetweenFrames, false);
 
   frames = std::make_shared<std::vector<QImage>>();
-  frames->emplace_back(":resources/images/default_tower_post_1.png");
-  frames->emplace_back(":resources/images/default_tower_post_2.png");
-  frames->emplace_back(":resources/images/default_tower_post_3.png");
-  frames->emplace_back(":resources/images/default_tower_post_2.png");
+  frames->emplace_back(":resources/images/towers/default_tower_post_1.png");
+  frames->emplace_back(":resources/images/towers/default_tower_post_2.png");
+  frames->emplace_back(":resources/images/towers/default_tower_post_3.png");
+  frames->emplace_back(":resources/images/towers/default_tower_post_2.png");
   AnimationPlayer post = AnimationPlayer(frames,
       constants::kDefaultTimeBetweenFrames, false);
 
@@ -163,8 +163,8 @@ const std::vector<std::vector<int>>& Model::GetUpgradesTree() const {
   return upgrades_tree_;
 }
 
-std::vector<std::shared_ptr<Building>>* Model::GetBuildings() {
-  return &buildings_;
+const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() {
+  return buildings_;
 }
 
 const Road& Model::GetRoad(int i) const {
@@ -337,15 +337,15 @@ void Model::LoadDatabase() {
 
   // todo(PGS): read from json :)
   auto toaster_images = std::make_shared<std::vector<QImage>>();
-  toaster_images->emplace_back(":resources/images/toster_1.png");
-  toaster_images->emplace_back(":resources/images/toster_2.png");
-  toaster_images->emplace_back(":resources/images/toster_3.png");
+  toaster_images->emplace_back(":resources/images/enemies/toster_1.png");
+  toaster_images->emplace_back(":resources/images/enemies/toster_2.png");
+  toaster_images->emplace_back(":resources/images/enemies/toster_3.png");
   toaster_images->push_back((*toaster_images)[1]);
 
   auto mouse_images = std::make_shared<std::vector<QImage>>();
-  mouse_images->emplace_back(":resources/images/mouse_1.png");
-  mouse_images->emplace_back(":resources/images/mouse_2.png");
-  mouse_images->emplace_back(":resources/images/mouse_3.png");
+  mouse_images->emplace_back(":resources/images/enemies/mouse_1.png");
+  mouse_images->emplace_back(":resources/images/enemies/mouse_2.png");
+  mouse_images->emplace_back(":resources/images/enemies/mouse_3.png");
   mouse_images->push_back((*mouse_images)[1]);
 
   AnimationPlayer enemy_player(toaster_images);
@@ -378,6 +378,12 @@ void Model::InitializeTowerSlots() {
 }
 
 void Model::RescaleDatabase(const SizeHandler& size_handler) {
+  for (auto& enemy : enemies_) {
+    enemy->Rescale(size_handler.GameToWindowSize(enemy->GetSize()));
+  }
+  for (auto& building : buildings_) {
+    building->Rescale(size_handler.GameToWindowSize(building->GetSize()));
+  }
   for (auto& enemy : id_to_enemy_) {
     enemy.Rescale(size_handler.GameToWindowSize(enemy.GetSize()));
   }
