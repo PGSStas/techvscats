@@ -11,10 +11,10 @@ View::View(AbstractController* controller)
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(kTimeBetweenTicks);
-  button_handler_->DisableGameUi();
-  button_handler_->DisablePauseMenuUi();
-  button_handler_->DisableSettingsUi();
-  button_handler_->EnableMainMenuUi();
+  button_handler_->SetGameUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(false);
+  button_handler_->SetSettingsUiVisible(false);
+  button_handler_->SetMainMenuUiVisible(true);
 }
 
 void View::paintEvent(QPaintEvent*) {
@@ -43,9 +43,9 @@ void View::DrawMainMenu(QPainter* painter) {
   painter->drawImage(QRect(top_corner.x, top_corner.y,
                            rect_size.width, rect_size.height),
                      QImage(":resources/background/main_background.png"));
-  button_handler_->DisableSettingsUi();
-  button_handler_->DisablePauseMenuUi();
-  button_handler_->EnableMainMenuUi();
+  button_handler_->SetSettingsUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(false);
+  button_handler_->SetMainMenuUiVisible(true);
 }
 
 void View::DrawGame(QPainter* painter) {
@@ -64,9 +64,9 @@ void View::DrawGame(QPainter* painter) {
   controller_->GetBase().Draw(painter, size_handler_);
   DrawInterface(painter);
 
-  button_handler_->DisableMainMenuUi();
-  button_handler_->DisablePauseMenuUi();
-  button_handler_->EnableGameUi();
+  button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(false);
+  button_handler_->SetGameUiVisible(true);
 }
 
 void View::DrawSettings(QPainter* painter) {
@@ -76,8 +76,8 @@ void View::DrawSettings(QPainter* painter) {
   painter->drawImage(QRect(top_corner.x, top_corner.y,
                            rect_size.width, rect_size.height),
                      QImage(":resources/background/settings_background.png"));
-  button_handler_->DisableMainMenuUi();
-  button_handler_->EnableSettingsUi();
+  button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetSettingsUiVisible(true);
 }
 
 void View::DrawPauseMenu(QPainter* painter) {
@@ -87,8 +87,8 @@ void View::DrawPauseMenu(QPainter* painter) {
   painter->drawImage(QRect(top_corner.x, top_corner.y,
                            rect_size.width, rect_size.height),
                      QImage(":resources/background/pause_menu_background.png"));
-  button_handler_->DisableGameUi();
-  button_handler_->EnablePauseMenuUi();
+  button_handler_->SetGameUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(true);
 }
 
 void View::DrawBackground(QPainter* painter) {
@@ -197,19 +197,19 @@ void View::resizeEvent(QResizeEvent*) {
 }
 
 void View::EnableGameUi() {
-  button_handler_->EnableGameUi();
+  button_handler_->SetGameUiVisible(true);
 }
 
 void View::DisableGameUi() {
-  button_handler_->DisableGameUi();
+  button_handler_->SetGameUiVisible(false);
 }
 
 void View::EnableMainMenuUi() {
-  button_handler_->EnableMainMenuUi();
+  button_handler_->SetMainMenuUiVisible(true);
 }
 
 void View::DisableMainMenuUi() {
-  button_handler_->DisableMainMenuUi();
+  button_handler_->SetMainMenuUiVisible(false);
 }
 
 void View::timerEvent(QTimerEvent* event) {

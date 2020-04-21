@@ -2,7 +2,8 @@
 #include "menu_button.h"
 
 MenuButton::MenuButton(const QString& text, const Size& button_size,
-                       QMainWindow* main_window, const QString& icon) :
+                       QMainWindow* main_window, const QString& main_icon,
+                       const QString& active_icon) :
     QPushButton(text, main_window) {
   setMouseTracking(true);
   int id = QFontDatabase::addApplicationFont(
@@ -10,8 +11,10 @@ MenuButton::MenuButton(const QString& text, const Size& button_size,
   QString family = QFontDatabase::applicationFontFamilies(id).at(0);
   setFont(QFont(family));
   setStyleSheet("background-color: #ffffff;");
-  if (icon != "") {
-    setIcon(QIcon(icon));
+  if (main_icon != "") {
+    main_icon_ = main_icon;
+    active_icon_ = active_icon;
+    setIcon(QIcon(main_icon));
   }
   button_size_ = button_size;
   setCursor(Qt::PointingHandCursor);
@@ -41,8 +44,9 @@ void MenuButton::Move(Coordinate game_coordinate, SizeHandler size_handler) {
 void MenuButton::enterEvent(QEvent*) {
   QString style_sheet =
       "border: " + QString::number(border_size_) + "px solid #000000;";
-  style_sheet += "background-color: #dddddd;";
+  style_sheet += "background-color: " + QColor::fromRgb(QRandomGenerator::global()->generate()).name() + ";";
   setStyleSheet(style_sheet);
+  setIcon(QIcon(active_icon_));
 }
 
 void MenuButton::leaveEvent(QEvent*) {
@@ -50,4 +54,14 @@ void MenuButton::leaveEvent(QEvent*) {
       "border: " + QString::number(border_size_) + "px solid #000000;";
   style_sheet += "background-color: #ffffff;";
   setStyleSheet(style_sheet);
+  setIcon(QIcon(main_icon_));
+}
+
+void MenuButton::SetActiveIcon(const QString& active_icon) {
+  active_icon_ = active_icon;
+}
+
+void MenuButton::SetIcon(const QString& main_icon) {
+  main_icon_ = main_icon;
+  setIcon(QIcon(main_icon_));
 }

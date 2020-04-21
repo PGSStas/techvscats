@@ -4,17 +4,27 @@
     <file>resources/database/database.json</file>
 
     <file>resources/buttons_resources/dec_level_button.png</file>
+    <file>resources/buttons_resources/dec_level_button_active.png</file>
     <file>resources/buttons_resources/inc_level_button.png</file>
+    <file>resources/buttons_resources/inc_level_button_active.png</file>
 
     <file>resources/buttons_resources/sound_button_on.png</file>
+    <file>resources/buttons_resources/sound_button_on_active.png</file>
     <file>resources/buttons_resources/sound_button_off.png</file>
+    <file>resources/buttons_resources/sound_button_off_active.png</file>
     <file>resources/buttons_resources/language_button_rus.png</file>
+    <file>resources/buttons_resources/language_button_rus_active.png</file>
     <file>resources/buttons_resources/language_button_eng.png</file>
+    <file>resources/buttons_resources/language_button_eng_active.png</file>
 
     <file>resources/buttons_resources/pause_button.png</file>
+    <file>resources/buttons_resources/pause_button_active.png</file>
     <file>resources/buttons_resources/double_speed_button.png</file>
+    <file>resources/buttons_resources/double_speed_button_active.png</file>
     <file>resources/buttons_resources/normal_speed_button.png</file>
+    <file>resources/buttons_resources/normal_speed_button_active.png</file>
     <file>resources/buttons_resources/zero_speed_button.png</file>
+    <file>resources/buttons_resources/zero_speed_button_active.png</file>
 
     <file>resources/buttons_resources/14722.ttf</file>
 

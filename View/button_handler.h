@@ -24,14 +24,10 @@ class ButtonHandler : QObject {
   void CreateButtons(AbstractController* controller);
   void MoveButtons(SizeHandler size_handler);
 
-  void EnableMainMenuUi();
-  void DisableMainMenuUi();
-  void EnableSettingsUi();
-  void DisableSettingsUi();
-  void EnableGameUi();
-  void DisableGameUi();
-  void EnablePauseMenuUi();
-  void DisablePauseMenuUi();
+  void SetMainMenuUiVisible(bool visible);
+  void SetSettingsUiVisible(bool visible);
+  void SetGameUiVisible(bool visible);
+  void SetPauseMenuUiVisible(bool visible);
 
   WindowType GetWindowType() const;
 

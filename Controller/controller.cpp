@@ -1,4 +1,3 @@
-#include <QDebug>
 #include "controller.h"
 
 Controller::Controller() : model_(std::make_unique<Model>()),
@@ -6,7 +5,6 @@ Controller::Controller() : model_(std::make_unique<Model>()),
                            game_mode_(WindowType::kMainMenu) {}
 
 void Controller::StartGame(int level_id) {
-  qDebug() << "Game Start!";
   current_game_time_ = 0;
   game_mode_ = WindowType::kGame;
   last_round_start_time_ = current_game_time_;
@@ -21,7 +19,6 @@ void Controller::StartGame(int level_id) {
 }
 
 void Controller::EndGame(Exit) {
-  qDebug() << "Game End!";
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMainMenuUi();
