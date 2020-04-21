@@ -60,7 +60,6 @@ class Building : public GameObject {
   bool is_ready_to_create_projectiles_ = false;
   bool is_ready_to_shoot_ = false;
   std::list<std::shared_ptr<Enemy>> aims_;
-
 };
 
 #endif  // GAMEOBJECT_BUILDING_H_
