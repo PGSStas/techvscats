@@ -5,6 +5,7 @@
 #include <memory>
 #include <QPainter>
 
+#include "particle_handler.h"
 #include "Model/coordinate.h"
 #include "Model/size.h"
 #include "View/size_handler.h"
@@ -21,13 +22,15 @@ class GameObject {
 
   void SetPosition(Coordinate position);
   Coordinate GetPosition() const;
+  ParticleHandler* GetParticleHandler();
   Size GetSize() const;
 
  protected:
-  int delta_tick_time_ = 0;
-  int object_life_time_ = 0;
   Size size_;
   Coordinate position_;
+  ParticleHandler particle_handler;
+  int delta_tick_time_ = 0;
+  int object_life_time_ = 0;
 
  private:
   int object_last_time_ = 0;

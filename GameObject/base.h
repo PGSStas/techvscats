@@ -8,7 +8,7 @@
 
 class Base : public GameObject {
  public:
-  Base(double max_health, Coordinate position);
+  Base(Size size, Coordinate position, double max_health);
   ~Base() override = default;
 
   void Tick(int current_time) override;

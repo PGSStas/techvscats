@@ -10,5 +10,14 @@
     <file>resources/images/mouse_2.png</file>
     <file>resources/images/mouse_3.png</file>
     <file>resources/images/map_level_1.png</file>
+
+    <file>resources/particles/kaboom1_1.png</file>
+    <file>resources/particles/kaboom1_2.png</file>
+    <file>resources/particles/kaboom1_3.png</file>
+    <file>resources/particles/kaboom1_4.png</file>
+    <file>resources/particles/kaboom1_5.png</file>
+    <file>resources/particles/kaboom1_6.png</file>
+    <file>resources/particles/kaboom1_7.png</file>
+    <file>resources/particles/kaboom1_8.png</file>
 </qresource>
 </RCC>

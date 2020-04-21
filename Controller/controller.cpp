@@ -44,6 +44,7 @@ void Controller::GameProcess() {
     CreateNextWave();
   }
   TickSpawners();
+  TickParticles();
   TickEnemies();
   TickBuildings();
   TickProjectiles();
@@ -97,6 +98,18 @@ void Controller::TickSpawners() {
       enemy.SetRoad(model_->GetRoad(spawner.GetRoad()));
       AddEnemyToModel(enemy);
     }
+  }
+}
+
+void Controller::TickParticlesHandlers() {
+ ////////////////////////////////////!!!!!!!!!!!!!!!!!!!!
+}
+
+void Controller::TickParticles() {
+  auto particles = model_->GetParticles();
+  particles->remove_if([](const Particle& particle) { return particle.IsDead(); });
+  for (auto& particle : *particles) {
+    particle.Tick(current_game_time_);
   }
 }
 
@@ -288,11 +301,9 @@ Controller::GetProjectiles() const {
 const Base& Controller::GetBase() const {
   return *model_->GetBase();
 }
-
 int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
-
 const QPixmap& Controller::GetMapImage() const {
   return model_->GetMapImage();
 }

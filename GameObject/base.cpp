@@ -4,9 +4,9 @@ const Coordinate Base::kHealthBarPosition = Coordinate(0, 1060);
 const Size Base::kBaseSize = Size(50, 50);
 const Size Base::kHealthBarSize = Size(1920, 20);
 
-Base::Base(double max_health, Coordinate position)
-    : GameObject(Size(0, 0), position),
-      max_health_(max_health), current_health_(max_health) {}
+Base::Base(Size size, Coordinate position, double max_health)
+    : GameObject(size, position), max_health_(max_health),
+      current_health_(max_health) {}
 
 void Base::Tick(int) {
   current_health_ = std::min(max_health_, current_health_ + regeneration_rate_);
@@ -40,6 +40,7 @@ void Base::DecreaseHealth(double damage) {
   }
 }
 
+
 double Base::GetCurrentHealth() const {
   return current_health_;
 }
@@ -47,7 +48,6 @@ double Base::GetCurrentHealth() const {
 double Base::GetMaxHealth() const {
   return max_health_;
 }
-
 bool Base::IsDead() const {
   return is_dead_;
 }

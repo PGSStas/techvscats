@@ -55,6 +55,11 @@ void Model::SetGameLevel(int level_id) {
   id_to_building_.push_back(building_instance4);
 
   InitializeTowerSlots();
+
+  ////////////////////////////////////////////// to paste
+  id_to_projectile_[0]->GetParticleHandler()->SetAtCreationParticlePack(0, 0);
+  id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(0, 300, 48);
+
 }
 
 void Model::AddSpawner(const EnemyGroup& enemy_group) {
@@ -112,11 +117,15 @@ void Model::ClearGameModel() {
 }
 
 Base* Model::GetBase() {
-  return &base_;
+  return &*base_;
 }
 
 std::list<Spawner>* Model::GetSpawners() {
   return &spawners_;
+}
+
+std::list<Particle>* Model::GetParticles() {
+  return &particles_;
 }
 
 std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
@@ -189,9 +198,13 @@ void Model::LoadLevel(int level) {
   // Reading information about the base.
   QJsonObject json_base = json_object["base"].toObject();
   QJsonObject json_base_position = json_base["position"].toObject();
-  base_ = Base(json_base["max_health"].toDouble(),
-               {json_base_position["x"].toDouble(),
-                json_base_position["y"].toDouble()});
+  QJsonObject json_base_size = json_base["size"].toObject();
+  base_ = std::make_shared<Base>(
+      Size(json_base_position["width"].toDouble(),
+           json_base_position["height"].toDouble()),
+      Coordinate(json_base_position["x"].toDouble(),
+                 json_base_position["y"].toDouble()),
+      json_base["max_health"].toDouble());
 
   // Reading information about the roads.
   roads_.clear();
@@ -310,21 +323,12 @@ void Model::LoadDatabase() {
   }
 
   // todo(PGS): read from json :)
-  auto toaster_images = std::make_shared<std::vector<QImage>>();
-  toaster_images->emplace_back(":resources/images/toster_1.png");
-  toaster_images->emplace_back(":resources/images/toster_2.png");
-  toaster_images->emplace_back(":resources/images/toster_3.png");
-  toaster_images->push_back((*toaster_images)[1]);
 
-  auto mouse_images = std::make_shared<std::vector<QImage>>();
-  mouse_images->emplace_back(":resources/images/mouse_1.png");
-  mouse_images->emplace_back(":resources/images/mouse_2.png");
-  mouse_images->emplace_back(":resources/images/mouse_3.png");
-  mouse_images->push_back((*mouse_images)[1]);
-
-  AnimationPlayer enemy_player(toaster_images);
-  AnimationPlayer enemy_player2(mouse_images,
-      constants::kDefaultTimeBetweenFrames * 2 / 3);
+  AnimationPlayer
+      enemy_player(GetImagesByFramePath(":resources/images/toster_3.png"));
+  AnimationPlayer
+      enemy_player2(GetImagesByFramePath(":resources/images/mouse_3.png"),
+                    constants::kDefaultTimeBetweenFrames * 2 / 3);
   id_to_enemy_[0].SetAnimationPlayer(enemy_player);
   id_to_enemy_[1].SetAnimationPlayer(enemy_player);
   id_to_enemy_[2].SetAnimationPlayer(enemy_player);
@@ -339,6 +343,10 @@ void Model::LoadDatabase() {
                               {Qt::darkRed, Qt::magenta},
                               {Qt::white, Qt::yellow}};
   Effect::SetEffectVisualizations(effect_visualization);
+
+  id_to_particle_.emplace_back(442, AnimationPlayer(GetImagesByFramePath(
+      ":resources/particles/kaboom1_8.png")));
+
 }
 
 void Model::InitializeTowerSlots() {
@@ -348,5 +356,24 @@ void Model::InitializeTowerSlots() {
     empty_place->SetPosition(coordinate);
     buildings_.push_back(empty_place);
   }
+}
+
+std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
+    QString path) const {
+  QString clear_path = path.split(".")[0];
+  QString postfix = path.split(".")[1];
+  QStringList splitted_path = clear_path.split("_");
+
+  auto images = std::make_shared<std::vector<QImage>>();
+  int count = splitted_path.back().toInt();
+
+  while (count) {
+    splitted_path.back() = QString::number(count);
+    images->emplace_back(splitted_path.join("_") + "." + postfix);
+    --count;
+  }
+  images->push_back((*images)[1]);
+
+  return images;
 }
 

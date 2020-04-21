@@ -1,7 +1,7 @@
 #include "game_object.h"
 
 GameObject::GameObject(Size size, Coordinate position)
-    : size_(size), position_(position) {
+    : size_(size), position_(position), particle_handler(size_, position_) {
 }
 
 void GameObject::UpdateTime(int current_time) {
@@ -18,6 +18,10 @@ void GameObject::SetPosition(Coordinate position) {
 
 Coordinate GameObject::GetPosition() const {
   return position_;
+}
+
+ParticleHandler* GameObject::GetParticleHandler() {
+  return &particle_handler;
 }
 
 Size GameObject::GetSize() const {
