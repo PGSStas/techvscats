@@ -28,6 +28,7 @@ class AbstractController {
 
   virtual void MousePress(Coordinate position) = 0;
   virtual void MouseMove(Coordinate position) = 0;
+  virtual void RescaleObjects(const SizeHandler& size_handler) = 0;
 
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
   virtual const std::list<std::shared_ptr<AbstractProjectile>>&
@@ -38,7 +39,7 @@ class AbstractController {
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
 
-  virtual const QPixmap& GetMapImage() const = 0;
+  virtual const AnimationPlayer& GetMap() const = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

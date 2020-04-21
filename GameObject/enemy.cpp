@@ -11,24 +11,25 @@ Enemy::Enemy(double speed, double damage, double armor, int reward,
   auric_field.SetCarrierCoordinate(&position_);
 }
 
-Enemy::Enemy(const Enemy& enemy_instance)
-    : MovingObject(enemy_instance.GetSize(), enemy_instance.speed_),
-      damage_(enemy_instance.damage_), armor_(enemy_instance.armor_),
-      reward_(enemy_instance.reward_), max_health_(enemy_instance.max_health_),
-      current_health_(enemy_instance.max_health_),
-      auric_field_(enemy_instance.auric_field_), node_number_(0),
-      player_(enemy_instance.player_) {
+Enemy::Enemy(const Enemy& other)
+    : MovingObject(other.GetSize(), other.speed_),
+      damage_(other.damage_), armor_(other.armor_),
+      reward_(other.reward_), max_health_(other.max_health_),
+      current_health_(other.max_health_),
+      auric_field_(other.auric_field_), node_number_(0) {
+  SetAnimationPlayers(other.animation_players_);
   auric_field_.SetCarrierCoordinate(&position_);
   node_number_ = 0;
-  if (enemy_instance.road_ != nullptr) {
-    SetRoad(*enemy_instance.road_);
+  if (other.road_ != nullptr) {
+    SetRoad(*other.road_);
   }
 }
 
 void Enemy::Tick(int current_time) {
   UpdateTime(current_time);
   Move();
-  player_.Tick(current_time);
+  animation_players_[0].Tick(delta_tick_time_ *
+      applied_effect_.GetMoveSpeedCoefficient());
 }
 
 void Enemy::Move() {
@@ -68,8 +69,7 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     // mirroring the image
     painter->scale(-1.0, 1.0);
   }
-  painter->drawImage(QRect(0, 0, size.width, size.height),
-      player_.GetCurrentFrame());
+  painter->drawImage(QPoint(0, 0) , animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }
@@ -113,8 +113,4 @@ void Enemy::ReceiveDamage(double damage) {
   if (current_health_ <= constants::kEpsilon) {
     is_dead_ = true;
   }
-}
-
-void Enemy::SetAnimationPlayer(const AnimationPlayer& player) {
-  player_ = player;
 }

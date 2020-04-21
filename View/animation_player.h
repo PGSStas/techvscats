@@ -13,19 +13,24 @@ class AnimationPlayer {
  public:
   AnimationPlayer() = default;
   explicit AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
-      int time_between_frames = constants::kDefaultTimeBetweenFrames);
+                           double mspf_ = 1);
+  AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
+                  int animation_duration);
 
-  void Tick(int time);
+  void Tick(int delta_time);
+  void Reset();
   const QImage& GetCurrentFrame() const;
+  int GetAnimationDuration() const;
 
-  void SetTimeBetweenFrames(int new_time);
+  void Rescale(Size to_size);
 
  private:
-  int current_frame_ = 0;
-  int last_frame_change_time_ = 0;
+  uint current_frame_ = 0;
+  int wait_till_next_frame_ = 0;
+  int time_between_frames_ = 0;
 
   std::shared_ptr<std::vector<QImage>> frames_;
-  int time_between_frames_ = constants::kDefaultTimeBetweenFrames;
+  std::vector<QImage> frames_rescaled_;
 };
 
 #endif  // VIEW_ANIMATION_PLAYER_H_

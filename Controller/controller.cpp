@@ -8,7 +8,6 @@ void Controller::StartGame(int level_id) {
   current_game_time_ = 0;
   game_mode_ = WindowType::kGame;
   last_round_start_time_ = current_game_time_;
-
   model_->SetGameLevel(level_id);
 
   view_->DisableMenuWindow();
@@ -300,26 +299,32 @@ void Controller::MouseMove(Coordinate position) {
   view_->GetTowerMenu()->Hover(button);
 }
 
+void Controller::RescaleObjects(const SizeHandler& size_handler) {
+  model_->RescaleDatabase(size_handler);
+}
+
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
   return *model_->GetEnemies();
 }
 
 const std::vector<std::shared_ptr<Building>>&
-Controller::GetBuildings() const {
+  Controller::GetBuildings() const {
   return model_->GetBuildings();
 }
 
 const std::list<std::shared_ptr<AbstractProjectile>>&
-Controller::GetProjectiles() const {
+  Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }
 
 const Base& Controller::GetBase() const {
   return *model_->GetBase();
 }
+
 int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
-const QPixmap& Controller::GetMapImage() const {
-  return model_->GetMapImage();
+
+const AnimationPlayer& Controller::GetMap() const {
+  return model_->GetMap();
 }

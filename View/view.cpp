@@ -8,6 +8,7 @@ View::View(AbstractController* controller) : controller_(controller) {
   start_game_button_->setText(tr("Начать"));
   auto start_game_button_click = [this]() {
     controller_->StartGame(1);
+    controller_->RescaleObjects(size_handler_);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
@@ -103,7 +104,8 @@ void View::paintEvent(QPaintEvent*) {
     return_menu_button_->move(return_menu_button_position.x,
                               return_menu_button_position.y);
 
-    painter.drawPixmap(background, controller_->GetMapImage());
+    painter.drawImage(origin.x, origin.y,
+                      controller_->GetMap().GetCurrentFrame());
     DrawAuras(&painter);
     DrawEnemies(&painter);
     DrawProjectiles(&painter);
@@ -115,7 +117,9 @@ void View::paintEvent(QPaintEvent*) {
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
-  repaint();
+  if (window_type_ == WindowType::kGame) {
+    controller_->RescaleObjects(size_handler_);
+  }
 }
 
 void View::timerEvent(QTimerEvent* event) {

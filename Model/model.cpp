@@ -25,30 +25,40 @@ void Model::SetGameLevel(int level_id) {
       projectile_instance_lazer));
 
   Building building_instance(0, 0);
-  building_instance.SetAnimationParameters(Qt::gray, Qt::gray, Qt::gray,
-                                           {0, 0, 0});
+  SetAnimationToGameObject(&building_instance, {500, 0, 0}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_reload_4",
+      "towers/default_tower_reload_4"});
 
   upgrades_tree_.push_back({1, 2});
 
   Building building_instance2(1, 24);
   building_instance2.SetProjectile(0, 10, 175, 2);
-  building_instance2.SetAnimationParameters(Qt::blue, Qt::red, Qt::darkYellow,
-                                            {1000, 300, 300});
+  SetAnimationToGameObject(&building_instance2, {1000, 300, 300}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3(2, 24, Size(45, 45), AuricField(200, 2));
+  Building building_instance3(2, 24, Size(185, 185), AuricField(200, 2));
   building_instance3.SetProjectile(2, 3, 215, 3);
-  building_instance3.SetAnimationParameters(Qt::yellow, Qt::red, Qt::darkYellow,
-                                            {100, 50, 10});
-
+  SetAnimationToGameObject(&building_instance3, {100, 50, 10}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
   upgrades_tree_.push_back({3, 1, 0});
 
   Building building_instance4(3, 24);
   building_instance4.SetProjectile(1, 54, 275, 1);
-  building_instance4.SetAnimationParameters(Qt::green, Qt::red, Qt::darkGreen,
-                                            {1000, 300, 100});
-  upgrades_tree_.push_back({1, 0});
+  SetAnimationToGameObject(&building_instance4, {1000, 600, 600}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
 
+  upgrades_tree_.push_back({1, 0});
   id_to_building_.push_back(building_instance);
   id_to_building_.push_back(building_instance2);
   id_to_building_.push_back(building_instance3);
@@ -100,6 +110,22 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
                                      building.GetDamage());
 }
 
+void Model::RescaleDatabase(const SizeHandler& size_handler) {
+  for (auto& enemy : enemies_) {
+    enemy->Rescale(size_handler.GameToWindowSize(enemy->GetSize()));
+  }
+  for (auto& building : buildings_) {
+    building->Rescale(size_handler.GameToWindowSize(building->GetSize()));
+  }
+  for (auto& enemy : id_to_enemy_) {
+    enemy.Rescale(size_handler.GameToWindowSize(enemy.GetSize()));
+  }
+  for (auto& building : id_to_building_) {
+    building.Rescale(size_handler.GameToWindowSize(building.GetSize()));
+  }
+  map_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
+}
+
 void Model::IncreaseCurrentRoundNumber() {
   current_round_number_++;
 }
@@ -136,10 +162,6 @@ std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
   return &projectiles_;
 }
 
-const std::vector<Road>& Model::GetRoads() const {
-  return roads_;
-}
-
 const std::vector<EnemyGroup>& Model::GetEnemyGroupsPerRound(int round) const {
   return enemy_groups_[round];
 }
@@ -148,7 +170,7 @@ const std::vector<std::vector<int>>& Model::GetUpgradesTree() const {
   return upgrades_tree_;
 }
 
-const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
+const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const{
   return buildings_;
 }
 
@@ -265,12 +287,12 @@ void Model::LoadLevel(int level) {
     empty_places_for_towers_.emplace_back(json_empty_tower["x"].toDouble(),
                                           json_empty_tower["y"].toDouble());
   }
-
-  map_ = QPixmap(":resources/images/map_level_" +
-      QString::number(level) + ".png");
+  map_ = AnimationPlayer(
+      GetImagesByFramePath("map_level_" +
+          QString::number(level) + "_1"));
 }
 
-const QPixmap& Model::GetMapImage() const {
+const AnimationPlayer& Model::GetMap() const {
   return map_;
 }
 
@@ -318,22 +340,16 @@ void Model::LoadDatabase() {
                               enemy["armor"].toInt(),
                               enemy["reward"].toInt(),
                               enemy["max_health"].toInt(),
-                              Size(60, 60),
+                              Size(
+                                  enemy["size"].toObject()["width"].toInt(),
+                                  enemy["size"].toObject()["height"].toInt()),
                               aura);
   }
 
-  // todo(PGS): read from json :)
-
-  AnimationPlayer
-      enemy_player(GetImagesByFramePath(":resources/images/toster_3.png"));
-  AnimationPlayer
-      enemy_player2(GetImagesByFramePath(":resources/images/mouse_3.png"),
-                    constants::kDefaultTimeBetweenFrames * 2 / 3);
-  id_to_enemy_[0].SetAnimationPlayer(enemy_player);
-  id_to_enemy_[1].SetAnimationPlayer(enemy_player);
-  id_to_enemy_[2].SetAnimationPlayer(enemy_player);
-  id_to_enemy_[3].SetAnimationPlayer(enemy_player2);
-  id_to_enemy_[4].SetAnimationPlayer(enemy_player2);
+  SetAnimationToGameObject(&id_to_enemy_[0], {400}, {"enemies/toster_3"});
+  SetAnimationToGameObject(&id_to_enemy_[2], {550}, {"enemies/toster_3"});
+  SetAnimationToGameObject(&id_to_enemy_[3], {600}, {"enemies/mouse_3"});
+  SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
 
   // Temporary part
   std::vector<EffectVisualization>
@@ -358,6 +374,32 @@ void Model::InitializeTowerSlots() {
   }
 }
 
+void Model::SetAnimationToGameObject(
+    GameObject* object, std::vector<int> timmings,
+    std::vector<QString> paths) {
+  std::vector<AnimationPlayer> animations;
+  for (uint i = 0; i < timmings.size(); i++) {
+    animations.emplace_back(GetImagesByFramePath(paths[i]), timmings[i]);
+  }
+  object->SetAnimationPlayers(animations);
+}
+
+std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
+    QString animation_last_frames, QString picture_type) const {
+
+  QString clear_path = ":resources/images/" + animation_last_frames;
+  QStringList splitted_path = clear_path.split("_");
+
+  auto images = std::make_shared<std::vector<QImage>>();
+  int count = splitted_path.back().toInt();
+
+  for (int i = 1; i <= count; i++) {
+    splitted_path.back() = QString::number(i);
+    images->emplace_back(splitted_path.join("_") + picture_type);
+  }
+
+  return images;
+}
 std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
     QString path) const {
   QString clear_path = path.split(".")[0];

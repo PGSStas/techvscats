@@ -10,14 +10,13 @@
 #include "effect.h"
 #include "moving_object.h"
 #include "Model/road.h"
-#include "View/animation_player.h"
 
 class Enemy : public MovingObject {
  public:
   Enemy(double speed, double damage,
         double armor, int reward, double max_health, Size size = {60, 60},
         AuricField auric_field = AuricField(-1, -1));
-  Enemy(const Enemy& enemy_instance);
+  Enemy(const Enemy& other);
   ~Enemy() override = default;
 
   void Tick(int current_time) override;
@@ -25,7 +24,6 @@ class Enemy : public MovingObject {
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
   void DrawHealthBar(QPainter* painter, const SizeHandler& size_handler) const;
 
-  void SetAnimationPlayer(const AnimationPlayer& player);
   void SetRoad(const Road& road);
 
   const AuricField& GetAuricField() const;
@@ -44,8 +42,6 @@ class Enemy : public MovingObject {
   Effect applied_effect_ = Effect(EffectTarget::kEnemy);
   std::shared_ptr<const Road> road_ = nullptr;
   int node_number_ = 0;
-
-  AnimationPlayer player_;
 
   static std::mt19937 random_generator_;
 

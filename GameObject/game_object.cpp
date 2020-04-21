@@ -16,6 +16,20 @@ void GameObject::SetPosition(Coordinate position) {
   position_ = position;
 }
 
+void GameObject::SetAnimationPlayers(
+    const std::vector<AnimationPlayer>& animation_players) {
+  animation_players_ = animation_players;
+  for (const auto& animation_player: animation_players_) {
+    action_timings_.push_back(animation_player.GetAnimationDuration());
+  }
+}
+
+void GameObject::Rescale(Size to_size) {
+  for (auto& player : animation_players_) {
+    player.Rescale(to_size);
+  }
+}
+
 Coordinate GameObject::GetPosition() const {
   return position_;
 }

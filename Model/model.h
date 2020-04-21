@@ -39,6 +39,7 @@ class Model {
   void CreateBuildingAtIndex(int i, int id);
   void CreateProjectile(const std::shared_ptr<Enemy>& aim,
                         const Building& building);
+  void RescaleDatabase(const SizeHandler& size_handler);
   void IncreaseCurrentRoundNumber();
   void ClearGameModel();
 
@@ -48,7 +49,6 @@ class Model {
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   std::list<std::shared_ptr<AbstractProjectile>>* GetProjectiles();
 
-  const std::vector<Road>& GetRoads() const;
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
   const std::vector<std::vector<int>>& GetUpgradesTree() const;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
@@ -62,13 +62,18 @@ class Model {
   int GetPrepairTimeBetweenRounds() const;
   int GetCurrentRoundNumber() const;
 
-  const QPixmap& GetMapImage() const;
+  const AnimationPlayer& GetMap() const;
 
  private:
   void LoadLevel(int level);
   void LoadDatabase();
   void InitializeTowerSlots();
-  std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(QString path) const;
+  void SetAnimationToGameObject(
+      GameObject* object, std::vector<int> timmings,
+      std::vector<QString> paths);
+  std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(
+      QString path, QString picture_type = ".png") const;
+
   // Database which is updated by Controller all time
   std::list<Spawner> spawners_;
   std::list<Particle> particles_;
@@ -96,7 +101,7 @@ class Model {
   std::vector<Particle> id_to_particle_;
 
   // Images
-  QPixmap map_;
+  AnimationPlayer map_;
 };
 
 #endif  // MODEL_MODEL_H_
