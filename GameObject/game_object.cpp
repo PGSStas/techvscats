@@ -21,7 +21,6 @@ void GameObject::SetAnimationPlayers(
   animation_players_ = animation_players;
   for (uint i = 0; i < animation_players.size(); i++) {
     action_timmings_.push_back(animation_players[i].GetAnimationDuration());
-    animation_players_[i].Rescale(size_);
   }
 }
 

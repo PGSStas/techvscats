@@ -41,7 +41,7 @@ void Model::SetGameLevel(int level_id) {
   });
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3(2, 24, Size(85, 85), AuricField(200, 2));
+  Building building_instance3(2, 24, Size(185, 185), AuricField(200, 2));
   building_instance3.SetProjectile(2, 3, 215, 3);
   SetAnimationToGameObject(&building_instance3, {100, 50, 10}, {
       "towers/default_tower_reload_4",
@@ -113,6 +113,12 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   }
   for (auto& building : buildings_) {
     building->Rescale(size_handler.GameToWindowSize(building->GetSize()));
+  }
+  for (auto& enemy : id_to_enemy_) {
+    enemy.Rescale(size_handler.GameToWindowSize(enemy.GetSize()));
+  }
+  for (auto& building : id_to_building_) {
+    building.Rescale(size_handler.GameToWindowSize(building.GetSize()));
   }
   map_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
 }
