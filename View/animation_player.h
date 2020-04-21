@@ -27,10 +27,10 @@ class AnimationPlayer {
  private:
   uint current_frame_ = 0;
   int wait_till_next_frame_ = 0;
+  int time_between_frames_ = 0;
 
   std::shared_ptr<std::vector<QImage>> frames_;
   std::vector<QImage> frames_rescaled_;
-  int time_between_frames_;
 };
 
 #endif  // VIEW_ANIMATION_PLAYER_H_

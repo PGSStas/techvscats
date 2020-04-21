@@ -25,8 +25,7 @@ class Building : public GameObject {
 
   void Tick(int current_time) override;
   void UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies);
-  void Draw(QPainter* painter,
-            const SizeHandler& size_handler) const override;
+  void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
 
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
                      int max_aims);

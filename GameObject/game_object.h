@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <vector>
 #include <QPainter>
 
 #include "Model/coordinate.h"

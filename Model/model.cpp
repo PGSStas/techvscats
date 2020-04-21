@@ -65,7 +65,6 @@ void Model::SetGameLevel(int level_id) {
   id_to_building_.push_back(building_instance4);
 
   InitializeTowerSlots();
-
 }
 
 void Model::AddSpawner(const EnemyGroup& enemy_group) {
@@ -104,7 +103,6 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
   projectiles_.back()->SetParameters(aim, building.GetPosition(),
                                      building.GetProjectileSpeedCoefficient(),
                                      building.GetDamage());
-
 }
 
 void Model::RescaleDatabase(const SizeHandler& size_handler) {
@@ -153,10 +151,6 @@ std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
 
 std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
   return &projectiles_;
-}
-
-const std::vector<Road>& Model::GetRoads() const {
-  return roads_;
 }
 
 const std::vector<EnemyGroup>& Model::GetEnemyGroupsPerRound(int round) const {
