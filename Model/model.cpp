@@ -42,10 +42,10 @@ void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
 void Model::CreateBuildingAtIndex(int i, int id) {
   Coordinate position = buildings_[i]->GetPosition();
   // Create new building by id
-  int sell_cost = buildings_[i]->GetSellCost() + id_to_building_[id].GetCost();
+  int sell_cost = buildings_[i]->GetTotalCost() + id_to_building_[id].GetCost();
   buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
   if (id != 0) {
-    buildings_[i]->SetSellCost(sell_cost);
+    buildings_[i]->SetTotalCost(sell_cost);
   }
   buildings_[i]->SetPosition(position);
 }

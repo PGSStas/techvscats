@@ -226,7 +226,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   auto base = model_->GetBase();
   if (base->GetGold() >= settle_cost) {
     if (replacing_id == 0) {
-      int sell_cost = model_->GetBuildings()[index_in_buildings]->GetSellCost()
+      int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
           * kRefundCoefficient;
 
       model_->AddTextNotification(TextNotification(

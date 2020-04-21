@@ -29,20 +29,20 @@ class Building : public GameObject {
             const SizeHandler& size_handler) const override;
 
   void SetAnimationParameters(const QColor& reload_color,
-                              const QColor& pre_color ,
-                              const QColor& post_color ,
+                              const QColor& pre_color,
+                              const QColor& post_color,
                               const std::vector<int>& action_time);
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
                      int max_aims);
   void SetReadyToCreateProjectileToFalse();
-  void SetSellCost(int sell_cost);
+  void SetTotalCost(int total_cost);
 
   int GetId() const;
   int GetAttackRange() const;
   int GetProjectileId() const;
   double GetDamage() const;
   int GetCost() const;
-  int GetSellCost() const;
+  int GetTotalCost() const;
 
   double GetProjectileSpeedCoefficient() const;
   Effect* GetAppliedEffect();
@@ -57,7 +57,7 @@ class Building : public GameObject {
 
   int id_ = 0;
   int cost_ = 0;
-  int sell_cost_ = 0;
+  int total_cost_ = 0;
 
   // action part
   Action action_ = Action::kReload;
