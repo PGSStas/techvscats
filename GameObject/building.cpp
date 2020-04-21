@@ -42,7 +42,8 @@ void Building::Tick(int current_time) {
         wait_time_ = action_timmings_[static_cast<int>(Action::kReload)];
         break;
       }
-      if (wait_time_ > action_timmings_[static_cast<int>(Action::kBeforeFire)]) {
+      if (wait_time_
+          > action_timmings_[static_cast<int>(Action::kBeforeFire)]) {
         is_ready_to_create_projectiles_ = true;
         action_ = Action::kAfterFire;
         wait_time_ = 0;
@@ -58,9 +59,10 @@ void Building::Tick(int current_time) {
     }
   }
   if (old_action == action_) {
-    animation_players_[static_cast<int>(action_)].Tick(current_time);
+    animation_players_[static_cast<int>(action_)].Tick(delta_tick_time_ *
+        applied_effect_.GetAttackRateCoefficient());
   } else {
-    animation_players_[static_cast<int>(action_)].Reset(current_time);
+    animation_players_[static_cast<int>(action_)].Reset();
   }
 }
 
@@ -113,8 +115,8 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   Coordinate point =
       size_handler.GameToWindowCoordinate(position_ - size_ / 2);
   painter->translate(point.x, point.y);
-  painter->drawImage(0, 0,
-      animation_players_[static_cast<int>(action_)].GetCurrentFrame());
+  painter->drawImage(QPoint(0, 0),
+                     animation_players_[static_cast<int>(action_)].GetCurrentFrame());
   painter->restore();
 }
 

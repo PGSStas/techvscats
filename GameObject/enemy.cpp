@@ -16,7 +16,7 @@ Enemy::Enemy(const Enemy& other)
       damage_(other.damage_), armor_(other.armor_),
       reward_(other.reward_), max_health_(other.max_health_),
       current_health_(other.max_health_),
-      auric_field_(other.auric_field_), node_number_(0){
+      auric_field_(other.auric_field_), node_number_(0) {
   SetAnimationPlayers(other.animation_players_);
   auric_field_.SetCarrierCoordinate(&position_);
   node_number_ = 0;
@@ -28,7 +28,8 @@ Enemy::Enemy(const Enemy& other)
 void Enemy::Tick(int current_time) {
   UpdateTime(current_time);
   Move();
-  animation_players_[0].Tick(current_time);
+  animation_players_[0].Tick(delta_tick_time_ *
+      applied_effect_.GetMoveSpeedCoefficient());
 }
 
 void Enemy::Move() {
@@ -68,7 +69,7 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     // mirroring the image
     painter->scale(-1.0, 1.0);
   }
-  painter->drawImage(0, 0, animation_players_[0].GetCurrentFrame());
+  painter->drawImage(QPoint(0, 0) , animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }

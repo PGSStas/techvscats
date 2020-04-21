@@ -25,7 +25,7 @@ void Model::SetGameLevel(int level_id) {
       projectile_instance_lazer));
 
   Building building_instance(0, 0);
-  SetAnimationToGameObject(&building_instance, {0, 0, 0}, {
+  SetAnimationToGameObject(&building_instance, {500, 0, 0}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_reload_4",
       "towers/default_tower_reload_4"});
@@ -37,7 +37,7 @@ void Model::SetGameLevel(int level_id) {
   SetAnimationToGameObject(&building_instance2, {1000, 300, 300}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
-      "towers/default_tower_pos_3",
+      "towers/default_tower_post_3",
   });
   upgrades_tree_.push_back({3, 0});
 
@@ -46,25 +46,26 @@ void Model::SetGameLevel(int level_id) {
   SetAnimationToGameObject(&building_instance3, {100, 50, 10}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
-      "towers/default_tower_pos_3",
+      "towers/default_tower_post_3",
   });
   upgrades_tree_.push_back({3, 1, 0});
 
   Building building_instance4(3, 24);
   building_instance4.SetProjectile(1, 54, 275, 1);
-  SetAnimationToGameObject(&building_instance4, {100, 50, 10}, {
+  SetAnimationToGameObject(&building_instance4, {1000, 600, 600}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
-      "towers/default_tower_pos_3",
+      "towers/default_tower_post_3",
   });
-  upgrades_tree_.push_back({1, 0});
 
+  upgrades_tree_.push_back({1, 0});
   id_to_building_.push_back(building_instance);
   id_to_building_.push_back(building_instance2);
   id_to_building_.push_back(building_instance3);
   id_to_building_.push_back(building_instance4);
 
   InitializeTowerSlots();
+
 }
 
 void Model::AddSpawner(const EnemyGroup& enemy_group) {
@@ -103,6 +104,7 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
   projectiles_.back()->SetParameters(aim, building.GetPosition(),
                                      building.GetProjectileSpeedCoefficient(),
                                      building.GetDamage());
+
 }
 
 void Model::RescaleDatabase(const SizeHandler& size_handler) {
@@ -325,13 +327,15 @@ void Model::LoadDatabase() {
                               enemy["armor"].toInt(),
                               enemy["reward"].toInt(),
                               enemy["max_health"].toInt(),
-                              Size(60, 60),
+                              Size(
+                                  enemy["size"].toObject()["width"].toInt(),
+                                  enemy["size"].toObject()["height"].toInt()),
                               aura);
   }
 
-  SetAnimationToGameObject(&id_to_enemy_[0], {1000}, {"enemies/toster_3"});
-  SetAnimationToGameObject(&id_to_enemy_[2], {1242}, {"enemies/toster_3"});
-  SetAnimationToGameObject(&id_to_enemy_[3], {1242}, {"enemies/mouse_3"});
+  SetAnimationToGameObject(&id_to_enemy_[0], {400}, {"enemies/toster_3"});
+  SetAnimationToGameObject(&id_to_enemy_[2], {550}, {"enemies/toster_3"});
+  SetAnimationToGameObject(&id_to_enemy_[3], {600}, {"enemies/mouse_3"});
   SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
 
   // Temporary part
@@ -358,7 +362,7 @@ void Model::SetAnimationToGameObject(
     std::vector<QString> paths) {
   std::vector<AnimationPlayer> animations;
   for (uint i = 0; i < timmings.size(); i++) {
-    animations.emplace_back(GetImagesByFramePath(paths[i]));
+    animations.emplace_back(GetImagesByFramePath(paths[i]), timmings[i]);
   }
   object->SetAnimationPlayers(animations);
 }
@@ -372,10 +376,9 @@ std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
   auto images = std::make_shared<std::vector<QImage>>();
   int count = splitted_path.back().toInt();
 
-  while (count) {
-    splitted_path.back() = QString::number(count);
+  for (int i = 1; i <= count; i++) {
+    splitted_path.back() = QString::number(i);
     images->emplace_back(splitted_path.join("_") + picture_type);
-    --count;
   }
 
   return images;

@@ -9,7 +9,6 @@ void Controller::StartGame(int level_id) {
   current_game_time_ = 0;
   game_mode_ = WindowType::kGame;
   last_round_start_time_ = current_game_time_;
-
   model_->SetGameLevel(level_id);
 
   view_->DisableMenuWindow();

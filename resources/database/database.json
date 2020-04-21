@@ -5,10 +5,14 @@
       "damage": 1,
       "armor": 2,
       "reward": 100,
-      "max_health": 11,
+      "max_health": 50,
       "aura": {
         "radius": 250,
-        "effect_id": 0
+        "effect_id": 1
+      },
+      "size": {
+        "width" : 54,
+        "height": 46
       }
     },
     {
@@ -16,21 +20,33 @@
       "damage": 15,
       "armor": 43,
       "reward": 500,
-      "max_health": 11
+      "max_health": 11,
+      "size": {
+        "width" : 54,
+        "height": 64
+      }
     },
     {
       "speed": 19,
       "damage": 6,
       "armor": 6,
       "reward": 10,
-      "max_health": 18
+      "max_health": 30,
+      "size": {
+        "width" : 44,
+        "height": 55
+      }
     },
     {
       "speed": 15,
       "damage": 1,
       "armor": -5,
       "reward": 13,
-      "max_health": 100
+      "max_health": 100,
+      "size": {
+        "width" : 30,
+        "height": 30
+      }
     },
     {
       "speed": 30,
@@ -40,7 +56,11 @@
       "max_health": 70,
       "aura": {
         "radius": 250,
-        "effect_id": 2
+        "effect_id": 1
+      },
+      "size": {
+        "width" : 30,
+        "height": 30
       }
     }
   ],
@@ -50,15 +70,15 @@
       "effect_target": 0,
       "damage_coefficient": -0.5,
       "attack_rate_coefficient": -0.3,
-      "range_coefficient": -0.3,
+      "range_coefficient": -0.1,
       "speed_coefficient": 0.9
     },
     {
-      "effect_target": 1,
-      "speed_coefficient": 0.2,
+      "effect_target": 0,
+      "speed_coefficient": -0.1,
       "armor_coefficient": 1,
       "damage_coefficient": 0.3,
-      "attack_rate_coefficient": -0.4,
+      "attack_rate_coefficient":  3,
       "range_coefficient": 0.4
     },
     {

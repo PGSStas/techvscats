@@ -17,8 +17,8 @@ class AnimationPlayer {
   AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
                   int animation_duration);
 
-  void Tick(int time);
-  void Reset(int time);
+  void Tick(int delta_time);
+  void Reset();
   const QImage& GetCurrentFrame() const;
   int GetAnimationDuration() const;
 
@@ -26,7 +26,7 @@ class AnimationPlayer {
 
  private:
   uint current_frame_ = 0;
-  int last_frame_change_time_ = 0;
+  int wait_till_next_frame_ = 0;
 
   std::shared_ptr<std::vector<QImage>> frames_;
   std::vector<QImage> frames_rescaled_;
