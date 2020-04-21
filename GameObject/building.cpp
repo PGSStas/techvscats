@@ -25,7 +25,7 @@ void Building::Tick(int current_time) {
   Action old_action = action_;
   switch (action_) {
     case Action::kReload: {
-      if (wait_time_ <= action_timings_[static_cast<int>(Action::kReload)]) {
+      if (wait_time_ > action_timings_[static_cast<int>(Action::kReload)]) {
         if (is_ready_to_shoot_) {
           wait_time_ = 0;
           action_ = Action::kBeforeFire;
@@ -63,7 +63,8 @@ void Building::Tick(int current_time) {
 
 void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   if ((wait_time_ < action_timings_[static_cast<int>(Action::kReload)]
-      && action_ == Action::kReload) || action_ == Action::kAfterFire) {
+      && action_ == Action::kReload) || action_ == Action::kAfterFire ||
+      id_ == 0) {
     return;
   }
   if (enemies.empty()) {

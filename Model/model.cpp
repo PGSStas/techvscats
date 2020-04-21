@@ -117,6 +117,7 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   for (auto& building : buildings_) {
     building->Rescale(size_handler.GameToWindowSize(building->GetSize()));
   }
+
   for (auto& enemy : id_to_enemy_) {
     enemy.Rescale(size_handler.GameToWindowSize(enemy.GetSize()));
   }
@@ -170,7 +171,7 @@ const std::vector<std::vector<int>>& Model::GetUpgradesTree() const {
   return upgrades_tree_;
 }
 
-const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const{
+const std::vector<std::shared_ptr<Building>>& Model::GetBuildings() const {
   return buildings_;
 }
 
@@ -334,7 +335,7 @@ void Model::LoadDatabase() {
       aura = AuricField(enemy["aura"].toObject()["radius"].toInt(),
                         enemy["aura"].toObject()["effect_id"].toInt());
     }
-    // TODO(PGS): size of enemy please. Also i put speed on the second place.
+
     id_to_enemy_.emplace_back(enemy["speed"].toInt(),
                               enemy["damage"].toInt(),
                               enemy["armor"].toInt(),
@@ -400,22 +401,3 @@ std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
 
   return images;
 }
-std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
-    QString path) const {
-  QString clear_path = path.split(".")[0];
-  QString postfix = path.split(".")[1];
-  QStringList splitted_path = clear_path.split("_");
-
-  auto images = std::make_shared<std::vector<QImage>>();
-  int count = splitted_path.back().toInt();
-
-  while (count) {
-    splitted_path.back() = QString::number(count);
-    images->emplace_back(splitted_path.join("_") + "." + postfix);
-    --count;
-  }
-  images->push_back((*images)[1]);
-
-  return images;
-}
-

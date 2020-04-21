@@ -87,7 +87,7 @@ class Model {
   // Database which is loaded in SetGameLevel once
   std::vector<Road> roads_;
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
-  std::shared_ptr<Base> base_ ;
+  std::shared_ptr<Base> base_;
   std::vector<Coordinate> empty_places_for_towers_;
   int prepair_time_between_rounds_ = 0;
   int rounds_count_ = 0;
