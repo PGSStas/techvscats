@@ -19,7 +19,7 @@ View::View(AbstractController* controller)
 
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
-  painter.setBrush(QColor("#000000"));
+  painter.setBrush(QColor("#ffffff"));
   painter.drawRect(0, 0, width(), height());
 
   if (button_handler_->GetWindowType() == WindowType::kMainMenu) {
@@ -193,7 +193,7 @@ void View::mouseMoveEvent(QMouseEvent* event) {
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
-  button_handler_->MoveButtons(size_handler_);
+  button_handler_->SetButtonsGeometry(size_handler_);
 }
 
 void View::EnableGameUi() {
@@ -226,6 +226,6 @@ void View::UpdateRounds(int current_round_nubmer, int number_of_rounds) {
   // here will be some kind of round indicator
 }
 
-void View::ChangeGameSpeed(int game_speed_coefficient) {
-  game_speed_coefficient_ = game_speed_coefficient;
+void View::ChangeGameSpeed(Speed speed) {
+  game_speed_coefficient_ = static_cast<int>(speed);
 }

@@ -41,7 +41,7 @@ void Controller::Tick(int current_time) {
 }
 
 void Controller::SetSpeedCoefficient(Speed speed) {
-  view_->ChangeGameSpeed(static_cast<int>(speed));
+  view_->ChangeGameSpeed(speed);
 }
 
 void Controller::GameProcess() {

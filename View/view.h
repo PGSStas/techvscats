@@ -24,7 +24,7 @@ class View : public QMainWindow {
 
  public:
   explicit View(AbstractController* controller);
-
+  virtual ~View() = default;
   void EnableGameUi();
   void DisableGameUi();
   void EnableMainMenuUi();
@@ -33,7 +33,7 @@ class View : public QMainWindow {
   void ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu);
   void UpdateRounds(int current_round_number, int number_of_rounds);
 
-  void ChangeGameSpeed(int game_speed_cofficient);
+  void ChangeGameSpeed(Speed speed);
   std::shared_ptr<TowerMenu> GetTowerMenu();
   bool IsTowerMenuEnabled() const;
   void DisableTowerMenu();

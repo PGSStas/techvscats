@@ -20,30 +20,32 @@ class ButtonHandler : QObject {
  public:
   explicit ButtonHandler(QMainWindow* main_window,
                          AbstractController* controller);
+  virtual ~ButtonHandler() = default;
 
   void CreateButtons(AbstractController* controller);
-  void MoveButtons(SizeHandler size_handler);
+  void SetButtonsGeometry(SizeHandler size_handler);
 
   void SetMainMenuUiVisible(bool visible);
   void SetSettingsUiVisible(bool visible);
   void SetGameUiVisible(bool visible);
   void SetPauseMenuUiVisible(bool visible);
 
+  void SetSpeedButtonState(Speed speed);
   WindowType GetWindowType() const;
 
  private:
   // creating main menu
   void CreateMainMenuButtons();
-  void MoveMainMenuButtons(SizeHandler size_handler);
+  void SetMainMenuButtonsGeometry(SizeHandler size_handler);
   // creating settings
   void CreateSettingsButtons();
-  void MoveSettingsButtons(SizeHandler size_handler);
+  void SetSettingsButtonsGeometry(SizeHandler size_handler);
   // creating game window
   void CreateGameButtons();
-  void MoveGameButtons(SizeHandler size_handler);
+  void SetGameButtonsGeometry(SizeHandler size_handler);
   // creating pause menu
   void CreatePauseMenuButtons();
-  void MovePauseMenuButtons(SizeHandler size_handler);
+  void SetPauseMenuButtonsGeometry(SizeHandler size_handler);
 
  private:
   QMainWindow* main_window_;
@@ -76,10 +78,10 @@ class ButtonHandler : QObject {
   // to_main_menu_button_ is also here
 
   int level_number_ = 1;
-  Size long_button_size_ = buttonconstants::kLongButtonSize;
-  Size short_button_size_ = buttonconstants::kShortButtonSize;
-  Coordinate first_button_coordinate_ = buttonconstants::kFirstButtonCoordinate;
-  int shift_ = buttonconstants::kShift;
+  Size long_button_size_ = button_constants::kLongButtonSize;
+  Size short_button_size_ = button_constants::kShortButtonSize;
+  Coordinate first_button_coordinate_ = button_constants::kFirstButtonCoordinate;
+  int shift_ = button_constants::kShift;
   bool is_sound_on_ = true;
 };
 
