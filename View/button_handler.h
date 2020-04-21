@@ -20,7 +20,7 @@ class ButtonHandler : QObject {
  public:
   explicit ButtonHandler(QMainWindow* main_window,
                          AbstractController* controller);
-  virtual ~ButtonHandler() = default;
+  ~ButtonHandler() override = default;
 
   void CreateButtons();
   void SetButtonsGeometry(SizeHandler size_handler);
@@ -30,7 +30,7 @@ class ButtonHandler : QObject {
   void SetGameUiVisible(bool visible);
   void SetPauseMenuUiVisible(bool visible);
 
-  void SetSpeedButtonState(Speed speed);
+  void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
 
  private:

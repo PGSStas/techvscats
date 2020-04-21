@@ -24,7 +24,7 @@ class View : public QMainWindow {
 
  public:
   explicit View(AbstractController* controller);
-  virtual ~View() = default;
+  ~View() override = default;
   void EnableGameUi();
   void DisableGameUi();
   void EnableMainMenuUi();

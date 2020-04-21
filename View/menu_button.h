@@ -27,7 +27,7 @@ class MenuButton : public QPushButton {
   MenuButton(const QString& text, const Size& button_size,
              QMainWindow* main_window, const QString& main_icon_path = "",
              const QString& active_icon_path = "");
-  virtual ~MenuButton() = default;
+  ~MenuButton() override = default;
 
   void SetGeometry(Coordinate game_coordinate, SizeHandler size_handler);
   void SetIconPath(const QString& main_icon);

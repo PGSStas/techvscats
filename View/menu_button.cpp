@@ -4,7 +4,8 @@
 MenuButton::MenuButton(const QString& text, const Size& button_size,
                        QMainWindow* main_window, const QString& main_icon_path,
                        const QString& active_icon_path)
-    : QPushButton(text, main_window) {
+    : QPushButton(text, main_window), main_icon_path_(main_icon_path),
+    active_icon_path_(active_icon_path) {
   setMouseTracking(true);
   int font_id = QFontDatabase::addApplicationFont(
       ":resources/buttons_resources/14722.ttf");
@@ -13,11 +14,7 @@ MenuButton::MenuButton(const QString& text, const Size& button_size,
   font.setBold(true);
   setFont(font);
   setStyleSheet("background-color: #ffffff;");
-  if (!main_icon_path.isEmpty()) {
-    main_icon_path_ = main_icon_path;
-    active_icon_path_ = active_icon_path;
-    setIcon(QIcon(main_icon_path));
-  }
+  setIcon(QIcon(main_icon_path_));
   button_size_ = button_size;
   setCursor(Qt::PointingHandCursor);
 }
@@ -26,9 +23,9 @@ void MenuButton::SetGeometry(
     Coordinate game_coordinate, SizeHandler size_handler) {
   Coordinate
       window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);
-  this->move(window_coordinate.x, window_coordinate.y);
   Size window_size = size_handler.GameToWindowSize(button_size_);
-  this->resize(window_size.width, window_size.height);
+  this->setGeometry(window_coordinate.x, window_coordinate.y,
+                    window_size.width, window_size.height);
   setIconSize(QSize(window_size.width, window_size.height));
 
   auto font = this->font();

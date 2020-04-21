@@ -60,7 +60,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   auto start_game_button_click = [this]() {
     window_type_ = WindowType::kGame;
     controller_->StartGame(level_number_);
-    SetSpeedButtonState(Speed::kNormalSpeed);
+    SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
@@ -206,7 +206,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/zero_speed_button_active.png");
   auto zero_speed_button_click = [this]() {
     controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
-    SetSpeedButtonState(Speed::kZeroSpeed);
+    SetSpeedButtonsState(Speed::kZeroSpeed);
   };
   connect(zero_speed_button_, &QPushButton::clicked, zero_speed_button_click);
 
@@ -215,7 +215,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/normal_speed_button_active.png");
   auto normal_speed_button_click = [this]() {
     controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
-    SetSpeedButtonState(Speed::kNormalSpeed);
+    SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(normal_speed_button_,
           &QPushButton::clicked,
@@ -227,7 +227,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/double_speed_button_active.png");
   auto double_speed_button_click = [this]() {
     controller_->SetSpeedCoefficient(Speed::kDoubleSpeed);
-    SetSpeedButtonState(Speed::kDoubleSpeed);
+    SetSpeedButtonsState(Speed::kDoubleSpeed);
   };
   connect(double_speed_button_,
           &QPushButton::clicked,
@@ -254,7 +254,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
     window_type_ = WindowType::kGame;
     controller_->EndGame(Exit::kLose);
     controller_->StartGame(level_number_);
-    SetSpeedButtonState(Speed::kNormalSpeed);
+    SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(restart_button_, &QPushButton::clicked, restart_button_click);
 
@@ -263,7 +263,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   auto continue_button_click = [this]() {
     window_type_ = WindowType::kGame;
     controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
-    SetSpeedButtonState(Speed::kNormalSpeed);
+    SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(continue_button_, &QPushButton::clicked, continue_button_click);
 }
@@ -274,7 +274,7 @@ void ButtonHandler::SetPauseMenuButtonsGeometry(SizeHandler size_handler) {
   restart_button_->SetGeometry(first_button_coordinate_ + shift, size_handler);
 }
 
-void ButtonHandler::SetSpeedButtonState(Speed speed) {
+void ButtonHandler::SetSpeedButtonsState(Speed speed) {
   zero_speed_button_->setDisabled(speed == Speed::kZeroSpeed);
   normal_speed_button_->setDisabled(speed == Speed::kNormalSpeed);
   double_speed_button_->setDisabled(speed == Speed::kDoubleSpeed);
