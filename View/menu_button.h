@@ -34,7 +34,7 @@ class MenuButton : public QPushButton {
   void SetGeometry(Coordinate game_coordinate, SizeHandler size_handler);
   void SetSecondIconPath(const QString& main_icon_path,
                          const QString& active_icon_path);
-  void SetSecondIconEnable(bool is_second_icon_enabled);
+  void EnableSecondIcon(bool is_second_icon_enabled);
 
  private:
   // changing hover color and back
