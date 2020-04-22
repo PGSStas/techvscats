@@ -359,7 +359,6 @@ void Model::LoadDatabase() {
                               {Qt::darkRed, Qt::magenta},
                               {Qt::white, Qt::yellow}};
   Effect::SetEffectVisualizations(effect_visualization);
-
 }
 
 void Model::InitializeTowerSlots() {
