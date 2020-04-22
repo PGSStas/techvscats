@@ -101,14 +101,6 @@ void Controller::TickSpawners() {
   }
 }
 
-void Controller::TickParticlesHandler(ParticleHandler* particle_handler) {
-  particle_handler->Tick(current_game_time_);
-  if (particle_handler->IsReadyToCreateParticle()) {
-    model_->CreateParticle(particle_handler->GetWaitParticles());
-    particle_handler->Clear();
-  }
-}
-
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
   enemies->remove_if([](const auto& enemy) {
@@ -198,6 +190,14 @@ void Controller::TickParticlesHandlers() {
   auto particles = model_->GetParticles();
   for (auto& particle : *particles) {
     TickParticlesHandler(particle.GetParticleHandler());
+  }
+}
+
+void Controller::TickParticlesHandler(ParticleHandler* particle_handler) {
+  particle_handler->Tick(current_game_time_);
+  if (particle_handler->IsReadyToCreateParticle()) {
+    model_->CreateParticle(particle_handler->GetWaitParticles());
+    particle_handler->Clear();
   }
 }
 

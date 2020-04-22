@@ -10,7 +10,7 @@
 struct ParticleParameters {
   ParticleParameters(
       int particle_id, Size size, Coordinate position,
-      Size look_direction, int animation_times = -1, double speed = 0
+      Size look_direction, int animation_times = 1, double speed = 0
   ) :
       particle_id(particle_id), size(size), position(position),
       look_direction(look_direction), animation_times(animation_times),

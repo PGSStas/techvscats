@@ -70,7 +70,7 @@ void Model::SetGameLevel(int level_id) {
 
   id_to_particle_.emplace_back();
   SetAnimationToGameObject(&id_to_particle_[0],
-                           {242}, {"particles/kaboom1_8"});
+                           {200}, {"particles/kaboom1_8"});
 
   id_to_projectile_[0]->GetParticleHandler()->SetAtCreationParticlePack(0, 0);
   id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(0, 300, 48);

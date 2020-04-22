@@ -51,6 +51,9 @@ void Particle::SetParameters(Size size, Coordinate position, int repeat_number,
   if (repeat_number == -1) {
     repeat_number_ = repeat_number;
   }
+  if (repeat_number_ == -1) {
+    repeat_number_ = repeat_number;
+  }
   time_to_death_ = animation_players_[0].GetAnimationDuration()
       * repeat_number_;
 }
