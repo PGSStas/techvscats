@@ -1,22 +1,33 @@
 #include <QtWidgets/QStyle>
 #include "menu_button.h"
 
+std::mt19937 MenuButton::random_generator_ = std::mt19937(
+    std::chrono::system_clock::now().time_since_epoch().count());
+
 MenuButton::MenuButton(const QString& text, const Size& button_size,
-                       QMainWindow* main_window, const QString& main_icon_path,
-                       const QString& active_icon_path)
-    : QPushButton(text, main_window), main_icon_path_(main_icon_path),
-    active_icon_path_(active_icon_path) {
-  setMouseTracking(true);
-  int font_id = QFontDatabase::addApplicationFont(
-      ":resources/buttons_resources/14722.ttf");
+                       QMainWindow* main_window, int font_id)
+    : QPushButton(text, main_window) {
   QString family = QFontDatabase::applicationFontFamilies(font_id).at(0);
   QFont font(family);
   font.setBold(true);
   setFont(font);
+  setMouseTracking(true);
   setStyleSheet("background-color: #ffffff;");
-  setIcon(QIcon(main_icon_path_));
   button_size_ = button_size;
   setCursor(Qt::PointingHandCursor);
+}
+
+MenuButton::MenuButton(const Size& button_size,
+                       QMainWindow* main_window,
+                       const QString& main_icon_path,
+                       const QString& active_icon_path)
+    : QPushButton(main_window),
+      main_icon_(main_icon_path),
+      active_icon_(active_icon_path) {
+  setIcon(main_icon_);
+  button_size_ = button_size;
+  setCursor(Qt::PointingHandCursor);
+  setMouseTracking(true);
 }
 
 void MenuButton::SetGeometry(
@@ -44,9 +55,13 @@ void MenuButton::enterEvent(QEvent*) {
   QString style_sheet =
       "border: " + QString::number(border_size_) + "px solid #000000;";
   style_sheet += "background-color: " +
-      QColor::fromRgb(QRandomGenerator::global()->generate()).name() + ";";
+      QColor::fromRgb(static_cast<int32_t>(random_generator_())).name() + ";";
   setStyleSheet(style_sheet);
-  setIcon(QIcon(active_icon_path_));
+  if (!is_second_icons_active_) {
+    setIcon(active_icon_);
+  } else {
+    setIcon(active_icon_2_);
+  }
 }
 
 void MenuButton::leaveEvent(QEvent*) {
@@ -54,14 +69,19 @@ void MenuButton::leaveEvent(QEvent*) {
       "border: " + QString::number(border_size_) + "px solid #000000;";
   style_sheet += "background-color: #ffffff;";
   setStyleSheet(style_sheet);
-  setIcon(QIcon(main_icon_path_));
+  if (!is_second_icons_active_) {
+    setIcon(main_icon_);
+  } else {
+    setIcon(main_icon_2_);
+  }
 }
 
-void MenuButton::SetActiveIconPath(const QString& active_icon) {
-  active_icon_path_ = active_icon;
+void MenuButton::SetSecondIconPath(const QString& main_icon,
+                                   const QString& active_icon) {
+  main_icon_2_ = QIcon(main_icon);
+  active_icon_2_ = QIcon(active_icon);
 }
 
-void MenuButton::SetIconPath(const QString& main_icon) {
-  main_icon_path_ = main_icon;
-  setIcon(QIcon(main_icon_path_));
+void MenuButton::SetSecondIconActive(bool is_second_icon_active) {
+  is_second_icons_active_ = is_second_icon_active;
 }

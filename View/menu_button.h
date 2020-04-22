@@ -9,6 +9,8 @@
 #include <QRandomGenerator>
 #include <memory>
 #include <string>
+#include <chrono>
+#include <random>
 #include "size_handler.h"
 #include "Model/constants.h"
 
@@ -23,25 +25,33 @@ const int kShift = 8;
 
 class MenuButton : public QPushButton {
  public:
-  MenuButton() = default;
   MenuButton(const QString& text, const Size& button_size,
-             QMainWindow* main_window, const QString& main_icon_path = "",
-             const QString& active_icon_path = "");
+             QMainWindow* main_window,  int font_id);
+  MenuButton(const Size& button_size, QMainWindow* main_window,
+      const QString& main_icon_path, const QString& active_icon_path);
   ~MenuButton() override = default;
 
   void SetGeometry(Coordinate game_coordinate, SizeHandler size_handler);
-  void SetIconPath(const QString& main_icon);
-  void SetActiveIconPath(const QString& active_icon);
+  void SetSecondIconPath (const QString& main_icon, const QString& active_icon);
+  void SetSecondIconActive(bool is_second_icon_active);
+
 
  private:
+  // changing hover color and back
   void enterEvent(QEvent*) override;
   void leaveEvent(QEvent*) override;
 
  private:
   Size button_size_ = Size(0, 0);
   int border_size_ = 0;
-  QString main_icon_path_;
-  QString active_icon_path_;
+  QIcon main_icon_;
+  QIcon active_icon_;
+
+  bool is_second_icons_active_ = false;
+  QIcon main_icon_2_;
+  QIcon active_icon_2_;
+
+  static std::mt19937 random_generator_;
 };
 
 #endif  // VIEW_MENU_BUTTON_H_

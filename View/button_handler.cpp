@@ -3,6 +3,8 @@
 ButtonHandler::ButtonHandler(QMainWindow* main_window,
                              AbstractController* controller)
     : QObject(main_window), main_window_(main_window), controller_(controller) {
+  font_id_ = QFontDatabase::addApplicationFont(
+      ":resources/buttons_resources/14722.ttf");
   CreateButtons();
   window_type_ = WindowType::kMainMenu;
 }
@@ -56,7 +58,7 @@ WindowType ButtonHandler::GetWindowType() const {
 
 void ButtonHandler::CreateMainMenuButtons() {
   start_game_button_ = new MenuButton(
-      tr("НАЧАТЬ ИГРУ"), long_button_size_, main_window_);
+      tr("НАЧАТЬ ИГРУ"), long_button_size_, main_window_, font_id_);
   auto start_game_button_click = [this]() {
     window_type_ = WindowType::kGame;
     controller_->StartGame(level_number_);
@@ -65,7 +67,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
   settings_button_ = new MenuButton(
-      tr("НАСТРОЙКИ"), long_button_size_, main_window_);
+      tr("НАСТРОЙКИ"), long_button_size_, main_window_, font_id_);
   auto settings_button_click = [this]() {
     window_type_ = WindowType::kSettings;
     main_window_->repaint();
@@ -73,7 +75,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   connect(settings_button_, &QPushButton::clicked, settings_button_click);
 
   exit_button_ = new MenuButton(
-      tr("ВЫЙТИ ИЗ ИГРЫ"), long_button_size_, main_window_);
+      tr("ВЫЙТИ ИЗ ИГРЫ"), long_button_size_, main_window_, font_id_);
   connect(exit_button_,
           &QPushButton::clicked,
           main_window_,
@@ -83,9 +85,10 @@ void ButtonHandler::CreateMainMenuButtons() {
       Size(long_button_size_.width - short_button_size_.width * 2 - shift_ * 2,
            long_button_size_.height);
   choose_level_number_ = new MenuButton(
-      tr("УРОВЕНЬ 1"), choose_level_number_size, main_window_);
+      tr("УРОВЕНЬ 1"), choose_level_number_size, main_window_, font_id_);
 
-  inc_level_button_ = new MenuButton("", short_button_size_, main_window_,
+  inc_level_button_ = new MenuButton(
+      short_button_size_, main_window_,
       ":resources/buttons_resources/inc_level_button.png",
       ":resources/buttons_resources/inc_level_button_active.png");
   auto inc_level_button_click = [this]() {
@@ -97,7 +100,8 @@ void ButtonHandler::CreateMainMenuButtons() {
   };
   connect(inc_level_button_, &QPushButton::clicked, inc_level_button_click);
 
-  dec_level_button_ = new MenuButton("", short_button_size_, main_window_,
+  dec_level_button_ = new MenuButton(
+      short_button_size_, main_window_,
       ":resources/buttons_resources/dec_level_button.png",
       ":resources/buttons_resources/dec_level_button_active.png");
   auto dec_level_button_click = [this]() {
@@ -127,43 +131,45 @@ void ButtonHandler::SetMainMenuButtonsGeometry(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  language_button_ = new MenuButton("", short_button_size_, main_window_,
+  language_button_ = new MenuButton(
+      short_button_size_,
+      main_window_,
       ":resources/buttons_resources/language_button_eng.png",
       ":resources/buttons_resources/language_button_eng_active.png");
+  language_button_->SetSecondIconPath(
+      ":resources/buttons_resources/language_button_rus.png",
+      ":resources/buttons_resources/language_button_rus_active.png");
   auto language_button_click = [this]() {
     // changing language
+    language_button_->SetSecondIconActive(!is_language_russian_);
+    is_language_russian_ = !is_language_russian_;
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
 
-  sound_button_ = new MenuButton("", short_button_size_, main_window_,
+  sound_button_ = new MenuButton(
+      short_button_size_,
+      main_window_,
       ":resources/buttons_resources/sound_button_on.png",
       ":resources/buttons_resources/sound_button_on_active.png");
+  sound_button_->SetSecondIconPath(
+      ":resources/buttons_resources/sound_button_off.png",
+      ":resources/buttons_resources/sound_button_off_active.png");
   auto sound_button_click = [this]() {
     // changing sound
-    if (is_sound_on_) {
-      sound_button_->SetIconPath(
-          ":resources/buttons_resources/sound_button_off.png");
-      sound_button_->SetActiveIconPath(
-          ":resources/buttons_resources/sound_button_off_active.png");
-    } else {
-      sound_button_->SetIconPath(
-          ":resources/buttons_resources/sound_button_on.png");
-      sound_button_->SetActiveIconPath(
-          ":resources/buttons_resources/sound_button_on_active.png");
-    }
+    sound_button_->SetSecondIconActive(!is_sound_on_);
     is_sound_on_ = !is_sound_on_;
   };
   connect(sound_button_, &QPushButton::clicked, sound_button_click);
 
   reset_game_button_ = new MenuButton(
-      tr("СБРОСИТЬ ПРОГРЕСС"), long_button_size_, main_window_);
+      tr("СБРОСИТЬ ПРОГРЕСС"), long_button_size_, main_window_, font_id_);
   auto reset_game_click = [this]() {
     // reseting game, will be updated when saving is done
   };
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);
 
   to_main_menu_button_ = new MenuButton(
-      tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_);
+      tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_, font_id_);
   auto back_to_main_menu_click = [this]() {
     if (window_type_ == WindowType::kPauseMenu) {
       controller_->EndGame(Exit::kMenu);
@@ -192,7 +198,9 @@ void ButtonHandler::SetSettingsButtonsGeometry(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateGameButtons() {
-  pause_button_ = new MenuButton("", short_button_size_, main_window_,
+  pause_button_ = new MenuButton(
+      short_button_size_,
+      main_window_,
       ":resources/buttons_resources/pause_button.png",
       ":resources/buttons_resources/pause_button_active.png");
   auto pause_button_click = [this]() {
@@ -201,7 +209,9 @@ void ButtonHandler::CreateGameButtons() {
   };
   connect(pause_button_, &QPushButton::clicked, pause_button_click);
 
-  zero_speed_button_ = new MenuButton("", short_button_size_, main_window_,
+  zero_speed_button_ = new MenuButton(
+      short_button_size_,
+      main_window_,
       ":resources/buttons_resources/zero_speed_button.png",
       ":resources/buttons_resources/zero_speed_button_active.png");
   auto zero_speed_button_click = [this]() {
@@ -210,7 +220,9 @@ void ButtonHandler::CreateGameButtons() {
   };
   connect(zero_speed_button_, &QPushButton::clicked, zero_speed_button_click);
 
-  normal_speed_button_ = new MenuButton("", short_button_size_, main_window_,
+  normal_speed_button_ = new MenuButton(
+      short_button_size_,
+      main_window_,
       ":resources/buttons_resources/normal_speed_button.png",
       ":resources/buttons_resources/normal_speed_button_active.png");
   auto normal_speed_button_click = [this]() {
@@ -222,7 +234,9 @@ void ButtonHandler::CreateGameButtons() {
           normal_speed_button_click);
   normal_speed_button_->setDisabled(true);
 
-  double_speed_button_ = new MenuButton("", short_button_size_, main_window_,
+  double_speed_button_ = new MenuButton(
+      short_button_size_,
+      main_window_,
       ":resources/buttons_resources/double_speed_button.png",
       ":resources/buttons_resources/double_speed_button_active.png");
   auto double_speed_button_click = [this]() {
@@ -249,7 +263,7 @@ void ButtonHandler::SetGameButtonsGeometry(SizeHandler size_handler) {
 
 void ButtonHandler::CreatePauseMenuButtons() {
   restart_button_ = new MenuButton(
-      tr("НАЧАТЬ УРОВЕНЬ ЗАНОВО"), long_button_size_, main_window_);
+      tr("НАЧАТЬ УРОВЕНЬ ЗАНОВО"), long_button_size_, main_window_, font_id_);
   auto restart_button_click = [this]() {
     window_type_ = WindowType::kGame;
     controller_->EndGame(Exit::kLose);
@@ -259,7 +273,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   connect(restart_button_, &QPushButton::clicked, restart_button_click);
 
   continue_button_ = new MenuButton(
-      tr("ПРОДОЛЖИТЬ"), long_button_size_, main_window_);
+      tr("ПРОДОЛЖИТЬ"), long_button_size_, main_window_, font_id_);
   auto continue_button_click = [this]() {
     window_type_ = WindowType::kGame;
     controller_->SetSpeedCoefficient(Speed::kNormalSpeed);

@@ -84,6 +84,10 @@ class ButtonHandler : QObject {
       button_constants::kFirstButtonCoordinate;
   int shift_ = button_constants::kShift;
   bool is_sound_on_ = true;
+  int font_id_;
+
+  // left to check icons
+  bool is_language_russian_ = true;
 };
 
 #endif  // VIEW_BUTTON_HANDLER_H_
