@@ -141,7 +141,7 @@ void ButtonHandler::CreateSettingsButtons() {
       ":resources/buttons_resources/language_button_rus_active.png");
   auto language_button_click = [this]() {
     // changing language
-    language_button_->SetSecondIconActive(!is_language_russian_);
+    language_button_->SetSecondIconEnable(!is_language_russian_);
     is_language_russian_ = !is_language_russian_;
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
@@ -156,7 +156,7 @@ void ButtonHandler::CreateSettingsButtons() {
       ":resources/buttons_resources/sound_button_off_active.png");
   auto sound_button_click = [this]() {
     // changing sound
-    sound_button_->SetSecondIconActive(!is_sound_on_);
+    sound_button_->SetSecondIconEnable(!is_sound_on_);
     is_sound_on_ = !is_sound_on_;
   };
   connect(sound_button_, &QPushButton::clicked, sound_button_click);

@@ -26,15 +26,15 @@ const int kShift = 8;
 class MenuButton : public QPushButton {
  public:
   MenuButton(const QString& text, const Size& button_size,
-             QMainWindow* main_window,  int font_id);
+             QMainWindow* main_window, int font_id);
   MenuButton(const Size& button_size, QMainWindow* main_window,
-      const QString& main_icon_path, const QString& active_icon_path);
+             const QString& main_icon_path, const QString& active_icon_path);
   ~MenuButton() override = default;
 
   void SetGeometry(Coordinate game_coordinate, SizeHandler size_handler);
-  void SetSecondIconPath(const QString& main_icon, const QString& active_icon);
-  void SetSecondIconActive(bool is_second_icon_active);
-
+  void SetSecondIconPath(const QString& main_icon_path,
+                         const QString& active_icon_path);
+  void SetSecondIconEnable(bool is_second_icon_enabled);
 
  private:
   // changing hover color and back
@@ -44,10 +44,10 @@ class MenuButton : public QPushButton {
  private:
   Size button_size_ = Size(0, 0);
   int border_size_ = 0;
-  QIcon main_icon_;
-  QIcon active_icon_;
+  QIcon main_icon_1_;
+  QIcon active_icon_1_;
 
-  bool is_second_icons_active_ = false;
+  bool is_second_icon_enabled_ = false;
   QIcon main_icon_2_;
   QIcon active_icon_2_;
 

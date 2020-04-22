@@ -6,7 +6,8 @@ std::mt19937 MenuButton::random_generator_ = std::mt19937(
 
 MenuButton::MenuButton(const QString& text, const Size& button_size,
                        QMainWindow* main_window, int font_id)
-    : QPushButton(text, main_window) {
+    : QPushButton(text, main_window),
+      button_size_(button_size) {
   QString family = QFontDatabase::applicationFontFamilies(font_id).at(0);
   QFont font(family);
   font.setBold(true);
@@ -22,10 +23,10 @@ MenuButton::MenuButton(const Size& button_size,
                        const QString& main_icon_path,
                        const QString& active_icon_path)
     : QPushButton(main_window),
-      main_icon_(main_icon_path),
-      active_icon_(active_icon_path) {
-  setIcon(main_icon_);
-  button_size_ = button_size;
+      button_size_(button_size),
+      main_icon_1_(main_icon_path),
+      active_icon_1_(active_icon_path) {
+  setIcon(main_icon_1_);
   setCursor(Qt::PointingHandCursor);
   setMouseTracking(true);
 }
@@ -57,11 +58,7 @@ void MenuButton::enterEvent(QEvent*) {
   style_sheet += "background-color: " +
       QColor::fromRgb(static_cast<int32_t>(random_generator_())).name() + ";";
   setStyleSheet(style_sheet);
-  if (!is_second_icons_active_) {
-    setIcon(active_icon_);
-  } else {
-    setIcon(active_icon_2_);
-  }
+  setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
 }
 
 void MenuButton::leaveEvent(QEvent*) {
@@ -69,19 +66,15 @@ void MenuButton::leaveEvent(QEvent*) {
       "border: " + QString::number(border_size_) + "px solid #000000;";
   style_sheet += "background-color: #ffffff;";
   setStyleSheet(style_sheet);
-  if (!is_second_icons_active_) {
-    setIcon(main_icon_);
-  } else {
-    setIcon(main_icon_2_);
-  }
+  setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);
 }
 
-void MenuButton::SetSecondIconPath(const QString& main_icon,
-                                   const QString& active_icon) {
-  main_icon_2_ = QIcon(main_icon);
-  active_icon_2_ = QIcon(active_icon);
+void MenuButton::SetSecondIconPath(const QString& main_icon_path,
+                                   const QString& active_icon_path) {
+  main_icon_2_ = QIcon(main_icon_path);
+  active_icon_2_ = QIcon(active_icon_path);
 }
 
-void MenuButton::SetSecondIconActive(bool is_second_icon_active) {
-  is_second_icons_active_ = is_second_icon_active;
+void MenuButton::SetSecondIconEnable(bool is_second_icon_enabled) {
+  is_second_icon_enabled_ = is_second_icon_enabled;
 }
