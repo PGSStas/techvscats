@@ -59,15 +59,14 @@ class View : public QMainWindow {
   QPushButton* return_menu_button_;
 
  private:
-  void DrawWindow(QPainter* painter, const QBrush& brush);
   // Events
   void paintEvent(QPaintEvent*) override;
   void resizeEvent(QResizeEvent*) override;
   void timerEvent(QTimerEvent* event) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
+
   // Game window
-  void DrawBackground(QPainter* painter);
   void DrawAuras(QPainter* painter);
   void DrawEnemies(QPainter* painter);
   void DrawProjectiles(QPainter* painter);

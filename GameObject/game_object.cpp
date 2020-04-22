@@ -16,6 +16,27 @@ void GameObject::SetPosition(Coordinate position) {
   position_ = position;
 }
 
+void GameObject::SetAnimationPlayers(
+    const std::vector<AnimationPlayer>& animation_players) {
+  animation_players_ = animation_players;
+  action_timings_.clear();
+  for (const auto& animation_player : animation_players_) {
+    action_timings_.push_back(animation_player.GetAnimationDuration());
+  }
+}
+
+void GameObject::Rescale(Size to_size) {
+  for (auto& player : animation_players_) {
+    player.Rescale(to_size);
+  }
+  if (animation_players_.empty()) {
+    animation_players_.resize(3, AnimationPlayer(
+        std::make_shared<std::vector<QImage>>(
+            1, QImage(":resources/images/error.png"))));
+    SetAnimationPlayers(animation_players_);
+  }
+}
+
 Coordinate GameObject::GetPosition() const {
   return position_;
 }

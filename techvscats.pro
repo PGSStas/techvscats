@@ -31,6 +31,7 @@ SOURCES += \
         Model/model.cpp \
         Model/road.cpp \
         Model/size.cpp \
+        View/animation_player.cpp \
         View/size_handler.cpp \
         View/tower_menu.cpp \
         View/tower_menu_option.cpp \
@@ -57,6 +58,7 @@ HEADERS += \
         Model/model.h \
         Model/road.h \
         Model/size.h \
+        View/animation_player.h \
         View/size_handler.h \
         View/tower_menu.h \
         View/tower_menu_option.h \

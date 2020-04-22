@@ -1,22 +1,22 @@
 #ifndef GAMEOBJECT_ENEMY_H_
 #define GAMEOBJECT_ENEMY_H_
 
-#include <memory>
 #include <algorithm>
 #include <chrono>
+#include <memory>
 #include <random>
 
-#include "Model/road.h"
-#include "moving_object.h"
-#include "effect.h"
 #include "auric_field.h"
+#include "effect.h"
+#include "moving_object.h"
+#include "Model/road.h"
 
 class Enemy : public MovingObject {
  public:
-  Enemy(Size size, double speed, double damage,
-        double armor, int reward, double max_health,
+  Enemy(double speed, double damage,
+        double armor, int reward, double max_health, Size size = {60, 60},
         AuricField auric_field = AuricField(-1, -1));
-  Enemy(const Enemy& enemy_instance);
+  Enemy(const Enemy& other);
   ~Enemy() override = default;
 
   void Tick(int current_time) override;

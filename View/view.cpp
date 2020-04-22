@@ -8,6 +8,7 @@ View::View(AbstractController* controller) : controller_(controller) {
   start_game_button_->setText(tr("Начать"));
   auto start_game_button_click = [this]() {
     controller_->StartGame(1);
+    controller_->RescaleObjects(size_handler_);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
@@ -25,7 +26,7 @@ View::View(AbstractController* controller) : controller_(controller) {
 
   view_timer_.start();
   time_between_ticks_.start();
-  controller_timer_id_ = startTimer(kTimeBetweenTicks);
+  controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
   EnableMenuUi();
   DisableGameUi();
 }
@@ -74,24 +75,19 @@ void View::DisableTowerMenu() {
   is_tower_menu_enabled_ = false;
 }
 
-void View::DrawWindow(QPainter* painter, const QBrush& brush) {
-  painter->save();
-  painter->setBrush(QColor("#000080"));
-  painter->drawRect(0, 0, width(), height());
-  painter->setBrush(brush);
-  Coordinate top_corner =
-      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
-  painter->drawRect(top_corner.x, top_corner.y,
-                    rect_size.width, rect_size.height);
-  painter->restore();
-}
-
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
 
   Coordinate label_position = size_handler_.GameToWindowCoordinate({300, 10});
   wave_status_label_->move(label_position.x, label_position.y);
+
+  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+  Size window_size =
+      size_handler_.GameToWindowSize(size_handler_.GetGameSize());
+  painter.setBrush(QColor("#000080"));
+  painter.drawRect(0, 0, width(), height());
+  QRect background = QRect(origin.x, origin.y, window_size.width,
+                           window_size.height);
 
   if (window_type_ == WindowType::kMainMenu) {
     Coordinate start_game_button_position =
@@ -99,7 +95,8 @@ void View::paintEvent(QPaintEvent*) {
     start_game_button_->move(start_game_button_position.x,
                              start_game_button_position.y);
 
-    DrawWindow(&painter, QColor("#ffffff"));
+    painter.setBrush(QColor("#ffffff"));
+    painter.drawRect(background);
   }
   if (window_type_ == WindowType::kGame) {
     Coordinate return_menu_button_position =
@@ -107,9 +104,8 @@ void View::paintEvent(QPaintEvent*) {
     return_menu_button_->move(return_menu_button_position.x,
                               return_menu_button_position.y);
 
-    DrawWindow(&painter, QColor("#53a661"));
-    DrawBackground(&painter);
-
+    painter.drawImage(origin.x, origin.y,
+                      controller_->GetMap().GetCurrentFrame());
     DrawAuras(&painter);
     DrawEnemies(&painter);
     DrawProjectiles(&painter);
@@ -121,7 +117,9 @@ void View::paintEvent(QPaintEvent*) {
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
-  repaint();
+  if (window_type_ == WindowType::kGame) {
+    controller_->RescaleObjects(size_handler_);
+  }
 }
 
 void View::timerEvent(QTimerEvent* event) {
@@ -146,22 +144,6 @@ void View::mouseMoveEvent(QMouseEvent* event) {
     controller_->MouseMove(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())));
   }
-}
-
-void View::DrawBackground(QPainter* painter) {
-  painter->save();
-  painter->setPen(QPen(Qt::black, 5));
-  const auto& roads = controller_->GetRoads();
-  for (const auto& road : roads) {
-    for (int i = 0; !road.IsEnd(i + 1); i++) {
-      Coordinate start_point =
-          size_handler_.GameToWindowCoordinate(road.GetNode(i));
-      Coordinate end_point =
-          size_handler_.GameToWindowCoordinate(road.GetNode(i + 1));
-      painter->drawLine(start_point.x, start_point.y, end_point.x, end_point.y);
-    }
-  }
-  painter->restore();
 }
 
 void View::DrawAuras(QPainter* painter) {

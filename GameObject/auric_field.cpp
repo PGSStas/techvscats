@@ -31,7 +31,7 @@ int AuricField::GetEffectId() const {
 
 bool AuricField::IsInRadius(const Coordinate& coordinate) const {
   return carrier_coordinate_->GetVectorTo(coordinate).GetLength()
-      <= effect_radius_ + kEpsilon;
+      <= effect_radius_ + constants::kEpsilon;
 }
 
 bool AuricField::IsValid() const {
