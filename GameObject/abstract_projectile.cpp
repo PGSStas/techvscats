@@ -6,12 +6,13 @@ AbstractProjectile::AbstractProjectile(Size size, double speed)
 AbstractProjectile::AbstractProjectile(const AbstractProjectile& other) :
     MovingObject(other.size_, other.speed_, other.position_) {
   SetAnimationParameters(other.draw_color_, other.iteration_time_);
-  particle_handler.SetParticlePacks(other.particle_handler);
+  particle_handler_.SetParticlePacks(other.particle_handler_);
 }
 
 void AbstractProjectile::Move() {
   MoveToDestination();
   if (position_ == destination_) {
+    particle_handler_.CarrierDeath();
     is_end_reached_ = true;
     is_dead_ = true;
   }

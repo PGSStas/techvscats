@@ -110,6 +110,7 @@ void View::paintEvent(QPaintEvent*) {
     DrawEnemies(&painter);
     DrawProjectiles(&painter);
     DrawTowers(&painter);
+    DrawParticles(&painter);
 
     DrawInterface(&painter);
   }
@@ -177,6 +178,13 @@ void View::DrawTowers(QPainter* painter) {
   const auto& buildings = controller_->GetBuildings();
   for (const auto& building : buildings) {
     building->Draw(painter, size_handler_);
+  }
+}
+
+void View::DrawParticles(QPainter* painter) {
+  const auto& particles = controller_->GetParticles();
+  for (const auto& particle : particles) {
+    particle.Draw(painter, size_handler_);
   }
 }
 

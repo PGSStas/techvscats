@@ -68,9 +68,9 @@ void Model::SetGameLevel(int level_id) {
 
   ////////////////////////////////////////////// to paste
 
-  id_to_particle_.emplace_back(Size(30, 30));
+  id_to_particle_.emplace_back();
   SetAnimationToGameObject(&id_to_particle_[0],
-                           {442}, {":resources/particles/kaboom1_8.png"});
+                           {242}, {"particles/kaboom1_8"});
 
   id_to_projectile_[0]->GetParticleHandler()->SetAtCreationParticlePack(0, 0);
   id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(0, 300, 48);
@@ -118,7 +118,9 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
 void Model::CreateParticle(const std::list<ParticleParameters>& parameters) {
   for (const auto& particle_parameters :parameters) {
     particles_.push_back(id_to_particle_[particle_parameters.particle_id]);
-    particles_.back().SetParameters(particle_parameters.position,
+    particles_.back().SetParameters(particle_parameters.size,
+                                    particle_parameters.position,
+                                    particle_parameters.animation_times,
                                     particle_parameters.look_direction,
                                     particle_parameters.speed);
   }

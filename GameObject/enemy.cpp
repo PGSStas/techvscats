@@ -106,6 +106,7 @@ void Enemy::ReceiveDamage(double damage) {
   double multiplier = 1 - ((0.052 * armor) / (0.9 + 0.048 * std::abs(armor)));
   current_health_ -= std::min(multiplier * damage, current_health_);
   if (current_health_ <= constants::kEpsilon) {
+    particle_handler_.CarrierDeath();
     is_dead_ = true;
   }
 }

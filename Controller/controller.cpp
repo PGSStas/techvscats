@@ -43,12 +43,12 @@ void Controller::GameProcess() {
     CreateNextWave();
   }
   TickSpawners();
-  TickParticlesHandlers();
-  TickParticles();
   TickEnemies();
   TickBuildings();
   TickProjectiles();
   TickAuras();
+  TickParticlesHandlers();
+  TickParticles();
 }
 
 void Controller::MenuProcess() {}
@@ -101,38 +101,11 @@ void Controller::TickSpawners() {
   }
 }
 
-void Controller::TickParticlesHandlers() {
-  auto enemies = model_->GetEnemies();
-  for (auto& enemy : *enemies) {
-    TickParticlesHandler(enemy->GetParticleHandler());
-  }
-  auto buildings = model_->GetBuildings();
-  for (auto& building : buildings) {
-    TickParticlesHandler(building->GetParticleHandler());
-  }
-  auto projectiles = model_->GetProjectiles();
-  for (auto& projectile : *projectiles) {
-    TickParticlesHandler(projectile->GetParticleHandler());
-  }
-  auto particles = model_->GetParticles();
-  for (auto& particle : *particles) {
-    TickParticlesHandler(particle.GetParticleHandler());
-  }
-}
-
 void Controller::TickParticlesHandler(ParticleHandler* particle_handler) {
   particle_handler->Tick(current_game_time_);
   if (particle_handler->IsReadyToCreateParticle()) {
     model_->CreateParticle(particle_handler->GetWaitParticles());
     particle_handler->Clear();
-  }
-}
-
-void Controller::TickParticles() {
-  auto particles = model_->GetParticles();
-  particles->remove_if([](const Particle& particle) { return particle.IsDead(); });
-  for (auto& particle : *particles) {
-    particle.Tick(current_game_time_);
   }
 }
 
@@ -206,6 +179,33 @@ void Controller::TickAuras() {
 
   for (const auto& building : buildings) {
     ApplyEffectToAllInstances(building->GetAuricField());
+  }
+}
+
+void Controller::TickParticlesHandlers() {
+  auto enemies = model_->GetEnemies();
+  for (auto& enemy : *enemies) {
+    TickParticlesHandler(enemy->GetParticleHandler());
+  }
+  auto buildings = model_->GetBuildings();
+  for (auto& building : buildings) {
+    TickParticlesHandler(building->GetParticleHandler());
+  }
+  auto projectiles = model_->GetProjectiles();
+  for (auto& projectile : *projectiles) {
+    TickParticlesHandler(projectile->GetParticleHandler());
+  }
+  auto particles = model_->GetParticles();
+  for (auto& particle : *particles) {
+    TickParticlesHandler(particle.GetParticleHandler());
+  }
+}
+
+void Controller::TickParticles() {
+  auto particles = model_->GetParticles();
+  particles->remove_if([](const Particle& particle) { return particle.IsDead(); });
+  for (auto& particle : *particles) {
+    particle.Tick(current_game_time_);
   }
 }
 
@@ -311,6 +311,10 @@ void Controller::RescaleObjects(const SizeHandler& size_handler) {
   model_->RescaleDatabase(size_handler);
 }
 
+const std::list<Particle>& Controller::GetParticles() const {
+  return *model_->GetParticles();
+}
+
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
   return *model_->GetEnemies();
 }
@@ -332,7 +336,6 @@ const Base& Controller::GetBase() const {
 int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
-
 const AnimationPlayer& Controller::GetMap() const {
   return model_->GetMap();
 }

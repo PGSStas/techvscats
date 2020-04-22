@@ -2,14 +2,14 @@
 
 ParticleHandler::ParticleHandler(const Size& carrier_size,
                                  const Coordinate& carrier_coordinates) :
-    carrier_coordinates_(carrier_coordinates), carrier_size_(carrier_size) {
-}
+    carrier_coordinates_(carrier_coordinates), carrier_size_(carrier_size) {}
 
 void ParticleHandler::Tick(int delta_time) {
   if (at_creation_id_ != -1) {
-    CreateProjectileFromMe();
+    CreateProjectileFromMe(at_creation_id_);
     at_creation_id_ = -1;
   }
+
   if (period_ <= 0) {
     return;
   }
@@ -26,7 +26,7 @@ void ParticleHandler::SetRotation(Size look_direction) {
 void ParticleHandler::SetAtCreationParticlePack(int at_death_id,
                                                 int at_creation_id) {
 
-  at_creation_id_ = at_death_id;
+  at_death_id_ = at_death_id;
   at_creation_id_ = at_creation_id;
 }
 
@@ -38,8 +38,15 @@ void ParticleHandler::SetAliveParticlePack(int while_alive_id, int period,
 }
 
 void ParticleHandler::SetParticlePacks(const ParticleHandler& other) {
-  SetAtCreationParticlePack(other.at_death_id_,other.at_creation_id_);
-  SetAliveParticlePack(other.while_alive_id_,other.period_,other.radius_);
+  SetAtCreationParticlePack(other.at_death_id_, other.at_creation_id_);
+  SetAliveParticlePack(other.while_alive_id_, other.period_, other.radius_);
+}
+
+void ParticleHandler::CarrierDeath() {
+  if (at_death_id_ != -1) {
+    CreateProjectileFromMe(at_death_id_);
+    at_death_id_ = -1;
+  }
 }
 
 void ParticleHandler::Clear() {
@@ -57,8 +64,8 @@ bool ParticleHandler::IsReadyToCreateParticle() const {
 void ParticleHandler::AddParticle(ParticleParameters particle) {
   wait_particles_.push_back(particle);
 }
-void ParticleHandler::CreateProjectileFromMe() {
-  wait_particles_.emplace_back(at_creation_id_, carrier_coordinates_,
-                               look_direction_);
 
+void ParticleHandler::CreateProjectileFromMe(int id) {
+  wait_particles_.emplace_back(id, carrier_size_, carrier_coordinates_,
+                               look_direction_);
 }

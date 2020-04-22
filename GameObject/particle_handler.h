@@ -9,14 +9,17 @@
 // To avoid multi include
 struct ParticleParameters {
   ParticleParameters(
-      int particle_id, Coordinate position,
-      Size look_direction, double speed = 0
+      int particle_id, Size size, Coordinate position,
+      Size look_direction, int animation_times = -1, double speed = 0
   ) :
-      particle_id(particle_id), position(position),
-      look_direction(look_direction), speed(speed) {}
+      particle_id(particle_id), size(size), position(position),
+      look_direction(look_direction), animation_times(animation_times),
+      speed(speed) {}
   int particle_id;
+  Size size;
   Coordinate position;
   Size look_direction;
+  int animation_times;
   double speed;
 };
 
@@ -31,13 +34,14 @@ class ParticleHandler {
   void SetAtCreationParticlePack(int at_death_id, int at_creation_id = -1);
   void SetAliveParticlePack(int while_alive_id, int period, int radius);
   void SetParticlePacks(const ParticleHandler& other);
+  void CarrierDeath();
   void Clear();
 
   const std::list<ParticleParameters>& GetWaitParticles() const;
   bool IsReadyToCreateParticle() const;
 
  private:
-  void CreateProjectileFromMe();
+  void CreateProjectileFromMe(int id);
   const Coordinate& carrier_coordinates_;
   const Size& carrier_size_;
   Size look_direction_ = {0, 1};
