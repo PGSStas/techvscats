@@ -7,19 +7,14 @@ Enemy::Enemy(double speed, double damage, double armor, int reward,
              double max_health, Size size, AuricField auric_field)
     : MovingObject(size, speed), damage_(damage), armor_(armor),
       reward_(reward), max_health_(max_health), current_health_(max_health_),
-      auric_field_(auric_field) {
-  auric_field.SetCarrierCoordinate(&position_);
+      auric_field_(auric_field), node_number_(0) {
 }
 
 Enemy::Enemy(const Enemy& other)
-    : MovingObject(other.GetSize(), other.speed_),
-      damage_(other.damage_), armor_(other.armor_),
-      reward_(other.reward_), max_health_(other.max_health_),
-      current_health_(other.max_health_),
-      auric_field_(other.auric_field_), node_number_(0) {
+    : Enemy(other.speed_, other.damage_, other.armor_,
+            other.reward_, other.max_health_, other.size_, other.auric_field_) {
   SetAnimationPlayers(other.animation_players_);
   auric_field_.SetCarrierCoordinate(&position_);
-  node_number_ = 0;
   if (other.road_ != nullptr) {
     SetRoad(*other.road_);
   }
@@ -59,17 +54,17 @@ void Enemy::Move() {
 void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
-  Coordinate point =
-      size_handler.GameToWindowCoordinate(position_ - size_ / 2);
+  Coordinate point = size_handler.GameToWindowCoordinate(
+      position_ - size_ / 2);
   Size size = size_handler.GameToWindowSize(size_);
 
   painter->translate(point.x, point.y);
-  if (position_.GetVectorTo(destination_).width < 0) {
+  if (position_.GetVectorTo(destination_).width < constants::kEpsilon) {
     painter->translate(size.width, 0);
     // mirroring the image
     painter->scale(-1.0, 1.0);
   }
-  painter->drawImage(QPoint(0, 0) , animation_players_[0].GetCurrentFrame());
+  painter->drawImage(QPoint(0, 0), animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }
