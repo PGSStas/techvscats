@@ -4,7 +4,7 @@ ButtonHandler::ButtonHandler(QMainWindow* main_window,
                              AbstractController* controller)
     : QObject(main_window), main_window_(main_window), controller_(controller) {
   font_id_ = QFontDatabase::addApplicationFont(
-      ":resources/buttons_resources/14722.ttf");
+      ":resources/buttons_resources/menu_buttons_font.ttf");
   CreateButtons();
   window_type_ = WindowType::kMainMenu;
 }
@@ -16,11 +16,11 @@ void ButtonHandler::CreateButtons() {
   CreatePauseMenuButtons();
 }
 
-void ButtonHandler::SetButtonsGeometry(SizeHandler size_handler) {
-  SetMainMenuButtonsGeometry(size_handler);
-  SetSettingsButtonsGeometry(size_handler);
-  SetGameButtonsGeometry(size_handler);
-  SetPauseMenuButtonsGeometry(size_handler);
+void ButtonHandler::RescaleButtons(SizeHandler size_handler) {
+  RescaleMainMenuButtons(size_handler);
+  RescaleSettingsButtons(size_handler);
+  RescaleGameButtons(size_handler);
+  RescalePauseMenuButtons(size_handler);
 }
 
 void ButtonHandler::SetMainMenuUiVisible(bool visible) {
@@ -76,10 +76,8 @@ void ButtonHandler::CreateMainMenuButtons() {
 
   exit_button_ = new MenuButton(
       tr("ВЫЙТИ ИЗ ИГРЫ"), long_button_size_, main_window_, font_id_);
-  connect(exit_button_,
-          &QPushButton::clicked,
-          main_window_,
-          &QMainWindow::close);
+  connect(
+      exit_button_, &QPushButton::clicked, main_window_, &QMainWindow::close);
 
   Size choose_level_number_size =
       Size(long_button_size_.width - short_button_size_.width * 2 - shift_ * 2,
@@ -96,7 +94,7 @@ void ButtonHandler::CreateMainMenuButtons() {
       level_number_++;
     }
     choose_level_number_->setText(
-        "УРОВЕНЬ " + QString::number(level_number_));
+        tr("УРОВЕНЬ ") + QString::number(level_number_));
   };
   connect(inc_level_button_, &QPushButton::clicked, inc_level_button_click);
 
@@ -109,12 +107,12 @@ void ButtonHandler::CreateMainMenuButtons() {
       level_number_--;
     }
     choose_level_number_->setText(
-        "УРОВЕНЬ " + QString::number(level_number_));
+        tr("УРОВЕНЬ ") + QString::number(level_number_));
   };
   connect(dec_level_button_, &QPushButton::clicked, dec_level_button_click);
 }
 
-void ButtonHandler::SetMainMenuButtonsGeometry(SizeHandler size_handler) {
+void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
   Size shift = Size(0, long_button_size_.height + shift_);
 
   start_game_button_->SetGeometry(first_button_coordinate_, size_handler);
@@ -180,7 +178,7 @@ void ButtonHandler::CreateSettingsButtons() {
   connect(to_main_menu_button_, &QPushButton::clicked, back_to_main_menu_click);
 }
 
-void ButtonHandler::SetSettingsButtonsGeometry(SizeHandler size_handler) {
+void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
   Size shift = Size(0, long_button_size_.height + shift_);
 
   sound_button_->SetGeometry(
@@ -248,7 +246,7 @@ void ButtonHandler::CreateGameButtons() {
           double_speed_button_click);
 }
 
-void ButtonHandler::SetGameButtonsGeometry(SizeHandler size_handler) {
+void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
   Size shift = Size(short_button_size_.width + shift_, 0);
   pause_button_->SetGeometry({0, 0}, size_handler);
   Coordinate zero_speed_button_coordinate =
@@ -282,7 +280,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   connect(continue_button_, &QPushButton::clicked, continue_button_click);
 }
 
-void ButtonHandler::SetPauseMenuButtonsGeometry(SizeHandler size_handler) {
+void ButtonHandler::RescalePauseMenuButtons(SizeHandler size_handler) {
   Size shift = Size({0, long_button_size_.height + shift_});
   continue_button_->SetGeometry(first_button_coordinate_, size_handler);
   restart_button_->SetGeometry(first_button_coordinate_ + shift, size_handler);

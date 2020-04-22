@@ -16,7 +16,7 @@ class ButtonHandler : QObject {
   ~ButtonHandler() override = default;
 
   void CreateButtons();
-  void SetButtonsGeometry(SizeHandler size_handler);
+  void RescaleButtons(SizeHandler size_handler);
 
   void SetMainMenuUiVisible(bool visible);
   void SetSettingsUiVisible(bool visible);
@@ -29,16 +29,16 @@ class ButtonHandler : QObject {
  private:
   // creating main menu
   void CreateMainMenuButtons();
-  void SetMainMenuButtonsGeometry(SizeHandler size_handler);
+  void RescaleMainMenuButtons(SizeHandler size_handler);
   // creating settings
   void CreateSettingsButtons();
-  void SetSettingsButtonsGeometry(SizeHandler size_handler);
+  void RescaleSettingsButtons(SizeHandler size_handler);
   // creating game window
   void CreateGameButtons();
-  void SetGameButtonsGeometry(SizeHandler size_handler);
+  void RescaleGameButtons(SizeHandler size_handler);
   // creating pause menu
   void CreatePauseMenuButtons();
-  void SetPauseMenuButtonsGeometry(SizeHandler size_handler);
+  void RescalePauseMenuButtons(SizeHandler size_handler);
 
  private:
   QMainWindow* main_window_;

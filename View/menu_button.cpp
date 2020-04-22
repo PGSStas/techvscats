@@ -33,8 +33,7 @@ MenuButton::MenuButton(const Size& button_size,
 
 void MenuButton::SetGeometry(
     Coordinate game_coordinate, SizeHandler size_handler) {
-  Coordinate
-      window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);
+  auto window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);
   Size window_size = size_handler.GameToWindowSize(button_size_);
   this->setGeometry(window_coordinate.x, window_coordinate.y,
                     window_size.width, window_size.height);

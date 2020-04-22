@@ -19,20 +19,17 @@ View::View(AbstractController* controller)
 
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
-
   DrawBackGround(&painter);
-
-  if (button_handler_->GetWindowType() == WindowType::kMainMenu) {
-    DrawMainMenu(&painter);
-  }
-  if (button_handler_->GetWindowType() == WindowType::kGame) {
-    DrawGame(&painter);
-  }
-  if (button_handler_->GetWindowType() == WindowType::kSettings) {
-    DrawSettings(&painter);
-  }
-  if (button_handler_->GetWindowType() == WindowType::kPauseMenu) {
-    DrawPauseMenu(&painter);
+  auto window_type = button_handler_->GetWindowType();
+  switch (window_type) {
+    case WindowType::kMainMenu:DrawMainMenu(&painter);
+      break;
+    case WindowType::kGame:DrawGame(&painter);
+      break;
+    case WindowType::kSettings:DrawSettings(&painter);
+      break;
+    case WindowType::kPauseMenu:DrawPauseMenu(&painter);
+      break;
   }
 }
 
@@ -168,7 +165,7 @@ void View::mouseMoveEvent(QMouseEvent* event) {
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
-  button_handler_->SetButtonsGeometry(size_handler_);
+  button_handler_->RescaleButtons(size_handler_);
   controller_->RescaleObjects(size_handler_);
 }
 
@@ -200,9 +197,10 @@ void View::timerEvent(QTimerEvent* event) {
   }
 }
 
-void View::UpdateRounds(int current_round_nubmer, int number_of_rounds) {
+void View::UpdateRounds(int current_round_number, int number_of_rounds) {
   // here will be some kind of round indicator
 }
+
 void View::ChangeGameSpeed(Speed speed) {
   game_speed_coefficient_ = static_cast<int>(speed);
 }
