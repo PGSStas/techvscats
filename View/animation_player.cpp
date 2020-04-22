@@ -2,7 +2,7 @@
 
 AnimationPlayer::AnimationPlayer(
     const std::shared_ptr<std::vector<QImage>>& frames, double mspf_) :
-    AnimationPlayer(frames, static_cast<int>( frames->size() * mspf_
+    AnimationPlayer(frames, static_cast<int>(frames->size() * mspf_
         * constants::kTimeScale)) {}
 
 AnimationPlayer::AnimationPlayer(

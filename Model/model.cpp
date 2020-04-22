@@ -52,11 +52,11 @@ void Model::SetGameLevel(int level_id) {
 
   Building building_instance4(3, 24);
   building_instance4.SetProjectile(1, 54, 275, 1);
- // SetAnimationToGameObject(&building_instance4, {1000, 600, 600}, {
- //     "towers/default_tower_reload_4",
- //     "towers/default_tower_pre_3",
-//      "towers/default_tower_post_3",
- // });
+  SetAnimationToGameObject(&building_instance4, {1000, 600, 600}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
 
   upgrades_tree_.push_back({1, 0});
   id_to_building_.push_back(building_instance);

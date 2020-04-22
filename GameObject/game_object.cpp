@@ -30,7 +30,7 @@ void GameObject::Rescale(Size to_size) {
     player.Rescale(to_size);
   }
   if (animation_players_.empty()) {
-    animation_players_.resize(3,AnimationPlayer(
+    animation_players_.resize(3, AnimationPlayer(
         std::make_shared<std::vector<QImage>>(
             1, QImage(":resources/images/error.png"))));
     SetAnimationPlayers(animation_players_);
