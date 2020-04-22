@@ -186,6 +186,7 @@ void View::resizeEvent(QResizeEvent*) {
 
 void View::EnableGameUi() {
   controller_->RescaleObjects(size_handler_);
+  DisableTowerMenu();
   button_handler_->SetGameUiVisible(true);
 }
 
