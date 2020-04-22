@@ -34,13 +34,13 @@ void Model::SetGameLevel(int level_id) {
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
   });
-  
+
   SetAnimationToGameObject(&id_to_building_[2], {100, 50, 10}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
   });
-  
+
   SetAnimationToGameObject(&id_to_building_[3], {1000, 600, 600}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",

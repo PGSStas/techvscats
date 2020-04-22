@@ -244,7 +244,6 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   } else {
     model_->AddTextNotification({"Not enough gold", base->GetGoldPosition(),
                                  Qt::blue, current_game_time_});
-
   }
 }
 
