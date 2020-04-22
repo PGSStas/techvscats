@@ -9,13 +9,6 @@
 #include "menu_button.h"
 #include "size_handler.h"
 
-enum class WindowType {
-  kMainMenu,
-  kGame,
-  kSettings,
-  kPauseMenu
-};
-
 class ButtonHandler : QObject {
  public:
   explicit ButtonHandler(QMainWindow* main_window,

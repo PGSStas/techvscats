@@ -284,12 +284,12 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
 }
 
 const std::vector<std::shared_ptr<Building>>&
-  Controller::GetBuildings() const {
+Controller::GetBuildings() const {
   return model_->GetBuildings();
 }
 
 const std::list<std::shared_ptr<AbstractProjectile>>&
-  Controller::GetProjectiles() const {
+Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }
 
@@ -301,6 +301,6 @@ int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
 
-const AnimationPlayer& Controller::GetMap() const {
-  return model_->GetMap();
+const AnimationPlayer& Controller::GetBackGround(WindowType type) const {
+  return model_->GetBackGround(static_cast<int>( type));
 }

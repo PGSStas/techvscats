@@ -22,6 +22,13 @@ enum class Speed {
   kDoubleSpeed
 };
 
+enum class WindowType {
+  kMainMenu=0,
+  kSettings=1,
+  kPauseMenu=2,
+  kGame=3
+};
+
 // AbstractController is needed to avoid the problem with looping include
 // All public methods of controller should also be written here
 class AbstractController {
@@ -46,7 +53,7 @@ class AbstractController {
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
 
-  virtual const AnimationPlayer& GetMap() const = 0;
+  virtual const AnimationPlayer& GetBackGround(WindowType type) const = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

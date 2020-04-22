@@ -32,7 +32,7 @@ class Controller : public AbstractController {
   const Base& GetBase() const override;
   int GetCurrentTime() const override;
 
-  const AnimationPlayer& GetMap() const override;
+  const AnimationPlayer& GetBackGround(WindowType type) const override;
 
  private:
   std::unique_ptr<Model> model_;
