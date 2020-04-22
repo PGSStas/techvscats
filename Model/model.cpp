@@ -117,11 +117,10 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
 
 void Model::CreateParticle(const std::list<ParticleParameters>& parameters) {
   for (const auto& particle_parameters :parameters) {
-    Particle new_particle = id_to_particle_[particle_parameters.particle_id];
-    new_particle.SetParameters(particle_parameters.position,
-                               particle_parameters.look_direction,
-                               particle_parameters.speed);
-    particles_.push_back(new_particle);
+    particles_.push_back(id_to_particle_[particle_parameters.particle_id]);
+    particles_.back().SetParameters(particle_parameters.position,
+                                    particle_parameters.look_direction,
+                                    particle_parameters.speed);
   }
 }
 
