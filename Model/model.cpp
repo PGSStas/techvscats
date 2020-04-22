@@ -363,15 +363,15 @@ void Model::LoadDatabase() {
       aura = AuricField(enemy["aura"].toObject()["radius"].toInt(),
                         enemy["aura"].toObject()["effect_id"].toInt());
     }
-
+    Size size = Size(enemy["size"].toObject()["width"].toInt(),
+                     enemy["size"].toObject()["height"].toInt());
+    // TODO(PGS): size of enemy please. Also i put speed on the second place.
     id_to_enemy_.emplace_back(enemy["speed"].toInt(),
                               enemy["damage"].toInt(),
                               enemy["armor"].toInt(),
                               enemy["reward"].toInt(),
                               enemy["max_health"].toInt(),
-                              Size(
-                                  enemy["size"].toObject()["width"].toInt(),
-                                  enemy["size"].toObject()["height"].toInt()),
+                              size,
                               aura);
   }
 
