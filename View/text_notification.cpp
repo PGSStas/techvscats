@@ -1,12 +1,12 @@
 #include "text_notification.h"
 
-TextNotification::TextNotification(const QString& message, Size size,
+TextNotification::TextNotification(const QString& message,
                                    Coordinate start_position, QColor color,
                                    int creation_time, Size moving_vector,
-                                   int life_time) :
-    GameObject(size, start_position), message_(message),
-    moving_vector_(moving_vector), color_(color),
-    creation_time_(creation_time), life_time_(life_time) {}
+                                   int life_time)
+    : GameObject({0, 0}, start_position), message_(message),
+      moving_vector_(moving_vector), color_(color),
+      creation_time_(creation_time), life_time_(life_time) {}
 
 void TextNotification::Tick(int current_time) {
   position_ += moving_vector_;

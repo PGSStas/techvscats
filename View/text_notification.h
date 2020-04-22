@@ -10,8 +10,8 @@
 
 class TextNotification : public GameObject {
  public:
-  TextNotification(const QString& message, Size size,
-                   Coordinate start_position, QColor color, int creation_time,
+  TextNotification(const QString& message, Coordinate start_position,
+                   QColor color, int creation_time,
                    Size moving_vector = Size(0, -8), int life_time = 1000);
   ~TextNotification() override = default;
 

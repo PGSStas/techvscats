@@ -35,13 +35,13 @@ void Model::SetGameLevel(int level_id) {
       "towers/default_tower_post_3",
   });
   
-  SetAnimationToGameObject(&&id_to_building_[2], {100, 50, 10}, {
+  SetAnimationToGameObject(&id_to_building_[2], {100, 50, 10}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
   });
   
-  SetAnimationToGameObject(&&id_to_building_[3], {1000, 600, 600}, {
+  SetAnimationToGameObject(&id_to_building_[3], {1000, 600, 600}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
@@ -361,7 +361,7 @@ void Model::LoadDatabase() {
           json_building["aura"].toObject()["effect_id"].toInt());
     }
 
-    Building building(size, i, json_building["settle_cost"].toInt(), aura);
+    Building building(i, json_building["settle_cost"].toInt(), size, aura);
     if (json_building.contains("projectile")) {
       auto json_projectile = json_building["projectile"].toObject();
       building.SetProjectile(json_projectile["projectile_id"].toInt(),
@@ -369,12 +369,6 @@ void Model::LoadDatabase() {
                              json_projectile["attack_range"].toInt(),
                              json_projectile["max_aims"].toInt());
     }
-
-    auto action_time = json_building["action_time"].toArray();
-    // Temporary colors
-    building.SetAnimationParameters(Qt::yellow, Qt::red, Qt::darkYellow, {
-        action_time[0].toInt(), action_time[1].toInt(), action_time[2].toInt()
-    });
 
     auto json_upgrade_tree = json_building["upgrade_tree"].toArray();
     int upgrade_tree_count = json_upgrade_tree.size();

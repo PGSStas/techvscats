@@ -226,25 +226,25 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   if (base->GetGold() >= settle_cost) {
     if (replacing_id == 0) {
       int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
-          * kRefundCoefficient;
+          * constants::kRefundCoefficient;
 
-      model_->AddTextNotification(TextNotification(
-          "+ " + QString::number(sell_cost) + " gold", Size(70, 30),
-          base->GetGoldPosition(), Qt::green, current_game_time_));
+      model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
+                                   base->GetGoldPosition(), Qt::green,
+                                   current_game_time_});
       base->AddGoldAmount(sell_cost);
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
     } else {
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
       base->SubtractGoldAmount(settle_cost);
 
-      model_->AddTextNotification(TextNotification(
-          "- " + QString::number(settle_cost) + " gold", Size(70, 30),
-          base->GetGoldPosition(), Qt::red, current_game_time_));
+      model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
+                                   base->GetGoldPosition(), Qt::red,
+                                   current_game_time_});
     }
   } else {
-    model_->AddTextNotification(TextNotification(
-        "Not enough gold", Size(70, 30),
-        base->GetGoldPosition(), Qt::blue, current_game_time_));
+    model_->AddTextNotification({"Not enough gold", base->GetGoldPosition(),
+                                 Qt::blue, current_game_time_});
+
   }
 }
 
@@ -317,12 +317,12 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
 }
 
 const std::vector<std::shared_ptr<Building>>&
-  Controller::GetBuildings() const {
+Controller::GetBuildings() const {
   return model_->GetBuildings();
 }
 
 const std::list<std::shared_ptr<AbstractProjectile>>&
-  Controller::GetProjectiles() const {
+Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }
 
@@ -340,9 +340,9 @@ int Controller::GetCurrentTime() const {
 
 void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   int reward = enemy.ComputeReward();
-  model_->AddTextNotification(TextNotification(
-      QString::number(reward) + " gold", Size(70, 30),
-      enemy.GetPosition(), Qt::yellow, current_game_time_));
+  model_->AddTextNotification({QString::number(reward) + " gold",
+                               enemy.GetPosition(), Qt::yellow,
+                               current_game_time_});
   model_->GetBase()->AddGoldAmount(reward);
 }
 
