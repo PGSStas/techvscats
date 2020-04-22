@@ -251,9 +251,9 @@ void ButtonHandler::CreateGameButtons() {
 void ButtonHandler::SetGameButtonsGeometry(SizeHandler size_handler) {
   Size shift = Size(short_button_size_.width + shift_, 0);
   pause_button_->SetGeometry({0, 0}, size_handler);
-  Coordinate
-      zero_speed_button_coordinate = Coordinate(kGameWidth, 0) - shift * 2
-      - Size(short_button_size_.width, 0);
+  Coordinate zero_speed_button_coordinate =
+      Coordinate(constants::kGameWidth, 0) - shift * 2
+          - Size(short_button_size_.width, 0);
   zero_speed_button_->SetGeometry(zero_speed_button_coordinate, size_handler);
   normal_speed_button_->SetGeometry(zero_speed_button_coordinate + shift,
                                     size_handler);

@@ -10,7 +10,7 @@ View::View(AbstractController* controller)
 
   view_timer_.start();
   time_between_ticks_.start();
-  controller_timer_id_ = startTimer(kTimeBetweenTicks);
+  controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
   button_handler_->SetGameUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetSettingsUiVisible(false);
@@ -19,6 +19,10 @@ View::View(AbstractController* controller)
 
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
+
+  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+  Size window_size =
+      size_handler_.GameToWindowSize(size_handler_.GetGameSize());
   painter.setBrush(QColor("#ffffff"));
   painter.drawRect(0, 0, width(), height());
 
@@ -49,19 +53,14 @@ void View::DrawMainMenu(QPainter* painter) {
 }
 
 void View::DrawGame(QPainter* painter) {
-  Coordinate top_corner =
-      size_handler_.GameToWindowCoordinate(Coordinate(0, 0));
-  Size rect_size = size_handler_.GameToWindowSize({1920, 1080});
-  painter->drawImage(QRect(top_corner.x, top_corner.y,
-                           rect_size.width, rect_size.height),
-                     QImage(":resources/background/game_background.png"));
   DrawAuras(painter);
-  DrawBackground(painter);
-  DrawProjectiles(painter);
   DrawEnemies(painter);
+  DrawProjectiles(painter);
   DrawTowers(painter);
 
-  controller_->GetBase().Draw(painter, size_handler_);
+  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+  painter->drawImage(origin.x, origin.y,
+                    controller_->GetMap().GetCurrentFrame());
   DrawInterface(painter);
 
   button_handler_->SetMainMenuUiVisible(false);
@@ -91,24 +90,9 @@ void View::DrawPauseMenu(QPainter* painter) {
   button_handler_->SetPauseMenuUiVisible(true);
 }
 
-void View::DrawBackground(QPainter* painter) {
-  // Test realization. Will be changed.
-  painter->save();
-  painter->setPen(QPen(Qt::black, 5));
-  const auto& roads = controller_->GetRoads();
-  for (const auto& road : roads) {
-    for (int i = 0; !road.IsEnd(i + 1); i++) {
-      Coordinate start_point =
-          size_handler_.GameToWindowCoordinate(road.GetNode(i));
-      Coordinate end_point =
-          size_handler_.GameToWindowCoordinate(road.GetNode(i + 1));
-      painter->drawLine(start_point.x, start_point.y, end_point.x, end_point.y);
-    }
-  }
-  painter->restore();
-}
-
 void View::DrawTowers(QPainter* painter) {
+  controller_->GetBase().Draw(painter, size_handler_);
+
   const auto& buildings = controller_->GetBuildings();
   for (const auto& building : buildings) {
     building->Draw(painter, size_handler_);
@@ -142,12 +126,14 @@ void View::DrawInterface(QPainter* painter) {
                                                 size_handler_,
                                                 enemy->GetPosition());
   }
+
   const auto& buildings_list = controller_->GetBuildings();
   for (const auto& building : buildings_list) {
     building->GetAppliedEffect()->DrawEffectsIcons(painter,
                                                    size_handler_,
                                                    building->GetPosition());
   }
+
   if (is_tower_menu_enabled_) {
     tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
   }
@@ -194,6 +180,9 @@ void View::mouseMoveEvent(QMouseEvent* event) {
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
   button_handler_->SetButtonsGeometry(size_handler_);
+  if (button_handler_->GetWindowType() == WindowType::kGame) {
+    controller_->RescaleObjects(size_handler_);
+  }
 }
 
 void View::EnableGameUi() {

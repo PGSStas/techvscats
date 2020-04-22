@@ -40,7 +40,7 @@ class View : public QMainWindow {
  private:
   AbstractController* controller_;
   SizeHandler size_handler_;
-  WindowType window_type_ = WindowType::kMainMenu;
+  // WindowType window_type_ = WindowType::kMainMenu;
   QElapsedTimer view_timer_;
   int controller_timer_id_;
 
