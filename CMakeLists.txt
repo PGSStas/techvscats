@@ -35,12 +35,14 @@ add_executable(techvscats
         Model/road.cpp
         Model/size.cpp
         resources.qrc
+        View/animation_player.cpp
         View/button_handler.cpp
         View/menu_button.cpp
         View/size_handler.cpp
         View/tower_menu.cpp
         View/tower_menu_option.cpp
-        View/view.cpp)
+        View/view.cpp
+        )
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

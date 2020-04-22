@@ -10,7 +10,6 @@
 #include <QLabel>
 #include <QObject>
 #include <QString>
-#include <QDebug>
 
 #include <memory>
 #include <list>
@@ -39,22 +38,21 @@ class View : public QMainWindow {
   void DisableTowerMenu();
 
  private:
-  // WindowType window_type_;
   AbstractController* controller_;
   SizeHandler size_handler_;
-  QTimer view_timer_;
+  WindowType window_type_ = WindowType::kMainMenu;
+  QElapsedTimer view_timer_;
+  int controller_timer_id_;
+
+  // Game window
   QElapsedTimer time_between_ticks_;
   std::shared_ptr<ButtonHandler> button_handler_;
 
   std::shared_ptr<TowerMenu> tower_menu_ = nullptr;
-
-  int controller_timer_id_;
-  const int kTimeBetweenTicks_ = 10;
   bool is_tower_menu_enabled_ = false;
   double game_speed_coefficient_ = 1;
 
  private:
-  void DrawWindow(QPainter* painter, const QBrush& brush);
   // Events
   void paintEvent(QPaintEvent*) override;
   void resizeEvent(QResizeEvent*) override;
@@ -68,7 +66,6 @@ class View : public QMainWindow {
   void DrawPauseMenu(QPainter* painter);
 
   // Game window
-  void DrawBackground(QPainter* painter);
   void DrawAuras(QPainter* painter);
   void DrawEnemies(QPainter* painter);
   void DrawProjectiles(QPainter* painter);

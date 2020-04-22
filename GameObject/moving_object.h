@@ -13,7 +13,6 @@ class MovingObject : public GameObject {
   virtual void Move() = 0;
   virtual bool IsDead() const;
   bool IsEndReached() const;
-
  protected:
   double speed_;
   Coordinate destination_;
