@@ -46,6 +46,6 @@ Coordinate Coordinate::operator-(Size right) const {
 }
 
 bool Coordinate::operator==(Coordinate right) const {
-  return (std::abs(x - right.x) < kEpsilon)
-      && (std::abs(y - right.y) < kEpsilon);
+  return (std::abs(x - right.x) < constants::kEpsilon)
+      && (std::abs(y - right.y) < constants::kEpsilon);
 }

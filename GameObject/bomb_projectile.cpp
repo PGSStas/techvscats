@@ -16,7 +16,7 @@ void BombProjectile::Tick(int current_time) {
       (start_position_.x - destination_.x);
   qDebug() << delta_tick_time_;
   additional_draw_height_ += up_force_ * (1 - 2 * percent) *
-      delta_tick_time_ / kTimeScale;
+      delta_tick_time_ / constants::kTimeScale;
   Move();
 }
 
@@ -40,5 +40,5 @@ void BombProjectile::SetParameters(const std::shared_ptr<Enemy>& aim,
 
 bool BombProjectile::IsInAffectedArea(const Enemy& enemy) {
   return position_.GetVectorTo(enemy.GetPosition()).GetLength()
-      <= effect_radius_ + kEpsilon;
+      <= effect_radius_ + constants::kEpsilon;
 }

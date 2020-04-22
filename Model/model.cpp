@@ -2,11 +2,11 @@
 
 Model::Model() {
   current_round_number_ = 0;
-  LoadDatabaseFromJson();
+  LoadDatabase();
 }
 
 void Model::SetGameLevel(int level_id) {
-  LoadLevelFromJson(level_id);
+  LoadLevel(level_id);
 
   AimedProjectile projectile_instance_aimed(Size(10, 20), 66);
   projectile_instance_aimed.SetAnimationParameters(Qt::darkRed, 100);
@@ -23,6 +23,29 @@ void Model::SetGameLevel(int level_id) {
       projectile_instance_bomb));
   id_to_projectile_.push_back(std::make_shared<LaserProjectile>(
       projectile_instance_lazer));
+
+  SetAnimationToGameObject(&id_to_building_[0], {500, 0, 0}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_reload_4",
+      "towers/default_tower_reload_4"});
+
+  SetAnimationToGameObject(&id_to_building_[1], {1000, 300, 300}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
+  
+  SetAnimationToGameObject(&&id_to_building_[2], {100, 50, 10}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
+  
+  SetAnimationToGameObject(&&id_to_building_[3], {1000, 600, 600}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
 
   InitializeTowerSlots();
 }
@@ -73,6 +96,22 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
                                      building.GetDamage());
 }
 
+void Model::RescaleDatabase(const SizeHandler& size_handler) {
+  for (auto& enemy : enemies_) {
+    enemy->Rescale(size_handler.GameToWindowSize(enemy->GetSize()));
+  }
+  for (auto& building : buildings_) {
+    building->Rescale(size_handler.GameToWindowSize(building->GetSize()));
+  }
+  for (auto& enemy : id_to_enemy_) {
+    enemy.Rescale(size_handler.GameToWindowSize(enemy.GetSize()));
+  }
+  for (auto& building : id_to_building_) {
+    building.Rescale(size_handler.GameToWindowSize(building.GetSize()));
+  }
+  map_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
+}
+
 void Model::IncreaseCurrentRoundNumber() {
   current_round_number_++;
 }
@@ -108,10 +147,6 @@ std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
 
 std::list<TextNotification>* Model::GetTextNotifications() {
   return &text_notifications_;
-}
-
-const std::vector<Road>& Model::GetRoads() const {
-  return roads_;
 }
 
 const std::vector<EnemyGroup>& Model::GetEnemyGroupsPerRound(int round) const {
@@ -154,7 +189,7 @@ int Model::GetCurrentRoundNumber() const {
   return current_round_number_;
 }
 
-void Model::LoadLevelFromJson(int level) {
+void Model::LoadLevel(int level) {
   QFile level_file(":resources/levels/level_"
                        + QString::number(level) + ".json");
   if (!level_file.open(QFile::ReadOnly)) {
@@ -234,9 +269,16 @@ void Model::LoadLevelFromJson(int level) {
     empty_places_for_towers_.emplace_back(json_empty_tower["x"].toDouble(),
                                           json_empty_tower["y"].toDouble());
   }
+  map_ = AnimationPlayer(
+      GetImagesByFramePath("map_level_" +
+          QString::number(level) + "_1"));
 }
 
-void Model::LoadDatabaseFromJson() {
+const AnimationPlayer& Model::GetMap() const {
+  return map_;
+}
+
+void Model::LoadDatabase() {
   QFile level_file(":resources/database/database.json");
   if (!level_file.open(QFile::ReadOnly)) {
     qDebug() << "ERROR! Missing database file";
@@ -274,15 +316,22 @@ void Model::LoadDatabaseFromJson() {
       aura = AuricField(enemy["aura"].toObject()["radius"].toInt(),
                         enemy["aura"].toObject()["effect_id"].toInt());
     }
+    Size size = Size(enemy["size"].toObject()["width"].toInt(),
+                     enemy["size"].toObject()["height"].toInt());
     // TODO(PGS): size of enemy please. Also i put speed on the second place.
-    id_to_enemy_.emplace_back(Size(30, 30),
-                              enemy["speed"].toInt(),
+    id_to_enemy_.emplace_back(enemy["speed"].toInt(),
                               enemy["damage"].toInt(),
                               enemy["armor"].toInt(),
                               enemy["reward"].toInt(),
                               enemy["max_health"].toInt(),
+                              size,
                               aura);
   }
+
+  SetAnimationToGameObject(&id_to_enemy_[0], {400}, {"enemies/toster_3"});
+  SetAnimationToGameObject(&id_to_enemy_[2], {550}, {"enemies/toster_3"});
+  SetAnimationToGameObject(&id_to_enemy_[3], {600}, {"enemies/mouse_3"});
+  SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
 
   // Temporary part
   std::vector<EffectVisualization>
@@ -346,4 +395,31 @@ void Model::InitializeTowerSlots() {
     empty_place->SetPosition(coordinate);
     buildings_.push_back(empty_place);
   }
+}
+
+void Model::SetAnimationToGameObject(
+    GameObject* object, std::vector<int> timmings,
+    std::vector<QString> paths) {
+  std::vector<AnimationPlayer> animations;
+  for (uint i = 0; i < timmings.size(); i++) {
+    animations.emplace_back(GetImagesByFramePath(paths[i]), timmings[i]);
+  }
+  object->SetAnimationPlayers(animations);
+}
+
+std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
+    QString animation_last_frames, QString picture_type) const {
+
+  QString clear_path = ":resources/images/" + animation_last_frames;
+  QStringList splitted_path = clear_path.split("_");
+
+  auto images = std::make_shared<std::vector<QImage>>();
+  int count = splitted_path.back().toInt();
+
+  for (int i = 1; i <= count; i++) {
+    splitted_path.back() = QString::number(i);
+    images->emplace_back(splitted_path.join("_") + picture_type);
+  }
+
+  return images;
 }

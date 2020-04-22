@@ -42,7 +42,7 @@ void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
 
 void Base::DecreaseHealth(double damage) {
   current_health_ -= std::min(damage, current_health_);
-  if (current_health_ <= kEpsilon) {
+  if (current_health_ <= constants::kEpsilon) {
     is_dead_ = true;
   }
 }

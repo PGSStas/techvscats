@@ -3,29 +3,28 @@
 std::mt19937 Enemy::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
-Enemy::Enemy(Size size, double speed, double damage, double armor, int reward,
-             double max_health, AuricField auric_field)
+Enemy::Enemy(double speed, double damage, double armor, int reward,
+             double max_health, Size size, AuricField auric_field)
     : MovingObject(size, speed), damage_(damage), armor_(armor),
-      reward_(reward), max_health_(max_health), auric_field_(auric_field) {
-  auric_field.SetCarrierCoordinate(&position_);
+      reward_(reward), max_health_(max_health), current_health_(max_health_),
+      auric_field_(auric_field), node_number_(0) {
 }
 
-Enemy::Enemy(const Enemy& enemy_instance)
-    : MovingObject(enemy_instance.GetSize(), enemy_instance.speed_),
-      damage_(enemy_instance.damage_), armor_(enemy_instance.armor_),
-      reward_(enemy_instance.reward_), max_health_(enemy_instance.max_health_),
-      current_health_(enemy_instance.max_health_),
-      auric_field_(enemy_instance.auric_field_) {
+Enemy::Enemy(const Enemy& other)
+    : Enemy(other.speed_, other.damage_, other.armor_,
+            other.reward_, other.max_health_, other.size_, other.auric_field_) {
+  SetAnimationPlayers(other.animation_players_);
   auric_field_.SetCarrierCoordinate(&position_);
-  node_number_ = 0;
-  if (enemy_instance.road_ != nullptr) {
-    SetRoad(*enemy_instance.road_);
+  if (other.road_ != nullptr) {
+    SetRoad(*other.road_);
   }
 }
 
 void Enemy::Tick(int current_time) {
   UpdateTime(current_time);
   Move();
+  animation_players_[0].Tick(delta_tick_time_ *
+      applied_effect_.GetMoveSpeedCoefficient());
 }
 
 void Enemy::Move() {
@@ -55,12 +54,17 @@ void Enemy::Move() {
 void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
-  painter->setPen(QColor("black"));
-  Coordinate point =
-      size_handler.GameToWindowCoordinate(position_ - Size(15, 15));
+  Coordinate point = size_handler.GameToWindowCoordinate(
+      position_ - size_ / 2);
+  Size size = size_handler.GameToWindowSize(size_);
 
-  Size size = size_handler.GameToWindowSize({30, 30});
-  painter->drawRect(point.x, point.y, size.width, size.height);
+  painter->translate(point.x, point.y);
+  if (position_.GetVectorTo(destination_).width < constants::kEpsilon) {
+    painter->translate(size.width, 0);
+    // mirroring the image
+    painter->scale(-1.0, 1.0);
+  }
+  painter->drawImage(QPoint(0, 0), animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }
@@ -105,7 +109,7 @@ void Enemy::ReceiveDamage(double damage) {
   double armor = armor_ * applied_effect_.GetArmorCoefficient();
   double multiplier = 1 - ((0.052 * armor) / (0.9 + 0.048 * std::abs(armor)));
   current_health_ -= std::min(multiplier * damage, current_health_);
-  if (current_health_ <= kEpsilon) {
+  if (current_health_ <= constants::kEpsilon) {
     is_dead_ = true;
   }
 }

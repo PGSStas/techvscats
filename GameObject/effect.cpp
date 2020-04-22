@@ -88,7 +88,7 @@ void Effect::DrawEffectIcon(QPainter* painter, Coordinate* point,
                             Size size, CoefficientType coefficient_type) const {
   int index = static_cast<int>(coefficient_type);
   double coefficient = coefficients_[index];
-  if (std::abs(coefficient - 1) < kEpsilon) {
+  if (std::abs(coefficient - 1) < constants::kEpsilon) {
     return;
   }
 
