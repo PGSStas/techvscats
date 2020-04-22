@@ -24,7 +24,7 @@ void Model::SetGameLevel(int level_id) {
   id_to_projectile_.push_back(std::make_shared<LaserProjectile>(
       projectile_instance_lazer));
 
-  Building building_instance(0, 0);
+  Building building_instance(0, 0, {85, 85});
   SetAnimationToGameObject(&building_instance, {500, 0, 0}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_reload_4",
@@ -32,7 +32,7 @@ void Model::SetGameLevel(int level_id) {
 
   upgrades_tree_.push_back({1, 2});
 
-  Building building_instance2(1, 24);
+  Building building_instance2(1, 24, {85, 85});
   building_instance2.SetProjectile(0, 10, 175, 2);
   SetAnimationToGameObject(&building_instance2, {1000, 300, 300}, {
       "towers/default_tower_reload_4",
@@ -41,7 +41,7 @@ void Model::SetGameLevel(int level_id) {
   });
   upgrades_tree_.push_back({3, 0});
 
-  Building building_instance3(2, 24, Size(185, 185), AuricField(200, 2));
+  Building building_instance3(2, 24, {80, 80}, AuricField(200, 2));
   building_instance3.SetProjectile(2, 3, 215, 3);
   SetAnimationToGameObject(&building_instance3, {100, 50, 10}, {
       "towers/default_tower_reload_4",
@@ -50,7 +50,7 @@ void Model::SetGameLevel(int level_id) {
   });
   upgrades_tree_.push_back({3, 1, 0});
 
-  Building building_instance4(3, 24);
+  Building building_instance4(3, 24,{90,90});
   building_instance4.SetProjectile(1, 54, 275, 1);
   SetAnimationToGameObject(&building_instance4, {1000, 600, 600}, {
       "towers/default_tower_reload_4",
