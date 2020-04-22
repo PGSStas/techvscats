@@ -53,14 +53,13 @@ void View::DrawMainMenu(QPainter* painter) {
 }
 
 void View::DrawGame(QPainter* painter) {
+  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+  painter->drawImage(origin.x, origin.y,
+                    controller_->GetMap().GetCurrentFrame());
   DrawAuras(painter);
   DrawEnemies(painter);
   DrawProjectiles(painter);
   DrawTowers(painter);
-
-  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-  painter->drawImage(origin.x, origin.y,
-                    controller_->GetMap().GetCurrentFrame());
   DrawInterface(painter);
 
   button_handler_->SetMainMenuUiVisible(false);
@@ -186,6 +185,7 @@ void View::resizeEvent(QResizeEvent*) {
 }
 
 void View::EnableGameUi() {
+  controller_->RescaleObjects(size_handler_);
   button_handler_->SetGameUiVisible(true);
 }
 
