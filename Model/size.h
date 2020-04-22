@@ -25,6 +25,7 @@ struct Size {
   Size& operator-=(Size right);
 
   bool operator==(Size right) const;
+  bool operator!=(Size right) const;
 };
 
 #endif  // MODEL_SIZE_H_

@@ -46,3 +46,7 @@ bool Size::operator==(Size right) const {
   return (width - right.width < constants::kEpsilon)
       && (height - right.height < constants::kEpsilon);
 }
+
+bool Size::operator!=(Size right) const {
+  return !(*this == right);
+}

@@ -67,6 +67,11 @@ void Model::SetGameLevel(int level_id) {
   InitializeTowerSlots();
 
   ////////////////////////////////////////////// to paste
+
+  id_to_particle_.emplace_back(Size(30, 30));
+  SetAnimationToGameObject(&id_to_particle_[0],
+                           {442}, {":resources/particles/kaboom1_8.png"});
+
   id_to_projectile_[0]->GetParticleHandler()->SetAtCreationParticlePack(0, 0);
   id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(0, 300, 48);
 
@@ -110,6 +115,16 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
                                      building.GetDamage());
 }
 
+void Model::CreateParticle(const std::list<ParticleParameters>& parameters) {
+  for (const auto& particle_parameters :parameters) {
+    Particle new_particle = id_to_particle_[particle_parameters.particle_id];
+    new_particle.SetParameters(particle_parameters.position,
+                               particle_parameters.look_direction,
+                               particle_parameters.speed);
+    particles_.push_back(new_particle);
+  }
+}
+
 void Model::RescaleDatabase(const SizeHandler& size_handler) {
   for (auto& enemy : enemies_) {
     enemy->Rescale(size_handler.GameToWindowSize(enemy->GetSize()));
@@ -117,12 +132,24 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   for (auto& building : buildings_) {
     building->Rescale(size_handler.GameToWindowSize(building->GetSize()));
   }
+  for (auto& projectile : projectiles_) {
+    projectile->Rescale(size_handler.GameToWindowSize(projectile->GetSize()));
+  }
+  for (auto& particle : particles_) {
+    particle.Rescale(size_handler.GameToWindowSize(particle.GetSize()));
+  }
 
   for (auto& enemy : id_to_enemy_) {
     enemy.Rescale(size_handler.GameToWindowSize(enemy.GetSize()));
   }
   for (auto& building : id_to_building_) {
     building.Rescale(size_handler.GameToWindowSize(building.GetSize()));
+  }
+  for (auto& projectile : id_to_projectile_) {
+    projectile->Rescale(size_handler.GameToWindowSize(projectile->GetSize()));
+  }
+  for (auto& particle : id_to_particle_) {
+    particle.Rescale(size_handler.GameToWindowSize(particle.GetSize()));
   }
   map_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
 }
@@ -137,6 +164,7 @@ void Model::ClearGameModel() {
   enemies_.clear();
   buildings_.clear();
   projectiles_.clear();
+  particles_.clear();
   spawners_.clear();
   enemy_groups_.clear();
   roads_.clear();
@@ -360,10 +388,6 @@ void Model::LoadDatabase() {
                               {Qt::darkRed, Qt::magenta},
                               {Qt::white, Qt::yellow}};
   Effect::SetEffectVisualizations(effect_visualization);
-
-  id_to_particle_.emplace_back(442, AnimationPlayer(GetImagesByFramePath(
-      ":resources/particles/kaboom1_8.png")));
-
 }
 
 void Model::InitializeTowerSlots() {
@@ -401,3 +425,5 @@ std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
 
   return images;
 }
+
+

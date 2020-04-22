@@ -6,6 +6,7 @@ AbstractProjectile::AbstractProjectile(Size size, double speed)
 AbstractProjectile::AbstractProjectile(const AbstractProjectile& other) :
     MovingObject(other.size_, other.speed_, other.position_) {
   SetAnimationParameters(other.draw_color_, other.iteration_time_);
+  particle_handler.SetParticlePacks(other.particle_handler);
 }
 
 void AbstractProjectile::Move() {

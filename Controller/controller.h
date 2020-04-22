@@ -51,6 +51,7 @@ class Controller : public AbstractController {
   void CreateNextWave();
   void TickSpawners();
   void TickParticlesHandlers();
+  void TickParticlesHandler(ParticleHandler* particle_handler);
   void TickParticles();
   void TickEnemies();
   void TickBuildings();

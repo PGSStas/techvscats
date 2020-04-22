@@ -39,6 +39,7 @@ class Model {
   void CreateBuildingAtIndex(int i, int id);
   void CreateProjectile(const std::shared_ptr<Enemy>& aim,
                         const Building& building);
+  void CreateParticle(const std::list<ParticleParameters>& parameters);
   void RescaleDatabase(const SizeHandler& size_handler);
   void IncreaseCurrentRoundNumber();
   void ClearGameModel();

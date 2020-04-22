@@ -2,9 +2,18 @@
 
 #include <utility>
 
+Particle::Particle(Size size, double speed, Size look_direction) :
+    MovingObject(size, speed), look_direction_(look_direction) {}
+
+Particle::Particle(const Particle& other) :
+    MovingObject(other.GetSize(), other.speed_),
+    look_direction_(other.look_direction_) {
+  SetAnimationPlayers(other.animation_players_);
+}
+
 void Particle::Tick(int current_time) {
   UpdateTime(current_time);
-  animation_player_.Tick(current_time);
+  animation_players_[0].Tick(current_time);
 }
 
 void Particle::Draw(QPainter* painter, const SizeHandler& size_handler) const {
@@ -17,16 +26,19 @@ void Particle::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->translate(point.x, point.y);
   // look direction set !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   painter->drawImage(QRect(0, 0, size.width, size.height),
-                     animation_player_.GetCurrentFrame());
+                     animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }
 
-Particle::Particle(int life_time, AnimationPlayer animation_player,
-                   Size size, Coordinate position, Size look_direction,
-                   double speed) :
-    MovingObject(size, speed, position), look_direction_(look_direction),
-    life_time_(life_time),animation_player_(std::move(animation_player)) {}
+void Particle::SetParameters(
+    Coordinate position, Size look_direction, double speed) {
+  position_ = position;
+  if (look_direction != Size(-1, -1)) {
+    look_direction_ = look_direction;
+    speed_ = speed;
+  }
+}
 
 void Particle::Move() {
 

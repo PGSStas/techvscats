@@ -43,6 +43,7 @@ void Controller::GameProcess() {
     CreateNextWave();
   }
   TickSpawners();
+  TickParticlesHandlers();
   TickParticles();
   TickEnemies();
   TickBuildings();
@@ -101,23 +102,30 @@ void Controller::TickSpawners() {
 }
 
 void Controller::TickParticlesHandlers() {
-  // const auto& enemies = *model_->GetEnemies();
-  // for (const auto& enemy : enemies) {
-  //   enemy->GetParticleHandler()->ResetEffect();
-  // }
-  //
-  // const auto& buildings = model_->GetBuildings();
-  // for (const auto& building : buildings) {
-  //   building->GetAppliedEffect()->ResetEffect();
-  // }
-  //
-  // for (const auto& enemy : enemies) {
-  //   ApplyEffectToAllInstances(enemy->GetAuricField());
-  // }
-  //
-  // for (const auto& building : buildings) {
-  //   ApplyEffectToAllInstances(building->GetAuricField());
-  // }
+  auto enemies = model_->GetEnemies();
+  for (auto& enemy : *enemies) {
+    TickParticlesHandler(enemy->GetParticleHandler());
+  }
+  auto buildings = model_->GetBuildings();
+  for (auto& building : buildings) {
+    TickParticlesHandler(building->GetParticleHandler());
+  }
+  auto projectiles = model_->GetProjectiles();
+  for (auto& projectile : *projectiles) {
+    TickParticlesHandler(projectile->GetParticleHandler());
+  }
+  auto particles = model_->GetParticles();
+  for (auto& particle : *particles) {
+    TickParticlesHandler(particle.GetParticleHandler());
+  }
+}
+
+void Controller::TickParticlesHandler(ParticleHandler* particle_handler) {
+  particle_handler->Tick(current_game_time_);
+  if (particle_handler->IsReadyToCreateParticle()) {
+    model_->CreateParticle(particle_handler->GetWaitParticles());
+    particle_handler->Clear();
+  }
 }
 
 void Controller::TickParticles() {
@@ -308,12 +316,12 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
 }
 
 const std::vector<std::shared_ptr<Building>>&
-  Controller::GetBuildings() const {
+Controller::GetBuildings() const {
   return model_->GetBuildings();
 }
 
 const std::list<std::shared_ptr<AbstractProjectile>>&
-  Controller::GetProjectiles() const {
+Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }
 

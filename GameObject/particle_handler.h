@@ -8,11 +8,16 @@
 
 // To avoid multi include
 struct ParticleParameters {
-  int particle_id = -1;
-  Coordinate position = {-1, -1};
-  Size move_direction = {-1, -1};
-  int life_time = -1;
-  double speed = -1;
+  ParticleParameters(
+      int particle_id, Coordinate position,
+      Size look_direction, double speed = 0
+  ) :
+      particle_id(particle_id), position(position),
+      look_direction(look_direction), speed(speed) {}
+  int particle_id;
+  Coordinate position;
+  Size look_direction;
+  double speed;
 };
 
 class ParticleHandler {
@@ -25,12 +30,14 @@ class ParticleHandler {
   void SetRotation(Size lool_direction);
   void SetAtCreationParticlePack(int at_death_id, int at_creation_id = -1);
   void SetAliveParticlePack(int while_alive_id, int period, int radius);
-  void RemoveWaiters();
+  void SetParticlePacks(const ParticleHandler& other);
+  void Clear();
 
   const std::list<ParticleParameters>& GetWaitParticles() const;
   bool IsReadyToCreateParticle() const;
 
  private:
+  void CreateProjectileFromMe();
   const Coordinate& carrier_coordinates_;
   const Size& carrier_size_;
   Size look_direction_ = {0, 1};
@@ -44,7 +51,7 @@ class ParticleHandler {
   int period_ = -1;
   int radius_ = -1;
 
-  int wait_time_;
+  int wait_time_ = 0;
 };
 
 #endif  // GAMEOBJECT_PARTICLE_HANDLER_H

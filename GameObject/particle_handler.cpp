@@ -6,13 +6,16 @@ ParticleHandler::ParticleHandler(const Size& carrier_size,
 }
 
 void ParticleHandler::Tick(int delta_time) {
+  if (at_creation_id_ != -1) {
+    CreateProjectileFromMe();
+    at_creation_id_ = -1;
+  }
   if (period_ <= 0) {
     return;
   }
   wait_time_ -= delta_time;
   if (wait_time_ <= 0) {
     wait_time_ = period_;
-
   }
 }
 
@@ -34,7 +37,12 @@ void ParticleHandler::SetAliveParticlePack(int while_alive_id, int period,
   radius_ = radius;
 }
 
-void ParticleHandler::RemoveWaiters() {
+void ParticleHandler::SetParticlePacks(const ParticleHandler& other) {
+  SetAtCreationParticlePack(other.at_death_id_,other.at_creation_id_);
+  SetAliveParticlePack(other.while_alive_id_,other.period_,other.radius_);
+}
+
+void ParticleHandler::Clear() {
   wait_particles_.clear();
 }
 
@@ -45,6 +53,12 @@ const std::list<ParticleParameters>& ParticleHandler::GetWaitParticles() const {
 bool ParticleHandler::IsReadyToCreateParticle() const {
   return !wait_particles_.empty();
 }
+
 void ParticleHandler::AddParticle(ParticleParameters particle) {
   wait_particles_.push_back(particle);
+}
+void ParticleHandler::CreateProjectileFromMe() {
+  wait_particles_.emplace_back(at_creation_id_, carrier_coordinates_,
+                               look_direction_);
+
 }

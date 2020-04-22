@@ -1,7 +1,7 @@
 #include "game_object.h"
 
 GameObject::GameObject(Size size, Coordinate position)
-    : size_(size), position_(position), particle_handler(size_, position_) {
+    : size_(size), position_(position), particle_handler(size_, position_){
 }
 
 void GameObject::UpdateTime(int current_time) {
@@ -19,6 +19,7 @@ void GameObject::SetPosition(Coordinate position) {
 void GameObject::SetAnimationPlayers(
     const std::vector<AnimationPlayer>& animation_players) {
   animation_players_ = animation_players;
+  action_timings_.clear();
   for (const auto& animation_player: animation_players_) {
     action_timings_.push_back(animation_player.GetAnimationDuration());
   }
