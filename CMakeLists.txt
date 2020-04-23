@@ -36,6 +36,8 @@ add_executable(techvscats
         Model/size.cpp
         resources.qrc
         View/animation_player.cpp
+        View/button_handler.cpp
+        View/menu_button.cpp
         View/size_handler.cpp
         View/text_notification.cpp
         View/tower_menu.cpp

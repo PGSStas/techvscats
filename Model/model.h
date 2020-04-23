@@ -62,7 +62,7 @@ class Model {
   int GetPrepairTimeBetweenRounds() const;
   int GetCurrentRoundNumber() const;
 
-  const AnimationPlayer& GetMap() const;
+  const AnimationPlayer& GetBackGround(int back_ground_id) const;
 
  private:
   void LoadLevel(int level);
@@ -101,7 +101,7 @@ class Model {
   std::vector<Effect> id_to_effect_;
 
   // Images
-  AnimationPlayer map_;
+  std::vector<AnimationPlayer> back_grounds_;
 };
 
 #endif  // MODEL_MODEL_H_

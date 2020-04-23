@@ -40,3 +40,7 @@ double SizeHandler::GameToWindowLength(double length) const {
 Size SizeHandler::GetGameSize() const {
   return game_size_;
 }
+
+double SizeHandler::GameToWindowLength(double game_lendth) const {
+  return game_lendth / scaling_coefficient_;
+}

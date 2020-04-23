@@ -109,7 +109,9 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   for (auto& building : id_to_building_) {
     building.Rescale(size_handler.GameToWindowSize(building.GetSize()));
   }
-  map_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
+  for (auto& animaion : back_grounds_) {
+    animaion.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
+  }
 }
 
 void Model::IncreaseCurrentRoundNumber() {
@@ -269,13 +271,15 @@ void Model::LoadLevel(int level) {
     empty_places_for_towers_.emplace_back(json_empty_tower["x"].toDouble(),
                                           json_empty_tower["y"].toDouble());
   }
-  map_ = AnimationPlayer(
-      GetImagesByFramePath("map_level_" +
+
+  // Map
+  back_grounds_[3] = AnimationPlayer(
+      GetImagesByFramePath("backgrounds/map_level_" +
           QString::number(level) + "_1"));
 }
 
-const AnimationPlayer& Model::GetMap() const {
-  return map_;
+const AnimationPlayer& Model::GetBackGround(int back_ground_id) const {
+  return back_grounds_[back_ground_id];
 }
 
 void Model::LoadDatabase() {
@@ -333,6 +337,15 @@ void Model::LoadDatabase() {
   SetAnimationToGameObject(&id_to_enemy_[3], {600}, {"enemies/mouse_3"});
   SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
 
+  // backgrounds
+  back_grounds_.emplace_back(
+      GetImagesByFramePath("backgrounds/main_background_1"));
+  back_grounds_.emplace_back(
+      GetImagesByFramePath("backgrounds/settings_background_1"));
+  back_grounds_.emplace_back(
+      GetImagesByFramePath("backgrounds/pause_menu_background_1"));
+  back_grounds_.emplace_back(
+      GetImagesByFramePath("error"));
   // Temporary part
   std::vector<EffectVisualization>
       effect_visualization = {{Qt::cyan, Qt::black},
