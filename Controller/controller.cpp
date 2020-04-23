@@ -36,7 +36,9 @@ void Controller::Tick(int current_time) {
       MenuProcess();
       break;
     }
-    default:break;
+    default: {
+      break;
+    }
   }
 }
 
@@ -302,6 +304,6 @@ int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
 
-const AnimationPlayer& Controller::GetBackGround(WindowType type) const {
+const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>( type));
 }

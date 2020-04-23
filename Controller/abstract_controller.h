@@ -23,10 +23,10 @@ enum class Speed {
 };
 
 enum class WindowType {
-  kMainMenu = 0,
-  kSettings = 1,
-  kPauseMenu = 2,
-  kGame = 3
+  kMainMenu,
+  kSettings,
+  kPauseMenu,
+  kGame
 };
 
 // AbstractController is needed to avoid the problem with looping include
@@ -53,7 +53,7 @@ class AbstractController {
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
 
-  virtual const AnimationPlayer& GetBackGround(WindowType type) const = 0;
+  virtual const AnimationPlayer& GetBackground(WindowType type) const = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

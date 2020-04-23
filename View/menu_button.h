@@ -1,16 +1,17 @@
 #ifndef VIEW_MENU_BUTTON_H_
 #define VIEW_MENU_BUTTON_H_
 
-#include <QPushButton>
+#include <QFontDatabase>
 #include <QMainWindow>
 #include <QMouseEvent>
-#include <QPalette>
-#include <QFontDatabase>
+#include <QPushButton>
 #include <QRandomGenerator>
-#include <memory>
-#include <string>
+
 #include <chrono>
+#include <memory>
 #include <random>
+#include <string>
+
 #include "size_handler.h"
 #include "Model/constants.h"
 

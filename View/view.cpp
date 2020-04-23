@@ -21,7 +21,7 @@ void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
   painter.drawImage(
-      origin.x, origin.y, controller_->GetBackGround(
+      origin.x, origin.y, controller_->GetBackground(
           button_handler_->GetWindowType()).GetCurrentFrame());
 
   auto window_type = button_handler_->GetWindowType();
@@ -209,7 +209,7 @@ void View::timerEvent(QTimerEvent* event) {
 }
 
 void View::UpdateRounds(int current_round_number, int number_of_rounds) {
-  // here will be some kind of round indicator
+  // Here will be some kind of round indicator.
 }
 
 void View::ChangeGameSpeed(Speed speed) {

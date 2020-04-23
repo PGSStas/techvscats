@@ -1,22 +1,22 @@
 #ifndef VIEW_VIEW_H_
 #define VIEW_VIEW_H_
 
-#include <QTimerEvent>
-#include <QTimer>
-#include <QMouseEvent>
-#include <QMainWindow>
-#include <QPushButton>
 #include <QElapsedTimer>
 #include <QLabel>
+#include <QMainWindow>
+#include <QMouseEvent>
 #include <QObject>
+#include <QPushButton>
 #include <QString>
+#include <QTimer>
+#include <QTimerEvent>
 
-#include <memory>
 #include <list>
+#include <memory>
 
 #include "Controller/abstract_controller.h"
-#include "tower_menu.h"
 #include "button_handler.h"
+#include "tower_menu.h"
 
 class View : public QMainWindow {
   Q_OBJECT
