@@ -59,7 +59,7 @@ void View::DrawEmptyZones(QPainter* painter) {
   painter->restore();
 }
 
-void View::DrawMainMenu(QPainter* painter) {
+void View::DrawMainMenu(QPainter*) {
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetMainMenuUiVisible(true);
@@ -70,19 +70,19 @@ void View::DrawGame(QPainter* painter) {
   DrawEnemies(painter);
   DrawProjectiles(painter);
   DrawTowers(painter);
-  DrawInterface(painter);
+  DrawAdditionalInfo(painter);
 
   button_handler_->SetMainMenuUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetGameUiVisible(true);
 }
 
-void View::DrawSettings(QPainter* painter) {
+void View::DrawSettings(QPainter*) {
   button_handler_->SetMainMenuUiVisible(false);
   button_handler_->SetSettingsUiVisible(true);
 }
 
-void View::DrawPauseMenu(QPainter* painter) {
+void View::DrawPauseMenu(QPainter*) {
   button_handler_->SetGameUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(true);
 }
@@ -134,10 +134,6 @@ void View::ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu) {
   is_tower_menu_enabled_ = true;
 }
 
-bool View::IsTowerMenuEnabled() const {
-  return is_tower_menu_enabled_;
-}
-
 void View::DisableTowerMenu() {
   is_tower_menu_enabled_ = false;
 }
@@ -185,16 +181,16 @@ void View::DrawAdditionalInfo(QPainter* painter) {
   const auto& enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
     enemy->DrawHealthBar(painter, size_handler_);
-    enemy->GetAppliedEffect()->DrawEffectsIcons(painter,
-                                                size_handler_,
-                                                enemy->GetPosition());
+    enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                enemy->GetPosition(),
+                                                enemy->GetSize());
   }
   
   const auto& buildings_list = controller_->GetBuildings();
   for (const auto& building : buildings_list) {
-    building->GetAppliedEffect()->DrawEffectsIcons(painter,
-                                                   size_handler_,
-                                                   building->GetPosition());
+    building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                   building->GetPosition(),
+                                                   building->GetSize());
   }
   
   if (is_tower_menu_enabled_) {

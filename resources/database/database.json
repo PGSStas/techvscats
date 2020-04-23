@@ -11,8 +11,8 @@
         "effect_id": 1
       },
       "size": {
-        "width" : 100,
-        "height": 100
+        "width" : 70,
+        "height": 70
       }
     },
     {
@@ -22,8 +22,8 @@
       "reward": 500,
       "max_health": 11,
       "size": {
-        "width" : 54,
-        "height": 64
+        "width" : 70,
+        "height": 70
       }
     },
     {
@@ -33,8 +33,8 @@
       "reward": 10,
       "max_health": 30,
       "size": {
-        "width" : 44,
-        "height": 55
+        "width" : 70,
+        "height": 70
       }
     },
     {
@@ -44,8 +44,8 @@
       "reward": 13,
       "max_health": 100,
       "size": {
-        "width" : 30,
-        "height": 30
+        "width" : 70,
+        "height": 70
       }
     },
     {
@@ -59,8 +59,8 @@
         "effect_id": 1
       },
       "size": {
-        "width" : 30,
-        "height": 30
+        "width" : 70,
+        "height": 70
       }
     }
   ],

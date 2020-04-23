@@ -6,6 +6,8 @@
 #include <vector>
 #include <QPainter>
 
+#include "Model/coordinate.h"
+#include "Model/size.h"
 #include "View/size_handler.h"
 
 enum class EffectTarget {
@@ -38,7 +40,7 @@ class Effect {
 
   void ResetEffect();
   void DrawEffectsIcons(QPainter* painter, const SizeHandler& size_handler,
-                        Coordinate position) const;
+                        Coordinate position, Size parent_size) const;
 
   static void SetEffectVisualizations(
       const std::vector<EffectVisualization>& effect_visualization);

@@ -33,14 +33,10 @@ double SizeHandler::WindowToGameLength(double length) const {
   return length * scaling_coefficient_;
 }
 
-double SizeHandler::GameToWindowLength(double length) const {
-  return length / scaling_coefficient_;
+double SizeHandler::GameToWindowLength(double game_length) const {
+  return game_length / scaling_coefficient_;
 }
 
 Size SizeHandler::GetGameSize() const {
   return game_size_;
-}
-
-double SizeHandler::GameToWindowLength(double game_lendth) const {
-  return game_lendth / scaling_coefficient_;
 }

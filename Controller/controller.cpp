@@ -298,7 +298,6 @@ void Controller::MousePress(Coordinate position) {
     return;
   }
 
-  // TODO(elizabethfeden): qt buttons.
   auto pressed = view_->GetTowerMenu()->GetButtonInside(position);
   if (pressed != nullptr) {
     pressed->MakeAction();
@@ -351,10 +350,6 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
                                enemy.GetPosition(), Qt::yellow,
                                current_game_time_});
   model_->GetBase()->AddGoldAmount(reward);
-}
-
-const AnimationPlayer& Controller::GetMap() const {
-  return model_->GetMap();
 }
 
 const AnimationPlayer& Controller::GetBackground(WindowType type) const {
