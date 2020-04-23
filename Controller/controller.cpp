@@ -36,6 +36,7 @@ void Controller::Tick(int current_time) {
       MenuProcess();
       break;
     }
+    default:break;
   }
 }
 
