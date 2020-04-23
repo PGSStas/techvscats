@@ -7,6 +7,7 @@
 
 #include "Model/coordinate.h"
 #include "Model/size.h"
+#include "Model/constants.h"
 
 class SizeHandler {
  public:
@@ -16,6 +17,7 @@ class SizeHandler {
   Coordinate GameToWindowCoordinate(Coordinate game_coordinate) const;
   Size WindowToGameSize(Size window_size) const;
   Size GameToWindowSize(Size game_size) const;
+  double GameToWindowLength(double game_length) const;
 
   Size GetGameSize() const;
 

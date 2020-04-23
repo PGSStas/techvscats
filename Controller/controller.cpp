@@ -10,16 +10,17 @@ void Controller::StartGame(int level_id) {
   last_round_start_time_ = current_game_time_;
   model_->SetGameLevel(level_id);
 
-  view_->DisableMenuWindow();
+  SetSpeedCoefficient(Speed::kNormalSpeed);
+  view_->DisableMainMenuUi();
   view_->EnableGameUi();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
 }
 
 void Controller::EndGame(Exit) {
-  view_->DisableGameUi();
-  view_->EnableMenuUi();
   model_->ClearGameModel();
+  view_->DisableGameUi();
+  view_->EnableMainMenuUi();
   game_mode_ = WindowType::kMainMenu;
   current_game_time_ = 0;
 }
@@ -35,7 +36,14 @@ void Controller::Tick(int current_time) {
       MenuProcess();
       break;
     }
+    default: {
+      break;
+    }
   }
+}
+
+void Controller::SetSpeedCoefficient(Speed speed) {
+  view_->ChangeGameSpeed(speed);
 }
 
 void Controller::GameProcess() {
@@ -279,12 +287,12 @@ const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
 }
 
 const std::vector<std::shared_ptr<Building>>&
-  Controller::GetBuildings() const {
+Controller::GetBuildings() const {
   return model_->GetBuildings();
 }
 
 const std::list<std::shared_ptr<AbstractProjectile>>&
-  Controller::GetProjectiles() const {
+Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }
 
@@ -296,6 +304,6 @@ int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
 
-const AnimationPlayer& Controller::GetMap() const {
-  return model_->GetMap();
+const AnimationPlayer& Controller::GetBackground(WindowType type) const {
+  return model_->GetBackGround(static_cast<int>( type));
 }

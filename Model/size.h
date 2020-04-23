@@ -2,7 +2,6 @@
 #define MODEL_SIZE_H_
 
 #include <cmath>
-
 #include "constants.h"
 
 struct Size {

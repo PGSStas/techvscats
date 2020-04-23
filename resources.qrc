@@ -4,7 +4,6 @@
     <file>resources/database/database.json</file>
 
     <file>resources/images/error.png</file>
-    <file>resources/images/map_level_1_1.png</file>
     <file>resources/images/enemies/toster_1.png</file>
     <file>resources/images/enemies/toster_2.png</file>
     <file>resources/images/enemies/toster_3.png</file>
@@ -21,5 +20,35 @@
     <file>resources/images/towers/default_tower_post_1.png</file>
     <file>resources/images/towers/default_tower_post_2.png</file>
     <file>resources/images/towers/default_tower_post_3.png</file>
+
+    <file>resources/buttons_resources/dec_level_button.png</file>
+    <file>resources/buttons_resources/dec_level_button_active.png</file>
+    <file>resources/buttons_resources/inc_level_button.png</file>
+    <file>resources/buttons_resources/inc_level_button_active.png</file>
+
+    <file>resources/buttons_resources/sound_button_on.png</file>
+    <file>resources/buttons_resources/sound_button_on_active.png</file>
+    <file>resources/buttons_resources/sound_button_off.png</file>
+    <file>resources/buttons_resources/sound_button_off_active.png</file>
+    <file>resources/buttons_resources/language_button_rus.png</file>
+    <file>resources/buttons_resources/language_button_rus_active.png</file>
+    <file>resources/buttons_resources/language_button_eng.png</file>
+    <file>resources/buttons_resources/language_button_eng_active.png</file>
+
+    <file>resources/buttons_resources/pause_button.png</file>
+    <file>resources/buttons_resources/pause_button_active.png</file>
+    <file>resources/buttons_resources/double_speed_button.png</file>
+    <file>resources/buttons_resources/double_speed_button_active.png</file>
+    <file>resources/buttons_resources/normal_speed_button.png</file>
+    <file>resources/buttons_resources/normal_speed_button_active.png</file>
+    <file>resources/buttons_resources/zero_speed_button.png</file>
+    <file>resources/buttons_resources/zero_speed_button_active.png</file>
+
+    <file>resources/buttons_resources/menu_buttons_font.ttf</file>
+
+    <file>resources/images/backgrounds/map_level_1_1.png</file>
+    <file>resources/images/backgrounds/main_background_1.png</file>
+    <file>resources/images/backgrounds/settings_background_1.png</file>
+    <file>resources/images/backgrounds/pause_menu_background_1.png</file>
 </qresource>
 </RCC>

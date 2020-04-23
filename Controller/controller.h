@@ -18,6 +18,7 @@ class Controller : public AbstractController {
   void StartGame(int level) override;
   void EndGame(Exit exit) override;
   void Tick(int current_time) override;
+  void SetSpeedCoefficient(Speed speed) override;
 
   void MousePress(Coordinate position) override;
   void MouseMove(Coordinate position) override;
@@ -31,7 +32,7 @@ class Controller : public AbstractController {
   const Base& GetBase() const override;
   int GetCurrentTime() const override;
 
-  const AnimationPlayer& GetMap() const override;
+  const AnimationPlayer& GetBackground(WindowType type) const override;
 
  private:
   std::unique_ptr<Model> model_;

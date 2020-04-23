@@ -5,8 +5,10 @@
 
 namespace constants {
 const double kEpsilon = 0.0001;
+
 const int kGameWidth = 1920;
 const int kGameHeight = 1080;
+
 const int kTimeBetweenTicks = 17;
 const int kTimeScale = 100;
 }
