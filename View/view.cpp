@@ -19,7 +19,11 @@ View::View(AbstractController* controller)
 
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
-  DrawBackGround(&painter);
+  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+  painter.drawImage(
+      origin.x, origin.y, controller_->GetBackGround(
+          button_handler_->GetWindowType()).GetCurrentFrame());
+
   auto window_type = button_handler_->GetWindowType();
   switch (window_type) {
     case WindowType::kMainMenu:DrawMainMenu(&painter);
@@ -31,19 +35,26 @@ void View::paintEvent(QPaintEvent*) {
     case WindowType::kPauseMenu:DrawPauseMenu(&painter);
       break;
   }
+  DrawEmptyZones(&painter);
 }
 
-void View::DrawBackGround(QPainter* painter) {
+void View::DrawEmptyZones(QPainter* painter) {
   painter->save();
-  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-  Size window_size =
-      size_handler_.GameToWindowSize(size_handler_.GetGameSize());
-  painter->setBrush(QColor("#ffffff"));
-  painter->fillRect(0, 0, width(), height(), QColor("#fffffff"));
-  painter->drawImage(
-      origin.x, origin.y,
-      controller_->GetBackGround(
-          button_handler_->GetWindowType()).GetCurrentFrame());
+  Size horizontal_zone =
+      Size(width(), size_handler_.GameToWindowCoordinate({0, 0}).y);
+  painter->fillRect(
+      0, 0, horizontal_zone.width, horizontal_zone.height, QColor("#ffffff"));
+  painter->fillRect(
+      0,
+      size_handler_.GameToWindowCoordinate({0, constants::kGameHeight}).y - 1,
+      horizontal_zone.width + 2, horizontal_zone.height + 2, QColor("#ffffff"));
+  Size vertical_zone =
+      Size(size_handler_.GameToWindowCoordinate({0, 0}).x, height());
+  painter->fillRect(
+      0, 0, vertical_zone.width, vertical_zone.height, QColor("#ffffff"));
+  painter->fillRect(
+      size_handler_.GameToWindowCoordinate({constants::kGameWidth, 0}).x,
+      0, vertical_zone.width + 2, vertical_zone.height + 2, QColor("#ffffff"));
 
   painter->restore();
 }

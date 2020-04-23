@@ -60,7 +60,7 @@ class View : public QMainWindow {
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
 
-  void DrawBackGround(QPainter* painter);
+  void DrawEmptyZones(QPainter* painter);
   void DrawMainMenu(QPainter* painter);
   void DrawGame(QPainter* painter);
   void DrawSettings(QPainter* painter);
