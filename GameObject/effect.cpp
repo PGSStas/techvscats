@@ -27,12 +27,14 @@ void Effect::ResetEffect() {
 
 void Effect::DrawEffectsIcons(QPainter* painter,
                               const SizeHandler& size_handler,
-                              Coordinate position) const {
+                              Coordinate position, Size parent_size) const {
   painter->save();
   painter->setBrush(Qt::red);
   Coordinate point =
-      size_handler.GameToWindowCoordinate(position - Size(18, -18));
-  Size size = size_handler.GameToWindowSize(Size(6, 6));
+      size_handler.GameToWindowCoordinate(
+          position - Size(parent_size.width / 2 + 2,
+                          - parent_size.height / 2 - 2));
+  Size size = size_handler.GameToWindowSize(Size(10, 10));
 
   DrawEffectIcon(painter, &point, size, CoefficientType::kDamage);
 
@@ -100,6 +102,6 @@ void Effect::DrawEffectIcon(QPainter* painter, Coordinate* point,
     painter->setBrush(effect_visualization.reduced);
   }
   painter->drawEllipse(point->x, point->y, size.width, size.height);
-  point->x += size.width + 1;
+  point->x += size.width + std::max(size.width * 0.1, 2.0);
   painter->restore();
 }

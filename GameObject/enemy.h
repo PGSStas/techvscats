@@ -30,6 +30,7 @@ class Enemy : public MovingObject {
   Effect* GetAppliedEffect();
   double GetDamage() const;
   void ReceiveDamage(double damage);
+  int ComputeReward() const;
 
  private:
   double damage_;

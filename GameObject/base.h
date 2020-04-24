@@ -8,7 +8,8 @@
 
 class Base : public GameObject {
  public:
-  Base(double max_health, Coordinate position);
+  explicit Base(int gold = 0, double max_health = 0,
+                Coordinate position = {0, 0});
   ~Base() override = default;
 
   void Tick(int current_time) override;
@@ -17,18 +18,26 @@ class Base : public GameObject {
 
   double GetCurrentHealth() const;
   double GetMaxHealth() const;
+  int GetGold() const;
+  Coordinate GetGoldPosition() const;
+
+  void AddGoldAmount(int gold_amount);
+  void SubtractGoldAmount(int gold_amount);
+
   bool IsDead() const;
 
  private:
+  int gold_;
   double regeneration_rate_ = 0.05;
   double max_health_;
   double current_health_;
 
   bool is_dead_ = false;
 
-  static const Coordinate kHealthBarPosition;
   static const Size kBaseSize;
-  static const Size kHealthBarSize;
+  static const Coordinate kHealthPosition;
+  static const Coordinate kGoldPosition;
+  static const double kFontSize;
 };
 
 #endif  // GAMEOBJECT_BASE_H_

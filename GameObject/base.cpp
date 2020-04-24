@@ -1,11 +1,12 @@
 #include "base.h"
 
-const Coordinate Base::kHealthBarPosition = Coordinate(0, 1060);
 const Size Base::kBaseSize = Size(50, 50);
-const Size Base::kHealthBarSize = Size(1920, 20);
+const Coordinate Base::kHealthPosition = Coordinate(1700, 1000);
+const Coordinate Base::kGoldPosition = Coordinate(1800, 1000);
+const double Base::kFontSize = 22;
 
-Base::Base(double max_health, Coordinate position)
-    : GameObject(Size(0, 0), position),
+Base::Base(int gold, double max_health, Coordinate position)
+    : GameObject(Size(0, 0), position), gold_(gold),
       max_health_(max_health), current_health_(max_health) {}
 
 void Base::Tick(int) {
@@ -14,6 +15,21 @@ void Base::Tick(int) {
 
 void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
+
+  auto font = painter->font();
+  font.setPixelSize(size_handler.GameToWindowLength(kFontSize));
+  painter->setFont(font);
+
+  Coordinate health_top_corner =
+      size_handler.GameToWindowCoordinate(kHealthPosition);
+  painter->drawText(health_top_corner.x, health_top_corner.y,
+                    QString::number(current_health_));
+
+  Coordinate gold_top_corner =
+      size_handler.GameToWindowCoordinate(kGoldPosition);
+  painter->drawText(gold_top_corner.x, gold_top_corner.y,
+                    QString::number(gold_));
+
   painter->setBrush(Qt::magenta);
 
   auto point = size_handler.GameToWindowCoordinate(position_ - kBaseSize / 2);
@@ -21,15 +37,6 @@ void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
 
   painter->drawRect(point.x, point.y, size.width, size.height);
 
-  Coordinate health_bar_top_corner =
-      size_handler.GameToWindowCoordinate(kHealthBarPosition);
-  Size health_bar_size =
-      size_handler.GameToWindowSize({kHealthBarSize.width * current_health_
-                                         / max_health_,
-                                     kHealthBarSize.height});
-  painter->setBrush(Qt::red);
-  painter->drawRect(health_bar_top_corner.x, health_bar_top_corner.y,
-                    health_bar_size.width, health_bar_size.height);
   painter->restore();
 }
 
@@ -46,6 +53,22 @@ double Base::GetCurrentHealth() const {
 
 double Base::GetMaxHealth() const {
   return max_health_;
+}
+
+int Base::GetGold() const {
+  return gold_;
+}
+
+Coordinate Base::GetGoldPosition() const {
+  return kGoldPosition;
+}
+
+void Base::AddGoldAmount(int gold_amount) {
+  gold_ += gold_amount;
+}
+
+void Base::SubtractGoldAmount(int gold_amount) {
+  gold_ -= gold_amount;
 }
 
 bool Base::IsDead() const {

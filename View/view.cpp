@@ -3,7 +3,7 @@
 View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(),
-      button_handler_(std::make_unique<ButtonHandler>(this, controller)) {
+      button_handler_(std::make_unique<ButtonHandler>(this, controller, 0)) {
   setMinimumSize(1080, 720);
   setMouseTracking(true);
   show();
@@ -59,7 +59,7 @@ void View::DrawEmptyZones(QPainter* painter) {
   painter->restore();
 }
 
-void View::DrawMainMenu(QPainter* painter) {
+void View::DrawMainMenu(QPainter*) {
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetMainMenuUiVisible(true);
@@ -70,19 +70,19 @@ void View::DrawGame(QPainter* painter) {
   DrawEnemies(painter);
   DrawProjectiles(painter);
   DrawTowers(painter);
-  DrawInterface(painter);
+  DrawAdditionalInfo(painter);
 
   button_handler_->SetMainMenuUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetGameUiVisible(true);
 }
 
-void View::DrawSettings(QPainter* painter) {
+void View::DrawSettings(QPainter*) {
   button_handler_->SetMainMenuUiVisible(false);
   button_handler_->SetSettingsUiVisible(true);
 }
 
-void View::DrawPauseMenu(QPainter* painter) {
+void View::DrawPauseMenu(QPainter*) {
   button_handler_->SetGameUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(true);
 }
@@ -94,6 +94,14 @@ void View::DrawTowers(QPainter* painter) {
   for (const auto& building : buildings) {
     building->Draw(painter, size_handler_);
   }
+}
+
+const SizeHandler& View::GetSizeHandler() const {
+  return size_handler_;
+}
+
+bool View::IsTowerMenuEnabled() const {
+  return is_tower_menu_enabled_;
 }
 
 void View::DrawEnemies(QPainter* painter) {
@@ -114,28 +122,6 @@ void View::DrawAuras(QPainter* painter) {
   }
 }
 
-void View::DrawInterface(QPainter* painter) {
-  auto enemies_list = controller_->GetEnemies();
-
-  for (auto& enemy : enemies_list) {
-    enemy->DrawHealthBar(painter, size_handler_);
-    enemy->GetAppliedEffect()->DrawEffectsIcons(painter,
-                                                size_handler_,
-                                                enemy->GetPosition());
-  }
-
-  const auto& buildings_list = controller_->GetBuildings();
-  for (const auto& building : buildings_list) {
-    building->GetAppliedEffect()->DrawEffectsIcons(painter,
-                                                   size_handler_,
-                                                   building->GetPosition());
-  }
-
-  if (is_tower_menu_enabled_) {
-    tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
-  }
-}
-
 void View::DrawProjectiles(QPainter* painter) {
   auto projectiles_list = controller_->GetProjectiles();
   for (auto& projectile : projectiles_list) {
@@ -146,10 +132,6 @@ void View::DrawProjectiles(QPainter* painter) {
 void View::ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu) {
   tower_menu_ = menu;
   is_tower_menu_enabled_ = true;
-}
-
-bool View::IsTowerMenuEnabled() const {
-  return is_tower_menu_enabled_;
 }
 
 void View::DisableTowerMenu() {
@@ -192,6 +174,33 @@ void View::DisableGameUi() {
 
 void View::EnableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(true);
+}
+
+
+void View::DrawAdditionalInfo(QPainter* painter) {
+  const auto& enemies_list = controller_->GetEnemies();
+  for (auto& enemy : enemies_list) {
+    enemy->DrawHealthBar(painter, size_handler_);
+    enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                enemy->GetPosition(),
+                                                enemy->GetSize());
+  }
+
+  const auto& buildings_list = controller_->GetBuildings();
+  for (const auto& building : buildings_list) {
+    building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                   building->GetPosition(),
+                                                   building->GetSize());
+  }
+
+  if (is_tower_menu_enabled_) {
+    tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
+  }
+
+  const auto& text_notifications = controller_->GetTextNotifications();
+  for (auto& notification : text_notifications) {
+    notification.Draw(painter, size_handler_);
+  }
 }
 
 void View::DisableMainMenuUi() {

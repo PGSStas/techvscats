@@ -1,10 +1,9 @@
 #include "button_handler.h"
 
 ButtonHandler::ButtonHandler(QMainWindow* main_window,
-                             AbstractController* controller)
-    : QObject(main_window), main_window_(main_window), controller_(controller) {
-  font_id_ = QFontDatabase::addApplicationFont(
-      ":resources/buttons_resources/menu_buttons_font.ttf");
+                             AbstractController* controller, int font_id)
+    : QObject(main_window), main_window_(main_window), controller_(controller),
+    font_id_(font_id) {
   CreateButtons();
   window_type_ = WindowType::kMainMenu;
 }

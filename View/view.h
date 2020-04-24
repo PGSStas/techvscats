@@ -34,6 +34,8 @@ class View : public QMainWindow {
 
   void ChangeGameSpeed(Speed speed);
   std::shared_ptr<TowerMenu> GetTowerMenu();
+  const SizeHandler& GetSizeHandler() const;
+
   bool IsTowerMenuEnabled() const;
   void DisableTowerMenu();
 
@@ -71,7 +73,7 @@ class View : public QMainWindow {
   void DrawEnemies(QPainter* painter);
   void DrawProjectiles(QPainter* painter);
   void DrawTowers(QPainter* painter);
-  void DrawInterface(QPainter* painter);
+  void DrawAdditionalInfo(QPainter* painter);
 };
 
 #endif  // VIEW_VIEW_H_

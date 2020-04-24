@@ -30,11 +30,15 @@ class Building : public GameObject {
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
                      int max_aims);
   void SetReadyToCreateProjectileToFalse();
+  void SetTotalCost(int total_cost);
 
   int GetId() const;
   int GetAttackRange() const;
   int GetProjectileId() const;
   double GetDamage() const;
+  int GetCost() const;
+  int GetTotalCost() const;
+
   double GetProjectileSpeedCoefficient() const;
   Effect* GetAppliedEffect();
   const AuricField& GetAuricField() const;
@@ -48,6 +52,7 @@ class Building : public GameObject {
 
   int id_ = 0;
   int cost_ = 0;
+  int total_cost_ = 0;
 
   // action part
   Action action_ = Action::kReload;

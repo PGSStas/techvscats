@@ -73,10 +73,14 @@ void Enemy::DrawHealthBar(QPainter* painter,
                           const SizeHandler& size_handler) const {
   painter->save();
 
-  painter->setBrush(Qt::red);
   Coordinate point =
       size_handler.GameToWindowCoordinate(position_ - kHealthBarShift);
-  Size size = size_handler.GameToWindowSize(Size(
+  painter->setBrush(Qt::red);
+  Size size = size_handler.GameToWindowSize(kHealthBar);
+  painter->drawRect(point.x, point.y, size.width, size.height);
+
+  painter->setBrush(Qt::green);
+  size = size_handler.GameToWindowSize(Size(
       kHealthBar.width * current_health_ / max_health_, kHealthBar.height));
   painter->drawRect(point.x, point.y, size.width, size.height);
 
@@ -108,4 +112,11 @@ void Enemy::ReceiveDamage(double damage) {
   if (current_health_ <= constants::kEpsilon) {
     is_dead_ = true;
   }
+}
+
+int Enemy::ComputeReward() const {
+  // Computing dispersion of delta.
+  int modulus = 0.03 * reward_ + 2;
+  int delta = static_cast<int>(random_generator_()) % modulus - modulus / 2;
+  return reward_ + delta;
 }
