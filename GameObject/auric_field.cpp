@@ -22,7 +22,8 @@ void AuricField::Draw(QPainter* painter, const SizeHandler& size_handler,
   Coordinate gradient_center = size_handler.GameToWindowCoordinate(position);
 
   QRadialGradient gradient(gradient_center.x,
-                           gradient_center.y * 1 / kSemiMinorCoefficient,
+                           gradient_center.y * 1
+                               / constants::kSemiMinorCoefficient,
                            size.width);
 
   QColor color(Qt::blue);
@@ -31,10 +32,12 @@ void AuricField::Draw(QPainter* painter, const SizeHandler& size_handler,
   gradient.setColorAt(0.80, Qt::transparent);
   gradient.setColorAt(1, color);
   painter->setBrush(gradient);
-  painter->scale(1, kSemiMinorCoefficient);
+  painter->scale(1, constants::kSemiMinorCoefficient);
 
-  painter->drawEllipse(QPointF(point.x, point.y * 1 / kSemiMinorCoefficient),
-                       size.width, size.height);
+  painter->drawEllipse(QPointF(point.x,
+                               point.y * 1 / constants::kSemiMinorCoefficient),
+                               size.width,
+                               size.height);
   painter->restore();
 }
 

@@ -33,7 +33,7 @@ void TowerMenu::Draw(QPainter* painter,
 
   painter->save();
   QRadialGradient gradient(
-      center.x, center.y * 1 / kSemiMinorCoefficient, radius.width);
+      center.x, center.y * 1 / constants::kSemiMinorCoefficient, radius.width);
 
   QColor gradient_color(Qt::yellow);
   gradient_color.setAlpha(60);
@@ -43,9 +43,9 @@ void TowerMenu::Draw(QPainter* painter,
 
   painter->setPen(Qt::transparent);
   painter->setBrush(gradient);
-  painter->scale(1, kSemiMinorCoefficient);
+  painter->scale(1, constants::kSemiMinorCoefficient);
   painter->drawEllipse(QPointF(
-      center.x, center.y * 1 / kSemiMinorCoefficient),
+      center.x, center.y * 1 / constants::kSemiMinorCoefficient),
                        radius.width, radius.height);
   painter->restore();
 
