@@ -14,6 +14,7 @@ const int kTimeScale = 100;
 
 // Coefficient describes, how small SemiMinorAxe in compare between SemiMajorAxe
 const double kSemiMinorCoefficient = 0.4;
+const double kRefundCoefficient = 0.3;
 }
 
 #endif  // MODEL_CONSTANTS_H_

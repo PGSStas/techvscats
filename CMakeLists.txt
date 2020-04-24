@@ -39,10 +39,10 @@ add_executable(techvscats
         View/button_handler.cpp
         View/menu_button.cpp
         View/size_handler.cpp
+        View/text_notification.cpp
         View/tower_menu.cpp
         View/tower_menu_option.cpp
-        View/view.cpp
-        )
+        View/view.cpp)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

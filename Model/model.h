@@ -26,6 +26,7 @@
 #include "GameObject/laser_projectile.h"
 #include "enemy_group.h"
 #include "road.h"
+#include "View/text_notification.h"
 
 class Model {
  public:
@@ -33,6 +34,7 @@ class Model {
 
   void SetGameLevel(int level);
   void AddSpawner(const EnemyGroup& enemy_group);
+  void AddTextNotification(const TextNotification& text_notification);
   void AddEnemyFromInstance(const Enemy& enemy_instance);
   void CreateBuildingAtIndex(int i, int id);
   void CreateProjectile(const std::shared_ptr<Enemy>& aim,
@@ -45,6 +47,7 @@ class Model {
   std::list<Spawner>* GetSpawners();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   std::list<std::shared_ptr<AbstractProjectile>>* GetProjectiles();
+  std::list<TextNotification>* GetTextNotifications();
 
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
   const std::vector<std::vector<int>>& GetUpgradesTree() const;
@@ -76,14 +79,16 @@ class Model {
   std::list<std::shared_ptr<Enemy>> enemies_;
   std::vector<std::shared_ptr<Building>> buildings_;
   std::list<std::shared_ptr<AbstractProjectile>> projectiles_;
+  std::list<TextNotification> text_notifications_;
+
   int current_round_number_ = 0;
-  int gold_ = 0;
   int score_ = 0;
 
   // Database which is loaded in SetGameLevel once
   std::vector<Road> roads_;
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
-  Base base_ = Base(0, {0, 0});
+  Base base_;
+
   std::vector<Coordinate> empty_places_for_towers_;
   int prepair_time_between_rounds_ = 0;
   int rounds_count_ = 0;

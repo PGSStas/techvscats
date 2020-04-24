@@ -35,6 +35,7 @@ SOURCES += \
         View/button_handler.cpp \
         View/menu_button.cpp \
         View/size_handler.cpp \
+        View/text_notification.cpp \
         View/tower_menu.cpp \
         View/tower_menu_option.cpp \
         View/view.cpp \
@@ -64,6 +65,7 @@ HEADERS += \
         View/button_handler.h \
         View/menu_button.h \
         View/size_handler.h \
+        View/text_notification.h \
         View/tower_menu.h \
         View/tower_menu_option.h \
         View/view.h \
