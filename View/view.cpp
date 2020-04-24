@@ -3,7 +3,7 @@
 View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(),
-      button_handler_(std::make_unique<ButtonHandler>(this, controller)) {
+      button_handler_(std::make_unique<ButtonHandler>(this, controller, 0)) {
   setMinimumSize(1080, 720);
   setMouseTracking(true);
   show();
@@ -185,14 +185,14 @@ void View::DrawAdditionalInfo(QPainter* painter) {
                                                 enemy->GetPosition(),
                                                 enemy->GetSize());
   }
-  
+
   const auto& buildings_list = controller_->GetBuildings();
   for (const auto& building : buildings_list) {
     building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
                                                    building->GetPosition(),
                                                    building->GetSize());
   }
-  
+
   if (is_tower_menu_enabled_) {
     tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
   }

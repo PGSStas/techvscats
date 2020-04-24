@@ -2,6 +2,7 @@
 #define VIEW_TEXT_NOTIFICATION_H_
 
 #include <memory>
+#include <QFontDatabase>
 #include <QLabel>
 #include <QString>
 
@@ -31,6 +32,8 @@ class TextNotification : public GameObject {
 
   const double kFontSize = 18;
   const double kSlowdownCoefficient = 0.9;
+
+  const int kFontId = 0;
 };
 
 #endif  // VIEW_TEXT_NOTIFICATION_H_

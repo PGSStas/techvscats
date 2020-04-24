@@ -11,8 +11,8 @@
 
 class ButtonHandler : QObject {
  public:
-  explicit ButtonHandler(QMainWindow* main_window,
-                         AbstractController* controller);
+  ButtonHandler(QMainWindow* main_window, AbstractController* controller,
+                int font_id);
   ~ButtonHandler() override = default;
 
   void CreateButtons();

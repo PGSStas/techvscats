@@ -393,6 +393,10 @@ void Model::LoadDatabase() {
     upgrades_tree_.push_back(std::move(upgrade_tree));
     id_to_building_.push_back(std::move(building));
   }
+
+  // Load fonts
+  QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
+  QFontDatabase::addApplicationFont(":resources/fonts/comics.ttf");
 }
 
 void Model::InitializeTowerSlots() {

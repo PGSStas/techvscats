@@ -23,6 +23,7 @@ void TextNotification::Draw(QPainter* painter,
   painter->setPen(color_);
   auto font = painter->font();
   font.setPixelSize(size_handler.GameToWindowLength(kFontSize));
+  font.setFamily(QFontDatabase::applicationFontFamilies(kFontId).at(0));
   painter->setFont(font);
 
   Coordinate point = size_handler.GameToWindowCoordinate(position_ - size_ / 2);
