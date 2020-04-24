@@ -37,6 +37,7 @@ class Model {
   void CreateBuildingAtIndex(int i, int id);
   void CreateProjectile(const std::shared_ptr<Enemy>& aim,
                         const Building& building);
+  void RescaleDatabase(const SizeHandler& size_handler);
   void IncreaseCurrentRoundNumber();
   void ClearGameModel();
 
@@ -45,7 +46,6 @@ class Model {
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   std::list<std::shared_ptr<AbstractProjectile>>* GetProjectiles();
 
-  const std::vector<Road>& GetRoads() const;
   const std::vector<EnemyGroup>& GetEnemyGroupsPerRound(int i) const;
   const std::vector<std::vector<int>>& GetUpgradesTree() const;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const;
@@ -59,10 +59,17 @@ class Model {
   int GetPrepairTimeBetweenRounds() const;
   int GetCurrentRoundNumber() const;
 
+  const AnimationPlayer& GetBackGround(int back_ground_id) const;
+
  private:
-  void LoadLevelFromJson(int level);
-  void LoadDatabaseFromJson();
+  void LoadLevel(int level);
+  void LoadDatabase();
   void InitializeTowerSlots();
+  void SetAnimationToGameObject(
+      GameObject* object, std::vector<int> timmings,
+      std::vector<QString> paths);
+  std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(
+      QString path, QString picture_type = ".png") const;
 
   // Database which is updated by Controller all time
   std::list<Spawner> spawners_;
@@ -87,6 +94,9 @@ class Model {
   std::vector<Building> id_to_building_;
   std::vector<std::vector<int>> upgrades_tree_;
   std::vector<Effect> id_to_effect_;
+
+  // Images
+  std::vector<AnimationPlayer> back_grounds_;
 };
 
 #endif  // MODEL_MODEL_H_

@@ -18,11 +18,12 @@ class Controller : public AbstractController {
   void StartGame(int level) override;
   void EndGame(Exit exit) override;
   void Tick(int current_time) override;
+  void SetSpeedCoefficient(Speed speed) override;
 
   void MousePress(Coordinate position) override;
   void MouseMove(Coordinate position) override;
+  void RescaleObjects(const SizeHandler& size_handler) override;
 
-  const std::vector<Road>& GetRoads() const override;
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
   const std::list<std::shared_ptr<AbstractProjectile>>& GetProjectiles()
@@ -30,6 +31,8 @@ class Controller : public AbstractController {
 
   const Base& GetBase() const override;
   int GetCurrentTime() const override;
+
+  const AnimationPlayer& GetBackground(WindowType type) const override;
 
  private:
   std::unique_ptr<Model> model_;

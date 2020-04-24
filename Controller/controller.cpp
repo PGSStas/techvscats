@@ -8,19 +8,19 @@ void Controller::StartGame(int level_id) {
   current_game_time_ = 0;
   game_mode_ = WindowType::kGame;
   last_round_start_time_ = current_game_time_;
-
   model_->SetGameLevel(level_id);
 
-  view_->DisableMenuWindow();
+  SetSpeedCoefficient(Speed::kNormalSpeed);
+  view_->DisableMainMenuUi();
   view_->EnableGameUi();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
 }
 
 void Controller::EndGame(Exit) {
-  view_->DisableGameUi();
-  view_->EnableMenuUi();
   model_->ClearGameModel();
+  view_->DisableGameUi();
+  view_->EnableMainMenuUi();
   game_mode_ = WindowType::kMainMenu;
   current_game_time_ = 0;
 }
@@ -36,7 +36,14 @@ void Controller::Tick(int current_time) {
       MenuProcess();
       break;
     }
+    default: {
+      break;
+    }
   }
+}
+
+void Controller::SetSpeedCoefficient(Speed speed) {
+  view_->ChangeGameSpeed(speed);
 }
 
 void Controller::GameProcess() {
@@ -271,8 +278,8 @@ void Controller::MouseMove(Coordinate position) {
   view_->GetTowerMenu()->Hover(button);
 }
 
-const std::vector<Road>& Controller::GetRoads() const {
-  return model_->GetRoads();
+void Controller::RescaleObjects(const SizeHandler& size_handler) {
+  model_->RescaleDatabase(size_handler);
 }
 
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
@@ -295,4 +302,8 @@ const Base& Controller::GetBase() const {
 
 int Controller::GetCurrentTime() const {
   return current_game_time_;
+}
+
+const AnimationPlayer& Controller::GetBackground(WindowType type) const {
+  return model_->GetBackGround(static_cast<int>( type));
 }

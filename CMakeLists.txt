@@ -35,6 +35,9 @@ add_executable(techvscats
         Model/road.cpp
         Model/size.cpp
         resources.qrc
+        View/animation_player.cpp
+        View/button_handler.cpp
+        View/menu_button.cpp
         View/size_handler.cpp
         View/tower_menu.cpp
         View/tower_menu_option.cpp
