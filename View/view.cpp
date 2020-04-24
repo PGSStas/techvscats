@@ -82,7 +82,6 @@ void View::DrawSettings(QPainter*) {
 }
 
 void View::DrawPauseMenu(QPainter*) {
-
   button_handler_->SetGameUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(true);
 }
