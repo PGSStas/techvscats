@@ -34,7 +34,7 @@ void AnimationPlayer::Rescale(Size to_size) {
   }
   for (uint i = 0; i < frames_->size(); i++) {
     Size new_size = to_size;//size_handler_.GameToWindowSize(to_size);
-    frames_rescaled_[i] = (*frames_)[i].scaled(new_size.width, new_size.height,
+    frames_rescaled_[i] = (*frames_)[i].scaled(new_size.width+1, new_size.height+1,
                                                Qt::KeepAspectRatio);
   }
 }

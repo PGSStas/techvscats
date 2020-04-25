@@ -1,7 +1,7 @@
 #include "base.h"
 
-Base::Base(Size size, Coordinate position, double max_health)
-    : GameObject(size, position), max_health_(max_health),
+Base::Base(int gold,Size size, Coordinate position, double max_health)
+    : GameObject(size, position), gold_(gold),max_health_(max_health),
       current_health_(max_health) {}
 
 void Base::Tick(int current_time) {
@@ -19,20 +19,24 @@ void Base::Tick(int current_time) {
 void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
+    auto font = painter->font();
+  font.setPixelSize(size_handler.GameToWindowLength(kFontSize));
+  painter->setFont(font);
+
+  Coordinate health_top_corner =
+      size_handler.GameToWindowCoordinate(kHealthPosition);
+  painter->drawText(health_top_corner.x, health_top_corner.y,
+                    QString::number(current_health_));
+
+  Coordinate gold_top_corner =
+      size_handler.GameToWindowCoordinate(kGoldPosition);
+  painter->drawText(gold_top_corner.x, gold_top_corner.y,
+                    QString::number(gold_));
+
   Coordinate point = size_handler.GameToWindowCoordinate(
       position_ - size_ / 2);
   painter->drawImage(QPoint(point.x, point.y),
                      animation_players_[0].GetCurrentFrame());
-
-  Coordinate health_bar_top_corner =
-      size_handler.GameToWindowCoordinate(kHealthBarPosition);
-  Size health_bar_size =
-      size_handler.GameToWindowSize({kHealthBarSize.width * current_health_
-                                         / max_health_,
-                                     kHealthBarSize.height});
-  painter->setBrush(Qt::red);
-  painter->drawRect(health_bar_top_corner.x, health_bar_top_corner.y,
-                    health_bar_size.width, health_bar_size.height);
 
   painter->restore();
 }
@@ -59,6 +63,23 @@ double Base::GetCurrentHealth() const {
 double Base::GetMaxHealth() const {
   return max_health_;
 }
+
+int Base::GetGold() const {
+  return gold_;
+}
+
+Coordinate Base::GetGoldPosition() const {
+  return kGoldPosition;
+}
+
+void Base::AddGoldAmount(int gold_amount) {
+  gold_ += gold_amount;
+}
+
+void Base::SubtractGoldAmount(int gold_amount) {
+  gold_ -= gold_amount;
+}
+
 bool Base::IsDead() const {
   return is_dead_;
 }

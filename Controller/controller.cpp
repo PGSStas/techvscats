@@ -10,16 +10,17 @@ void Controller::StartGame(int level_id) {
   last_round_start_time_ = current_game_time_;
   model_->SetGameLevel(level_id);
 
-  view_->DisableMenuWindow();
+  SetSpeedCoefficient(Speed::kNormalSpeed);
+  view_->DisableMainMenuUi();
   view_->EnableGameUi();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
 }
 
 void Controller::EndGame(Exit) {
-  view_->DisableGameUi();
-  view_->EnableMenuUi();
   model_->ClearGameModel();
+  view_->DisableGameUi();
+  view_->EnableMainMenuUi();
   game_mode_ = WindowType::kMainMenu;
   current_game_time_ = 0;
 }
@@ -35,7 +36,14 @@ void Controller::Tick(int current_time) {
       MenuProcess();
       break;
     }
+    default: {
+      break;
+    }
   }
+}
+
+void Controller::SetSpeedCoefficient(Speed speed) {
+  view_->ChangeGameSpeed(speed);
 }
 
 void Controller::GameProcess() {
@@ -49,6 +57,7 @@ void Controller::GameProcess() {
   TickAuras();
   TickParticlesHandlers();
   TickParticles();
+  TickTextNotifications();
 }
 
 void Controller::MenuProcess() {}
@@ -103,7 +112,10 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
-  enemies->remove_if([](const auto& enemy) {
+  enemies->remove_if([this](const auto& enemy) {
+    if (enemy->IsDead()) {
+      ProcessEnemyDeath(*enemy);
+    }
     return enemy->IsDead() || enemy->IsEndReached();
   });
   auto base = model_->GetBase();
@@ -171,6 +183,16 @@ void Controller::TickAuras() {
 
   for (const auto& building : buildings) {
     ApplyEffectToAllInstances(building->GetAuricField());
+  }
+}
+
+void Controller::TickTextNotifications() {
+  auto text_notifications = model_->GetTextNotifications();
+  text_notifications->remove_if([](const TextNotification& text_notification) {
+    return text_notification.IsDead();
+  });
+  for (auto& notification : *text_notifications) {
+    notification.Tick(current_game_time_);
   }
 }
 
@@ -246,7 +268,30 @@ void Controller::AddEnemyToModel(const Enemy& enemy) const {
 }
 
 void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
-  model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+  int settle_cost = model_->GetBuildingById(replacing_id).GetCost();
+  auto base = model_->GetBase();
+  if (base->GetGold() >= settle_cost) {
+    if (replacing_id == 0) {
+      int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
+          * constants::kRefundCoefficient;
+
+      model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
+                                   base->GetGoldPosition(), Qt::green,
+                                   current_game_time_});
+      base->AddGoldAmount(sell_cost);
+      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+    } else {
+      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+      base->SubtractGoldAmount(settle_cost);
+
+      model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
+                                   base->GetGoldPosition(), Qt::red,
+                                   current_game_time_});
+    }
+  } else {
+    model_->AddTextNotification({"Not enough gold", base->GetGoldPosition(),
+                                 Qt::blue, current_game_time_});
+  }
 }
 
 void Controller::CreateTowerMenu(int tower_index) {
@@ -331,6 +376,10 @@ Controller::GetProjectiles() const {
   return *model_->GetProjectiles();
 }
 
+const std::list<TextNotification>& Controller::GetTextNotifications() const {
+  return *model_->GetTextNotifications();
+}
+
 const Base& Controller::GetBase() const {
   return *model_->GetBase();
 }
@@ -338,6 +387,15 @@ const Base& Controller::GetBase() const {
 int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
-const AnimationPlayer& Controller::GetMap() const {
-  return model_->GetMap();
+
+void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
+  int reward = enemy.ComputeReward();
+  model_->AddTextNotification({QString::number(reward) + " gold",
+                               enemy.GetPosition(), Qt::yellow,
+                               current_game_time_});
+  model_->GetBase()->AddGoldAmount(reward);
+}
+
+const AnimationPlayer& Controller::GetBackground(WindowType type) const {
+  return model_->GetBackGround(static_cast<int>(type));
 }

@@ -11,6 +11,7 @@ struct Coordinate {
   Coordinate() = default;
   Coordinate(double x, double y) noexcept;
   Size GetVectorTo(Coordinate right) const;
+  bool IsInEllipse(Coordinate center, double ellipse_radius) const;
 
   Coordinate operator*(double right) const;
   Coordinate operator/(double right) const;

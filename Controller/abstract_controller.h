@@ -10,11 +10,25 @@
 #include "GameObject/building.h"
 #include "GameObject/enemy.h"
 #include "GameObject/particle.h"
+#include "View/text_notification.h"
 
 enum class Exit {
   kWin,
   kLose,
   kMenu,
+};
+
+enum class Speed {
+  kZeroSpeed,
+  kNormalSpeed,
+  kDoubleSpeed
+};
+
+enum class WindowType {
+  kMainMenu,
+  kSettings,
+  kPauseMenu,
+  kGame
 };
 
 // AbstractController is needed to avoid the problem with looping include
@@ -26,6 +40,7 @@ class AbstractController {
   virtual void StartGame(int level) = 0;
   virtual void Tick(int current_time) = 0;
   virtual void EndGame(Exit exit) = 0;
+  virtual void SetSpeedCoefficient(Speed speed) = 0;
 
   virtual void MousePress(Coordinate position) = 0;
   virtual void MouseMove(Coordinate position) = 0;
@@ -33,15 +48,16 @@ class AbstractController {
 
   virtual const std::list<Particle>& GetParticles() const = 0;
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
-  virtual const std::vector<std::shared_ptr<Building>>&
-  GetBuildings() const = 0;
   virtual const std::list<std::shared_ptr<AbstractProjectile>>&
-  GetProjectiles() const = 0;
+    GetProjectiles() const = 0;
+  virtual const std::vector<std::shared_ptr<Building>>&
+    GetBuildings() const = 0;
+  virtual const std::list<TextNotification>& GetTextNotifications() const = 0;
 
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
 
-  virtual const AnimationPlayer& GetMap() const = 0;
+  virtual const AnimationPlayer& GetBackground(WindowType type) const = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

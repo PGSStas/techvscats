@@ -1,9 +1,6 @@
 #ifndef VIEW_VIEW_H_
 #define VIEW_VIEW_H_
 
-#include <list>
-#include <memory>
-
 #include <QElapsedTimer>
 #include <QLabel>
 #include <QMainWindow>
@@ -11,52 +8,51 @@
 #include <QObject>
 #include <QPushButton>
 #include <QString>
+#include <QTimer>
 #include <QTimerEvent>
 
-#include "Controller/abstract_controller.h"
-#include "size_handler.h"
-#include "tower_menu.h"
+#include <list>
+#include <memory>
 
-enum class WindowType {
-  kMainMenu,
-  kGame
-};
+#include "Controller/abstract_controller.h"
+#include "button_handler.h"
+#include "tower_menu.h"
 
 class View : public QMainWindow {
   Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
+  ~View() override = default;
 
   void EnableGameUi();
-  void EnableMenuUi();
   void DisableGameUi();
-  void DisableMenuWindow();
+  void EnableMainMenuUi();
+  void DisableMainMenuUi();
 
   void ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu);
   void UpdateRounds(int current_round_number, int number_of_rounds);
 
+  void ChangeGameSpeed(Speed speed);
   std::shared_ptr<TowerMenu> GetTowerMenu();
+  const SizeHandler& GetSizeHandler() const;
+
   bool IsTowerMenuEnabled() const;
   void DisableTowerMenu();
 
  private:
   AbstractController* controller_;
   SizeHandler size_handler_;
-  WindowType window_type_ = WindowType::kMainMenu;
   QElapsedTimer view_timer_;
   int controller_timer_id_;
 
   // Game window
   QElapsedTimer time_between_ticks_;
-  QPushButton* start_game_button_;
-  QLabel* wave_status_label_;
+  std::shared_ptr<ButtonHandler> button_handler_;
+
   std::shared_ptr<TowerMenu> tower_menu_ = nullptr;
   bool is_tower_menu_enabled_ = false;
   double game_speed_coefficient_ = 1;
-
-  // Menu window
-  QPushButton* return_menu_button_;
 
  private:
   // Events
@@ -66,13 +62,18 @@ class View : public QMainWindow {
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
 
+  void DrawEmptyZones(QPainter* painter);
+  void DrawMainMenu(QPainter* painter);
+  void DrawGame(QPainter* painter);
+  void DrawSettings(QPainter* painter);
+  void DrawPauseMenu(QPainter* painter);
+
   // Game window
-  void DrawAuras(QPainter* painter);
   void DrawEnemies(QPainter* painter);
   void DrawProjectiles(QPainter* painter);
   void DrawTowers(QPainter* painter);
   void DrawParticles(QPainter* painter);
-  void DrawInterface(QPainter* painter);
+  void DrawAdditionalInfo(QPainter* painter);
 };
 
 #endif  // VIEW_VIEW_H_

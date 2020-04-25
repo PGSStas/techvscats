@@ -18,7 +18,7 @@ enum class Action {
 
 class Building : public GameObject {
  public:
-  explicit Building(int id, int settle_cost, Size size,
+  explicit Building(int id = 0, int settle_cost = 0, Size size = {85, 85},
                     AuricField aura = AuricField(-1, -1));
   Building(const Building& other);
   ~Building() override = default;
@@ -30,17 +30,22 @@ class Building : public GameObject {
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
                      int max_aims);
   void SetReadyToCreateProjectileToFalse();
+  void SetTotalCost(int total_cost);
 
   int GetId() const;
   int GetAttackRange() const;
   int GetProjectileId() const;
   double GetDamage() const;
+  int GetCost() const;
+  int GetTotalCost() const;
+
   double GetProjectileSpeedCoefficient() const;
   Effect* GetAppliedEffect();
   const AuricField& GetAuricField() const;
   const std::list<std::shared_ptr<Enemy>>& GetAims() const;
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
+  bool IsInAttackRange(Coordinate coordinate) const;
 
  private:
   AuricField auric_field_;
@@ -48,6 +53,7 @@ class Building : public GameObject {
 
   int id_ = 0;
   int cost_ = 0;
+  int total_cost_ = 0;
 
   // action part
   Action action_ = Action::kReload;

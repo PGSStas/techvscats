@@ -18,6 +18,7 @@ class Controller : public AbstractController {
   void StartGame(int level) override;
   void EndGame(Exit exit) override;
   void Tick(int current_time) override;
+  void SetSpeedCoefficient(Speed speed) override;
 
   void MousePress(Coordinate position) override;
   void MouseMove(Coordinate position) override;
@@ -26,14 +27,15 @@ class Controller : public AbstractController {
    const std::list<Particle>& GetParticles() const override;
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
-  const std::list<std::shared_ptr<AbstractProjectile>>& GetProjectiles()
-  const override;
 
+  const std::list<std::shared_ptr<AbstractProjectile>>&
+    GetProjectiles() const override;
+  const std::list<TextNotification>& GetTextNotifications() const override;
 
   const Base& GetBase() const override;
   int GetCurrentTime() const override;
 
-  const AnimationPlayer& GetMap() const override;
+  const AnimationPlayer& GetBackground(WindowType type) const override;
 
  private:
   std::unique_ptr<Model> model_;
@@ -59,11 +61,14 @@ class Controller : public AbstractController {
   void TickBuildings();
   void TickProjectiles();
   void TickAuras();
+  void TickTextNotifications();
+
   void ApplyEffectToAllInstances(const AuricField& aura);
   void AddEnemyToModel(const Enemy& enemy) const;
 
   void SetBuilding(int index_in_buildings, int replacing_id);
   void CreateTowerMenu(int tower_index);
+  void ProcessEnemyDeath(const Enemy& enemy) const;
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

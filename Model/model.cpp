@@ -9,16 +9,16 @@ void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
 
   AimedProjectile projectile_instance_aimed(Size(50, 50), 66);
-  SetAnimationToGameObject( &projectile_instance_aimed,
-      {0},{"projectiles/carrot0_1"});
+  SetAnimationToGameObject(&projectile_instance_aimed,
+                           {0}, {"projectiles/carrot0_1"});
 
   BombProjectile projectile_instance_bomb(Size(50, 50), 45, 72, 220);
-  SetAnimationToGameObject( &projectile_instance_bomb,
-                            {500},{"projectiles/upfly1_9"});
+  SetAnimationToGameObject(&projectile_instance_bomb,
+                           {500}, {"projectiles/upfly1_9"});
 
   LaserProjectile projectile_instance_lazer(Size(10, 20));
-  SetAnimationToGameObject( &projectile_instance_lazer,
-                            {100},{"projectiles/laser2_1"});
+  SetAnimationToGameObject(&projectile_instance_lazer,
+                           {100}, {"projectiles/laser2_1"});
 
   id_to_projectile_.push_back(std::make_shared<AimedProjectile>(
       projectile_instance_aimed));
@@ -27,45 +27,28 @@ void Model::SetGameLevel(int level_id) {
   id_to_projectile_.push_back(std::make_shared<LaserProjectile>(
       projectile_instance_lazer));
 
-  Building building_instance(0, 0, {85, 85});
-  SetAnimationToGameObject(&building_instance, {500, 0, 0}, {
+  SetAnimationToGameObject(&id_to_building_[0], {500, 0, 0}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_reload_4",
       "towers/default_tower_reload_4"});
 
-  upgrades_tree_.push_back({1, 2});
-
-  Building building_instance2(1, 24, {85, 85});
-  building_instance2.SetProjectile(0, 10, 175, 2);
-  SetAnimationToGameObject(&building_instance2, {1000, 300, 300}, {
-      "towers/default_tower_reload_4",
-      "towers/default_tower_pre_3",
-      "towers/default_tower_post_3",
-  });
-  upgrades_tree_.push_back({3, 0});
-
-  Building building_instance3(2, 24, {80, 80}, AuricField(200, 2));
-  building_instance3.SetProjectile(2, 3, 215, 3);
-  SetAnimationToGameObject(&building_instance3, {100, 50, 10}, {
-      "towers/default_tower_reload_4",
-      "towers/default_tower_pre_3",
-      "towers/default_tower_post_3",
-  });
-  upgrades_tree_.push_back({3, 1, 0});
-
-  Building building_instance4(3, 24, {90, 90});
-  building_instance4.SetProjectile(1, 54, 275, 1);
-  SetAnimationToGameObject(&building_instance4, {1000, 600, 600}, {
+  SetAnimationToGameObject(&id_to_building_[1], {1000, 300, 300}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
   });
 
-  upgrades_tree_.push_back({1, 0});
-  id_to_building_.push_back(building_instance);
-  id_to_building_.push_back(building_instance2);
-  id_to_building_.push_back(building_instance3);
-  id_to_building_.push_back(building_instance4);
+  SetAnimationToGameObject(&id_to_building_[2], {100, 50, 10}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
+
+  SetAnimationToGameObject(&id_to_building_[3], {1000, 600, 600}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
 
   InitializeTowerSlots();
 
@@ -75,7 +58,7 @@ void Model::SetGameLevel(int level_id) {
   SetAnimationToGameObject(&id_to_particle_[0],
                            {400}, {"particles/kaboom0_8"});
 
-  id_to_particle_.emplace_back(Size(150,210));
+  id_to_particle_.emplace_back(Size(150, 210));
   SetAnimationToGameObject(&id_to_particle_[1],
                            {650}, {"particles/kaboom1_8"});
 
@@ -83,10 +66,9 @@ void Model::SetGameLevel(int level_id) {
   SetAnimationToGameObject(&id_to_particle_[2],
                            {450}, {"particles/on_fire2_5"});
 
-  id_to_particle_.emplace_back(Size(20,20));
+  id_to_particle_.emplace_back(Size(20, 20));
   SetAnimationToGameObject(&id_to_particle_[3],
                            {450}, {"particles/smoke3_1"});
-
 
   SetAnimationToGameObject(&*base_, {450}, {"towers/base_0_1"});
   base_->GetParticleHandler()->SetAliveParticlePack(2, 0);
@@ -107,6 +89,10 @@ void Model::AddSpawner(const EnemyGroup& enemy_group) {
   spawners_.emplace_back(enemy_group);
 }
 
+void Model::AddTextNotification(const TextNotification& text_notification) {
+  text_notifications_.push_back(text_notification);
+}
+
 void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
   enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
 }
@@ -114,7 +100,11 @@ void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
 void Model::CreateBuildingAtIndex(int i, int id) {
   Coordinate position = buildings_[i]->GetPosition();
   // Create new building by id
+  int sell_cost = buildings_[i]->GetTotalCost() + id_to_building_[id].GetCost();
   buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
+  if (id != 0) {
+    buildings_[i]->SetTotalCost(sell_cost);
+  }
   buildings_[i]->SetPosition(position);
 }
 
@@ -181,7 +171,9 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   if (base_ != nullptr) {
     base_->Rescale(size_handler.GameToWindowSize(base_->GetSize()));
   }
-  map_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
+  for (auto& animaion : back_grounds_) {
+    animaion.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
+  }
 }
 
 void Model::IncreaseCurrentRoundNumber() {
@@ -195,6 +187,7 @@ void Model::ClearGameModel() {
   buildings_.clear();
   projectiles_.clear();
   particles_.clear();
+  text_notifications_.clear();
   spawners_.clear();
   enemy_groups_.clear();
   roads_.clear();
@@ -219,6 +212,10 @@ std::list<std::shared_ptr<Enemy>>* Model::GetEnemies() {
 
 std::list<std::shared_ptr<AbstractProjectile>>* Model::GetProjectiles() {
   return &projectiles_;
+}
+
+std::list<TextNotification>* Model::GetTextNotifications() {
+  return &text_notifications_;
 }
 
 const std::vector<EnemyGroup>& Model::GetEnemyGroupsPerRound(int round) const {
@@ -273,19 +270,17 @@ void Model::LoadLevel(int level) {
 
   prepair_time_between_rounds_ =
       json_object["prepair_time_between_rounds_"].toInt();
-  gold_ = json_object["gold"].toInt();
-  score_ = json_object["score"].toInt();
 
   // Reading information about the base.
   QJsonObject json_base = json_object["base"].toObject();
   QJsonObject json_base_position = json_base["position"].toObject();
   QJsonObject json_base_size = json_base["size"].toObject();
-  base_ = std::make_shared<Base>(
-      Size(json_base_size["width"].toDouble(),
-           json_base_size["height"].toDouble()),
-      Coordinate(json_base_position["x"].toDouble(),
-                 json_base_position["y"].toDouble()),
-      json_base["max_health"].toDouble());
+  base_ = std::make_shared<Base>(json_object["gold"].toInt(),
+                                 Size(json_base_size["width"].toDouble(),
+                                      json_base_size["height"].toDouble()),
+                                 Coordinate(json_base_position["x"].toDouble(),
+                                            json_base_position["y"].toDouble()),
+                                 json_base["max_health"].toDouble());
 
   // Reading information about the roads.
   roads_.clear();
@@ -346,13 +341,15 @@ void Model::LoadLevel(int level) {
     empty_places_for_towers_.emplace_back(json_empty_tower["x"].toDouble(),
                                           json_empty_tower["y"].toDouble());
   }
-  map_ = AnimationPlayer(
-      GetImagesByFramePath("map_level_" +
+
+  // Map
+  back_grounds_[3] = AnimationPlayer(
+      GetImagesByFramePath("backgrounds/map_level_" +
           QString::number(level) + "_1"));
 }
 
-const AnimationPlayer& Model::GetMap() const {
-  return map_;
+const AnimationPlayer& Model::GetBackGround(int back_ground_id) const {
+  return back_grounds_[back_ground_id];
 }
 
 void Model::LoadDatabase() {
@@ -395,7 +392,6 @@ void Model::LoadDatabase() {
     }
     Size size = Size(enemy["size"].toObject()["width"].toInt(),
                      enemy["size"].toObject()["height"].toInt());
-    // TODO(PGS): size of enemy please. Also i put speed on the second place.
     id_to_enemy_.emplace_back(enemy["speed"].toInt(),
                               enemy["damage"].toInt(),
                               enemy["armor"].toInt(),
@@ -410,6 +406,15 @@ void Model::LoadDatabase() {
   SetAnimationToGameObject(&id_to_enemy_[3], {600}, {"enemies/mouse_3"});
   SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
 
+  // backgrounds
+  back_grounds_.emplace_back(
+      GetImagesByFramePath("backgrounds/main_background_1"));
+  back_grounds_.emplace_back(
+      GetImagesByFramePath("backgrounds/settings_background_1"));
+  back_grounds_.emplace_back(
+      GetImagesByFramePath("backgrounds/pause_menu_background_1"));
+  back_grounds_.emplace_back(
+      GetImagesByFramePath("error"));
   // Temporary part
   std::vector<EffectVisualization>
       effect_visualization = {{Qt::cyan, Qt::black},
@@ -418,6 +423,49 @@ void Model::LoadDatabase() {
                               {Qt::darkRed, Qt::magenta},
                               {Qt::white, Qt::yellow}};
   Effect::SetEffectVisualizations(effect_visualization);
+
+  // Loading Buildings
+  QJsonArray json_buildings = json_object["buildings"].toArray();
+  int buildings_count = json_buildings.count();
+  id_to_building_.clear();
+  id_to_building_.reserve(buildings_count);
+  upgrades_tree_.clear();
+  upgrades_tree_.reserve(buildings_count);
+  QJsonObject json_building;
+  for (int i = 0; i < buildings_count; i++) {
+    json_building = json_buildings[i].toObject();
+    auto json_size = json_building["size"].toObject();
+    Size size(json_size["width"].toDouble(), json_size["height"].toDouble());
+    AuricField aura;
+    if (json_building.contains("auric_field")) {
+      aura = AuricField(
+          json_building["aura"].toObject()["radius"].toInt(),
+          json_building["aura"].toObject()["effect_id"].toInt());
+    }
+
+    Building building(i, json_building["settle_cost"].toInt(), size, aura);
+    if (json_building.contains("projectile")) {
+      auto json_projectile = json_building["projectile"].toObject();
+      building.SetProjectile(json_projectile["projectile_id"].toInt(),
+                             json_projectile["attack_damage"].toDouble(),
+                             json_projectile["attack_range"].toInt(),
+                             json_projectile["max_aims"].toInt());
+    }
+
+    auto json_upgrade_tree = json_building["upgrade_tree"].toArray();
+    int upgrade_tree_count = json_upgrade_tree.size();
+    std::vector<int> upgrade_tree;
+    upgrade_tree.reserve(upgrade_tree_count);
+    for (int j = 0; j < upgrade_tree_count; j++) {
+      upgrade_tree.push_back(json_upgrade_tree[j].toInt());
+    }
+    upgrades_tree_.push_back(std::move(upgrade_tree));
+    id_to_building_.push_back(std::move(building));
+  }
+
+  // Load fonts
+  QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
+  QFontDatabase::addApplicationFont(":resources/fonts/comics.ttf");
 }
 
 void Model::InitializeTowerSlots() {

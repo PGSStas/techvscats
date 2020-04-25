@@ -30,20 +30,22 @@ add_executable(techvscats
         GameObject/game_object.cpp
         GameObject/laser_projectile.cpp
         GameObject/moving_object.cpp
+        GameObject/particle_handler.cpp
+        GameObject/particle.cpp
         Model/coordinate.cpp
         Model/model.cpp
         Model/road.cpp
         Model/size.cpp
         resources.qrc
         View/animation_player.cpp
+        View/animation_player.cpp
+        View/button_handler.cpp
+        View/menu_button.cpp
         View/size_handler.cpp
+        View/text_notification.cpp
         View/tower_menu.cpp
         View/tower_menu_option.cpp
-        View/view.cpp
-        GameObject/particle_handler.cpp
-        GameObject/particle_handler.h
-        GameObject/particle.cpp
-        GameObject/particle.h)
+        View/view.cpp)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

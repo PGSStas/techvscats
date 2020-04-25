@@ -31,6 +31,7 @@ class Enemy : public MovingObject {
   double GetDamage() const;
   Coordinate GetPrefirePosition() const;
   void ReceiveDamage(double damage);
+  int ComputeReward() const;
 
  private:
   double damage_;

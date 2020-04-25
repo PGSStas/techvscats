@@ -30,9 +30,6 @@ void GameObject::Rescale(Size to_size) {
   for (auto& player : animation_players_) {
     player.Rescale(to_size);
   }
-  if (animation_players_.empty()) {
-    SetAnimationPlayers(animation_players_);
-  }
 }
 
 Coordinate GameObject::GetPosition() const {
