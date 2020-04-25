@@ -72,9 +72,7 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
     return;
   }
   aims_.remove_if([&](const auto& object) {
-    return (object->IsDead() ||
-        object->GetPosition().GetVectorTo(position_).GetLength()
-            > attack_range_ * applied_effect_.GetRangeCoefficient());
+    return (object->IsDead() || !IsInAttackRange(object->GetPosition()));
   });
 
   if (aims_.size() == max_aims_) {
@@ -87,8 +85,7 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
         || aims_.size() == enemies.size()) {
       break;
     }
-    if (enemy->GetPosition().GetVectorTo(position_).GetLength()
-        > attack_range_ * applied_effect_.GetRangeCoefficient()) {
+    if (!IsInAttackRange(enemy->GetPosition())) {
       continue;
     }
     bool can_add = true;
@@ -177,4 +174,9 @@ bool Building::IsInside(Coordinate point) const {
 
 bool Building::IsReadyToCreateProjectiles() const {
   return is_ready_to_create_projectiles_;
+}
+
+bool Building::IsInAttackRange(Coordinate coordinate) const {
+  double result_range = attack_range_ * applied_effect_.GetRangeCoefficient();
+  return coordinate.IsInEllipse(position_, result_range);
 }

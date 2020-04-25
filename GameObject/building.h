@@ -45,6 +45,7 @@ class Building : public GameObject {
   const std::list<std::shared_ptr<Enemy>>& GetAims() const;
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
+  bool IsInAttackRange(Coordinate coordinate) const;
 
  private:
   AuricField auric_field_;
