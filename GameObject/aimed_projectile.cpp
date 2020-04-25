@@ -7,14 +7,17 @@ void AimedProjectile::Tick(int current_time) {
   UpdateTime(current_time);
   destination_ = aim_->GetPosition();
   Move();
+  animation_players_[0].Tick(delta_time_);
 }
 
 void AimedProjectile::Draw(QPainter* painter,
                            const SizeHandler& handler) const {
   painter->save();
-  painter->setBrush(draw_color_);
-  Coordinate position = handler.GameToWindowCoordinate(position_);
-  Size size = handler.GameToWindowSize(size_);
-  painter->drawEllipse(position.x, position.y, size.width, size.height);
+  Coordinate point = handler.GameToWindowCoordinate(
+      position_ - size_ / 2);
+
+  painter->translate(point.x, point.y);
+  painter->drawImage(QPoint(0, 0), animation_players_[0].GetCurrentFrame());
+
   painter->restore();
 }

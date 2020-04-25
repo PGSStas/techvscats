@@ -5,7 +5,7 @@ AbstractProjectile::AbstractProjectile(Size size, double speed)
 
 AbstractProjectile::AbstractProjectile(const AbstractProjectile& other) :
     MovingObject(other.size_, other.speed_, other.position_) {
-  SetAnimationParameters(other.draw_color_, other.iteration_time_);
+  SetAnimationPlayers(other.animation_players_);
   particle_handler_.SetParticlePacks(other.particle_handler_);
 }
 
@@ -28,12 +28,6 @@ void AbstractProjectile::SetParameters(
   if (aim != nullptr) {
     destination_ = aim->GetPosition();
   }
-}
-
-void AbstractProjectile::SetAnimationParameters(
-    const QColor& draw_color, int iteration_time) {
-  draw_color_ = draw_color;
-  iteration_time_ = iteration_time;
 }
 
 double AbstractProjectile::GetDamage() const {

@@ -10,7 +10,7 @@
 struct ParticleParameters {
   ParticleParameters(
       int particle_id, Size size, Coordinate position,
-      Size look_direction, int animation_times = 1, double speed = 0
+      Size look_direction = {0, 1}, int animation_times = 1, double speed = 0
   ) :
       particle_id(particle_id), size(size), position(position),
       look_direction(look_direction), animation_times(animation_times),
@@ -26,14 +26,16 @@ struct ParticleParameters {
 class ParticleHandler {
  public:
   ParticleHandler(const Size& carrier_size,
-                  const Coordinate& carrier_coordinates);
+                  const Coordinate& carrier_coordinates,
+                  const int& carrier_delta_time);
 
-  void Tick(int delta_time);
+  void Tick();
   void AddParticle(ParticleParameters particle);
   void SetRotation(Size lool_direction);
   void SetAtCreationParticlePack(int at_death_id, int at_creation_id = -1);
-  void SetAliveParticlePack(int while_alive_id, int period, int radius);
+  void SetAliveParticlePack(int while_alive_id, int period);
   void SetParticlePacks(const ParticleHandler& other);
+  void SetPeriod(int period);
   void CarrierDeath();
   void Clear();
 
@@ -41,9 +43,10 @@ class ParticleHandler {
   bool IsReadyToCreateParticle() const;
 
  private:
-  void CreateProjectileFromMe(int id);
+  void CreateParticleFromMe(int id);
   const Coordinate& carrier_coordinates_;
   const Size& carrier_size_;
+  const int& carrier_delta_time_;
   Size look_direction_ = {0, 1};
 
   std::list<ParticleParameters> wait_particles_;
@@ -53,7 +56,6 @@ class ParticleHandler {
 
   int while_alive_id_ = -1;
   int period_ = -1;
-  int radius_ = -1;
 
   int wait_time_ = 0;
 };

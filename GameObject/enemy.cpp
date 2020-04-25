@@ -14,6 +14,7 @@ Enemy::Enemy(const Enemy& other)
     : Enemy(other.speed_, other.damage_, other.armor_,
             other.reward_, other.max_health_, other.size_, other.auric_field_) {
   SetAnimationPlayers(other.animation_players_);
+  particle_handler_.SetParticlePacks(other.particle_handler_);
   auric_field_.SetCarrierCoordinate(&position_);
   if (other.road_ != nullptr) {
     SetRoad(*other.road_);
@@ -23,7 +24,7 @@ Enemy::Enemy(const Enemy& other)
 void Enemy::Tick(int current_time) {
   UpdateTime(current_time);
   Move();
-  animation_players_[0].Tick(delta_tick_time_ *
+  animation_players_[0].Tick(delta_time_ *
       applied_effect_.GetMoveSpeedCoefficient());
 }
 
@@ -96,10 +97,19 @@ Effect* Enemy::GetAppliedEffect() {
   return &applied_effect_;
 }
 
+Coordinate Enemy::GetPrefirePosition() const {
+  Size move_vector = position_.GetVectorTo(destination_);
+  move_vector /= move_vector.GetLength();
+  Coordinate prefire_position = position_;
+  prefire_position +=
+      move_vector * speed_ * applied_effect_.GetMoveSpeedCoefficient()
+          * constants::kTimeScale/delta_time_;
+  return prefire_position;
+}
+
 double Enemy::GetDamage() const {
   return damage_ * applied_effect_.GetDamageCoefficient();
 }
-
 void Enemy::ReceiveDamage(double damage) {
   // Temporary formula.
   double armor = armor_ * applied_effect_.GetArmorCoefficient();

@@ -20,7 +20,7 @@ void Building::Tick(int current_time) {
     return;
   }
   UpdateTime(current_time);
-  wait_time_ += delta_tick_time_ * applied_effect_.GetAttackRateCoefficient();
+  wait_time_ += delta_time_ * applied_effect_.GetAttackRateCoefficient();
 
   Action old_action = action_;
   switch (action_) {
@@ -54,7 +54,7 @@ void Building::Tick(int current_time) {
     }
   }
   if (old_action == action_) {
-    animation_players_[static_cast<int>(action_)].Tick(delta_tick_time_ *
+    animation_players_[static_cast<int>(action_)].Tick(delta_time_ *
         applied_effect_.GetAttackRateCoefficient());
   } else {
     animation_players_[static_cast<int>(action_)].Reset();

@@ -191,10 +191,12 @@ void Controller::TickParticlesHandlers() {
   for (auto& particle : *particles) {
     TickParticlesHandler(particle.GetParticleHandler());
   }
+  auto base = model_->GetBase();
+  TickParticlesHandler(base->GetParticleHandler());
 }
 
 void Controller::TickParticlesHandler(ParticleHandler* particle_handler) {
-  particle_handler->Tick(current_game_time_);
+  particle_handler->Tick();
   if (particle_handler->IsReadyToCreateParticle()) {
     model_->CreateParticle(particle_handler->GetWaitParticles());
     particle_handler->Clear();

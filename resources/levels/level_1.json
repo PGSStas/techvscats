@@ -4,13 +4,13 @@
   "score": 0,
   "base": {
     "size": {
-      "width": 100,
-      "height": 100
+      "width": 140,
+      "height": 140
     },
-    "max_health": 300,
+    "max_health": 100,
     "position": {
       "x": 1700,
-      "y": 187
+      "y": 167
     }
   },
   "roads": [

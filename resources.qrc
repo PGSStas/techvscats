@@ -3,9 +3,10 @@
     <file>resources/levels/level_1.json</file>
     <file>resources/database/database.json</file>
 
-    <file>resources/images/error.png</file>
     <file>resources/images/map_level_1_1.png</file>
     <file>resources/images/error.png</file>
+    <file>resources/images/towers/base_0_1.png</file>
+
     <file>resources/images/enemies/toster_1.png</file>
     <file>resources/images/enemies/toster_2.png</file>
     <file>resources/images/enemies/toster_3.png</file>
@@ -23,6 +24,15 @@
     <file>resources/images/towers/default_tower_post_2.png</file>
     <file>resources/images/towers/default_tower_post_3.png</file>
 
+    <file>resources/images/particles/kaboom0_1.png</file>
+    <file>resources/images/particles/kaboom0_2.png</file>
+    <file>resources/images/particles/kaboom0_3.png</file>
+    <file>resources/images/particles/kaboom0_4.png</file>
+    <file>resources/images/particles/kaboom0_5.png</file>
+    <file>resources/images/particles/kaboom0_6.png</file>
+    <file>resources/images/particles/kaboom0_7.png</file>
+    <file>resources/images/particles/kaboom0_8.png</file>
+
     <file>resources/images/particles/kaboom1_1.png</file>
     <file>resources/images/particles/kaboom1_2.png</file>
     <file>resources/images/particles/kaboom1_3.png</file>
@@ -31,5 +41,28 @@
     <file>resources/images/particles/kaboom1_6.png</file>
     <file>resources/images/particles/kaboom1_7.png</file>
     <file>resources/images/particles/kaboom1_8.png</file>
+
+    <file>resources/images/particles/on_fire2_1.png</file>
+    <file>resources/images/particles/on_fire2_2.png</file>
+    <file>resources/images/particles/on_fire2_3.png</file>
+    <file>resources/images/particles/on_fire2_4.png</file>
+    <file>resources/images/particles/on_fire2_5.png</file>
+
+    <file>resources/images/particles/smoke3_1.png</file>
+    <file>resources/images/projectiles/carrot0_1.png</file>
+
+    <file>resources/images/projectiles/upfly1_1.png</file>
+    <file>resources/images/projectiles/upfly1_2.png</file>
+    <file>resources/images/projectiles/upfly1_3.png</file>
+    <file>resources/images/projectiles/upfly1_4.png</file>
+    <file>resources/images/projectiles/upfly1_5.png</file>
+    <file>resources/images/projectiles/upfly1_6.png</file>
+    <file>resources/images/projectiles/upfly1_7.png</file>
+    <file>resources/images/projectiles/upfly1_8.png</file>
+    <file>resources/images/projectiles/upfly1_9.png</file>
+    <file>resources/images/projectiles/laser2_1.png</file>
+
+
+
 </qresource>
 </RCC>

@@ -26,9 +26,8 @@ class Base : public GameObject {
 
   bool is_dead_ = false;
 
-  static const Coordinate kHealthBarPosition;
-  static const Size kBaseSize;
-  static const Size kHealthBarSize;
+  const Coordinate kHealthBarPosition = Coordinate(0, 1060);
+  const Size kHealthBarSize = Size(1920, 20);
 };
 
 #endif  // GAMEOBJECT_BASE_H_

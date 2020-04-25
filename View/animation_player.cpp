@@ -1,13 +1,8 @@
 #include "animation_player.h"
 
 AnimationPlayer::AnimationPlayer(
-    const std::shared_ptr<std::vector<QImage>>& frames, double mspf_) :
-    AnimationPlayer(frames, static_cast<int>(frames->size() * mspf_
-        * constants::kTimeScale)) {}
-
-AnimationPlayer::AnimationPlayer(
     const std::shared_ptr<std::vector<QImage>>& frames, int animation_duration)
-    : frames_(frames), frames_rescaled_(*frames) {
+    :  frames_(frames), frames_rescaled_(*frames) {
   time_between_frames_ = 1.0 * animation_duration / frames->size();
 }
 
@@ -38,7 +33,8 @@ void AnimationPlayer::Rescale(Size to_size) {
     return;
   }
   for (uint i = 0; i < frames_->size(); i++) {
-    frames_rescaled_[i] = (*frames_)[i].scaled(to_size.width, to_size.height,
+    Size new_size = to_size;//size_handler_.GameToWindowSize(to_size);
+    frames_rescaled_[i] = (*frames_)[i].scaled(new_size.width, new_size.height,
                                                Qt::KeepAspectRatio);
   }
 }

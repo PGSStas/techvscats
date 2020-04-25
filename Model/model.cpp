@@ -8,14 +8,17 @@ Model::Model() {
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
 
-  AimedProjectile projectile_instance_aimed(Size(10, 20), 66);
-  projectile_instance_aimed.SetAnimationParameters(Qt::darkRed, 100);
+  AimedProjectile projectile_instance_aimed(Size(50, 50), 66);
+  SetAnimationToGameObject( &projectile_instance_aimed,
+      {0},{"projectiles/carrot0_1"});
 
-  BombProjectile projectile_instance_bomb(Size(10, 20), 45, 52, 120);
-  projectile_instance_bomb.SetAnimationParameters(Qt::darkGreen, 100);
+  BombProjectile projectile_instance_bomb(Size(50, 50), 45, 72, 220);
+  SetAnimationToGameObject( &projectile_instance_bomb,
+                            {500},{"projectiles/upfly1_9"});
 
   LaserProjectile projectile_instance_lazer(Size(10, 20));
-  projectile_instance_lazer.SetAnimationParameters(Qt::cyan, 160);
+  SetAnimationToGameObject( &projectile_instance_lazer,
+                            {100},{"projectiles/laser2_1"});
 
   id_to_projectile_.push_back(std::make_shared<AimedProjectile>(
       projectile_instance_aimed));
@@ -50,7 +53,7 @@ void Model::SetGameLevel(int level_id) {
   });
   upgrades_tree_.push_back({3, 1, 0});
 
-  Building building_instance4(3, 24,{90,90});
+  Building building_instance4(3, 24, {90, 90});
   building_instance4.SetProjectile(1, 54, 275, 1);
   SetAnimationToGameObject(&building_instance4, {1000, 600, 600}, {
       "towers/default_tower_reload_4",
@@ -68,13 +71,35 @@ void Model::SetGameLevel(int level_id) {
 
   ////////////////////////////////////////////// to paste
 
-  id_to_particle_.emplace_back(Size(30,30));
+  id_to_particle_.emplace_back();
   SetAnimationToGameObject(&id_to_particle_[0],
-                           {200}, {"particles/kaboom1_8"});
+                           {400}, {"particles/kaboom0_8"});
+
+  id_to_particle_.emplace_back(Size(150,210));
+  SetAnimationToGameObject(&id_to_particle_[1],
+                           {650}, {"particles/kaboom1_8"});
+
+  id_to_particle_.emplace_back(Size(50, 90), 8);
+  SetAnimationToGameObject(&id_to_particle_[2],
+                           {450}, {"particles/on_fire2_5"});
+
+  id_to_particle_.emplace_back(Size(20,20));
+  SetAnimationToGameObject(&id_to_particle_[3],
+                           {450}, {"particles/smoke3_1"});
+
+
+  SetAnimationToGameObject(&*base_, {450}, {"towers/base_0_1"});
+  base_->GetParticleHandler()->SetAliveParticlePack(2, 0);
 
   id_to_projectile_[0]->GetParticleHandler()->SetAtCreationParticlePack(0, 0);
-  id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(0, 300, 48);
-  id_to_enemy_[0].GetParticleHandler()->SetAtCreationParticlePack(0,0);
+  id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(3, 20);
+
+  id_to_projectile_[1]->GetParticleHandler()->SetAtCreationParticlePack(1);
+
+  id_to_enemy_[0].GetParticleHandler()->SetAtCreationParticlePack(0);
+  id_to_enemy_[1].GetParticleHandler()->SetAtCreationParticlePack(0);
+  id_to_enemy_[2].GetParticleHandler()->SetAtCreationParticlePack(0);
+  id_to_enemy_[3].GetParticleHandler()->SetAtCreationParticlePack(0);
 
 }
 
@@ -152,6 +177,9 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   }
   for (auto& particle : id_to_particle_) {
     particle.Rescale(size_handler.GameToWindowSize(particle.GetSize()));
+  }
+  if (base_ != nullptr) {
+    base_->Rescale(size_handler.GameToWindowSize(base_->GetSize()));
   }
   map_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
 }
@@ -253,8 +281,8 @@ void Model::LoadLevel(int level) {
   QJsonObject json_base_position = json_base["position"].toObject();
   QJsonObject json_base_size = json_base["size"].toObject();
   base_ = std::make_shared<Base>(
-      Size(json_base_position["width"].toDouble(),
-           json_base_position["height"].toDouble()),
+      Size(json_base_size["width"].toDouble(),
+           json_base_size["height"].toDouble()),
       Coordinate(json_base_position["x"].toDouble(),
                  json_base_position["y"].toDouble()),
       json_base["max_health"].toDouble());

@@ -8,14 +8,11 @@
 #include "Model/coordinate.h"
 #include "Model/constants.h"
 #include "Model/size.h"
-
 class AnimationPlayer {
  public:
   AnimationPlayer() = default;
-  explicit AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
-                           double mspf_ = 1);
   AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
-                  int animation_duration);
+                  int animation_duration=constants::kTimeScale);
 
   void Tick(int delta_time);
   void Reset();

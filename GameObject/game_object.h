@@ -38,7 +38,7 @@ class GameObject {
   Coordinate position_;
   ParticleHandler particle_handler_;
   int object_life_time_ = 0;
-  int delta_tick_time_ = 0;
+  int delta_time_ = 0;
 
  private:
   int object_last_time_ = 0;

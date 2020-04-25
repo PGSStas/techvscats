@@ -18,7 +18,7 @@ void MovingObject::MoveToDestination(bool stop_at_the_end) {
 
   if (move_direction.GetLength() > constants::kEpsilon) {
     move_direction /= move_direction.GetLength();
-    move_direction *= delta_tick_time_ * speed_ / constants::kTimeScale;
+    move_direction *= delta_time_ * speed_ / constants::kTimeScale;
   }
   if ((position_ + move_direction).GetVectorTo(destination_).width
       * position_.GetVectorTo(destination_).width <= 0 &&
