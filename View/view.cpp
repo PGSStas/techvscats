@@ -87,8 +87,6 @@ void View::DrawPauseMenu(QPainter*) {
 }
 
 void View::DrawTowers(QPainter* painter) {
-  controller_->GetBase().Draw(painter, size_handler_);
-
   const auto& buildings = controller_->GetBuildings();
   for (const auto& building : buildings) {
     building->Draw(painter, size_handler_);
@@ -164,7 +162,6 @@ void View::EnableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(true);
 }
 
-
 void View::DrawAdditionalInfo(QPainter* painter) {
   const auto& enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
@@ -181,9 +178,15 @@ void View::DrawAdditionalInfo(QPainter* painter) {
                                                    building->GetSize());
   }
 
+  controller_->GetBase().Draw(painter, size_handler_);
+
   if (is_tower_menu_enabled_) {
     tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
   }
+
+  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+  painter->drawImage(origin.x, origin.y,
+                     controller_->GetInterface().GetCurrentFrame());
 
   const auto& text_notifications = controller_->GetTextNotifications();
   for (auto& notification : text_notifications) {

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include <QFontDatabase>
 #include "game_object.h"
 
 class Base : public GameObject {
@@ -36,7 +37,9 @@ class Base : public GameObject {
 
   static const Size kBaseSize;
   static const Coordinate kHealthPosition;
+  static const Size kHealthSize;
   static const Coordinate kGoldPosition;
+  static const Size kGoldSize;
   static const double kFontSize;
 };
 

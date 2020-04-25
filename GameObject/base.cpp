@@ -1,8 +1,10 @@
 #include "base.h"
 
 const Size Base::kBaseSize = Size(50, 50);
-const Coordinate Base::kHealthPosition = Coordinate(1700, 1000);
-const Coordinate Base::kGoldPosition = Coordinate(1800, 1000);
+const Coordinate Base::kHealthPosition = Coordinate(1465, 945);
+const Size Base::kHealthSize = Size(160, 120);
+const Coordinate Base::kGoldPosition = Coordinate(1680, 960);
+const Size Base::kGoldSize = Size(260, 80);
 const double Base::kFontSize = 22;
 
 Base::Base(int gold, double max_health, Coordinate position)
@@ -18,17 +20,35 @@ void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
 
   auto font = painter->font();
   font.setPixelSize(size_handler.GameToWindowLength(kFontSize));
+  font.setFamily(QFontDatabase::applicationFontFamilies(0).at(0));
   painter->setFont(font);
+  painter->setBrush(Qt::red);
 
-  Coordinate health_top_corner =
-      size_handler.GameToWindowCoordinate(kHealthPosition);
-  painter->drawText(health_top_corner.x, health_top_corner.y,
-                    QString::number(current_health_));
+  Coordinate health_top_corner = size_handler.GameToWindowCoordinate(
+      {kHealthPosition.x, kHealthPosition.y
+          + kHealthSize.height * (1 - current_health_ / max_health_)});
+  Size health_size = size_handler.GameToWindowSize(kHealthSize);
+  painter->drawRect(health_top_corner.x, health_top_corner.y,
+                    health_size.width, health_size.height);
 
-  Coordinate gold_top_corner =
-      size_handler.GameToWindowCoordinate(kGoldPosition);
-  painter->drawText(gold_top_corner.x, gold_top_corner.y,
-                    QString::number(gold_));
+  painter->setBrush(QBrush(qRgb(103, 103, 103)));
+  Coordinate gold_top_corner = size_handler.GameToWindowCoordinate(
+      kGoldPosition);
+  Size gold_size = size_handler.GameToWindowSize(kGoldSize);
+  painter->drawRect(gold_top_corner.x, gold_top_corner.y,
+                    gold_size.width, gold_size.height);
+
+  painter->setPen(Qt::white);
+  Coordinate health_info = size_handler.GameToWindowCoordinate(
+      {kHealthPosition.x + kHealthSize.width / 2 - 25,
+       kHealthPosition.y + kHealthSize.height / 2 + 5});
+  painter->drawText(health_info.x, health_info.y,
+                    QString::number(static_cast<int>(current_health_)));
+
+  painter->setPen(Qt::yellow);
+  Coordinate gold_info = size_handler.GameToWindowCoordinate(
+      {kGoldPosition.x + 30, kGoldPosition.y + kGoldSize.height / 2 + 10});
+  painter->drawText(gold_info.x, gold_info.y, QString::number(gold_));
 
   painter->setBrush(Qt::magenta);
 
