@@ -4,6 +4,14 @@ Model::Model() {
   current_round_number_ = 0;
   LoadDatabase();
 }
+void lol(QString lf) {
+  QPixmap pixmap;
+  pixmap.load(lf);
+
+  QFile file(lf);
+  file.open(QIODevice::WriteOnly);
+  pixmap.save(&file, "PNG");
+}
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
 
@@ -15,9 +23,10 @@ void Model::SetGameLevel(int level_id) {
   SetAnimationToGameObject(&projectile_instance_bomb,
                            {500}, {"projectiles/upfly1_9"});
 
-  LaserProjectile projectile_instance_lazer(Size(30, 30));
+ lol("E:/universe/INFa/QT/0_Project/techvscats/resources/images/projectiles/laser2_4.png");
+  LaserProjectile projectile_instance_lazer(Size(25, 25));
   SetAnimationToGameObject(&projectile_instance_lazer,
-                           {300}, {"projectiles/laser2_3"});
+                           {600}, {"projectiles/laser2_4"});
   id_to_projectile_.push_back(std::make_shared<AimedProjectile>(
       projectile_instance_aimed));
   id_to_projectile_.push_back(std::make_shared<BombProjectile>(
@@ -45,7 +54,7 @@ void Model::SetGameLevel(int level_id) {
 
   id_to_particle_.emplace_back(Size(63, 63));
   SetAnimationToGameObject(&id_to_particle_[4],
-                           {200}, {"particles/scar3_6"});
+                           {300}, {"particles/scar3_6"});
 
   SetAnimationToGameObject(&*base_, {450}, {"towers/base_0_1"});
   base_->GetParticleHandler()->SetAliveParticlePack(2, 0);

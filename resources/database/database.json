@@ -186,7 +186,7 @@
       "speed_coefficient": -0.1,
       "armor_coefficient": 1,
       "damage_coefficient": 0.3,
-      "attack_rate_coefficient":  3,
+      "attack_rate_coefficient":  0.3,
       "range_coefficient": 0.4
     },
     {

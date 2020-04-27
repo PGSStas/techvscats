@@ -121,8 +121,8 @@ void View::DrawProjectiles(QPainter* painter) {
 
 void View::DrawParticles(QPainter* painter) {
   const auto& particles = controller_->GetParticles();
-  for (const auto& particle : particles) {
-    particle.Draw(painter, size_handler_);
+  for (auto particle = particles.rbegin(); particle!=  particles.rend(); particle++) {
+    particle->Draw(painter, size_handler_);
   }
 }
 
