@@ -34,7 +34,7 @@ void Effect::DrawEffectsIcons(QPainter* painter,
   Coordinate point =
       size_handler.GameToWindowCoordinate(
           position - Size(parent_size.width / 2 + 2,
-                          -parent_size.height / 2 - 2));
+                          -parent_size.height / 4 - 2));
   Size size = size_handler.GameToWindowSize(kSize);
 
   DrawEffectIcon(painter, &point, size, CoefficientType::kDamage);

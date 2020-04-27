@@ -7,7 +7,7 @@
 
 class Particle : public GameObject {
  public:
-  Particle(Size size = {-1, -1}, int repeat_number = -1);
+  explicit Particle(Size size = {-1, -1}, int repeat_number = -1);
   Particle(const Particle& other);
   ~Particle() override = default;
 
@@ -17,9 +17,8 @@ class Particle : public GameObject {
   bool IsDead() const;
  private:
   bool is_dead_ = false;
-  int time_to_death_;
-  Size look_direction_;
-  int repeat_number_;
+  int time_to_death_ = 0;
+  int repeat_number_ = 0;
 };
 
 #endif  // GAMEOBJECT_PARTICLE_H_

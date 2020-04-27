@@ -1,7 +1,7 @@
 #include "base.h"
 
-Base::Base(int gold,Size size, Coordinate position, double max_health)
-    : GameObject(size, position), gold_(gold),max_health_(max_health),
+Base::Base(int gold, Size size, Coordinate position, double max_health)
+    : GameObject(size, position), gold_(gold), max_health_(max_health),
       current_health_(max_health) {}
 
 void Base::Tick(int current_time) {
@@ -19,7 +19,7 @@ void Base::Tick(int current_time) {
 void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
-    auto font = painter->font();
+  auto font = painter->font();
   font.setPixelSize(size_handler.GameToWindowLength(kFontSize));
   painter->setFont(font);
 
@@ -46,8 +46,8 @@ void Base::DecreaseHealth(double damage) {
 
   Coordinate rand_position = position_;
   rand_position +=
-      Size(qrand() % static_cast<int>(size_.width ) - size_.width / 2,
-           qrand() % static_cast<int>(size_.height ) - size_.height / 2);
+      Size(qrand() % static_cast<int>(size_.width) - size_.width / 2,
+           qrand() % static_cast<int>(size_.height) - size_.height / 2);
   particle_handler_.AddParticle(
       ParticleParameters(0, size_ / 3, rand_position));
 

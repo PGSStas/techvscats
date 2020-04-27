@@ -104,8 +104,9 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   Coordinate point =
       size_handler.GameToWindowCoordinate(position_ - size_ / 2);
   painter->translate(point.x, point.y);
-  painter->drawImage(QPoint(0, 0),
-                     animation_players_[static_cast<int>(action_)].GetCurrentFrame());
+  painter->drawImage(
+      QPoint(0, 0),
+      animation_players_[static_cast<int>(action_)].GetCurrentFrame());
   painter->restore();
 }
 

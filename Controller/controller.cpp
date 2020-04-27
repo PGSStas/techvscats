@@ -228,7 +228,9 @@ void Controller::TickParticlesHandler(ParticleHandler* particle_handler) {
 
 void Controller::TickParticles() {
   auto particles = model_->GetParticles();
-  particles->remove_if([](const Particle& particle) { return particle.IsDead(); });
+  particles->remove_if([](const Particle& particle) {
+    return particle.IsDead();
+  });
   for (auto& particle : *particles) {
     particle.Tick(current_game_time_);
   }

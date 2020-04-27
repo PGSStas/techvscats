@@ -12,7 +12,7 @@ class AnimationPlayer {
  public:
   AnimationPlayer() = default;
   AnimationPlayer(const std::shared_ptr<std::vector<QImage>>& frames,
-                  int animation_duration=constants::kTimeScale);
+                  int animation_duration = constants::kTimeScale);
 
   void Tick(int delta_time);
   void Reset();
@@ -21,7 +21,7 @@ class AnimationPlayer {
   void Rescale(Size to_size);
 
  private:
-  Size picture_size_ ;
+  Size picture_size_;
   uint current_frame_ = 0;
   int wait_till_next_frame_ = 0;
   int time_between_frames_ = 0;

@@ -21,9 +21,9 @@ void ParticleHandler::Tick() {
     wait_time_ += period_;
     Coordinate rand_coordinate = carrier_coordinates_;
     rand_coordinate +=
-        Size(qrand() % (static_cast<int>( carrier_size_.height ))
+        Size(qrand() % (static_cast<int>(carrier_size_.height))
                  - carrier_size_.height / 2,
-             qrand() % (static_cast<int>(carrier_size_.width ))
+             qrand() % (static_cast<int>(carrier_size_.width))
                  - carrier_size_.width / 2);
 
     wait_particles_.emplace_back(while_alive_id_, carrier_size_,
@@ -33,7 +33,6 @@ void ParticleHandler::Tick() {
 
 void ParticleHandler::SetAtCreationParticlePack(int at_death_id,
                                                 int at_creation_id) {
-
   at_death_id_ = at_death_id;
   at_creation_id_ = at_creation_id;
 }

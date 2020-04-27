@@ -2,7 +2,7 @@
 
 GameObject::GameObject(Size size, Coordinate position)
     : size_(size), position_(position),
-    particle_handler_(size_, position_,delta_time_) {
+      particle_handler_(size_, position_, delta_time_) {
 }
 
 void GameObject::UpdateTime(int current_time) {

@@ -11,11 +11,11 @@ void Model::SetGameLevel(int level_id) {
   SetAnimationToGameObject(&projectile_instance_aimed,
                            {0}, {"projectiles/bullet0_1"});
 
-  BombProjectile projectile_instance_bomb(Size(50, 50), 45, 92, 220);
+  BombProjectile projectile_instance_bomb(Size(40, 50), 45, 92, 220);
   SetAnimationToGameObject(&projectile_instance_bomb,
                            {500}, {"projectiles/upfly1_9"});
 
-  LaserProjectile projectile_instance_lazer(Size(20, 20));
+  LaserProjectile projectile_instance_lazer(Size(30, 30));
   SetAnimationToGameObject(&projectile_instance_lazer,
                            {300}, {"projectiles/laser2_3"});
   id_to_projectile_.push_back(std::make_shared<AimedProjectile>(
@@ -61,7 +61,6 @@ void Model::SetGameLevel(int level_id) {
   id_to_enemy_[1].GetParticleHandler()->SetAtCreationParticlePack(0);
   id_to_enemy_[2].GetParticleHandler()->SetAtCreationParticlePack(0);
   id_to_enemy_[3].GetParticleHandler()->SetAtCreationParticlePack(0);
-
 }
 
 void Model::AddSpawner(const EnemyGroup& enemy_group) {
@@ -111,7 +110,7 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
 }
 
 void Model::CreateParticle(const std::list<ParticleParameters>& parameters) {
-  for (const auto& particle_parameters :parameters) {
+  for (const auto& particle_parameters : parameters) {
     particles_.push_back(id_to_particle_[particle_parameters.particle_id]);
     particles_.back().SetParameters(particle_parameters.size,
                                     particle_parameters.position,

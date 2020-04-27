@@ -10,8 +10,7 @@
 struct ParticleParameters {
   ParticleParameters(
       int particle_id, Size size, Coordinate position,
-       int animation_times = 1, double speed = 0
-  ) :
+      int animation_times = 1, double speed = 0) :
       particle_id(particle_id), size(size), position(position),
       animation_times(animation_times), speed(speed) {}
   int particle_id;
@@ -57,4 +56,4 @@ class ParticleHandler {
   int wait_time_ = 0;
 };
 
-#endif  // GAMEOBJECT_PARTICLE_HANDLER_H
+#endif  // GAMEOBJECT_PARTICLE_HANDLER_H_
