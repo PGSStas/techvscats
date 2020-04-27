@@ -18,7 +18,7 @@ void ParticleHandler::Tick() {
   }
   wait_time_ -= carrier_delta_time_;
   if (wait_time_ <= 0) {
-    wait_time_ = period_;
+    wait_time_ += period_;
     Coordinate rand_coordinate = carrier_coordinates_;
     rand_coordinate +=
         Size(qrand() % (static_cast<int>( carrier_size_.height ))
@@ -27,12 +27,8 @@ void ParticleHandler::Tick() {
                  - carrier_size_.width / 2);
 
     wait_particles_.emplace_back(while_alive_id_, carrier_size_,
-                                 rand_coordinate, look_direction_);
+                                 rand_coordinate);
   }
-}
-
-void ParticleHandler::SetRotation(Size look_direction) {
-  look_direction_ = look_direction;
 }
 
 void ParticleHandler::SetAtCreationParticlePack(int at_death_id,
@@ -77,8 +73,7 @@ void ParticleHandler::AddParticle(ParticleParameters particle) {
 }
 
 void ParticleHandler::CreateParticleFromMe(int id) {
-  wait_particles_.emplace_back(id, carrier_size_, carrier_coordinates_,
-                               look_direction_);
+  wait_particles_.emplace_back(id, carrier_size_, carrier_coordinates_);
 }
 
 void ParticleHandler::SetPeriod(int period) {

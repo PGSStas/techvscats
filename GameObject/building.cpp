@@ -25,18 +25,16 @@ void Building::Tick(int current_time) {
   Action old_action = action_;
   switch (action_) {
     case Action::kReload: {
-      if (wait_time_ > action_timings_[static_cast<int>(Action::kReload)]) {
-        if (is_ready_to_shoot_) {
-          wait_time_ = 0;
-          action_ = Action::kBeforeFire;
-        }
+      if (is_ready_to_shoot_) {
+        action_ = Action::kBeforeFire;
+        wait_time_ = 0;
       }
       break;
     }
     case Action::kBeforeFire: {
       if (!is_ready_to_shoot_) {
         action_ = Action::kReload;
-        wait_time_ = action_timings_[static_cast<int>(Action::kReload)];
+        wait_time_ = 0;
         break;
       }
       if (wait_time_ > action_timings_[static_cast<int>(Action::kBeforeFire)]) {
@@ -62,9 +60,7 @@ void Building::Tick(int current_time) {
 }
 
 void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
-  if ((wait_time_ < action_timings_[static_cast<int>(Action::kReload)]
-      && action_ == Action::kReload) || action_ == Action::kAfterFire ||
-      id_ == 0) {
+  if (action_ == Action::kAfterFire || id_ == 0) {
     return;
   }
   if (enemies.empty()) {
@@ -109,7 +105,7 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
       size_handler.GameToWindowCoordinate(position_ - size_ / 2);
   painter->translate(point.x, point.y);
   painter->drawImage(QPoint(0, 0),
-      animation_players_[static_cast<int>(action_)].GetCurrentFrame());
+                     animation_players_[static_cast<int>(action_)].GetCurrentFrame());
   painter->restore();
 }
 

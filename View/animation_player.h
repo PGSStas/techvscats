@@ -18,10 +18,10 @@ class AnimationPlayer {
   void Reset();
   const QImage& GetCurrentFrame() const;
   int GetAnimationDuration() const;
-
   void Rescale(Size to_size);
 
  private:
+  Size picture_size_ ;
   uint current_frame_ = 0;
   int wait_till_next_frame_ = 0;
   int time_between_frames_ = 0;

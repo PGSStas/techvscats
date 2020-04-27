@@ -7,6 +7,7 @@ void LaserProjectile::Tick(int current_time) {
   UpdateTime(current_time);
   if (object_life_time_ > action_timings_[0] || aim_->IsDead()) {
     position_ = aim_->GetPosition();
+    particle_handler_.CarrierDeath();
     is_end_reached_ = true;
     is_dead_ = true;
   }

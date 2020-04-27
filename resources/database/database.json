@@ -71,8 +71,13 @@
         "height": 85
       },
       "settle_cost": 0,
+      "animation_paths": [
+        "towers/default_tower_reload_4",
+        "towers/default_tower_pre_3",
+        "towers/default_tower_post_3"
+      ],
       "action_time": [
-        0,
+        1000,
         0,
         0
       ],
@@ -93,6 +98,11 @@
         "attack_range": 340,
         "max_aims": 2
       },
+      "animation_paths": [
+        "towers/default_tower_reload_4",
+        "towers/default_tower_pre_3",
+        "towers/default_tower_post_3"
+      ],
       "action_time": [
         1000,
         300,
@@ -119,10 +129,15 @@
         "attack_range": 240,
         "max_aims": 3
       },
+      "animation_paths": [
+        "towers/default_tower_reload_4",
+        "towers/default_tower_pre_3",
+        "towers/default_tower_post_3"
+      ],
       "action_time": [
         100,
-        50,
-        10
+        500,
+        100
       ],
       "upgrade_tree": [
         3,
@@ -142,9 +157,14 @@
         "attack_range": 540,
         "max_aims": 1
       },
+      "animation_paths": [
+        "towers/default_tower_reload_4",
+        "towers/default_tower_pre_3",
+        "towers/default_tower_post_3"
+      ],
       "action_time": [
         1000,
-        300,
+        600,
         100
       ],
       "upgrade_tree": [

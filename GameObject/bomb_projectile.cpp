@@ -42,6 +42,5 @@ void BombProjectile::SetParameters(const std::shared_ptr<Enemy>& aim,
 }
 
 bool BombProjectile::IsInAffectedArea(const Enemy& enemy) {
-  return position_.GetVectorTo(enemy.GetPosition()).GetLength()
-      <= effect_radius_ + constants::kEpsilon;
+  return position_.IsInEllipse(enemy.GetPosition(), effect_radius_ );
 }

@@ -10,15 +10,13 @@
 struct ParticleParameters {
   ParticleParameters(
       int particle_id, Size size, Coordinate position,
-      Size look_direction = {0, 1}, int animation_times = 1, double speed = 0
+       int animation_times = 1, double speed = 0
   ) :
       particle_id(particle_id), size(size), position(position),
-      look_direction(look_direction), animation_times(animation_times),
-      speed(speed) {}
+      animation_times(animation_times), speed(speed) {}
   int particle_id;
   Size size;
   Coordinate position;
-  Size look_direction;
   int animation_times;
   double speed;
 };
@@ -31,7 +29,6 @@ class ParticleHandler {
 
   void Tick();
   void AddParticle(ParticleParameters particle);
-  void SetRotation(Size lool_direction);
   void SetAtCreationParticlePack(int at_death_id, int at_creation_id = -1);
   void SetAliveParticlePack(int while_alive_id, int period);
   void SetParticlePacks(const ParticleHandler& other);

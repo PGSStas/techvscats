@@ -66,6 +66,7 @@ void View::DrawMainMenu(QPainter*) {
 }
 
 void View::DrawGame(QPainter* painter) {
+  controller_->RescaleObjects(size_handler_);
   DrawEnemies(painter);
   DrawProjectiles(painter);
   DrawTowers(painter);
@@ -214,7 +215,7 @@ void View::timerEvent(QTimerEvent* event) {
   }
 }
 
-void View::UpdateRounds(int current_round_number, int number_of_rounds) {
+void View::UpdateRounds(int  , int  ) {
   // Here will be some kind of round indicator.
 }
 

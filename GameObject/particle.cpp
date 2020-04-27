@@ -2,17 +2,13 @@
 
 #include <utility>
 
-Particle::Particle(Size size, int repeat_number, double speed,
-                   Size look_direction) :
-    MovingObject(size, speed), look_direction_(look_direction),
-    repeat_number_(repeat_number) {
+Particle::Particle(Size size, int repeat_number) :
+    GameObject(size), repeat_number_(repeat_number) {
 }
 
 Particle::Particle(const Particle& other) :
-    Particle(other.size_, other.repeat_number_,
-             other.speed_, other.look_direction_) {
+    Particle(other.size_, other.repeat_number_) {
   SetAnimationPlayers(other.animation_players_);
-
 }
 
 void Particle::Tick(int current_time) {
@@ -28,7 +24,7 @@ void Particle::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
   Coordinate point;
-    point = size_handler.GameToWindowCoordinate(position_- size_ / 2);
+  point = size_handler.GameToWindowCoordinate(position_ - size_ / 2);
 
   painter->translate(point.x, point.y);
   // look direction set !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -38,17 +34,12 @@ void Particle::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->restore();
 }
 
-void Particle::SetParameters(Size size, Coordinate position, int repeat_number,
-                             Size look_direction, double speed  ) {
+void Particle::SetParameters(Size size, Coordinate position,
+    int repeat_number) {
   if (size_ == Size(-1, -1)) {
     size_ = size;
-    animation_players_[0].Rescale(size_);
   }
   position_ = position;
-  if (look_direction == Size(-1, -1)) {
-    look_direction_ = look_direction;
-    speed_ = speed;
-  }
   if (repeat_number == -1) {
     repeat_number_ = repeat_number;
   }
@@ -56,11 +47,9 @@ void Particle::SetParameters(Size size, Coordinate position, int repeat_number,
     repeat_number_ = repeat_number;
   }
   time_to_death_ = animation_players_[0].GetAnimationDuration()
-      * repeat_number_;
-}
-void Particle::Move() {
-  destination_ = position_ + look_direction_;
-  MoveToDestination(false);
+      * repeat_number_ * 0.97;
 }
 
-
+bool Particle::IsDead() const {
+  return is_dead_;
+}

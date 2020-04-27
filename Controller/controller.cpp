@@ -50,6 +50,7 @@ void Controller::GameProcess() {
   if (CanCreateNextWave()) {
     CreateNextWave();
   }
+
   TickSpawners();
   TickEnemies();
   TickBuildings();

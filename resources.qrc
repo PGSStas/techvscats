@@ -77,8 +77,23 @@
     <file>resources/images/particles/on_fire2_4.png</file>
     <file>resources/images/particles/on_fire2_5.png</file>
 
+    <file>resources/images/particles/scar3_1.png</file>
+    <file>resources/images/particles/scar3_2.png</file>
+    <file>resources/images/particles/scar3_3.png</file>
+    <file>resources/images/particles/scar3_4.png</file>
+    <file>resources/images/particles/scar3_5.png</file>
+    <file>resources/images/particles/scar3_6.png</file>
+
     <file>resources/images/particles/smoke3_1.png</file>
-    <file>resources/images/projectiles/carrot0_1.png</file>
+    <file>resources/images/particles/flash4_1.png</file>
+    <file>resources/images/particles/flash4_2.png</file>
+    <file>resources/images/particles/flash4_3.png</file>
+    <file>resources/images/particles/flash4_4.png</file>
+    <file>resources/images/particles/poof5_1.png</file>
+    <file>resources/images/particles/poof5_2.png</file>
+    <file>resources/images/particles/poof5_3.png</file>
+
+    <file>resources/images/projectiles/bullet0_1.png</file>
 
     <file>resources/images/projectiles/upfly1_1.png</file>
     <file>resources/images/projectiles/upfly1_2.png</file>
@@ -90,6 +105,17 @@
     <file>resources/images/projectiles/upfly1_8.png</file>
     <file>resources/images/projectiles/upfly1_9.png</file>
     <file>resources/images/projectiles/laser2_1.png</file>
+
+    <file>resources/images/icons/slow_1.png</file>
+    <file>resources/images/icons/fast_1.png</file>
+    <file>resources/images/icons/more_armor_1.png</file>
+    <file>resources/images/icons/less_armor_1.png</file>
+    <file>resources/images/icons/more_damage_1.png</file>
+    <file>resources/images/icons/less_damage_1.png</file>
+    <file>resources/images/icons/slow_attack_1.png</file>
+    <file>resources/images/icons/fast_attack_1.png</file>
+    <file>resources/images/icons/more_range_1.png</file>
+    <file>resources/images/icons/less_range_1.png</file>
 
     <file>resources/images/backgrounds/map_level_1_1.png</file>
     <file>resources/images/backgrounds/main_background_1.png</file>

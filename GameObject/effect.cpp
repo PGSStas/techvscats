@@ -1,6 +1,7 @@
 #include "effect.h"
 
 std::vector<EffectVisualization> Effect::effect_visualizations_{};
+const Size Effect::kSize = {30, 30};
 
 Effect::Effect(EffectTarget effect_type,
                double speed_coefficient,
@@ -33,8 +34,8 @@ void Effect::DrawEffectsIcons(QPainter* painter,
   Coordinate point =
       size_handler.GameToWindowCoordinate(
           position - Size(parent_size.width / 2 + 2,
-                          - parent_size.height / 2 - 2));
-  Size size = size_handler.GameToWindowSize(Size(10, 10));
+                          -parent_size.height / 2 - 2));
+  Size size = size_handler.GameToWindowSize(kSize);
 
   DrawEffectIcon(painter, &point, size, CoefficientType::kDamage);
 
@@ -52,6 +53,17 @@ void Effect::DrawEffectsIcons(QPainter* painter,
 void Effect::SetEffectVisualizations(
     const std::vector<EffectVisualization>& effect_visualization) {
   effect_visualizations_ = effect_visualization;
+}
+
+void Effect::Rescale(Size size) {
+  for (auto& effect_visualise : effect_visualizations_) {
+    effect_visualise.increased.Rescale(size);
+      effect_visualise.reduced.Rescale(size);
+  }
+}
+
+Size Effect::GetSize() {
+  return kSize;
 }
 
 EffectTarget Effect::GetEffectTarget() const {
@@ -85,7 +97,6 @@ Effect& Effect::operator+=(const Effect& other) {
   }
   return *this;
 }
-
 void Effect::DrawEffectIcon(QPainter* painter, Coordinate* point,
                             Size size, CoefficientType coefficient_type) const {
   int index = static_cast<int>(coefficient_type);
@@ -97,11 +108,12 @@ void Effect::DrawEffectIcon(QPainter* painter, Coordinate* point,
   painter->save();
   EffectVisualization effect_visualization = effect_visualizations_[index];
   if (coefficient > 1) {
-    painter->setBrush(effect_visualization.increased);
+    painter->drawImage(QPoint(point->x, point->y),
+                       effect_visualization.increased.GetCurrentFrame());
   } else if (coefficient < 1) {
-    painter->setBrush(effect_visualization.reduced);
+    painter->drawImage(QPoint(point->x, point->y),
+                       effect_visualization.reduced.GetCurrentFrame());
   }
-  painter->drawEllipse(point->x, point->y, size.width, size.height);
-  point->x += size.width + std::max(size.width * 0.1, 2.0);
+  point->x += size.width*0.6;
   painter->restore();
 }

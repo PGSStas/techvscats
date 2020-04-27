@@ -8,11 +8,11 @@ Model::Model() {
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
 
-  AimedProjectile projectile_instance_aimed(Size(50, 50), 66);
+  AimedProjectile projectile_instance_aimed(Size(30, 30), 66);
   SetAnimationToGameObject(&projectile_instance_aimed,
-                           {0}, {"projectiles/carrot0_1"});
+                           {0}, {"projectiles/bullet0_1"});
 
-  BombProjectile projectile_instance_bomb(Size(50, 50), 45, 72, 220);
+  BombProjectile projectile_instance_bomb(Size(50, 50), 45, 92, 220);
   SetAnimationToGameObject(&projectile_instance_bomb,
                            {500}, {"projectiles/upfly1_9"});
 
@@ -27,32 +27,7 @@ void Model::SetGameLevel(int level_id) {
   id_to_projectile_.push_back(std::make_shared<LaserProjectile>(
       projectile_instance_lazer));
 
-  SetAnimationToGameObject(&id_to_building_[0], {500, 0, 0}, {
-      "towers/default_tower_reload_4",
-      "towers/default_tower_reload_4",
-      "towers/default_tower_reload_4"});
-
-  SetAnimationToGameObject(&id_to_building_[1], {1000, 300, 300}, {
-      "towers/default_tower_reload_4",
-      "towers/default_tower_pre_3",
-      "towers/default_tower_post_3",
-  });
-
-  SetAnimationToGameObject(&id_to_building_[2], {100, 50, 10}, {
-      "towers/default_tower_reload_4",
-      "towers/default_tower_pre_3",
-      "towers/default_tower_post_3",
-  });
-
-  SetAnimationToGameObject(&id_to_building_[3], {1000, 600, 600}, {
-      "towers/default_tower_reload_4",
-      "towers/default_tower_pre_3",
-      "towers/default_tower_post_3",
-  });
-
   InitializeTowerSlots();
-
-  ////////////////////////////////////////////// to paste
 
   id_to_particle_.emplace_back();
   SetAnimationToGameObject(&id_to_particle_[0],
@@ -62,21 +37,27 @@ void Model::SetGameLevel(int level_id) {
   SetAnimationToGameObject(&id_to_particle_[1],
                            {650}, {"particles/kaboom1_8"});
 
-  id_to_particle_.emplace_back(Size(50, 90), 8);
+  id_to_particle_.emplace_back(Size(30, 60), 8);
   SetAnimationToGameObject(&id_to_particle_[2],
                            {450}, {"particles/on_fire2_5"});
 
-  id_to_particle_.emplace_back(Size(20, 20));
+  id_to_particle_.emplace_back(Size(30, 30));
   SetAnimationToGameObject(&id_to_particle_[3],
-                           {450}, {"particles/smoke3_1"});
+                           {450}, {"particles/flash4_4"});
+
+  id_to_particle_.emplace_back(Size(63, 63));
+  SetAnimationToGameObject(&id_to_particle_[4],
+                           {200}, {"particles/scar3_6"});
 
   SetAnimationToGameObject(&*base_, {450}, {"towers/base_0_1"});
   base_->GetParticleHandler()->SetAliveParticlePack(2, 0);
 
-  id_to_projectile_[0]->GetParticleHandler()->SetAtCreationParticlePack(0, 0);
-  id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(3, 20);
+  id_to_projectile_[0]->GetParticleHandler()->SetAtCreationParticlePack(0, 3);
+  id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(3, 100);
 
   id_to_projectile_[1]->GetParticleHandler()->SetAtCreationParticlePack(1);
+
+  id_to_projectile_[2]->GetParticleHandler()->SetAtCreationParticlePack(4);
 
   id_to_enemy_[0].GetParticleHandler()->SetAtCreationParticlePack(0);
   id_to_enemy_[1].GetParticleHandler()->SetAtCreationParticlePack(0);
@@ -136,9 +117,7 @@ void Model::CreateParticle(const std::list<ParticleParameters>& parameters) {
     particles_.push_back(id_to_particle_[particle_parameters.particle_id]);
     particles_.back().SetParameters(particle_parameters.size,
                                     particle_parameters.position,
-                                    particle_parameters.animation_times,
-                                    particle_parameters.look_direction,
-                                    particle_parameters.speed);
+                                    particle_parameters.animation_times);
   }
 }
 
@@ -174,6 +153,7 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   for (auto& animaion : back_grounds_) {
     animaion.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
   }
+  Effect::Rescale(size_handler.GameToWindowSize(Effect::GetSize()));
 }
 
 void Model::IncreaseCurrentRoundNumber() {
@@ -416,12 +396,25 @@ void Model::LoadDatabase() {
   back_grounds_.emplace_back(
       GetImagesByFramePath("error"));
   // Temporary part
+  QPixmap pixmap;
+ pixmap.load("E:/universe/INFa/QT/0_Project/techvscats/resources/images/icons/slow_1.png");
+
+  QFile file("E:/universe/INFa/QT/0_Project/techvscats/resources/images/icons/slow_1.png");
+  file.open(QIODevice::WriteOnly);
+  pixmap.save(&file, "PNG");
   std::vector<EffectVisualization>
-      effect_visualization = {{Qt::cyan, Qt::black},
-                              {Qt::gray, Qt::darkGreen},
-                              {Qt::blue, Qt::darkBlue},
-                              {Qt::darkRed, Qt::magenta},
-                              {Qt::white, Qt::yellow}};
+      effect_visualization =
+      {{GetImagesByFramePath("icons/slow_1"),
+        GetImagesByFramePath("icons/fast_1")},
+       {GetImagesByFramePath("icons/less_armor_1"),
+        GetImagesByFramePath("icons/more_armor_1")},
+       {GetImagesByFramePath("icons/less_damage_1"),
+        GetImagesByFramePath("icons/more_damage_1")},
+       {GetImagesByFramePath("icons/fast_attack_1"),
+        GetImagesByFramePath("icons/slow_attack_1")},
+       {GetImagesByFramePath("icons/more_range_1"),
+        GetImagesByFramePath("icons/less_range_1")},
+      };
   Effect::SetEffectVisualizations(effect_visualization);
 
   // Loading Buildings
@@ -451,6 +444,15 @@ void Model::LoadDatabase() {
                              json_projectile["attack_range"].toInt(),
                              json_projectile["max_aims"].toInt());
     }
+    auto json_timings = json_building["action_time"].toArray();
+    auto json_paths = json_building["animation_paths"].toArray();
+    SetAnimationToGameObject(&building, {
+        json_timings[0].toInt(),
+        json_timings[1].toInt(),
+        json_timings[2].toInt()}, {
+                                 json_paths[0].toString(),
+                                 json_paths[1].toString(),
+                                 json_paths[2].toString()});
 
     auto json_upgrade_tree = json_building["upgrade_tree"].toArray();
     int upgrade_tree_count = json_upgrade_tree.size();
