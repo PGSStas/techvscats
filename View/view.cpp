@@ -121,11 +121,11 @@ void View::DrawProjectiles(QPainter* painter) {
 
 void View::DrawParticles(QPainter* painter) {
   const auto& particles = controller_->GetParticles();
-  for (auto particle = particles.rbegin(); particle!=  particles.rend(); particle++) {
+  for (auto particle = particles.rbegin(); particle != particles.rend();
+       particle++) {
     particle->Draw(painter, size_handler_);
   }
 }
-
 
 void View::ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu) {
   tower_menu_ = menu;
@@ -174,7 +174,6 @@ void View::EnableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(true);
 }
 
-
 void View::DrawAdditionalInfo(QPainter* painter) {
   const auto& enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
@@ -215,7 +214,7 @@ void View::timerEvent(QTimerEvent* event) {
   }
 }
 
-void View::UpdateRounds(int  , int  ) {
+void View::UpdateRounds(int, int) {
   // Here will be some kind of round indicator.
 }
 

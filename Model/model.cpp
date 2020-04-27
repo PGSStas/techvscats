@@ -4,14 +4,7 @@ Model::Model() {
   current_round_number_ = 0;
   LoadDatabase();
 }
-void lol(QString lf) {
-  QPixmap pixmap;
-  pixmap.load(lf);
 
-  QFile file(lf);
-  file.open(QIODevice::WriteOnly);
-  pixmap.save(&file, "PNG");
-}
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
 
@@ -23,7 +16,6 @@ void Model::SetGameLevel(int level_id) {
   SetAnimationToGameObject(&projectile_instance_bomb,
                            {500}, {"projectiles/upfly1_9"});
 
- lol("E:/universe/INFa/QT/0_Project/techvscats/resources/images/projectiles/laser2_4.png");
   LaserProjectile projectile_instance_lazer(Size(25, 25));
   SetAnimationToGameObject(&projectile_instance_lazer,
                            {600}, {"projectiles/laser2_4"});

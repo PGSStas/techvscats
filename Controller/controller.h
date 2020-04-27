@@ -24,12 +24,12 @@ class Controller : public AbstractController {
   void MouseMove(Coordinate position) override;
   void RescaleObjects(const SizeHandler& size_handler) override;
 
-   const std::list<Particle>& GetParticles() const override;
+  const std::list<Particle>& GetParticles() const override;
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
 
   const std::list<std::shared_ptr<AbstractProjectile>>&
-    GetProjectiles() const override;
+  GetProjectiles() const override;
   const std::list<TextNotification>& GetTextNotifications() const override;
 
   const Base& GetBase() const override;
