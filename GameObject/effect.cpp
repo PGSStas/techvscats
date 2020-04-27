@@ -44,8 +44,8 @@ void Effect::DrawEffectsIcons(QPainter* painter,
     DrawEffectIcon(painter, &point, size, CoefficientType::kArmor);
   }
   if (effect_target_ == EffectTarget::kBuilding) {
-    DrawEffectIcon(painter, &point, size, CoefficientType::kRange);
     DrawEffectIcon(painter, &point, size, CoefficientType::kAttackRate);
+    DrawEffectIcon(painter, &point, size, CoefficientType::kRange);
   }
   painter->restore();
 }

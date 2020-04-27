@@ -24,7 +24,7 @@ void Building::Tick(int current_time) {
 
   Action old_action = action_;
   switch (action_) {
-    case Action::kReload: {
+    case Action::kWait: {
       if (is_ready_to_shoot_) {
         action_ = Action::kBeforeFire;
         wait_time_ = 0;
@@ -33,7 +33,7 @@ void Building::Tick(int current_time) {
     }
     case Action::kBeforeFire: {
       if (!is_ready_to_shoot_) {
-        action_ = Action::kReload;
+        action_ = Action::kWait;
         wait_time_ = 0;
         break;
       }
@@ -46,7 +46,7 @@ void Building::Tick(int current_time) {
     }
     case Action::kAfterFire: {
       if (wait_time_ > action_timings_[static_cast<int>(Action::kAfterFire)]) {
-        action_ = Action::kReload;
+        action_ = Action::kWait;
       }
       break;
     }

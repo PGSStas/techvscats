@@ -11,7 +11,7 @@
 #include "enemy.h"
 
 enum class Action {
-  kReload = 0,
+  kWait = 0,
   kBeforeFire = 1,
   kAfterFire = 2
 };
@@ -56,7 +56,7 @@ class Building : public GameObject {
   int total_cost_ = 0;
 
   // action part
-  Action action_ = Action::kReload;
+  Action action_ = Action::kWait;
   int wait_time_ = 0;
 
   int projectile_id_ = 0;

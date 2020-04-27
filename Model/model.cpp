@@ -4,7 +4,6 @@ Model::Model() {
   current_round_number_ = 0;
   LoadDatabase();
 }
-
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
 
@@ -16,10 +15,9 @@ void Model::SetGameLevel(int level_id) {
   SetAnimationToGameObject(&projectile_instance_bomb,
                            {500}, {"projectiles/upfly1_9"});
 
-  LaserProjectile projectile_instance_lazer(Size(10, 20));
+  LaserProjectile projectile_instance_lazer(Size(20, 20));
   SetAnimationToGameObject(&projectile_instance_lazer,
-                           {100}, {"projectiles/laser2_1"});
-
+                           {300}, {"projectiles/laser2_3"});
   id_to_projectile_.push_back(std::make_shared<AimedProjectile>(
       projectile_instance_aimed));
   id_to_projectile_.push_back(std::make_shared<BombProjectile>(
@@ -396,12 +394,6 @@ void Model::LoadDatabase() {
   back_grounds_.emplace_back(
       GetImagesByFramePath("error"));
   // Temporary part
-  QPixmap pixmap;
- pixmap.load("E:/universe/INFa/QT/0_Project/techvscats/resources/images/icons/slow_1.png");
-
-  QFile file("E:/universe/INFa/QT/0_Project/techvscats/resources/images/icons/slow_1.png");
-  file.open(QIODevice::WriteOnly);
-  pixmap.save(&file, "PNG");
   std::vector<EffectVisualization>
       effect_visualization =
       {{GetImagesByFramePath("icons/slow_1"),
@@ -410,11 +402,12 @@ void Model::LoadDatabase() {
         GetImagesByFramePath("icons/more_armor_1")},
        {GetImagesByFramePath("icons/less_damage_1"),
         GetImagesByFramePath("icons/more_damage_1")},
-       {GetImagesByFramePath("icons/fast_attack_1"),
-        GetImagesByFramePath("icons/slow_attack_1")},
-       {GetImagesByFramePath("icons/more_range_1"),
-        GetImagesByFramePath("icons/less_range_1")},
+       {GetImagesByFramePath("icons/slow_attack_1"),
+        GetImagesByFramePath("icons/fast_attack_1")},
+       {GetImagesByFramePath("icons/less_range_1"),
+        GetImagesByFramePath("icons/more_range_1")},
       };
+
   Effect::SetEffectVisualizations(effect_visualization);
 
   // Loading Buildings
