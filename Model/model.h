@@ -41,7 +41,7 @@ class Model {
   void CreateBuildingAtIndex(int i, int id);
   void CreateProjectile(const std::shared_ptr<Enemy>& aim,
                         const Building& building);
-  void CreateParticle(const std::list<ParticleParameters>& parameters);
+  void CreateParticles(const std::list<ParticleParameters>& parameters);
   void RescaleDatabase(const SizeHandler& size_handler);
   void IncreaseCurrentRoundNumber();
   void ClearGameModel();
@@ -106,7 +106,7 @@ class Model {
   std::vector<Particle> id_to_particle_;
 
   // Images
-  std::vector<AnimationPlayer> back_grounds_;
+  std::vector<AnimationPlayer> backgrounds;
 };
 
 #endif  // MODEL_MODEL_H_

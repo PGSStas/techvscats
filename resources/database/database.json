@@ -11,8 +11,12 @@
         "effect_id": 1
       },
       "size": {
-        "width" : 70,
+        "width": 70,
         "height": 70
+      },
+      "animation": {
+        "path": "enemies/toster_3",
+        "timing": 400
       }
     },
     {
@@ -22,8 +26,12 @@
       "reward": 500,
       "max_health": 11,
       "size": {
-        "width" : 70,
+        "width": 70,
         "height": 70
+      },
+      "animation": {
+        "path": "enemies/toster_3",
+        "timing": 550
       }
     },
     {
@@ -33,8 +41,12 @@
       "reward": 10,
       "max_health": 30,
       "size": {
-        "width" : 70,
+        "width": 70,
         "height": 70
+      },
+      "animation": {
+        "path": "enemies/mouse_3",
+        "timing": 600
       }
     },
     {
@@ -44,8 +56,12 @@
       "reward": 13,
       "max_health": 100,
       "size": {
-        "width" : 70,
+        "width": 70,
         "height": 70
+      },
+      "animation": {
+        "path": "enemies/mouse_3",
+        "timing": 800
       }
     },
     {
@@ -59,8 +75,12 @@
         "effect_id": 1
       },
       "size": {
-        "width" : 70,
+        "width": 70,
         "height": 70
+      },
+      "animation": {
+        "path": "enemies/toster_3",
+        "timing": 400
       }
     }
   ],
@@ -71,7 +91,7 @@
         "height": 85
       },
       "settle_cost": 0,
-      "animation_paths": [
+      "animation_path": [
         "towers/default_tower_reload_4",
         "towers/default_tower_pre_3",
         "towers/default_tower_post_3"
@@ -98,7 +118,7 @@
         "attack_range": 340,
         "max_aims": 2
       },
-      "animation_paths": [
+      "animation_path": [
         "towers/default_tower_reload_4",
         "towers/default_tower_pre_3",
         "towers/default_tower_post_3"
@@ -129,7 +149,7 @@
         "attack_range": 240,
         "max_aims": 3
       },
-      "animation_paths": [
+      "animation_path": [
         "towers/default_tower_reload_4",
         "towers/default_tower_pre_3",
         "towers/default_tower_post_3"
@@ -157,7 +177,7 @@
         "attack_range": 540,
         "max_aims": 1
       },
-      "animation_paths": [
+      "animation_path": [
         "towers/default_tower_reload_4",
         "towers/default_tower_pre_3",
         "towers/default_tower_post_3"
@@ -186,7 +206,7 @@
       "speed_coefficient": -0.1,
       "armor_coefficient": 1,
       "damage_coefficient": 0.3,
-      "attack_rate_coefficient":  0.3,
+      "attack_rate_coefficient": 0.3,
       "range_coefficient": 0.4
     },
     {
@@ -196,6 +216,55 @@
       "damage_coefficient": -0.3,
       "attack_rate_coefficient": -0.4,
       "range_coefficient": 0.4
+    }
+  ],
+  "particles": [
+    {
+      "animation": {
+        "timing": 400,
+        "path": "particles/kaboom0_8"
+      }
+    },
+    {
+      "size": {
+        "width": 150,
+        "height": 210
+      },
+      "animation": {
+        "timing": 650,
+        "path": "particles/kaboom1_8"
+      }
+    },
+    {
+      "size": {
+        "width": 30,
+        "height": 60
+      },
+      "repeat_number": 8,
+      "animation": {
+        "timing": 450,
+        "path": "particles/on_fire2_5"
+      }
+    },
+    {
+      "size": {
+        "width": 64,
+        "height": 64
+      },
+      "animation": {
+        "timing": 300,
+        "path": "particles/scar3_6"
+      }
+    },
+    {
+      "size": {
+        "width": 30,
+        "height": 30
+      },
+      "animation": {
+        "timing": 450,
+        "path": "particles/flash4_4"
+      }
     }
   ]
 }

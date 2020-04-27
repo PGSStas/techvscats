@@ -28,35 +28,15 @@ void Model::SetGameLevel(int level_id) {
 
   InitializeTowerSlots();
 
-  id_to_particle_.emplace_back();
-  SetAnimationToGameObject(&id_to_particle_[0],
-                           {400}, {"particles/kaboom0_8"});
-
-  id_to_particle_.emplace_back(Size(150, 210));
-  SetAnimationToGameObject(&id_to_particle_[1],
-                           {650}, {"particles/kaboom1_8"});
-
-  id_to_particle_.emplace_back(Size(30, 60), 8);
-  SetAnimationToGameObject(&id_to_particle_[2],
-                           {450}, {"particles/on_fire2_5"});
-
-  id_to_particle_.emplace_back(Size(30, 30));
-  SetAnimationToGameObject(&id_to_particle_[3],
-                           {450}, {"particles/flash4_4"});
-
-  id_to_particle_.emplace_back(Size(63, 63));
-  SetAnimationToGameObject(&id_to_particle_[4],
-                           {300}, {"particles/scar3_6"});
-
   SetAnimationToGameObject(&*base_, {450}, {"towers/base_0_1"});
   base_->GetParticleHandler()->SetAliveParticlePack(2, 0);
 
-  id_to_projectile_[0]->GetParticleHandler()->SetAtCreationParticlePack(0, 3);
-  id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(3, 100);
+  id_to_projectile_[0]->GetParticleHandler()->SetAtCreationParticlePack(0, 4);
+  id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(4, 100);
 
   id_to_projectile_[1]->GetParticleHandler()->SetAtCreationParticlePack(1);
 
-  id_to_projectile_[2]->GetParticleHandler()->SetAtCreationParticlePack(4);
+  id_to_projectile_[2]->GetParticleHandler()->SetAtCreationParticlePack(3);
 
   id_to_enemy_[0].GetParticleHandler()->SetAtCreationParticlePack(0);
   id_to_enemy_[1].GetParticleHandler()->SetAtCreationParticlePack(0);
@@ -110,7 +90,7 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
                                      building.GetDamage());
 }
 
-void Model::CreateParticle(const std::list<ParticleParameters>& parameters) {
+void Model::CreateParticles(const std::list<ParticleParameters>& parameters) {
   for (const auto& particle_parameters : parameters) {
     particles_.push_back(id_to_particle_[particle_parameters.particle_id]);
     particles_.back().SetParameters(particle_parameters.size,
@@ -148,7 +128,7 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   if (base_ != nullptr) {
     base_->Rescale(size_handler.GameToWindowSize(base_->GetSize()));
   }
-  for (auto& animaion : back_grounds_) {
+  for (auto& animaion : backgrounds) {
     animaion.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
   }
   Effect::Rescale(size_handler.GameToWindowSize(Effect::GetSize()));
@@ -321,13 +301,13 @@ void Model::LoadLevel(int level) {
   }
 
   // Map
-  back_grounds_[3] = AnimationPlayer(
+  backgrounds[3] = AnimationPlayer(
       GetImagesByFramePath("backgrounds/map_level_" +
           QString::number(level) + "_1"));
 }
 
 const AnimationPlayer& Model::GetBackGround(int back_ground_id) const {
-  return back_grounds_[back_ground_id];
+  return backgrounds[back_ground_id];
 }
 
 void Model::LoadDatabase() {
@@ -377,38 +357,12 @@ void Model::LoadDatabase() {
                               enemy["max_health"].toInt(),
                               size,
                               aura);
+    SetAnimationToGameObject(
+        &id_to_enemy_.back(),
+        {enemy["animation"].toObject()["timing"].toInt()},
+        {enemy["animation"].toObject()["path"].toString()});
   }
 
-  SetAnimationToGameObject(&id_to_enemy_[0], {400}, {"enemies/toster_3"});
-  SetAnimationToGameObject(&id_to_enemy_[2], {550}, {"enemies/toster_3"});
-  SetAnimationToGameObject(&id_to_enemy_[3], {600}, {"enemies/mouse_3"});
-  SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
-
-  // backgrounds
-  back_grounds_.emplace_back(
-      GetImagesByFramePath("backgrounds/main_background_1"));
-  back_grounds_.emplace_back(
-      GetImagesByFramePath("backgrounds/settings_background_1"));
-  back_grounds_.emplace_back(
-      GetImagesByFramePath("backgrounds/pause_menu_background_1"));
-  back_grounds_.emplace_back(
-      GetImagesByFramePath("error"));
-  // Temporary part
-  std::vector<EffectVisualization>
-      effect_visualization =
-      {{GetImagesByFramePath("icons/slow_1"),
-        GetImagesByFramePath("icons/fast_1")},
-       {GetImagesByFramePath("icons/less_armor_1"),
-        GetImagesByFramePath("icons/more_armor_1")},
-       {GetImagesByFramePath("icons/less_damage_1"),
-        GetImagesByFramePath("icons/more_damage_1")},
-       {GetImagesByFramePath("icons/slow_attack_1"),
-        GetImagesByFramePath("icons/fast_attack_1")},
-       {GetImagesByFramePath("icons/less_range_1"),
-        GetImagesByFramePath("icons/more_range_1")},
-      };
-
-  Effect::SetEffectVisualizations(effect_visualization);
 
   // Loading Buildings
   QJsonArray json_buildings = json_object["buildings"].toArray();
@@ -438,7 +392,7 @@ void Model::LoadDatabase() {
                              json_projectile["max_aims"].toInt());
     }
     auto json_timings = json_building["action_time"].toArray();
-    auto json_paths = json_building["animation_paths"].toArray();
+    auto json_paths = json_building["animation_path"].toArray();
     SetAnimationToGameObject(&building, {
         json_timings[0].toInt(),
         json_timings[1].toInt(),
@@ -457,6 +411,58 @@ void Model::LoadDatabase() {
     upgrades_tree_.push_back(std::move(upgrade_tree));
     id_to_building_.push_back(std::move(building));
   }
+
+  // Loading Particles
+  QJsonArray json_particles = json_object["particles"].toArray();
+  int particles_count = json_particles.count();
+  id_to_particle_.clear();
+  id_to_particle_.reserve(particles_count);
+  QJsonObject json_particle;
+  for (int i = 0; i < particles_count; i++) {
+    json_particle = json_particles[i].toObject();
+    Size size = {-1, -1};
+    if (json_particle.contains("size")) {
+      auto json_size = json_particle["size"].toObject();
+      size= Size(json_size["width"].toDouble(), json_size["height"].toDouble());
+    }
+    int repeat_number = -1;
+    if (json_particle.contains("repeat_number")) {
+      repeat_number = json_particle["repeat_number"].toInt();
+    }
+    id_to_particle_.emplace_back(size,repeat_number);
+    auto json_animation = json_particle["animation"].toObject();
+    SetAnimationToGameObject(
+        &id_to_particle_.back(),
+        {json_animation["timing"].toInt()},
+        {json_animation["path"].toString()});
+  }
+
+  // backgrounds
+  backgrounds.emplace_back(
+      GetImagesByFramePath("backgrounds/main_background_1"));
+  backgrounds.emplace_back(
+      GetImagesByFramePath("backgrounds/settings_background_1"));
+  backgrounds.emplace_back(
+      GetImagesByFramePath("backgrounds/pause_menu_background_1"));
+  backgrounds.emplace_back(
+      GetImagesByFramePath("error"));
+
+  // Effects
+  std::vector<EffectVisualization>
+      effect_visualization =
+      {{GetImagesByFramePath("icons/slow_1"),
+        GetImagesByFramePath("icons/fast_1")},
+       {GetImagesByFramePath("icons/less_armor_1"),
+        GetImagesByFramePath("icons/more_armor_1")},
+       {GetImagesByFramePath("icons/less_damage_1"),
+        GetImagesByFramePath("icons/more_damage_1")},
+       {GetImagesByFramePath("icons/slow_attack_1"),
+        GetImagesByFramePath("icons/fast_attack_1")},
+       {GetImagesByFramePath("icons/less_range_1"),
+        GetImagesByFramePath("icons/more_range_1")},
+      };
+
+  Effect::SetEffectVisualizations(effect_visualization);
 
   // Load fonts
   QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
