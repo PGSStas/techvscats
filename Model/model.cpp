@@ -26,6 +26,133 @@ void Model::SetGameLevel(int level_id) {
   id_to_projectile_.push_back(std::make_shared<LaserProjectile>(
       projectile_instance_lazer));
 
+  Building building_instance(0, 0);
+  SetAnimationToGameObject(&building_instance, {500, 0, 0}, {
+      "towers/empty_1",
+      "towers/empty_1",
+      "towers/empty_1"});
+
+  upgrades_tree_.push_back({1, 2, 3, 4});
+
+  Building building_instance2(1, 24);
+  building_instance2.SetProjectile(0, 10, 175, 2);
+  SetAnimationToGameObject(&building_instance2, {500, 300, 300}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_4",
+      "towers/default_tower_post_4",
+  });
+  upgrades_tree_.push_back({5, 0});
+
+  Building building_instance3(2, 24);
+  building_instance3.SetProjectile(2, 3, 215, 3);
+  SetAnimationToGameObject(&building_instance3, {500, 150, 150}, {
+      "towers/laser_reload_7",
+      "towers/laser_pre_4",
+      "towers/laser_post_4",
+  });
+  upgrades_tree_.push_back({11, 0});
+
+  Building building_instance4(3, 24);
+  building_instance4.SetProjectile(1, 54, 275, 1);
+  SetAnimationToGameObject(&building_instance4, {500, 800, 800}, {
+      "towers/bomb_reload_8",
+      "towers/bomb_pre_5",
+      "towers/bomb_post_5"
+  });
+  upgrades_tree_.push_back({7, 0});
+
+  Building building_instance5(4, 24, Size(150, 150), AuricField(200, 2));
+  SetAnimationToGameObject(&building_instance5, {500, 0, 0}, {
+      "towers/support_reload_8",
+      "towers/support_reload_8",
+      "towers/support_reload_8",
+  });
+  upgrades_tree_.push_back({9, 0});
+
+  Building building_instance6(5, 24);
+  building_instance6.SetProjectile(0, 10, 175, 2);
+  SetAnimationToGameObject(&building_instance6, {500, 300, 300}, {
+      "towers/default_tower_lv2_reload_4",
+      "towers/default_tower_lv2_pre_4",
+      "towers/default_tower_lv2_post_4",
+  });
+  upgrades_tree_.push_back({6, 0});
+
+  Building building_instance7(6, 24);
+  building_instance7.SetProjectile(0, 10, 175, 2);
+  SetAnimationToGameObject(&building_instance7, {500, 300, 300}, {
+      "towers/default_tower_lv3_reload_4",
+      "towers/default_tower_lv3_pre_4",
+      "towers/default_tower_lv3_post_4",
+  });
+  upgrades_tree_.push_back({0});
+
+  Building building_instance8(7, 24);
+  building_instance8.SetProjectile(1, 54, 275, 1);
+  SetAnimationToGameObject(&building_instance8, {500, 800, 800}, {
+      "towers/bomb_lv2_reload_8",
+      "towers/bomb_lv2_pre_5",
+      "towers/bomb_lv2_post_5"
+  });
+  upgrades_tree_.push_back({8, 0});
+
+  Building building_instance9(8, 24);
+  building_instance9.SetProjectile(1, 54, 275, 1);
+  SetAnimationToGameObject(&building_instance9, {500, 800, 800}, {
+      "towers/bomb_lv3_reload_8",
+      "towers/bomb_lv3_pre_5",
+      "towers/bomb_lv3_post_5"
+  });
+  upgrades_tree_.push_back({0});
+
+  Building building_instance10(9, 24, Size(150, 150), AuricField(200, 2));
+  SetAnimationToGameObject(&building_instance10, {500, 0, 0}, {
+      "towers/support_lv2_reload_8",
+      "towers/support_lv2_reload_8",
+      "towers/support_lv2_reload_8",
+  });
+  upgrades_tree_.push_back({10, 0});
+
+  Building building_instance11(10, 24, Size(150, 150), AuricField(200, 2));
+  SetAnimationToGameObject(&building_instance11, {500, 0, 0}, {
+      "towers/support_lv3_reload_8",
+      "towers/support_lv3_reload_8",
+      "towers/support_lv3_reload_8",
+  });
+  upgrades_tree_.push_back({0});
+
+  Building building_instance12(11, 24);
+  building_instance12.SetProjectile(2, 3, 215, 3);
+  SetAnimationToGameObject(&building_instance12, {500, 150, 150}, {
+      "towers/laser_lv2_reload_7",
+      "towers/laser_lv2_pre_4",
+      "towers/laser_lv2_post_4",
+  });
+  upgrades_tree_.push_back({12, 0});
+
+  Building building_instance13(12, 24);
+  building_instance13.SetProjectile(2, 3, 215, 3);
+  SetAnimationToGameObject(&building_instance13, {500, 150, 150}, {
+      "towers/laser_lv3_reload_7",
+      "towers/laser_lv3_pre_4",
+      "towers/laser_lv3_post_4",
+  });
+  upgrades_tree_.push_back({0});
+
+  id_to_building_.push_back(building_instance);
+  id_to_building_.push_back(building_instance2);
+  id_to_building_.push_back(building_instance3);
+  id_to_building_.push_back(building_instance4);
+  id_to_building_.push_back(building_instance5);
+  id_to_building_.push_back(building_instance6);
+  id_to_building_.push_back(building_instance7);
+  id_to_building_.push_back(building_instance8);
+  id_to_building_.push_back(building_instance9);
+  id_to_building_.push_back(building_instance10);
+  id_to_building_.push_back(building_instance11);
+  id_to_building_.push_back(building_instance12);
+  id_to_building_.push_back(building_instance13);
+
   InitializeTowerSlots();
 
   SetAnimationToGameObject(&*base_, {450}, {"towers/base_0_1"});

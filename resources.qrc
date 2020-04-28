@@ -6,22 +6,14 @@
     <file>resources/images/towers/base_0_1.png</file>
 
     <file>resources/images/error.png</file>
+
     <file>resources/images/enemies/toster_1.png</file>
     <file>resources/images/enemies/toster_2.png</file>
     <file>resources/images/enemies/toster_3.png</file>
+
     <file>resources/images/enemies/mouse_1.png</file>
     <file>resources/images/enemies/mouse_2.png</file>
     <file>resources/images/enemies/mouse_3.png</file>
-    <file>resources/images/towers/default_tower_reload_1.png</file>
-    <file>resources/images/towers/default_tower_reload_2.png</file>
-    <file>resources/images/towers/default_tower_reload_3.png</file>
-    <file>resources/images/towers/default_tower_reload_4.png</file>
-    <file>resources/images/towers/default_tower_pre_1.png</file>
-    <file>resources/images/towers/default_tower_pre_2.png</file>
-    <file>resources/images/towers/default_tower_pre_3.png</file>
-    <file>resources/images/towers/default_tower_post_1.png</file>
-    <file>resources/images/towers/default_tower_post_2.png</file>
-    <file>resources/images/towers/default_tower_post_3.png</file>
 
     <file>resources/buttons_resources/dec_level_button.png</file>
     <file>resources/buttons_resources/dec_level_button_active.png</file>
@@ -47,11 +39,6 @@
     <file>resources/buttons_resources/zero_speed_button_active.png</file>
 
     <file>resources/fonts/gui_font.ttf</file>
-
-    <file>resources/images/backgrounds/map_level_1_1.png</file>
-    <file>resources/images/backgrounds/main_background_1.png</file>
-    <file>resources/images/backgrounds/settings_background_1.png</file>
-    <file>resources/images/backgrounds/pause_menu_background_1.png</file>
 
     <file>resources/images/particles/kaboom0_1.png</file>
     <file>resources/images/particles/kaboom0_2.png</file>
@@ -125,5 +112,177 @@
     <file>resources/images/backgrounds/settings_background_1.png</file>
     <file>resources/images/backgrounds/pause_menu_background_1.png</file>
 
+    <file>resources/images/towers/default_tower_reload_1.png</file>
+    <file>resources/images/towers/default_tower_reload_2.png</file>
+    <file>resources/images/towers/default_tower_reload_3.png</file>
+    <file>resources/images/towers/default_tower_reload_4.png</file>
+    <file>resources/images/towers/default_tower_pre_1.png</file>
+    <file>resources/images/towers/default_tower_pre_2.png</file>
+    <file>resources/images/towers/default_tower_pre_3.png</file>
+    <file>resources/images/towers/default_tower_pre_4.png</file>
+    <file>resources/images/towers/default_tower_post_1.png</file>
+    <file>resources/images/towers/default_tower_post_2.png</file>
+    <file>resources/images/towers/default_tower_post_3.png</file>
+    <file>resources/images/towers/default_tower_post_4.png</file>
+
+    <file>resources/images/towers/default_tower_lv2_reload_1.png</file>
+    <file>resources/images/towers/default_tower_lv2_reload_2.png</file>
+    <file>resources/images/towers/default_tower_lv2_reload_3.png</file>
+    <file>resources/images/towers/default_tower_lv2_reload_4.png</file>
+    <file>resources/images/towers/default_tower_lv2_pre_1.png</file>
+    <file>resources/images/towers/default_tower_lv2_pre_2.png</file>
+    <file>resources/images/towers/default_tower_lv2_pre_3.png</file>
+    <file>resources/images/towers/default_tower_lv2_pre_4.png</file>
+    <file>resources/images/towers/default_tower_lv2_post_1.png</file>
+    <file>resources/images/towers/default_tower_lv2_post_2.png</file>
+    <file>resources/images/towers/default_tower_lv2_post_3.png</file>
+    <file>resources/images/towers/default_tower_lv2_post_4.png</file>
+
+    <file>resources/images/towers/default_tower_lv3_reload_1.png</file>
+    <file>resources/images/towers/default_tower_lv3_reload_2.png</file>
+    <file>resources/images/towers/default_tower_lv3_reload_3.png</file>
+    <file>resources/images/towers/default_tower_lv3_reload_4.png</file>
+    <file>resources/images/towers/default_tower_lv3_pre_1.png</file>
+    <file>resources/images/towers/default_tower_lv3_pre_2.png</file>
+    <file>resources/images/towers/default_tower_lv3_pre_3.png</file>
+    <file>resources/images/towers/default_tower_lv3_pre_4.png</file>
+    <file>resources/images/towers/default_tower_lv3_post_1.png</file>
+    <file>resources/images/towers/default_tower_lv3_post_2.png</file>
+    <file>resources/images/towers/default_tower_lv3_post_3.png</file>
+    <file>resources/images/towers/default_tower_lv3_post_4.png</file>
+
+    <file>resources/images/towers/bomb_reload_1.png</file>
+    <file>resources/images/towers/bomb_reload_2.png</file>
+    <file>resources/images/towers/bomb_reload_3.png</file>
+    <file>resources/images/towers/bomb_reload_4.png</file>
+    <file>resources/images/towers/bomb_reload_5.png</file>
+    <file>resources/images/towers/bomb_reload_6.png</file>
+    <file>resources/images/towers/bomb_reload_7.png</file>
+    <file>resources/images/towers/bomb_reload_8.png</file>
+    <file>resources/images/towers/bomb_pre_1.png</file>
+    <file>resources/images/towers/bomb_pre_2.png</file>
+    <file>resources/images/towers/bomb_pre_3.png</file>
+    <file>resources/images/towers/bomb_pre_4.png</file>
+    <file>resources/images/towers/bomb_pre_5.png</file>
+    <file>resources/images/towers/bomb_post_1.png</file>
+    <file>resources/images/towers/bomb_post_2.png</file>
+    <file>resources/images/towers/bomb_post_3.png</file>
+    <file>resources/images/towers/bomb_post_4.png</file>
+    <file>resources/images/towers/bomb_post_5.png</file>
+
+    <file>resources/images/towers/bomb_lv2_reload_1.png</file>
+    <file>resources/images/towers/bomb_lv2_reload_2.png</file>
+    <file>resources/images/towers/bomb_lv2_reload_3.png</file>
+    <file>resources/images/towers/bomb_lv2_reload_4.png</file>
+    <file>resources/images/towers/bomb_lv2_reload_5.png</file>
+    <file>resources/images/towers/bomb_lv2_reload_6.png</file>
+    <file>resources/images/towers/bomb_lv2_reload_7.png</file>
+    <file>resources/images/towers/bomb_lv2_reload_8.png</file>
+    <file>resources/images/towers/bomb_lv2_pre_1.png</file>
+    <file>resources/images/towers/bomb_lv2_pre_2.png</file>
+    <file>resources/images/towers/bomb_lv2_pre_3.png</file>
+    <file>resources/images/towers/bomb_lv2_pre_4.png</file>
+    <file>resources/images/towers/bomb_lv2_pre_5.png</file>
+    <file>resources/images/towers/bomb_lv2_post_1.png</file>
+    <file>resources/images/towers/bomb_lv2_post_2.png</file>
+    <file>resources/images/towers/bomb_lv2_post_3.png</file>
+    <file>resources/images/towers/bomb_lv2_post_4.png</file>
+    <file>resources/images/towers/bomb_lv2_post_5.png</file>
+
+    <file>resources/images/towers/bomb_lv3_reload_1.png</file>
+    <file>resources/images/towers/bomb_lv3_reload_2.png</file>
+    <file>resources/images/towers/bomb_lv3_reload_3.png</file>
+    <file>resources/images/towers/bomb_lv3_reload_4.png</file>
+    <file>resources/images/towers/bomb_lv3_reload_5.png</file>
+    <file>resources/images/towers/bomb_lv3_reload_6.png</file>
+    <file>resources/images/towers/bomb_lv3_reload_7.png</file>
+    <file>resources/images/towers/bomb_lv3_reload_8.png</file>
+    <file>resources/images/towers/bomb_lv3_pre_1.png</file>
+    <file>resources/images/towers/bomb_lv3_pre_2.png</file>
+    <file>resources/images/towers/bomb_lv3_pre_3.png</file>
+    <file>resources/images/towers/bomb_lv3_pre_4.png</file>
+    <file>resources/images/towers/bomb_lv3_pre_5.png</file>
+    <file>resources/images/towers/bomb_lv3_post_1.png</file>
+    <file>resources/images/towers/bomb_lv3_post_2.png</file>
+    <file>resources/images/towers/bomb_lv3_post_3.png</file>
+    <file>resources/images/towers/bomb_lv3_post_4.png</file>
+    <file>resources/images/towers/bomb_lv3_post_5.png</file>
+
+    <file>resources/images/towers/laser_reload_1.png</file>
+    <file>resources/images/towers/laser_reload_2.png</file>
+    <file>resources/images/towers/laser_reload_3.png</file>
+    <file>resources/images/towers/laser_reload_4.png</file>
+    <file>resources/images/towers/laser_reload_5.png</file>
+    <file>resources/images/towers/laser_reload_6.png</file>
+    <file>resources/images/towers/laser_reload_7.png</file>
+    <file>resources/images/towers/laser_pre_1.png</file>
+    <file>resources/images/towers/laser_pre_2.png</file>
+    <file>resources/images/towers/laser_pre_3.png</file>
+    <file>resources/images/towers/laser_pre_4.png</file>
+    <file>resources/images/towers/laser_post_1.png</file>
+    <file>resources/images/towers/laser_post_2.png</file>
+    <file>resources/images/towers/laser_post_3.png</file>
+    <file>resources/images/towers/laser_post_4.png</file>
+
+    <file>resources/images/towers/laser_lv2_reload_1.png</file>
+    <file>resources/images/towers/laser_lv2_reload_2.png</file>
+    <file>resources/images/towers/laser_lv2_reload_3.png</file>
+    <file>resources/images/towers/laser_lv2_reload_4.png</file>
+    <file>resources/images/towers/laser_lv2_reload_5.png</file>
+    <file>resources/images/towers/laser_lv2_reload_6.png</file>
+    <file>resources/images/towers/laser_lv2_reload_7.png</file>
+    <file>resources/images/towers/laser_lv2_pre_1.png</file>
+    <file>resources/images/towers/laser_lv2_pre_2.png</file>
+    <file>resources/images/towers/laser_lv2_pre_3.png</file>
+    <file>resources/images/towers/laser_lv2_pre_4.png</file>
+    <file>resources/images/towers/laser_lv2_post_1.png</file>
+    <file>resources/images/towers/laser_lv2_post_2.png</file>
+    <file>resources/images/towers/laser_lv2_post_3.png</file>
+    <file>resources/images/towers/laser_lv2_post_4.png</file>
+
+    <file>resources/images/towers/laser_lv3_reload_1.png</file>
+    <file>resources/images/towers/laser_lv3_reload_2.png</file>
+    <file>resources/images/towers/laser_lv3_reload_3.png</file>
+    <file>resources/images/towers/laser_lv3_reload_4.png</file>
+    <file>resources/images/towers/laser_lv3_reload_5.png</file>
+    <file>resources/images/towers/laser_lv3_reload_6.png</file>
+    <file>resources/images/towers/laser_lv3_reload_7.png</file>
+    <file>resources/images/towers/laser_lv3_pre_1.png</file>
+    <file>resources/images/towers/laser_lv3_pre_2.png</file>
+    <file>resources/images/towers/laser_lv3_pre_3.png</file>
+    <file>resources/images/towers/laser_lv3_pre_4.png</file>
+    <file>resources/images/towers/laser_lv3_post_1.png</file>
+    <file>resources/images/towers/laser_lv3_post_2.png</file>
+    <file>resources/images/towers/laser_lv3_post_3.png</file>
+    <file>resources/images/towers/laser_lv3_post_4.png</file>
+
+    <file>resources/images/towers/support_reload_1.png</file>
+    <file>resources/images/towers/support_reload_2.png</file>
+    <file>resources/images/towers/support_reload_3.png</file>
+    <file>resources/images/towers/support_reload_4.png</file>
+    <file>resources/images/towers/support_reload_5.png</file>
+    <file>resources/images/towers/support_reload_6.png</file>
+    <file>resources/images/towers/support_reload_7.png</file>
+    <file>resources/images/towers/support_reload_8.png</file>
+
+    <file>resources/images/towers/support_lv2_reload_1.png</file>
+    <file>resources/images/towers/support_lv2_reload_2.png</file>
+    <file>resources/images/towers/support_lv2_reload_3.png</file>
+    <file>resources/images/towers/support_lv2_reload_4.png</file>
+    <file>resources/images/towers/support_lv2_reload_5.png</file>
+    <file>resources/images/towers/support_lv2_reload_6.png</file>
+    <file>resources/images/towers/support_lv2_reload_7.png</file>
+    <file>resources/images/towers/support_lv2_reload_8.png</file>
+
+    <file>resources/images/towers/support_lv3_reload_1.png</file>
+    <file>resources/images/towers/support_lv3_reload_2.png</file>
+    <file>resources/images/towers/support_lv3_reload_3.png</file>
+    <file>resources/images/towers/support_lv3_reload_4.png</file>
+    <file>resources/images/towers/support_lv3_reload_5.png</file>
+    <file>resources/images/towers/support_lv3_reload_6.png</file>
+    <file>resources/images/towers/support_lv3_reload_7.png</file>
+    <file>resources/images/towers/support_lv3_reload_8.png</file>
+
+    <file>resources/images/towers/empty_1.png</file>
 </qresource>
 </RCC>
