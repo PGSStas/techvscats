@@ -86,15 +86,16 @@
   ],
   "buildings": [
     {
+      "name": "empty tower",
       "size": {
-        "width": 85,
-        "height": 85
+        "width": 150,
+        "height": 150
       },
       "settle_cost": 0,
       "animation_path": [
-        "towers/default_tower_reload_4",
-        "towers/default_tower_pre_3",
-        "towers/default_tower_post_3"
+        "towers/empty_1",
+        "towers/empty_1",
+        "towers/empty_1"
       ],
       "action_time": [
         1000,
@@ -103,13 +104,16 @@
       ],
       "upgrade_tree": [
         1,
-        2
+        2,
+        3,
+        4
       ]
     },
     {
+      "name": "default tower",
       "size": {
-        "width": 85,
-        "height": 85
+        "width": 150,
+        "height": 150
       },
       "settle_cost": 24,
       "projectile": {
@@ -120,29 +124,26 @@
       },
       "animation_path": [
         "towers/default_tower_reload_4",
-        "towers/default_tower_pre_3",
-        "towers/default_tower_post_3"
+        "towers/default_tower_pre_4",
+        "towers/default_tower_post_4"
       ],
       "action_time": [
-        1000,
+        500,
         300,
         300
       ],
       "upgrade_tree": [
-        3,
+        5,
         0
       ]
     },
     {
+      "name": "laser",
       "size": {
-        "width": 85,
-        "height": 85
+        "width": 150,
+        "height": 150
       },
       "settle_cost": 24,
-      "auric_field": {
-        "radius": 200,
-        "effect_id": 2
-      },
       "projectile": {
         "projectile_id": 2,
         "attack_damage": 3,
@@ -150,25 +151,25 @@
         "max_aims": 3
       },
       "animation_path": [
-        "towers/default_tower_reload_4",
-        "towers/default_tower_pre_3",
-        "towers/default_tower_post_3"
+        "towers/laser_reload_7",
+        "towers/laser_pre_4",
+        "towers/laser_post_4"
       ],
       "action_time": [
-        100,
         500,
-        100
+        150,
+        150
       ],
       "upgrade_tree": [
-        3,
-        1,
+        11,
         0
       ]
     },
     {
+      "name": "bomb",
       "size": {
-        "width": 85,
-        "height": 85
+        "width": 150,
+        "height": 150
       },
       "settle_cost": 24,
       "projectile": {
@@ -178,20 +179,263 @@
         "max_aims": 1
       },
       "animation_path": [
-        "towers/default_tower_reload_4",
-        "towers/default_tower_pre_3",
-        "towers/default_tower_post_3"
+        "towers/bomb_reload_8",
+        "towers/bomb_pre_5",
+        "towers/bomb_post_5"
       ],
       "action_time": [
-        1000,
-        600,
-        100
+        500,
+        800,
+        800
       ],
       "upgrade_tree": [
-        1,
+        7,
         0
       ]
-    }
+    },
+    {
+      "name": "support",
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "settle_cost": 24,
+      "auric_field": {
+        "radius": 200,
+        "effect_id": 2
+      },
+      "animation_path": [
+        "towers/support_reload_8",
+        "towers/support_reload_8",
+        "towers/support_reload_8"
+      ],
+      "action_time": [
+        500,
+        0,
+        0
+      ],
+      "upgrade_tree": [
+        9,
+        0
+      ]
+    },
+    {
+      "name": "default tower level 2",
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "settle_cost": 24,
+      "projectile": {
+        "projectile_id": 0,
+        "attack_damage": 100,
+        "attack_range": 340,
+        "max_aims": 2
+      },
+      "animation_path": [
+        "towers/default_tower_lv2_reload_4",
+        "towers/default_tower_lv2_pre_4",
+        "towers/default_tower_lv2_post_4"
+      ],
+      "action_time": [
+        500,
+        300,
+        300
+      ],
+      "upgrade_tree": [
+        6,
+        0
+      ]
+    },
+    {
+      "name": "default tower level 3",
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "settle_cost": 24,
+      "projectile": {
+        "projectile_id": 0,
+        "attack_damage": 100,
+        "attack_range": 340,
+        "max_aims": 2
+      },
+      "animation_path": [
+        "towers/default_tower_lv3_reload_4",
+        "towers/default_tower_lv3_pre_4",
+        "towers/default_tower_lv3_post_4"
+      ],
+      "action_time": [
+        500,
+        300,
+        300
+      ],
+      "upgrade_tree": [
+        0
+      ]
+    },
+
+    {
+      "name": "bomb level 2",
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "settle_cost": 24,
+      "projectile": {
+        "projectile_id": 1,
+        "attack_damage": 54,
+        "attack_range": 540,
+        "max_aims": 1
+      },
+      "animation_path": [
+        "towers/bomb_lv2_reload_8",
+        "towers/bomb_lv2_pre_5",
+        "towers/bomb_lv2_post_5"
+      ],
+      "action_time": [
+        500,
+        800,
+        800
+      ],
+      "upgrade_tree": [
+        8,
+        0
+      ]
+    },
+    {
+      "name": "bomb level 3",
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "settle_cost": 24,
+      "projectile": {
+        "projectile_id": 1,
+        "attack_damage": 54,
+        "attack_range": 540,
+        "max_aims": 1
+      },
+      "animation_path": [
+        "towers/bomb_lv3_reload_8",
+        "towers/bomb_lv3_pre_5",
+        "towers/bomb_lv3_post_5"
+      ],
+      "action_time": [
+        500,
+        800,
+        800
+      ],
+      "upgrade_tree": [
+        0
+      ]
+    },
+    {
+      "name": "support level 2",
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "settle_cost": 24,
+      "auric_field": {
+        "radius": 200,
+        "effect_id": 2
+      },
+      "animation_path": [
+        "towers/support_lv2_reload_8",
+        "towers/support_lv2_reload_8",
+        "towers/support_lv2_reload_8"
+      ],
+      "action_time": [
+        500,
+        0,
+        0
+      ],
+      "upgrade_tree": [
+        10,
+        0
+      ]
+    },
+    {
+      "name": "support level 3",
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "settle_cost": 24,
+      "auric_field": {
+        "radius": 200,
+        "effect_id": 2
+      },
+      "animation_path": [
+        "towers/support_lv3_reload_8",
+        "towers/support_lv3_reload_8",
+        "towers/support_lv3_reload_8"
+      ],
+      "action_time": [
+        500,
+        0,
+        0
+      ],
+      "upgrade_tree": [
+        0
+      ]
+    },
+    {
+      "name": "laser level 2",
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "settle_cost": 24,
+      "projectile": {
+        "projectile_id": 2,
+        "attack_damage": 3,
+        "attack_range": 240,
+        "max_aims": 3
+      },
+      "animation_path": [
+        "towers/laser_lv2_reload_7",
+        "towers/laser_lv2_pre_4",
+        "towers/laser_lv2_post_4"
+      ],
+      "action_time": [
+        500,
+        150,
+        150
+      ],
+      "upgrade_tree": [
+        12,
+        0
+      ]
+    },
+    {
+      "name": "laser level 3",
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "settle_cost": 24,
+      "projectile": {
+        "projectile_id": 2,
+        "attack_damage": 3,
+        "attack_range": 240,
+        "max_aims": 3
+      },
+      "animation_path": [
+        "towers/laser_lv3_reload_7",
+        "towers/laser_lv3_pre_4",
+        "towers/laser_lv3_post_4"
+      ],
+      "action_time": [
+        500,
+        150,
+        150
+      ],
+      "upgrade_tree": [
+        0
+      ]
+    },
   ],
   "effects": [
     {

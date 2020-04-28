@@ -38,6 +38,21 @@
     <file>resources/buttons_resources/zero_speed_button.png</file>
     <file>resources/buttons_resources/zero_speed_button_active.png</file>
 
+    <file>resources/buttons_resources/bomb_button.png</file>
+    <file>resources/buttons_resources/bomb_button_h.png</file>
+    <file>resources/buttons_resources/default_tower_button.png</file>
+    <file>resources/buttons_resources/default_tower_button_h.png</file>
+    <file>resources/buttons_resources/empty_button.png</file>
+    <file>resources/buttons_resources/empty_button_h.png</file>
+    <file>resources/buttons_resources/laser_button.png</file>
+    <file>resources/buttons_resources/laser_button_h.png</file>
+    <file>resources/buttons_resources/support_button.png</file>
+    <file>resources/buttons_resources/support_button_h.png</file>
+    <file>resources/buttons_resources/upgrade_button.png</file>
+    <file>resources/buttons_resources/upgrade_button_h.png</file>
+    <file>resources/buttons_resources/second_upgrade_button.png</file>
+    <file>resources/buttons_resources/second_upgrade_button_h.png</file>
+
     <file>resources/fonts/gui_font.ttf</file>
 
     <file>resources/images/particles/kaboom0_1.png</file>
