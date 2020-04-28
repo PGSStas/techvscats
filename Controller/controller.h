@@ -37,6 +37,9 @@ class Controller : public AbstractController {
   const AnimationPlayer& GetBackground(WindowType type) const override;
   const AnimationPlayer& GetInterface() const override;
 
+  int GetCurrentRoundNumber() const override;
+  int GetRoundsCount() const override;
+
  private:
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;

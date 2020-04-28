@@ -163,6 +163,8 @@ void View::EnableMainMenuUi() {
 }
 
 void View::DrawAdditionalInfo(QPainter* painter) {
+  painter->save();
+
   const auto& enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
     enemy->DrawHealthBar(painter, size_handler_);
@@ -188,10 +190,28 @@ void View::DrawAdditionalInfo(QPainter* painter) {
   painter->drawImage(origin.x, origin.y,
                      controller_->GetInterface().GetCurrentFrame());
 
+  auto font = painter->font();
+  font.setPixelSize(size_handler_.GameToWindowLength(constants::kFontSize));
+  font.setFamily(QFontDatabase::applicationFontFamilies(0).at(0));
+  painter->setFont(font);
+  painter->setPen(Qt::white);
+
+  Coordinate round_info_position = size_handler_.GameToWindowCoordinate(
+      kRoundPosition);
+  Size round_info_size = size_handler_.GameToWindowSize(kRoundSize);
+  QString round_info = tr("Раунд") + " " +
+      QString::number(controller_->GetCurrentRoundNumber()) + " " + tr("из") +
+      " " + QString::number(controller_->GetRoundsCount());
+  painter->drawText(round_info_position.x, round_info_position.y,
+                    round_info_size.width, round_info_size.height,
+                    Qt::AlignCenter, round_info);
+
   const auto& text_notifications = controller_->GetTextNotifications();
   for (auto& notification : text_notifications) {
     notification.Draw(painter, size_handler_);
   }
+
+  painter->restore();
 }
 
 void View::DisableMainMenuUi() {

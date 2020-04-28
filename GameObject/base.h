@@ -40,7 +40,6 @@ class Base : public GameObject {
   static const Size kHealthSize;
   static const Coordinate kGoldPosition;
   static const Size kGoldSize;
-  static const double kFontSize;
 };
 
 #endif  // GAMEOBJECT_BASE_H_

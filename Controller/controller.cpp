@@ -359,3 +359,11 @@ const AnimationPlayer& Controller::GetBackground(WindowType type) const {
 const AnimationPlayer& Controller::GetInterface() const {
   return model_->GetInterface();
 }
+
+int Controller::GetCurrentRoundNumber() const {
+  return model_->GetCurrentRoundNumber();
+}
+
+int Controller::GetRoundsCount() const {
+  return model_->GetRoundsCount();
+}
