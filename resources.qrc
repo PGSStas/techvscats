@@ -50,5 +50,12 @@
     <file>resources/images/backgrounds/main_background_1.png</file>
     <file>resources/images/backgrounds/settings_background_1.png</file>
     <file>resources/images/backgrounds/pause_menu_background_1.png</file>
+
+    <file>resources/buttons_resources/sell_up.png</file>
+    <file>resources/buttons_resources/sell_down.png</file>
+    <file>resources/buttons_resources/building_down.png</file>
+    <file>resources/buttons_resources/building_up.png</file>
+    <file>resources/buttons_resources/confirm_up.png</file>
+    <file>resources/buttons_resources/confirm_down.png</file>
 </qresource>
 </RCC>

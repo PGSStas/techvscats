@@ -30,11 +30,13 @@ class MenuButton : public QPushButton {
              QMainWindow* main_window, int font_id);
   MenuButton(const Size& button_size, QMainWindow* main_window,
              const QString& main_icon_path, const QString& active_icon_path);
+
   ~MenuButton() override = default;
 
   void SetGeometry(Coordinate game_coordinate, SizeHandler size_handler);
   void SetSecondIconPath(const QString& main_icon_path,
                          const QString& active_icon_path);
+  Coordinate GetPosition() const;
   void EnableSecondIcon(bool is_second_icon_enabled);
 
  private:
@@ -44,6 +46,7 @@ class MenuButton : public QPushButton {
 
  private:
   Size button_size_ = Size(0, 0);
+  Coordinate position_;
   int border_size_ = 0;
   QIcon main_icon_1_;
   QIcon active_icon_1_;

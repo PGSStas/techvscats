@@ -46,6 +46,33 @@ void Controller::SetSpeedCoefficient(Speed speed) {
   view_->ChangeGameSpeed(speed);
 }
 
+void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
+  int settle_cost = model_->GetBuildingById(replacing_id).GetCost();
+  auto base = model_->GetBase();
+  if (base->GetGold() >= settle_cost) {
+    if (replacing_id == 0) {
+      int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
+          * constants::kRefundCoefficient;
+
+      model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
+                                   base->GetGoldPosition(), Qt::green,
+                                   current_game_time_});
+      base->AddGoldAmount(sell_cost);
+      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+    } else {
+      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+      base->SubtractGoldAmount(settle_cost);
+
+      model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
+                                   base->GetGoldPosition(), Qt::red,
+                                   current_game_time_});
+    }
+  } else {
+    model_->AddTextNotification({"Not enough gold", base->GetGoldPosition(),
+                                 Qt::blue, current_game_time_});
+  }
+}
+
 void Controller::GameProcess() {
   if (CanCreateNextWave()) {
     CreateNextWave();
@@ -228,53 +255,14 @@ void Controller::AddEnemyToModel(const Enemy& enemy) const {
   model_->AddEnemyFromInstance(enemy);
 }
 
-void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
-  int settle_cost = model_->GetBuildingById(replacing_id).GetCost();
-  auto base = model_->GetBase();
-  if (base->GetGold() >= settle_cost) {
-    if (replacing_id == 0) {
-      int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
-          * constants::kRefundCoefficient;
-
-      model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
-                                   base->GetGoldPosition(), Qt::green,
-                                   current_game_time_});
-      base->AddGoldAmount(sell_cost);
-      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
-    } else {
-      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
-      base->SubtractGoldAmount(settle_cost);
-
-      model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
-                                   base->GetGoldPosition(), Qt::red,
-                                   current_game_time_});
-    }
-  } else {
-    model_->AddTextNotification({"Not enough gold", base->GetGoldPosition(),
-                                 Qt::blue, current_game_time_});
-  }
-}
-
 void Controller::CreateTowerMenu(int tower_index) {
-  std::vector<std::shared_ptr<TowerMenuOption>> options;
-  const auto& buildings = model_->GetBuildings();
-  const auto& building = buildings[tower_index];
-  const auto& upgrade_tree = model_->GetUpgradesTree();
-  int building_id = buildings[tower_index]->GetId();
-  // Tower building & evolve & delete options (will affect the type of tower)
-  for (const auto& to_change_id : upgrade_tree[building_id]) {
-    options.push_back(std::make_shared<TowerMenuOption>(
-        model_->GetBuildingById(to_change_id),
-        [this, tower_index, to_change_id]() {
-          SetBuilding(tower_index, to_change_id);
-        }));
-  }
-  auto menu = std::make_shared<TowerMenu>(
-      current_game_time_, *building, options);
-  view_->ShowTowerMenu(menu);
+  const auto& building = model_->GetBuildings()[tower_index];
+  const auto& possible_upgrades = model_->GetUpgradesTree()[building->GetId()];
+  view_->ReplaceTowerMenu(building->GetPosition(), tower_index,
+                          possible_upgrades, building->GetId());
 }
 
-void Controller::MousePress(Coordinate position) {
+void Controller::MouseEvent(Coordinate position, bool is_press) {
   // Check if some tower was pressed
   const auto& buildings = model_->GetBuildings();
   for (size_t i = 0; i < buildings.size(); i++) {
@@ -282,40 +270,28 @@ void Controller::MousePress(Coordinate position) {
     if (!building->IsInside(position)) {
       continue;
     }
-    // Check if that's the same building on which menu was already open
-    // (which means now we should close it)
-    if (view_->IsTowerMenuEnabled()
-        && view_->GetTowerMenu()->GetTower().GetPosition()
-            == building->GetPosition()) {
+    if (view_->IsTowerMenuEnabled()) {
       view_->DisableTowerMenu();
       return;
     }
-    CreateTowerMenu(i);
+    if (!is_press) {
+      CreateTowerMenu(i);
+    }
     return;
   }
 
   if (!view_->IsTowerMenuEnabled()) {
     return;
-  }
-
-  auto pressed = view_->GetTowerMenu()->GetButtonInside(position);
-  if (pressed != nullptr) {
-    pressed->MakeAction();
   }
   view_->DisableTowerMenu();
 }
 
-void Controller::MouseMove(Coordinate position) {
-  if (!view_->IsTowerMenuEnabled()) {
-    return;
-  }
-
-  auto button = view_->GetTowerMenu()->GetButtonInside(position);
-  view_->GetTowerMenu()->Hover(button);
-}
-
 void Controller::RescaleObjects(const SizeHandler& size_handler) {
   model_->RescaleDatabase(size_handler);
+}
+
+const Building& Controller::GetBuildingById(int instance_id) const {
+  return model_->GetBuildingById(instance_id);
 }
 
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {

@@ -9,34 +9,54 @@
 
 #include "GameObject/building.h"
 #include "Model/coordinate.h"
-#include "tower_menu_option.h"
+#include "View/menu_button.h"
+
+struct ButtonImagePath {
+  ButtonImagePath(const QString& frame_up_path,
+                  const QString& frames_down_path) :
+      main_path(frame_up_path), active_path(frames_down_path) {}
+  QString main_path;
+  QString active_path;
+};
 
 class TowerMenu {
  public:
   // Note: options are expected to be not empty
-  TowerMenu(int creation_time, const Building& tower,
-            std::vector<std::shared_ptr<TowerMenuOption>> options);
+  explicit TowerMenu(QMainWindow*);
 
-  void Hover(const std::shared_ptr<TowerMenuOption>& option);
-  void Draw(QPainter* painter, const SizeHandler& size_handler,
-            int current_time) const;
+  void Recreate(Coordinate position, int carrier_building_index,
+                const std::vector<int>& possible_buildings_id,
+                int carrier_id, const SizeHandler& size_handler);
+  void Tick(const SizeHandler& size_handler, int delta_time);
+  void SetIsWantToReplaceToFalse();
+  void RescaleButtons(const SizeHandler& size_handler);
+  void DrawAdditionalInfo(QPainter* painter, const Building& instance) const;
 
-  std::shared_ptr<TowerMenuOption> GetButtonInside(Coordinate position) const;
-  const Building& GetTower() const;
-
- private:
-  std::shared_ptr<TowerMenuOption> hovered_option_;
-  std::vector<std::shared_ptr<TowerMenuOption>> options_;
-  const Building& tower_;
-  uint container_length_;
-  int creation_time_;
-
-  const int kAnimationDuration = 100;
-  const int kIndentBetweenButtons = 10;
-  const int kIndentFromTower = 5;
+  void Disable(bool is_fast_disable = true);
+  int GetCarrierIndex() const;
+  int GetSellectedTowerId() const;
+  bool IsEnable() const;
+  bool IsWantToReplace() const;
 
  private:
-  Coordinate CalculateCoordinate(int i, int size) const;
+  int building_id_;
+  int carrier_id_;
+  std::vector<MenuButton*> buttons_;
+  std::vector<int> possible_buildings_id_;
+  Coordinate position_;
+  int carrier_building_index_ = -1;
+  int active_button_index_ = -1;
+  bool want_to_replace_ = false;
+  bool slow_disable = false;
+
+  double current_force_;
+
+  const double kThrowForce = 65;
+  const double kSlowCoefficient = 0.92;
+  const Size kSizeOfButton = {50, 50};
+
+ private:
+  void HeTappedMe(uint button_index);
 };
 
 #endif  // VIEW_TOWER_MENU_H_

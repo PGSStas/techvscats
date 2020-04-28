@@ -19,7 +19,7 @@
 #include "tower_menu.h"
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -29,29 +29,29 @@ class View : public QMainWindow {
   void EnableMainMenuUi();
   void DisableMainMenuUi();
 
-  void ShowTowerMenu(const std::shared_ptr<TowerMenu>& menu);
+  void ReplaceTowerMenu(Coordinate position, int carrier_building_index,
+                        const std::vector<int>& possible_buildings_id,
+                        int carrier_id_);
+  void DisableTowerMenu();
   void UpdateRounds(int current_round_number, int number_of_rounds);
 
   void ChangeGameSpeed(Speed speed);
-  std::shared_ptr<TowerMenu> GetTowerMenu();
   const SizeHandler& GetSizeHandler() const;
 
   bool IsTowerMenuEnabled() const;
-  void DisableTowerMenu();
 
  private:
   AbstractController* controller_;
   SizeHandler size_handler_;
-  // WindowType window_type_ = WindowType::kMainMenu;
   QElapsedTimer view_timer_;
+
   int controller_timer_id_;
 
   // Game window
   QElapsedTimer time_between_ticks_;
-  std::shared_ptr<ButtonHandler> button_handler_;
+  ButtonHandler button_handler_;
+  TowerMenu tower_menu_;
 
-  std::shared_ptr<TowerMenu> tower_menu_ = nullptr;
-  bool is_tower_menu_enabled_ = false;
   double game_speed_coefficient_ = 1;
 
  private:
@@ -60,7 +60,7 @@ class View : public QMainWindow {
   void resizeEvent(QResizeEvent*) override;
   void timerEvent(QTimerEvent* event) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
-  void mouseMoveEvent(QMouseEvent* event) override;
+  void mousePressEvent(QMouseEvent* event) override;
 
   void DrawEmptyZones(QPainter* painter);
   void DrawMainMenu(QPainter* painter);

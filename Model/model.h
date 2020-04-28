@@ -27,6 +27,7 @@
 #include "enemy_group.h"
 #include "road.h"
 #include "View/text_notification.h"
+#include "View/tower_menu.h"
 
 class Model {
  public:

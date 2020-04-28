@@ -33,6 +33,7 @@ MenuButton::MenuButton(const Size& button_size,
 
 void MenuButton::SetGeometry(
     Coordinate game_coordinate, SizeHandler size_handler) {
+  position_ = game_coordinate;
   auto window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);
   Size window_size = size_handler.GameToWindowSize(button_size_);
   this->setGeometry(window_coordinate.x, window_coordinate.y,
@@ -76,4 +77,7 @@ void MenuButton::SetSecondIconPath(const QString& main_icon_path,
 
 void MenuButton::EnableSecondIcon(bool is_second_icon_enabled) {
   is_second_icon_enabled_ = is_second_icon_enabled;
+}
+Coordinate MenuButton::GetPosition() const{
+  return position_;
 }
