@@ -11,7 +11,7 @@ void Model::SetGameLevel(int level_id) {
   AimedProjectile projectile_instance_aimed(Size(10, 20), 66);
   projectile_instance_aimed.SetAnimationParameters(Qt::darkRed, 100);
 
-  BombProjectile projectile_instance_bomb(Size(10, 20), 45, 52, 120);
+  BombProjectile projectile_instance_bomb(Size(10, 20), 45, 90, 120);
   projectile_instance_bomb.SetAnimationParameters(Qt::darkGreen, 100);
 
   LaserProjectile projectile_instance_lazer(Size(10, 20));
@@ -29,19 +29,19 @@ void Model::SetGameLevel(int level_id) {
       "towers/default_tower_reload_4",
       "towers/default_tower_reload_4"});
 
-  SetAnimationToGameObject(&id_to_building_[1], {1000, 300, 300}, {
+  SetAnimationToGameObject(&id_to_building_[1], {0, 800, 0}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
   });
 
-  SetAnimationToGameObject(&id_to_building_[2], {100, 50, 10}, {
+  SetAnimationToGameObject(&id_to_building_[2], {0, 1500, 0}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
   });
 
-  SetAnimationToGameObject(&id_to_building_[3], {1000, 600, 600}, {
+  SetAnimationToGameObject(&id_to_building_[3], {0, 50, 0}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
@@ -316,9 +316,9 @@ void Model::LoadDatabase() {
   for (int i = 0; i < enemies_count; i++) {
     enemy = enemies[i].toObject();
     AuricField aura;
-    if (enemy.contains("aura")) {
-      aura = AuricField(enemy["aura"].toObject()["radius"].toInt(),
-                        enemy["aura"].toObject()["effect_id"].toInt());
+    if (enemy.contains("auric_field")) {
+      aura = AuricField(enemy["auric_field"].toObject()["radius"].toInt(),
+                        enemy["auric_field"].toObject()["effect_id"].toInt());
     }
     Size size = Size(enemy["size"].toObject()["width"].toInt(),
                      enemy["size"].toObject()["height"].toInt());
@@ -333,9 +333,9 @@ void Model::LoadDatabase() {
   }
 
   SetAnimationToGameObject(&id_to_enemy_[0], {400}, {"enemies/toster_3"});
-  SetAnimationToGameObject(&id_to_enemy_[2], {550}, {"enemies/toster_3"});
-  SetAnimationToGameObject(&id_to_enemy_[3], {600}, {"enemies/mouse_3"});
-  SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
+  SetAnimationToGameObject(&id_to_enemy_[1], {550}, {"enemies/toster_3"});
+  SetAnimationToGameObject(&id_to_enemy_[2], {600}, {"enemies/mouse_3"});
+  SetAnimationToGameObject(&id_to_enemy_[3], {800}, {"enemies/mouse_3"});
 
   // backgrounds
   back_grounds_.emplace_back(
@@ -370,8 +370,8 @@ void Model::LoadDatabase() {
     AuricField aura;
     if (json_building.contains("auric_field")) {
       aura = AuricField(
-          json_building["aura"].toObject()["radius"].toInt(),
-          json_building["aura"].toObject()["effect_id"].toInt());
+          json_building["auric_field"].toObject()["radius"].toInt(),
+          json_building["auric_field"].toObject()["effect_id"].toInt());
     }
 
     Building building(i, json_building["settle_cost"].toInt(), size, aura);

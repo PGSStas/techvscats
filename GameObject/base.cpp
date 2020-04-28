@@ -9,9 +9,7 @@ Base::Base(int gold, double max_health, Coordinate position)
     : GameObject(Size(0, 0), position), gold_(gold),
       max_health_(max_health), current_health_(max_health) {}
 
-void Base::Tick(int) {
-  current_health_ = std::min(max_health_, current_health_ + regeneration_rate_);
-}
+void Base::Tick(int) {}
 
 void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();

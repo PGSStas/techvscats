@@ -111,7 +111,7 @@ void Controller::TickSpawners() {
 void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
   enemies->remove_if([this](const auto& enemy) {
-    if (enemy->IsDead()) {
+    if (enemy->IsDead() && !enemy->IsEndReached()) {
       ProcessEnemyDeath(*enemy);
     }
     return enemy->IsDead() || enemy->IsEndReached();

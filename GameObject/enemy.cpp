@@ -36,7 +36,7 @@ void Enemy::Move() {
   if (position_ == destination_) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
-      is_end_reached_ = true;
+      is_end_reached_ = is_dead_ = true;
       return;
     }
     destination_ = (road_->GetNode(node_number_));
@@ -105,10 +105,8 @@ double Enemy::GetDamage() const {
 }
 
 void Enemy::ReceiveDamage(double damage) {
-  // Temporary formula.
-  double armor = armor_ * applied_effect_.GetArmorCoefficient();
-  double multiplier = 1 - ((0.052 * armor) / (0.9 + 0.048 * std::abs(armor)));
-  current_health_ -= std::min(multiplier * damage, current_health_);
+  double armor = armor_ * applied_effect_.GetArmorCoefficient() / 100;
+  current_health_ -= std::min((1 - armor) * damage, current_health_);
   if (current_health_ <= constants::kEpsilon) {
     is_dead_ = true;
   }
