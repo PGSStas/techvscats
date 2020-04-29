@@ -56,10 +56,8 @@ void Base::DrawUI(QPainter* painter, const SizeHandler& size_handler) const {
                     gold_size.width, gold_size.height);
 
   painter->setPen(Qt::white);
-  Coordinate health_info = size_handler.GameToWindowCoordinate(
-      {kHealthPosition.x + kHealthSize.width / 2 - 35,
-       kHealthPosition.y + kHealthSize.height / 2 + 5});
-  painter->drawText(health_info.x, health_info.y,
+  painter->drawText(health_background.x, health_background.y,
+                    health_size.width, health_size.height, Qt::AlignCenter,
                     QString::number(static_cast<int>(current_health_)));
 
   painter->setPen(Qt::yellow);
