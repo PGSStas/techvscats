@@ -16,6 +16,10 @@ void GameObject::SetPosition(Coordinate position) {
   position_ = position;
 }
 
+const QImage& GameObject::GetSprite() const {
+  return animation_players_[0].GetCurrentFrame();
+}
+
 void GameObject::SetAnimationPlayers(
     const std::vector<AnimationPlayer>& animation_players) {
   animation_players_ = animation_players;

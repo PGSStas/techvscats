@@ -9,6 +9,7 @@
 
 #include "GameObject/building.h"
 #include "Model/coordinate.h"
+#include "View/info_field.h"
 #include "View/menu_button.h"
 
 struct ButtonImagePath {
@@ -30,7 +31,8 @@ class TowerMenu {
   void Tick(const SizeHandler& size_handler, int delta_time);
   void SetIsWantToReplaceToFalse();
   void RescaleButtons(const SizeHandler& size_handler);
-  void DrawAdditionalInfo(QPainter* painter, const Building& instance) const;
+  void DrawAdditionalInfo(QPainter* painter, const SizeHandler& size_handler,
+                          const Building& instance);
 
   void Disable(bool is_fast_disable = true);
   int GetCarrierIndex() const;
@@ -48,6 +50,8 @@ class TowerMenu {
   int active_button_index_ = -1;
   bool want_to_replace_ = false;
   bool slow_disable = false;
+
+  InfoField info_field_;
 
   double current_force_;
 

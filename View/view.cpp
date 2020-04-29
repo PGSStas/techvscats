@@ -5,7 +5,7 @@ View::View(AbstractController* controller)
       size_handler_(),
       button_handler_(ButtonHandler(this, controller, 0)),
       tower_menu_(this) {
-  setMinimumSize(1080, 720);
+  setMinimumSize(1280, 720);
   setMouseTracking(true);
   show();
 
@@ -180,14 +180,15 @@ void View::DrawAdditionalInfo(QPainter* painter) {
                                                    building->GetSize());
   }
 
-  if (tower_menu_.IsEnable()) {
-    tower_menu_.DrawAdditionalInfo(painter,
-                                   controller_->GetBuildingById(tower_menu_.GetSellectedTowerId()));
-  }
-
   const auto& text_notifications = controller_->GetTextNotifications();
   for (auto& notification : text_notifications) {
     notification.Draw(painter, size_handler_);
+  }
+
+  if (tower_menu_.IsEnable()) {
+    tower_menu_.DrawAdditionalInfo(painter, size_handler_,
+                                   controller_->GetBuildingById(
+                                       tower_menu_.GetSellectedTowerId()));
   }
 }
 
@@ -212,7 +213,7 @@ void View::timerEvent(QTimerEvent* event) {
   }
 }
 
-void View::UpdateRounds(int , int ) {
+void View::UpdateRounds(int, int) {
   // Here will be some kind of round indicator.
 }
 

@@ -71,9 +71,17 @@ void TowerMenu::Recreate(Coordinate position, int carrier_building_index,
 }
 
 void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
+  info_field_.Tick();
+  if (active_button_index_ != -1) {
+    info_field_.Show();
+    info_field_.SetPosition(buttons_[active_button_index_]->GetPosition(),
+                            button_constants::kShortButtonSize,
+                            button_constants::kShift);
+  }
   if (current_force_ < 1 || possible_buildings_id_.empty()) {
     return;
   }
+  info_field_.Hide();
   if (slow_disable) {
     delta_time *= -1;
   }
@@ -83,15 +91,18 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
   Size move_vector;
   current_force_ *= kSlowCoefficient;
   for (auto& id :possible_buildings_id_) {
-    double radian = move_degree * 3.1415926535897932384 / 180;
+    double radian = move_degree * std::acos(-1) / 180;
     move_degree += delta_degree;
     move_vector = Size(sin(radian), -cos(radian));
     move_vector *= current_force_ * delta_time / constants::kTimeScale;
     if (slow_disable) {
       auto first_vector =
-          (buttons_[id]->GetPosition() + move_vector).GetVectorTo(position_-kSizeOfButton/2);
-      auto second_vector = buttons_[id]->GetPosition().GetVectorTo(position_-kSizeOfButton/2);
-      if (first_vector.GetLength() > second_vector.GetLength()) {
+          (buttons_[id]->GetPosition() + move_vector).GetVectorTo(
+              position_ - kSizeOfButton / 2);
+      auto second_vector = buttons_[id]->GetPosition().GetVectorTo(
+          position_ - kSizeOfButton / 2);
+      if (first_vector.GetLength() > second_vector.GetLength()
+          || current_force_ < 1) {
         Disable(true);
         return;
       }
@@ -111,11 +122,12 @@ void TowerMenu::SetIsWantToReplaceToFalse() {
   want_to_replace_ = false;
 }
 
-void TowerMenu::DrawAdditionalInfo(
-    QPainter* painter, const Building& instance) const {
+void TowerMenu::DrawAdditionalInfo(QPainter* painter,
+                                   const SizeHandler& size_handler,
+                                   const Building& instance) {
   painter->save();
-  painter->drawText(position_.x, position_.y,
-                    QString::number(instance.GetCost()));
+  info_field_.SetInfo("Pisun", "Vlad Koz gagagagag", instance.GetSprite());
+  info_field_.Draw(painter, size_handler);
   painter->restore();
 }
 
@@ -131,6 +143,7 @@ void TowerMenu::Disable(bool is_fast_disable) {
     buttons_[id]->hide();
   }
   possible_buildings_id_.clear();
+  info_field_.SetShowPercent(0);
 }
 
 int TowerMenu::GetCarrierIndex() const {
