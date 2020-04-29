@@ -13,6 +13,7 @@ Building::Building(const Building& other) :
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
   SetAnimationPlayers(other.animation_players_);
+  SetInfo(other.header_, other.description_);
 }
 
 void Building::Tick(int current_time) {
@@ -128,6 +129,11 @@ void Building::SetTotalCost(int total_cost) {
   total_cost_ = total_cost;
 }
 
+void Building::SetInfo(const QString& header, const QString& description) {
+  header_ = header;
+  description_ = description;
+}
+
 int Building::GetId() const {
   return id_;
 }
@@ -150,6 +156,18 @@ int Building::GetCost() const {
 
 int Building::GetTotalCost() const {
   return total_cost_;
+}
+
+const QString& Building::GetHeader() const {
+  return header_;
+}
+
+const QString& Building::GetDescription() const {
+  return description_;
+}
+
+uint32_t Building::GetMaxAims() const {
+  return max_aims_;
 }
 
 double Building::GetProjectileSpeedCoefficient() const {

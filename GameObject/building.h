@@ -31,6 +31,7 @@ class Building : public GameObject {
                      int max_aims);
   void SetReadyToCreateProjectileToFalse();
   void SetTotalCost(int total_cost);
+  void SetInfo(const QString& header, const QString& description);
 
   int GetId() const;
   int GetAttackRange() const;
@@ -39,6 +40,9 @@ class Building : public GameObject {
   int GetCost() const;
   int GetTotalCost() const;
 
+  const QString& GetHeader() const;
+  const QString& GetDescription() const;
+  uint32_t GetMaxAims() const;
   double GetProjectileSpeedCoefficient() const;
   Effect* GetAppliedEffect();
   const AuricField& GetAuricField() const;
@@ -66,6 +70,9 @@ class Building : public GameObject {
   bool is_ready_to_create_projectiles_ = false;
   bool is_ready_to_shoot_ = false;
   std::list<std::shared_ptr<Enemy>> aims_;
+
+  QString header_;
+  QString description_;
 };
 
 #endif  // GAMEOBJECT_BUILDING_H_

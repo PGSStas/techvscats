@@ -5,8 +5,11 @@
 #include "info_field.h"
 
 void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
+  if (!is_showed_) {
+    return;
+  }
   painter->save();
-  painter->setPen(QPen(qRgb(103, 103, 103)));
+  painter->setPen(QPen(QBrush(qRgb(103, 103, 103)), 3));
   painter->setBrush(QBrush(qRgb(53, 53, 53)));
 
   Coordinate point = size_handler.GameToWindowCoordinate(position_);
@@ -26,53 +29,58 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->drawText(point.x, point.y,
                     size.width, size.height, Qt::AlignCenter, header_);
 
-  point = size_handler.GameToWindowCoordinate({position_.x + 3, position_.y +
-      kSize.height * kRelativeHeaderSize.height + 3});
-  size = size_handler.GameToWindowSize(
-      {kSize.width * kRelativeImageSize.width,
-       kSize.height * kRelativeImageSize.height});
-  if (std::abs(image_.width() - size.width) > constants::kEpsilon) {
-    image_.scaled(size.width, size.height);
-  }
-  painter->drawImage(point.x, point.y, image_);
-
   font = painter->font();
   font.setPixelSize(size_handler.GameToWindowLength(
-      constants::kFontSize * 0.7 ));
+      constants::kFontSize * 0.7));
   painter->setFont(font);
 
-  point = size_handler.GameToWindowCoordinate({position_.x + kSize.width
-      * kRelativeImageSize.width, position_.y +
-      kSize.height * kRelativeHeaderSize.height});
+  point = size_handler.GameToWindowCoordinate({position_.x + kMargin,
+                                               position_.y + kSize.height *
+                                                   kRelativeHeaderSize.height});
   size = size_handler.GameToWindowSize(
-      {kSize.width * kRelativeTextSize.width,
-       kSize.height * kRelativeTextSize.height});
+      {kSize.width * kRelativeTextSize.width - 2 * kMargin,
+       kSize.height * kRelativeTextSize.height - 2 * kMargin});
   painter->drawText(point.x, point.y,
                     size.width, size.height, Qt::TextWordWrap, info_);
+
+  point = size_handler.GameToWindowCoordinate(
+      {position_.x, position_.y + kSize.height *
+          (kRelativeHeaderSize.height + kRelativeTextSize.height)});
+  size = size_handler.GameToWindowSize(
+      {kSize.width * kRelativeStatisticsSize.width,
+       kSize.height * kRelativeStatisticsSize.height});
+  painter->drawText(point.x, point.y, size.width, size.height,
+                    Qt::AlignCenter, "Урон: " + QString::number(damage_) +
+          ", Количество целей: " + QString::number(aims_count_));
+
+  point = size_handler.GameToWindowCoordinate(
+      {position_.x, position_.y + kSize.height *
+          (kRelativeHeaderSize.height + kRelativeTextSize.height +
+              kRelativeStatisticsSize.height)});
+  painter->drawText(point.x, point.y, size.width, size.height,
+                    Qt::AlignCenter, "Стоимость: " + QString::number(cost_) +
+          ", Скорость атаки: " + attack_speed_);
 
   painter->restore();
 }
 
-void InfoField::SetInfo(const QString& header, const QString& info,
-                        const QImage& image) {
-  header_ = header;
-  info_ = info;
-  image_ = image;
+void InfoField::SetInfo(const Building& building) {
+  header_ = building.GetHeader();
+  info_ = building.GetDescription();
+  cost_ = building.GetCost();
+  damage_ = building.GetDamage();
+  aims_count_ = building.GetMaxAims();
 }
 
-void InfoField::SetPosition(Coordinate position,
-                            Size button_size,
+void InfoField::SetPosition(Coordinate position, Size button_size,
                             double shift) {
   position_ = position;
-  if (position_.x + kSize.width >= constants::kGameWidth) {
-    position_.x -= kSize.width + shift;
-  } else {
-    position_.x += button_size.width + shift;
-  }
-  if (position_.y + kSize.height >= constants::kGameHeight) {
+  position_.x -= kSize.width / 2;
+  shift += button_size.height;
+  if (position_.y + kSize.height + shift >= constants::kGameHeight) {
     position_.y -= kSize.height + shift;
   } else {
-    position.y += button_size.height + shift;
+    position_.y += shift;
   }
 }
 

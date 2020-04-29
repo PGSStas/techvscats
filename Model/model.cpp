@@ -390,6 +390,8 @@ void Model::LoadDatabase() {
     for (int j = 0; j < upgrade_tree_count; j++) {
       upgrade_tree.push_back(json_upgrade_tree[j].toInt());
     }
+    building.SetInfo(json_building["header"].toString(),
+                     json_building["description"].toString());
     upgrades_tree_.push_back(std::move(upgrade_tree));
     id_to_building_.push_back(std::move(building));
   }

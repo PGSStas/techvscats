@@ -41,7 +41,6 @@ class TowerMenu {
   bool IsWantToReplace() const;
 
  private:
-  int building_id_;
   int carrier_id_;
   std::vector<MenuButton*> buttons_;
   std::vector<int> possible_buildings_id_;

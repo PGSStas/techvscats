@@ -71,10 +71,9 @@ void TowerMenu::Recreate(Coordinate position, int carrier_building_index,
 }
 
 void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
-  info_field_.Tick();
   if (active_button_index_ != -1) {
     info_field_.Show();
-    info_field_.SetPosition(buttons_[active_button_index_]->GetPosition(),
+    info_field_.SetPosition(position_,
                             button_constants::kShortButtonSize,
                             button_constants::kShift);
   }
@@ -126,8 +125,8 @@ void TowerMenu::DrawAdditionalInfo(QPainter* painter,
                                    const SizeHandler& size_handler,
                                    const Building& instance) {
   painter->save();
-  info_field_.SetInfo("Pisun", "Vlad Koz gagagagag", instance.GetSprite());
   info_field_.Draw(painter, size_handler);
+  info_field_.SetInfo(instance);
   painter->restore();
 }
 
@@ -143,7 +142,6 @@ void TowerMenu::Disable(bool is_fast_disable) {
     buttons_[id]->hide();
   }
   possible_buildings_id_.clear();
-  info_field_.SetShowPercent(0);
 }
 
 int TowerMenu::GetCarrierIndex() const {
