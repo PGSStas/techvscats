@@ -4,7 +4,7 @@ const Size Base::kBaseSize = Size(50, 50);
 const Coordinate Base::kHealthPosition = Coordinate(1465, 945);
 const Size Base::kHealthSize = Size(160, 120);
 const Coordinate Base::kGoldPosition = Coordinate(1680, 960);
-const Size Base::kGoldSize = Size(260, 80);
+const Size Base::kGoldSize = Size(220, 80);
 
 Base::Base(int gold, double max_health, Coordinate position)
     : GameObject(Size(0, 0), position), gold_(gold),
@@ -61,9 +61,10 @@ void Base::DrawUI(QPainter* painter, const SizeHandler& size_handler) const {
                     QString::number(static_cast<int>(current_health_)));
 
   painter->setPen(Qt::yellow);
-  Coordinate gold_info = size_handler.GameToWindowCoordinate(
-      {kGoldPosition.x + 30, kGoldPosition.y + kGoldSize.height / 2 + 10});
-  painter->drawText(gold_info.x, gold_info.y, QString::number(gold_) + " g.");
+  painter->drawText(gold_top_corner.x, gold_top_corner.y,
+                    gold_size.width, gold_size.height,
+                    Qt::Alignment({Qt::AlignVCenter, Qt::AlignRight}),
+                    QString::number(gold_) + " g. ");
 
   painter->restore();
 }

@@ -29,10 +29,7 @@ class TextNotification : public GameObject {
   int life_time_;
 
   bool is_dead_ = false;
-
-  const double kFontSize = 18;
   const double kSlowdownCoefficient = 0.9;
-
   const int kFontId = 0;
 };
 
