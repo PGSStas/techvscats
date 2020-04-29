@@ -236,9 +236,11 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
           * constants::kRefundCoefficient;
 
+      Coordinate notification = base->GetGoldPosition() +
+          base->GetGoldSize() / std::max(QString::number(sell_cost).length(), 2);
       model_->AddTextNotification({"+" + QString::number(sell_cost) + " "
                                        + constants::kCurrency,
-                                   base->GetGoldPosition(), Qt::green,
+                                   notification, Qt::green,
                                    current_game_time_});
       base->AddGoldAmount(sell_cost);
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
@@ -246,9 +248,11 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
       base->SubtractGoldAmount(settle_cost);
 
+      Coordinate notification = base->GetGoldPosition() +
+          base->GetGoldSize() / std::max(QString::number(settle_cost).length(), 2);
       model_->AddTextNotification({"-" + QString::number(settle_cost) + " "
                                        + constants::kCurrency,
-                                   base->GetGoldPosition(), Qt::red,
+                                   notification, Qt::red,
                                    current_game_time_});
     }
   } else {

@@ -104,3 +104,7 @@ bool Base::IsDead() const {
   return is_dead_;
 }
 
+Size Base::GetGoldSize() const {
+  return kGoldSize;
+}
+

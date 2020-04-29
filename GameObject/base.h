@@ -22,6 +22,7 @@ class Base : public GameObject {
   double GetMaxHealth() const;
   int GetGold() const;
   Coordinate GetGoldPosition() const;
+  Size GetGoldSize() const;
 
   void AddGoldAmount(int gold_amount);
   void SubtractGoldAmount(int gold_amount);
