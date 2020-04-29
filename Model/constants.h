@@ -1,7 +1,7 @@
 #ifndef MODEL_CONSTANTS_H_
 #define MODEL_CONSTANTS_H_
 
-#include "size.h"
+#include <QString>
 
 namespace constants {
 const double kEpsilon = 0.0001;
