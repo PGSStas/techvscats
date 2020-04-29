@@ -15,6 +15,7 @@ class Base : public GameObject {
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
+  void DrawUI(QPainter* painter, const SizeHandler& size_handler) const;
   void DecreaseHealth(double damage);
 
   double GetCurrentHealth() const;

@@ -17,6 +17,19 @@ void Base::Tick(int) {
 void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
+  painter->setBrush(Qt::magenta);
+
+  auto point = size_handler.GameToWindowCoordinate(position_ - kBaseSize / 2);
+  Size size = size_handler.GameToWindowSize(kBaseSize);
+
+  painter->drawRect(point.x, point.y, size.width, size.height);
+
+  painter->restore();
+}
+
+void Base::DrawUI(QPainter* painter, const SizeHandler& size_handler) const {
+  painter->save();
+
   auto font = painter->font();
   font.setPixelSize(size_handler.GameToWindowLength(constants::kFontSize));
   font.setFamily(QFontDatabase::applicationFontFamilies(0).at(0));
@@ -53,13 +66,6 @@ void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   Coordinate gold_info = size_handler.GameToWindowCoordinate(
       {kGoldPosition.x + 30, kGoldPosition.y + kGoldSize.height / 2 + 10});
   painter->drawText(gold_info.x, gold_info.y, QString::number(gold_) + " g.");
-
-  painter->setBrush(Qt::magenta);
-
-  auto point = size_handler.GameToWindowCoordinate(position_ - kBaseSize / 2);
-  Size size = size_handler.GameToWindowSize(kBaseSize);
-
-  painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->restore();
 }
@@ -98,3 +104,4 @@ void Base::SubtractGoldAmount(int gold_amount) {
 bool Base::IsDead() const {
   return is_dead_;
 }
+
