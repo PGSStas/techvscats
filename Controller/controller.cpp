@@ -236,7 +236,8 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
           * constants::kRefundCoefficient;
 
-      model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
+      model_->AddTextNotification({"+" + QString::number(sell_cost) + " "
+                                       + constants::kCurrency,
                                    base->GetGoldPosition(), Qt::green,
                                    current_game_time_});
       base->AddGoldAmount(sell_cost);
@@ -245,12 +246,14 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
       base->SubtractGoldAmount(settle_cost);
 
-      model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
+      model_->AddTextNotification({"-" + QString::number(settle_cost) + " "
+                                       + constants::kCurrency,
                                    base->GetGoldPosition(), Qt::red,
                                    current_game_time_});
     }
   } else {
-    model_->AddTextNotification({"Not enough gold", base->GetGoldPosition(),
+    model_->AddTextNotification({"Not enough " + constants::kCurrency,
+                                 base->GetGoldPosition(),
                                  Qt::blue, current_game_time_});
   }
 }
@@ -346,7 +349,8 @@ int Controller::GetCurrentTime() const {
 
 void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   int reward = enemy.ComputeReward();
-  model_->AddTextNotification({QString::number(reward) + " gold",
+  model_->AddTextNotification({QString::number(reward) + " "
+                                   + constants::kCurrency,
                                enemy.GetPosition(), Qt::yellow,
                                current_game_time_});
   model_->GetBase()->AddGoldAmount(reward);

@@ -17,6 +17,7 @@ const double kSemiMinorCoefficient = 0.4;
 const double kRefundCoefficient = 0.3;
 
 const double kFontSize = 32;
+const QString kCurrency = "g";
 }  // namespace constants
 
 #endif  // MODEL_CONSTANTS_H_

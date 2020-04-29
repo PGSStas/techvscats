@@ -64,7 +64,7 @@ void Base::DrawUI(QPainter* painter, const SizeHandler& size_handler) const {
   painter->drawText(gold_top_corner.x, gold_top_corner.y,
                     gold_size.width, gold_size.height,
                     Qt::Alignment({Qt::AlignVCenter, Qt::AlignRight}),
-                    QString::number(gold_) + " g. ");
+                    QString::number(gold_) + " " + constants::kCurrency + " ");
 
   painter->restore();
 }
