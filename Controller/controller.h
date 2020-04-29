@@ -1,6 +1,7 @@
 #ifndef CONTROLLER_CONTROLLER_H_
 #define CONTROLLER_CONTROLLER_H_
 
+#include <algorithm>
 #include <list>
 #include <vector>
 #include <memory>
