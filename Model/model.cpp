@@ -7,41 +7,8 @@ Model::Model() {
 
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
-
-  AimedProjectile projectile_instance_aimed(Size(30, 30), 66);
-  SetAnimationToGameObject(&projectile_instance_aimed,
-                           {0}, {"projectiles/bullet0_1"});
-
-  BombProjectile projectile_instance_bomb(Size(40, 50), 45, 92, 220);
-  SetAnimationToGameObject(&projectile_instance_bomb,
-                           {500}, {"projectiles/upfly1_9"});
-
-  LaserProjectile projectile_instance_lazer(Size(25, 25));
-  SetAnimationToGameObject(&projectile_instance_lazer,
-                           {600}, {"projectiles/laser2_4"});
-  id_to_projectile_.push_back(std::make_shared<AimedProjectile>(
-      projectile_instance_aimed));
-  id_to_projectile_.push_back(std::make_shared<BombProjectile>(
-      projectile_instance_bomb));
-  id_to_projectile_.push_back(std::make_shared<LaserProjectile>(
-      projectile_instance_lazer));
-
   InitializeTowerSlots();
 
-  SetAnimationToGameObject(&*base_, {450}, {"towers/base_0_1"});
-  base_->GetParticleHandler()->SetAliveParticlePack(2, 0);
-
-  id_to_projectile_[0]->GetParticleHandler()->SetAtCreationParticlePack(0, 4);
-  id_to_projectile_[0]->GetParticleHandler()->SetAliveParticlePack(4, 100);
-
-  id_to_projectile_[1]->GetParticleHandler()->SetAtCreationParticlePack(1);
-
-  id_to_projectile_[2]->GetParticleHandler()->SetAtCreationParticlePack(3);
-
-  id_to_enemy_[0].GetParticleHandler()->SetAtCreationParticlePack(0);
-  id_to_enemy_[1].GetParticleHandler()->SetAtCreationParticlePack(0);
-  id_to_enemy_[2].GetParticleHandler()->SetAtCreationParticlePack(0);
-  id_to_enemy_[3].GetParticleHandler()->SetAtCreationParticlePack(0);
 }
 
 void Model::AddSpawner(const EnemyGroup& enemy_group) {
@@ -60,6 +27,8 @@ void Model::CreateBuildingAtIndex(int i, int id) {
   Coordinate position = buildings_[i]->GetPosition();
   // Create new building by id
   int sell_cost = buildings_[i]->GetTotalCost() + id_to_building_[id].GetCost();
+  buildings_[i]->GetParticleHandler()->CarrierDeath();
+  CreateParticles(buildings_[i]->GetParticleHandler()->GetWaitParticles());
   buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
   if (id != 0) {
     buildings_[i]->SetTotalCost(sell_cost);
@@ -239,7 +208,13 @@ void Model::LoadLevel(int level) {
                                  Coordinate(json_base_position["x"].toDouble(),
                                             json_base_position["y"].toDouble()),
                                  json_base["max_health"].toDouble());
-
+  auto json_animation = json_base["animation"].toObject();
+  SetAnimationToGameObject(
+      &*base_,
+      {json_animation["timing"].toInt()},
+      {json_animation["path"].toString()});
+  SetParticlesToGameObject(&*base_,json_base);
+  base_->GetParticleHandler()->SetAliveParticlePack(2, 0);
   // Reading information about the roads.
   roads_.clear();
   QJsonArray json_roads = json_object["roads"].toArray();
@@ -361,8 +336,9 @@ void Model::LoadDatabase() {
         &id_to_enemy_.back(),
         {enemy["animation"].toObject()["timing"].toInt()},
         {enemy["animation"].toObject()["path"].toString()});
+    SetParticlesToGameObject(&id_to_enemy_.back(),
+                             enemy["particles"].toObject());
   }
-
 
   // Loading Buildings
   QJsonArray json_buildings = json_object["buildings"].toArray();
@@ -410,6 +386,56 @@ void Model::LoadDatabase() {
     }
     upgrades_tree_.push_back(std::move(upgrade_tree));
     id_to_building_.push_back(std::move(building));
+    SetParticlesToGameObject(&id_to_building_.back(),
+                             json_building["particles"].toObject());
+  }
+
+
+  // Loading Projectiles
+  QJsonArray json_projectiles = json_object["projectiles"].toArray();
+  int projectiles_count = json_projectiles.count();
+  id_to_projectile_.clear();
+  id_to_projectile_.reserve(projectiles_count);
+  QJsonObject json_projectile;
+  for (int i = 0; i < projectiles_count; i++) {
+    json_projectile = json_projectiles[i].toObject();
+    auto json_size = json_projectile["size"].toObject();
+    Size size(json_size["width"].toDouble(), json_size["height"].toDouble());
+    int type = json_projectile["type"].toInt();
+
+    switch (type) {
+      case 0: {
+        double speed = json_projectile["speed"].toDouble();
+        AimedProjectile projectile(size, speed);
+        id_to_projectile_.push_back(
+            std::make_shared<AimedProjectile>(projectile));
+        break;
+      }
+      case 1: {
+        double speed = json_projectile["speed"].toDouble();
+        double effect_radius = json_projectile["effect_radius"].toDouble();
+        double up_force = json_projectile["up_force"].toDouble();
+        BombProjectile projectile(size, speed , effect_radius,up_force);
+        id_to_projectile_.push_back(
+            std::make_shared<BombProjectile>(projectile));
+        break;
+      }
+      case 2: {
+        LaserProjectile projectile(size);
+        id_to_projectile_.push_back(
+            std::make_shared<LaserProjectile>(projectile));
+        break;
+      }
+      default:break;
+    }
+    auto json_animation = json_projectile["animation"].toObject();
+    SetAnimationToGameObject(
+        &*id_to_projectile_.back(),
+        {json_animation["timing"].toInt()},
+        {json_animation["path"].toString()});
+    SetParticlesToGameObject(&*id_to_projectile_.back(),
+                             json_projectile["particles"].toObject());
+
   }
 
   // Loading Particles
@@ -423,13 +449,14 @@ void Model::LoadDatabase() {
     Size size = {-1, -1};
     if (json_particle.contains("size")) {
       auto json_size = json_particle["size"].toObject();
-      size= Size(json_size["width"].toDouble(), json_size["height"].toDouble());
+      size =
+          Size(json_size["width"].toDouble(), json_size["height"].toDouble());
     }
     int repeat_number = -1;
     if (json_particle.contains("repeat_number")) {
       repeat_number = json_particle["repeat_number"].toInt();
     }
-    id_to_particle_.emplace_back(size,repeat_number);
+    id_to_particle_.emplace_back(size, repeat_number);
     auto json_animation = json_particle["animation"].toObject();
     SetAnimationToGameObject(
         &id_to_particle_.back(),
@@ -444,8 +471,7 @@ void Model::LoadDatabase() {
       GetImagesByFramePath("backgrounds/settings_background_1"));
   backgrounds.emplace_back(
       GetImagesByFramePath("backgrounds/pause_menu_background_1"));
-  backgrounds.emplace_back(
-      GetImagesByFramePath("error"));
+  backgrounds.emplace_back(GetImagesByFramePath("error"));
 
   // Effects
   std::vector<EffectVisualization>
@@ -503,6 +529,26 @@ std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
   }
 
   return images;
+}
+
+void Model::SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object) {
+  int at_creation = -1;
+  int at_death = -1;
+  if(object.contains("at_death")){
+    at_death = object["at_death"].toInt();
+  }
+  if(object.contains("at_creation")){
+    at_creation = object["at_creation"].toInt();
+  }
+  p_enemy->GetParticleHandler()->SetAtCreationParticlePack(at_death,at_creation);
+  int while_alive = -1;
+  int period = 0;
+
+  if(object.contains("while_alive")){
+    while_alive = object["while_alive"].toInt();
+    period = object["period"].toInt();
+    p_enemy->GetParticleHandler()->SetAliveParticlePack(while_alive,period);
+  }
 }
 
 

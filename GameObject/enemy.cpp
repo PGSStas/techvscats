@@ -114,6 +114,7 @@ Coordinate Enemy::GetPrefirePosition() const {
 double Enemy::GetDamage() const {
   return damage_ * applied_effect_.GetDamageCoefficient();
 }
+
 void Enemy::ReceiveDamage(double damage) {
   // Temporary formula.
   double armor = armor_ * applied_effect_.GetArmorCoefficient();

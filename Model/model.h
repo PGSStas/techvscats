@@ -77,6 +77,7 @@ class Model {
       std::vector<QString> paths);
   std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(
       QString path, QString picture_type = ".png") const;
+  void SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object);
 
   // Database which is updated by Controller all time
   std::list<Spawner> spawners_;

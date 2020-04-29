@@ -17,6 +17,9 @@
       "animation": {
         "path": "enemies/toster_3",
         "timing": 400
+      },
+      "particles": {
+        "at_death": 0
       }
     },
     {
@@ -32,6 +35,9 @@
       "animation": {
         "path": "enemies/toster_3",
         "timing": 550
+      },
+      "particles": {
+        "at_death": 0
       }
     },
     {
@@ -47,6 +53,9 @@
       "animation": {
         "path": "enemies/mouse_3",
         "timing": 600
+      },
+      "particles": {
+        "at_death": 0
       }
     },
     {
@@ -62,6 +71,9 @@
       "animation": {
         "path": "enemies/mouse_3",
         "timing": 800
+      },
+      "particles": {
+        "at_death": 0
       }
     },
     {
@@ -81,6 +93,60 @@
       "animation": {
         "path": "enemies/toster_3",
         "timing": 400
+      },
+      "particles": {
+        "at_death": 0
+      }
+    }
+  ],
+  "projectiles": [
+    {
+      "type": 0,
+      "size": {
+        "width": 30,
+        "height": 30
+      },
+      "speed": 66,
+      "animation": {
+        "path": "projectiles/bullet0_1",
+        "timing": 0
+      },
+      "particles": {
+        "at_creation": 4,
+        "at_death": 0,
+        "while_alive": 4,
+        "period": 100
+      }
+    },
+    {
+      "type": 1,
+      "size": {
+        "width": 40,
+        "height": 50
+      },
+      "speed": 66,
+      "effect_radius": 92,
+      "up_force": 220,
+      "animation": {
+        "path": "projectiles/upfly1_9",
+        "timing": 500
+      },
+      "particles": {
+        "at_death": 1
+      }
+    },
+    {
+      "type": 2,
+      "size": {
+        "width": 30,
+        "height": 30
+      },
+      "animation": {
+        "path": "projectiles/laser2_4",
+        "timing": 600
+      },
+      "particles": {
+        "at_death": 3
       }
     }
   ],
@@ -107,7 +173,10 @@
         2,
         3,
         4
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "default tower",
@@ -135,7 +204,10 @@
       "upgrade_tree": [
         5,
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "laser",
@@ -163,7 +235,10 @@
       "upgrade_tree": [
         11,
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "bomb",
@@ -191,7 +266,10 @@
       "upgrade_tree": [
         7,
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "support",
@@ -217,7 +295,10 @@
       "upgrade_tree": [
         9,
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "default tower level 2",
@@ -245,7 +326,10 @@
       "upgrade_tree": [
         6,
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "default tower level 3",
@@ -272,9 +356,11 @@
       ],
       "upgrade_tree": [
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
-
     {
       "name": "bomb level 2",
       "size": {
@@ -301,7 +387,10 @@
       "upgrade_tree": [
         8,
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "bomb level 3",
@@ -328,7 +417,10 @@
       ],
       "upgrade_tree": [
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "support level 2",
@@ -354,7 +446,10 @@
       "upgrade_tree": [
         10,
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "support level 3",
@@ -379,7 +474,10 @@
       ],
       "upgrade_tree": [
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "laser level 2",
@@ -407,7 +505,10 @@
       "upgrade_tree": [
         12,
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     },
     {
       "name": "laser level 3",
@@ -434,7 +535,10 @@
       ],
       "upgrade_tree": [
         0
-      ]
+      ],
+      "particles": {
+        "at_death": 6
+      }
     }
   ],
   "effects": [
@@ -508,6 +612,26 @@
       "animation": {
         "timing": 450,
         "path": "particles/flash4_4"
+      }
+    },
+    {
+      "size": {
+        "width": 30,
+        "height": 30
+      },
+      "animation": {
+        "timing": 450,
+        "path": "particles/poof5_3"
+      }
+    },
+    {
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "animation": {
+        "timing": 700,
+        "path": "particles/smoke6_9"
       }
     }
   ]

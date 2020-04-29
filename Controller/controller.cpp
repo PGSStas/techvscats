@@ -397,7 +397,7 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
                                enemy.GetPosition(), Qt::yellow,
                                current_game_time_});
   model_->GetBase()->AddGoldAmount(reward);
-}
+ }
 
 const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));

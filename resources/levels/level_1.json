@@ -11,6 +11,14 @@
     "position": {
       "x": 1700,
       "y": 167
+    },
+    "animation": {
+      "timing": 450,
+      "path": "towers/base_0_1"
+    },
+    "particles": {
+      "while_alive": 2,
+      "period": 0
     }
   },
   "roads": [

@@ -13,6 +13,7 @@ Building::Building(const Building& other) :
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
   SetAnimationPlayers(other.animation_players_);
+  particle_handler_.SetParticlePacks(other.particle_handler_);
 }
 
 void Building::Tick(int current_time) {
