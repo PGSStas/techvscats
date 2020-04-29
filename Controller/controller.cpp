@@ -256,8 +256,8 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
                                    current_game_time_});
     }
   } else {
-    model_->AddTextNotification({"Not enough " + constants::kCurrency,
-                                 base->GetGoldPosition(),
+    auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
+    model_->AddTextNotification({"Not enough " + constants::kCurrency, position,
                                  Qt::blue, current_game_time_});
   }
 }
