@@ -21,7 +21,7 @@ void LaserProjectile::Draw(QPainter* painter,
   Coordinate start_position = handler.GameToWindowCoordinate(position_);
   Size size = handler.GameToWindowSize(size_);
   painter->setPen(QPen(QBrush(animation_players_[0].GetCurrentFrame()),
-                       size.width / 2));
+                       size.width /10));
   painter->drawLine(start_position.x, start_position.y,
                     end_position.x, end_position.y);
   painter->restore();

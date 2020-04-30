@@ -3,13 +3,13 @@
 
 #include "building.h"
 
-Building::Building(int id, int settle_cost, Size size, AuricField aura) :
+Building::Building(int id, int settle_cost, const AuricField& aura, Size size) :
     GameObject(size), auric_field_(aura), id_(id), cost_(settle_cost) {
   auric_field_.SetCarrierCoordinate(&position_);
 }
 
 Building::Building(const Building& other) :
-    Building(other.id_, other.cost_, other.size_, other.auric_field_) {
+    Building(other.id_, other.cost_, other.auric_field_, other.size_) {
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
   SetAnimationPlayers(other.animation_players_);
@@ -104,8 +104,9 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
   Coordinate point =
       size_handler.GameToWindowCoordinate(position_ - size_ / 2);
-  painter->drawImage(point.x, point.y,
-                     animation_players_[static_cast<int>(action_)].GetCurrentFrame());
+  painter->drawImage(
+      point.x, point.y,
+      animation_players_[static_cast<int>(action_)].GetCurrentFrame());
   painter->restore();
 }
 

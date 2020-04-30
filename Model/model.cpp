@@ -325,9 +325,10 @@ void Model::LoadDatabase() {
     id_to_enemy_.emplace_back(enemy["speed"].toInt(), enemy["damage"].toInt(),
                               enemy["armor"].toInt(), enemy["reward"].toInt(),
                               enemy["max_health"].toInt(), size, aura);
-    SetAnimationToGameObject(&id_to_enemy_.back(),
-                             {enemy["animation"].toObject()["timing"].toInt()},
-                             {enemy["animation"].toObject()["path"].toString()});
+    SetAnimationToGameObject(
+        &id_to_enemy_.back(),
+        {enemy["animation"].toObject()["timing"].toInt()},
+        {enemy["animation"].toObject()["path"].toString()});
     SetParticlesToGameObject(&id_to_enemy_.back(),
                              enemy["particles"].toObject());
   }
@@ -342,8 +343,6 @@ void Model::LoadDatabase() {
   QJsonObject json_building;
   for (int i = 0; i < buildings_count; i++) {
     json_building = json_buildings[i].toObject();
-    auto json_size = json_building["size"].toObject();
-    Size size(json_size["width"].toDouble(), json_size["height"].toDouble());
     AuricField aura;
     if (json_building.contains("auric_field")) {
       aura = AuricField(
@@ -351,7 +350,7 @@ void Model::LoadDatabase() {
           json_building["aura"].toObject()["effect_id"].toInt());
     }
 
-    Building building(i, json_building["settle_cost"].toInt(), size, aura);
+    Building building(i, json_building["settle_cost"].toInt(), aura);
     if (json_building.contains("projectile")) {
       auto json_projectile = json_building["projectile"].toObject();
       building.SetProjectile(json_projectile["projectile_id"].toInt(),
@@ -427,7 +426,6 @@ void Model::LoadDatabase() {
         {json_animation["path"].toString()});
     SetParticlesToGameObject(id_to_projectile_.back().get(),
                              json_projectile["particles"].toObject());
-
   }
 
   // Loading Particles

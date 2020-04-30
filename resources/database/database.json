@@ -138,25 +138,22 @@
     {
       "type": 2,
       "size": {
-        "width": 30,
-        "height": 30
+        "width": 80,
+        "height": 80
       },
       "animation": {
         "path": "projectiles/laser2_4",
         "timing": 300
       },
       "particles": {
-        "at_death": 3
+        "at_death": 3,
+        "at_creation": 5
       }
     }
   ],
   "buildings": [
     {
       "name": "empty tower",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 0,
       "animation_path": [
         "towers/empty_1",
@@ -180,10 +177,6 @@
     },
     {
       "name": "default tower",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 0,
@@ -211,10 +204,6 @@
     },
     {
       "name": "laser",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 2,
@@ -242,10 +231,6 @@
     },
     {
       "name": "bomb",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 1,
@@ -273,10 +258,6 @@
     },
     {
       "name": "support",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "auric_field": {
         "radius": 200,
@@ -302,10 +283,6 @@
     },
     {
       "name": "default tower level 2",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 0,
@@ -333,10 +310,6 @@
     },
     {
       "name": "default tower level 3",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 0,
@@ -363,10 +336,6 @@
     },
     {
       "name": "bomb level 2",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 1,
@@ -394,10 +363,6 @@
     },
     {
       "name": "bomb level 3",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 1,
@@ -424,10 +389,6 @@
     },
     {
       "name": "support level 2",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "auric_field": {
         "radius": 200,
@@ -453,10 +414,6 @@
     },
     {
       "name": "support level 3",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "auric_field": {
         "radius": 200,
@@ -481,10 +438,6 @@
     },
     {
       "name": "laser level 2",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 2,
@@ -512,10 +465,6 @@
     },
     {
       "name": "laser level 3",
-      "size": {
-        "width": 150,
-        "height": 150
-      },
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 2,
@@ -620,7 +569,7 @@
         "height": 30
       },
       "animation": {
-        "timing": 450,
+        "timing": 200,
         "path": "particles/poof5_3"
       }
     },

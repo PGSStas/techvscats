@@ -18,8 +18,8 @@ enum class Action {
 
 class Building : public GameObject {
  public:
-  explicit Building(int id = 0, int settle_cost = 0, Size size = {150, 150},
-                    AuricField aura = AuricField(-1, -1));
+  explicit Building(int id, int settle_cost, const AuricField& aura,
+                    Size size = {150, 150});
   Building(const Building& other);
   ~Building() override = default;
 

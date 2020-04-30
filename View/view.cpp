@@ -67,9 +67,10 @@ void View::DrawMainMenu(QPainter*) {
 
 void View::DrawGame(QPainter* painter) {
   controller_->RescaleObjects(size_handler_);
-  DrawEnemies(painter);
   DrawProjectiles(painter);
   DrawTowers(painter);
+  DrawEnemies(painter);
+
   DrawParticles(painter);
   DrawAdditionalInfo(painter);
 
