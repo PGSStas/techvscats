@@ -14,7 +14,7 @@
 enum class Exit {
   kWin,
   kLose,
-  kMenu,
+  kPlay
 };
 
 enum class Speed {
@@ -55,6 +55,7 @@ class AbstractController {
 
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
+  virtual Exit GetCurrentStatus() const = 0;
 
   virtual const AnimationPlayer& GetBackground(WindowType type) const = 0;
 };

@@ -5,6 +5,7 @@ Controller::Controller() : model_(std::make_unique<Model>()),
                            game_mode_(WindowType::kMainMenu) {}
 
 void Controller::StartGame(int level_id) {
+  game_status_ = Exit::kPlay;
   current_game_time_ = 0;
   game_mode_ = WindowType::kGame;
   last_round_start_time_ = current_game_time_;
@@ -74,7 +75,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
 }
 
 void Controller::GameProcess() {
-  if (CanCreateNextWave()) {
+  if (CanCreateNextWave() && game_status_ == Exit::kPlay) {
     CreateNextWave();
   }
   TickSpawners();
@@ -90,6 +91,17 @@ void Controller::MenuProcess() {}
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
+
+  if (current_round_number == model_->GetRoundsCount() &&
+      model_->GetEnemies()->empty() && model_->GetSpawners()->empty()
+      && game_status_ == Exit::kPlay) {
+    game_status_ = Exit::kWin;
+    model_->AddTextNotification({"Level Complete",
+                                 {constants::kGameWidth / 2,
+                                  constants::kGameHeight / 2}, Qt::red,
+                                 view_->GetRealTime(), {0, 0}, 16000, 1.03});
+  }
+
   if (!model_->GetEnemies()->empty()
       || current_round_number == model_->GetRoundsCount()
       || !model_->GetSpawners()->empty()) {
@@ -155,20 +167,40 @@ void Controller::TickEnemies() {
 void Controller::TickBuildings() {
   const auto& buildings = model_->GetBuildings();
   for (const auto& building : buildings) {
-    building->Tick(current_game_time_);
-    building->UpdateAim(*model_->GetEnemies());
-    if (!building->IsReadyToCreateProjectiles()) {
-      continue;
-    }
-    const auto& aims = building->GetAims();
-    building->SetReadyToCreateProjectileToFalse();
-    for (const auto& aim : aims) {
-      model_->CreateProjectile(aim, *building);
+    switch (game_status_) {
+      case Exit::kPlay: {
+        building->Tick(current_game_time_);
+        building->UpdateAim(*model_->GetEnemies());
+        if (!building->IsReadyToCreateProjectiles()) {
+          continue;
+        }
+        const auto& aims = building->GetAims();
+        building->SetReadyToCreateProjectileToFalse();
+        for (const auto& aim : aims) {
+          model_->CreateProjectile(aim, *building);
+        }
+        break;
+      }
+      case Exit::kLose: {
+        // Explosions will be added after merge with #17.
+        break;
+      }
+      case Exit::kWin: {
+        // Fireworks will be added after merge with #17.
+        break;
+      }
     }
   }
 
   // Base
   model_->GetBase()->Tick(current_game_time_);
+  if (model_->GetBase()->IsDead() && game_status_ == Exit::kPlay) {
+    game_status_ = Exit::kLose;
+    model_->AddTextNotification({"GameOver:(",
+                                 {constants::kGameWidth / 2,
+                                  constants::kGameHeight / 2}, Qt::red,
+                                 view_->GetRealTime(), {0, 0}, 16000, 1.03});
+  }
 }
 
 void Controller::TickProjectiles() {
@@ -217,7 +249,7 @@ void Controller::TickTextNotifications() {
     return text_notification.IsDead();
   });
   for (auto& notification : *text_notifications) {
-    notification.Tick(current_game_time_);
+    notification.Tick(view_->GetRealTime());
   }
 }
 
@@ -324,10 +356,15 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   int reward = enemy.ComputeReward();
   model_->AddTextNotification({QString::number(reward) + " gold",
                                enemy.GetPosition(), Qt::yellow,
-                               current_game_time_});
+                               view_->GetRealTime()});
+
   model_->GetBase()->AddGoldAmount(reward);
 }
 
 const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));
+}
+
+Exit Controller::GetCurrentStatus() const {
+  return game_status_;
 }

@@ -33,6 +33,7 @@ class Controller : public AbstractController {
 
   const Base& GetBase() const override;
   int GetCurrentTime() const override;
+  Exit GetCurrentStatus() const override;
 
   const AnimationPlayer& GetBackground(WindowType type) const override;
 
@@ -40,6 +41,7 @@ class Controller : public AbstractController {
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
 
+  Exit game_status_ = Exit::kPlay;
   WindowType game_mode_;
   bool is_prepairing_to_spawn_ = false;
   int current_game_time_ = 0;

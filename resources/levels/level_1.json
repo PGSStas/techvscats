@@ -3,7 +3,7 @@
   "gold": 100,
   "score": 0,
   "base": {
-    "max_health": 300,
+    "max_health": 50,
     "position": {
       "x": 1700,
       "y": 187

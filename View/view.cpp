@@ -71,6 +71,7 @@ void View::DrawGame(QPainter* painter) {
   DrawProjectiles(painter);
   DrawTowers(painter);
   DrawAdditionalInfo(painter);
+  DrawEndgameMessage(painter);
 
   button_handler_.SetMainMenuUiVisible(false);
   button_handler_.SetPauseMenuUiVisible(false);
@@ -85,6 +86,33 @@ void View::DrawSettings(QPainter*) {
 void View::DrawPauseMenu(QPainter*) {
   button_handler_.SetGameUiVisible(false);
   button_handler_.SetPauseMenuUiVisible(true);
+}
+
+void View::DrawEndgameMessage(QPainter* painter) {
+  if (controller_->GetCurrentStatus() != Exit::kPlay) {
+    painter->save();
+
+    alpha_channel_ += delta_alpha_;
+    if (alpha_channel_ < 0 || alpha_channel_ > 255) {
+      delta_alpha_ *= -1;
+      alpha_channel_ += 2 * delta_alpha_;
+    }
+    QColor color = Qt::white;
+    color.setAlpha(alpha_channel_);
+    painter->setPen(color);
+
+    auto font = painter->font();
+    font.setPixelSize(size_handler_.GameToWindowLength(constants::kFontSize));
+    font.setFamily(QFontDatabase::applicationFontFamilies(0).at(0));
+    painter->setFont(font);
+
+    Coordinate point = size_handler_.GameToWindowCoordinate(
+        {message_position_.x - endgame_message_.size() * constants::kFontSize,
+         message_position_.y});
+    painter->drawText(point.x, point.y, endgame_message_);
+
+    painter->restore();
+  }
 }
 
 void View::DrawTowers(QPainter* painter) {
@@ -102,6 +130,10 @@ const SizeHandler& View::GetSizeHandler() const {
 
 bool View::IsTowerMenuEnabled() const {
   return tower_menu_.IsEnable();
+}
+
+int View::GetRealTime() const {
+  return view_timer_.elapsed();
 }
 
 void View::DrawEnemies(QPainter* painter) {

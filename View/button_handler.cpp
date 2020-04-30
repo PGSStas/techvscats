@@ -169,7 +169,7 @@ void ButtonHandler::CreateSettingsButtons() {
       tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_, font_id_);
   auto back_to_main_menu_click = [this]() {
     if (window_type_ == WindowType::kPauseMenu) {
-      controller_->EndGame(Exit::kMenu);
+      controller_->EndGame(Exit::kWin);
     }
     window_type_ = WindowType::kMainMenu;
     main_window_->repaint();

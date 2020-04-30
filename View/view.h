@@ -20,7 +20,7 @@
 #include "tower_menu.h"
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -38,8 +38,9 @@ class View : public QMainWindow {
 
   void ChangeGameSpeed(Speed speed);
   const SizeHandler& GetSizeHandler() const;
-
   bool IsTowerMenuEnabled() const;
+
+  int GetRealTime() const;
 
  private:
   AbstractController* controller_;
@@ -55,6 +56,11 @@ class View : public QMainWindow {
 
   double game_speed_coefficient_ = 1;
 
+  const QString endgame_message_ = "Restart level or go to the main menu...";
+  Coordinate message_position_ = {constants::kGameWidth, 900};
+  double alpha_channel_ = 0;
+  double delta_alpha_ = 2;
+
  private:
   // Events
   void paintEvent(QPaintEvent*) override;
@@ -68,6 +74,7 @@ class View : public QMainWindow {
   void DrawGame(QPainter* painter);
   void DrawSettings(QPainter* painter);
   void DrawPauseMenu(QPainter* painter);
+  void DrawEndgameMessage(QPainter* painter);
 
   // Game window
   void DrawEnemies(QPainter* painter);

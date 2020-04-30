@@ -3,15 +3,21 @@
 TextNotification::TextNotification(const QString& message,
                                    Coordinate start_position, QColor color,
                                    int creation_time, Size moving_vector,
-                                   int life_time)
+                                   int life_time,
+                                   double size_change_coefficient)
     : GameObject({0, 0}, start_position), message_(message),
       moving_vector_(moving_vector), color_(color),
-      creation_time_(creation_time), life_time_(life_time) {}
+      creation_time_(creation_time), life_time_(life_time),
+      size_change_coefficient_(size_change_coefficient) {}
 
 void TextNotification::Tick(int current_time) {
-  position_ += moving_vector_;
+  UpdateTime(current_time);
+  position_ += moving_vector_ * delta_tick_time_ / constants::kTimeScale;
+  font_size *= size_change_coefficient_;
+  font_size = std::min(font_size, 40000.0);
   moving_vector_ *= kSlowdownCoefficient;
-  if ((current_time - creation_time_ > life_time_)) {
+  life_time_ -= delta_tick_time_;
+  if (life_time_ < 0) {
     is_dead_ = true;
   }
 }
@@ -22,11 +28,14 @@ void TextNotification::Draw(QPainter* painter,
 
   painter->setPen(color_);
   auto font = painter->font();
-  font.setPixelSize(size_handler.GameToWindowLength(kFontSize));
+  font.setPixelSize(size_handler.GameToWindowLength(font_size));
   font.setFamily(QFontDatabase::applicationFontFamilies(kFontId).at(0));
   painter->setFont(font);
 
-  Coordinate point = size_handler.GameToWindowCoordinate(position_ - size_ / 2);
+  Coordinate point = size_handler.GameToWindowCoordinate(
+      {position_.x - font_size * message_.size() * 0.35,
+       position_.y + font_size / 4});
+  if (font_size != 40000)
   painter->drawText(point.x, point.y, message_);
 
   painter->restore();
