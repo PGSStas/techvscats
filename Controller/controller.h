@@ -5,6 +5,7 @@
 #include <list>
 #include <vector>
 #include <memory>
+#include <QObject>
 
 #include "abstract_controller.h"
 #include "View/view.h"
