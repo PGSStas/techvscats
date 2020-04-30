@@ -16,6 +16,7 @@
 
 class InfoField {
  public:
+
   void Draw(QPainter* painter, const SizeHandler& size_handler) const;
 
   void SetInfo(const Building& building);
@@ -25,9 +26,12 @@ class InfoField {
   void Show();
   void Hide();
 
+  bool IsOnBottom() const;
+
  private:
   Coordinate position_;
   bool is_showed_ = false;
+  bool is_on_bottom_ = true;
 
   QString header_;
   QString info_;

@@ -13,13 +13,14 @@
 
 #include <list>
 #include <memory>
+#include <vector>
 
 #include "Controller/abstract_controller.h"
 #include "button_handler.h"
 #include "tower_menu.h"
 
 class View : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);

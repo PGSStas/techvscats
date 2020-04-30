@@ -79,8 +79,10 @@ void InfoField::SetPosition(Coordinate position, Size button_size,
   shift += button_size.height;
   if (position_.y + kSize.height + shift >= constants::kGameHeight) {
     position_.y -= kSize.height + shift;
+    is_on_bottom_ = false;
   } else {
     position_.y += shift;
+    is_on_bottom_ = true;
   }
 }
 
@@ -90,4 +92,8 @@ void InfoField::Show() {
 
 void InfoField::Hide() {
   is_showed_ = false;
+}
+
+bool InfoField::IsOnBottom() const {
+  return is_on_bottom_;
 }

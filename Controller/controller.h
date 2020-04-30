@@ -21,7 +21,7 @@ class Controller : public AbstractController {
   void SetSpeedCoefficient(Speed speed) override;
   void SetBuilding(int index_in_buildings, int replacing_id) override;
 
-  void MouseEvent(Coordinate position,bool is_press) override;
+  void MouseEvent(Coordinate position, bool is_press) override;
   void RescaleObjects(const SizeHandler& size_handler) override;
 
   const Building& GetBuildingById(int instance_id) const override;

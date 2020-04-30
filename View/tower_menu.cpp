@@ -52,12 +52,12 @@ TowerMenu::TowerMenu(QMainWindow* window) {
 void TowerMenu::Recreate(Coordinate position, int carrier_building_index,
                          const std::vector<int>& possible_buildings_id,
                          int carrier_id, const SizeHandler& size_handler) {
-  for (auto& id :possible_buildings_id_) {
+  for (auto& id : possible_buildings_id_) {
     buttons_[id]->EnableSecondIcon(false);
     buttons_[id]->hide();
   }
   possible_buildings_id_ = possible_buildings_id;
-  for (auto& id :possible_buildings_id_) {
+  for (auto& id : possible_buildings_id_) {
     buttons_[id]->SetGeometry(position - kSizeOfButton / 2, size_handler);
     buttons_[id]->show();
   }
@@ -71,11 +71,10 @@ void TowerMenu::Recreate(Coordinate position, int carrier_building_index,
 }
 
 void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
+  info_field_.SetPosition(position_, button_constants::kShortButtonSize,
+                          button_constants::kShift);
   if (active_button_index_ != -1) {
     info_field_.Show();
-    info_field_.SetPosition(position_,
-                            button_constants::kShortButtonSize,
-                            button_constants::kShift);
   }
   if (current_force_ < 1 || possible_buildings_id_.empty()) {
     return;
@@ -85,11 +84,17 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
     delta_time *= -1;
   }
   int buttons_count = possible_buildings_id_.size();
-  double delta_degree = 360 / buttons_count;
-  double move_degree = 90;
+  double delta_degree;
+  if (info_field_.IsOnBottom()) {
+    delta_degree = 180.0 / (buttons_count + 1);
+  } else {
+    delta_degree = -180.0 / (buttons_count + 1);
+  }
+
+  double move_degree = -90 + delta_degree;
   Size move_vector;
   current_force_ *= kSlowCoefficient;
-  for (auto& id :possible_buildings_id_) {
+  for (auto& id : possible_buildings_id_) {
     double radian = move_degree * std::acos(-1) / 180;
     move_degree += delta_degree;
     move_vector = Size(sin(radian), -cos(radian));
@@ -137,7 +142,7 @@ void TowerMenu::Disable(bool is_fast_disable) {
     return;
   }
   slow_disable = false;
-  for (auto& id :possible_buildings_id_) {
+  for (auto& id : possible_buildings_id_) {
     buttons_[id]->EnableSecondIcon(false);
     buttons_[id]->hide();
   }
