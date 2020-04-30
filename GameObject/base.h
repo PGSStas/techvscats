@@ -2,8 +2,11 @@
 #define GAMEOBJECT_BASE_H_
 
 #include <algorithm>
+#include <chrono>
 #include <memory>
+#include <random>
 #include <vector>
+
 #include "game_object.h"
 
 class Base : public GameObject {
@@ -15,8 +18,6 @@ class Base : public GameObject {
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
   void DecreaseHealth(double damage);
 
-  double GetCurrentHealth() const;
-  double GetMaxHealth() const;
   int GetGold() const;
   Coordinate GetGoldPosition() const;
 
@@ -36,6 +37,8 @@ class Base : public GameObject {
   const Coordinate kHealthPosition = Coordinate(1700, 1000);
   const Coordinate kGoldPosition = Coordinate(1800, 1000);
   const double kFontSize = 22;
+
+  static std::mt19937 random_generator_;
 };
 
 #endif  // GAMEOBJECT_BASE_H_

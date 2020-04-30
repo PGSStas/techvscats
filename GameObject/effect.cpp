@@ -1,7 +1,8 @@
 #include "effect.h"
 
 std::vector<EffectVisualization> Effect::effect_visualizations_{};
-const Size Effect::kSize = {30, 30};
+const Size Effect::kSize = {32, 32};
+const double Effect::kNearbyCoefficient = 0.9;
 
 Effect::Effect(EffectTarget effect_type,
                double speed_coefficient,
@@ -33,8 +34,8 @@ void Effect::DrawEffectsIcons(QPainter* painter,
   painter->setBrush(Qt::red);
   Coordinate point =
       size_handler.GameToWindowCoordinate(
-          position - Size(parent_size.width / 2 + 2,
-                          -parent_size.height / 4 - 2));
+          position - Size(parent_size.width / 2,
+                          -parent_size.height / 4));
   Size size = size_handler.GameToWindowSize(kSize);
 
   DrawEffectIcon(painter, &point, size, CoefficientType::kDamage);
@@ -58,7 +59,7 @@ void Effect::SetEffectVisualizations(
 void Effect::Rescale(Size size) {
   for (auto& effect_visualise : effect_visualizations_) {
     effect_visualise.increased.Rescale(size);
-      effect_visualise.reduced.Rescale(size);
+    effect_visualise.reduced.Rescale(size);
   }
 }
 
@@ -97,6 +98,7 @@ Effect& Effect::operator+=(const Effect& other) {
   }
   return *this;
 }
+
 void Effect::DrawEffectIcon(QPainter* painter, Coordinate* point,
                             Size size, CoefficientType coefficient_type) const {
   int index = static_cast<int>(coefficient_type);
@@ -114,6 +116,6 @@ void Effect::DrawEffectIcon(QPainter* painter, Coordinate* point,
     painter->drawImage(QPoint(point->x, point->y),
                        effect_visualization.reduced.GetCurrentFrame());
   }
-  point->x += size.width*0.6;
+  point->x += size.width * kNearbyCoefficient;
   painter->restore();
 }

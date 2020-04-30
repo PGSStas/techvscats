@@ -9,7 +9,7 @@ class MovingObject : public GameObject {
                Coordinate destination = {0, 0});
   ~MovingObject() override = default;
 
-  void MoveToDestination(bool stop_at_the_end = true);
+  void MoveToDestination();
   virtual void Move() = 0;
   virtual bool IsDead() const;
   bool IsEndReached() const;

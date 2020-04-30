@@ -27,8 +27,7 @@ void Particle::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   point = size_handler.GameToWindowCoordinate(position_ - size_ / 2);
 
   painter->translate(point.x, point.y);
-  // look direction set !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  painter->drawImage(QPoint(0, 0),
+  painter->drawImage(0, 0,
                      animation_players_[0].GetCurrentFrame());
 
   painter->restore();
@@ -40,14 +39,11 @@ void Particle::SetParameters(Size size, Coordinate position,
     size_ = size;
   }
   position_ = position;
-  if (repeat_number == -1) {
-    repeat_number_ = repeat_number;
-  }
   if (repeat_number_ == -1) {
     repeat_number_ = repeat_number;
   }
   time_to_death_ = animation_players_[0].GetAnimationDuration()
-      * repeat_number_ * 0.97;
+      * repeat_number_ *0.97;
 }
 
 bool Particle::IsDead() const {

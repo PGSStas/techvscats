@@ -13,7 +13,7 @@ bool MovingObject::IsDead() const {
   return is_dead_;
 }
 
-void MovingObject::MoveToDestination(bool stop_at_the_end) {
+void MovingObject::MoveToDestination() {
   Size move_direction = position_.GetVectorTo(destination_);
 
   if (move_direction.GetLength() > constants::kEpsilon) {
@@ -21,8 +21,7 @@ void MovingObject::MoveToDestination(bool stop_at_the_end) {
     move_direction *= delta_time_ * speed_ / constants::kTimeScale;
   }
   if ((position_ + move_direction).GetVectorTo(destination_).width
-      * position_.GetVectorTo(destination_).width <= 0 &&
-      stop_at_the_end) {
+      * position_.GetVectorTo(destination_).width <= 0) {
     position_ = destination_;
   } else {
     position_ += move_direction;

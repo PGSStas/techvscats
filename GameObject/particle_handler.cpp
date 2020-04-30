@@ -1,6 +1,9 @@
 #include <QtCore/QtGlobal>
 #include "particle_handler.h"
 
+std::mt19937 ParticleHandler::random_generator_ = std::mt19937(
+    std::chrono::system_clock::now().time_since_epoch().count());
+
 ParticleHandler::ParticleHandler(const Size& carrier_size,
                                  const Coordinate& carrier_coordinates,
                                  const int& carrier_delta_time) :
@@ -9,7 +12,7 @@ ParticleHandler::ParticleHandler(const Size& carrier_size,
 
 void ParticleHandler::Tick() {
   if (at_creation_id_ != -1) {
-    CreateParticleFromMe(at_creation_id_);
+    CreateParticleFromId(at_creation_id_);
     at_creation_id_ = -1;
   }
 
@@ -21,9 +24,9 @@ void ParticleHandler::Tick() {
     wait_time_ += period_;
     Coordinate rand_coordinate = carrier_coordinates_;
     rand_coordinate +=
-        Size(qrand() % (static_cast<int>(carrier_size_.height))
+        Size(random_generator_() % (static_cast<int>(carrier_size_.height))
                  - carrier_size_.height / 2,
-             qrand() % (static_cast<int>(carrier_size_.width))
+             random_generator_() % (static_cast<int>(carrier_size_.width))
                  - carrier_size_.width / 2);
 
     wait_particles_.emplace_back(while_alive_id_, carrier_size_,
@@ -50,7 +53,7 @@ void ParticleHandler::SetParticlePacks(const ParticleHandler& other) {
 
 void ParticleHandler::CarrierDeath() {
   if (at_death_id_ != -1) {
-    CreateParticleFromMe(at_death_id_);
+    CreateParticleFromId(at_death_id_);
     at_death_id_ = -1;
   }
 }
@@ -71,7 +74,7 @@ void ParticleHandler::AddParticle(ParticleParameters particle) {
   wait_particles_.push_back(particle);
 }
 
-void ParticleHandler::CreateParticleFromMe(int id) {
+void ParticleHandler::CreateParticleFromId(int id) {
   wait_particles_.emplace_back(id, carrier_size_, carrier_coordinates_);
 }
 

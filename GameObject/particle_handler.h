@@ -1,7 +1,9 @@
 #ifndef GAMEOBJECT_PARTICLE_HANDLER_H_
 #define GAMEOBJECT_PARTICLE_HANDLER_H_
 
+#include <chrono>
 #include <memory>
+#include <random>
 #include <list>
 
 #include "Model/coordinate.h"
@@ -19,7 +21,8 @@ struct ParticleParameters {
   int animation_times;
   double speed;
 };
-
+// Particulars are created when an object is created, when it dies, and
+// during its lifetime. The particulars themselves are drawn objects.
 class ParticleHandler {
  public:
   ParticleHandler(const Size& carrier_size,
@@ -39,11 +42,10 @@ class ParticleHandler {
   bool IsReadyToCreateParticle() const;
 
  private:
-  void CreateParticleFromMe(int id);
+  void CreateParticleFromId(int id);
   const Coordinate& carrier_coordinates_;
   const Size& carrier_size_;
   const int& carrier_delta_time_;
-  Size look_direction_ = {0, 1};
 
   std::list<ParticleParameters> wait_particles_;
 
@@ -54,6 +56,8 @@ class ParticleHandler {
   int period_ = -1;
 
   int wait_time_ = 0;
+
+  static std::mt19937 random_generator_;
 };
 
 #endif  // GAMEOBJECT_PARTICLE_HANDLER_H_

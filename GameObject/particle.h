@@ -15,6 +15,7 @@ class Particle : public GameObject {
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
   void SetParameters(Size size, Coordinate position, int repeat_number);
   bool IsDead() const;
+
  private:
   bool is_dead_ = false;
   int time_to_death_ = 0;

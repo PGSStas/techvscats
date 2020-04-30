@@ -8,7 +8,6 @@ Model::Model() {
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
   InitializeTowerSlots();
-
 }
 
 void Model::AddSpawner(const EnemyGroup& enemy_group) {
@@ -81,7 +80,6 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   for (auto& particle : particles_) {
     particle.Rescale(size_handler.GameToWindowSize(particle.GetSize()));
   }
-
   for (auto& enemy : id_to_enemy_) {
     enemy.Rescale(size_handler.GameToWindowSize(enemy.GetSize()));
   }
@@ -97,7 +95,7 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   if (base_ != nullptr) {
     base_->Rescale(size_handler.GameToWindowSize(base_->GetSize()));
   }
-  for (auto& animaion : backgrounds) {
+  for (auto& animaion : backgrounds_) {
     animaion.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
   }
   Effect::Rescale(size_handler.GameToWindowSize(Effect::GetSize()));
@@ -122,7 +120,7 @@ void Model::ClearGameModel() {
 }
 
 Base* Model::GetBase() {
-  return &*base_;
+  return base_.get();
 }
 
 std::list<Spawner>* Model::GetSpawners() {
@@ -209,11 +207,10 @@ void Model::LoadLevel(int level) {
                                             json_base_position["y"].toDouble()),
                                  json_base["max_health"].toDouble());
   auto json_animation = json_base["animation"].toObject();
-  SetAnimationToGameObject(
-      &*base_,
-      {json_animation["timing"].toInt()},
-      {json_animation["path"].toString()});
-  SetParticlesToGameObject(&*base_,json_base);
+  SetAnimationToGameObject(base_.get(),
+                           {json_animation["timing"].toInt()},
+                           {json_animation["path"].toString()});
+  SetParticlesToGameObject(base_.get(), json_base);
   base_->GetParticleHandler()->SetAliveParticlePack(2, 0);
   // Reading information about the roads.
   roads_.clear();
@@ -276,13 +273,13 @@ void Model::LoadLevel(int level) {
   }
 
   // Map
-  backgrounds[3] = AnimationPlayer(
+  backgrounds_[3] = AnimationPlayer(
       GetImagesByFramePath("backgrounds/map_level_" +
           QString::number(level) + "_1"));
 }
 
 const AnimationPlayer& Model::GetBackGround(int back_ground_id) const {
-  return backgrounds[back_ground_id];
+  return backgrounds_[back_ground_id];
 }
 
 void Model::LoadDatabase() {
@@ -325,17 +322,12 @@ void Model::LoadDatabase() {
     }
     Size size = Size(enemy["size"].toObject()["width"].toInt(),
                      enemy["size"].toObject()["height"].toInt());
-    id_to_enemy_.emplace_back(enemy["speed"].toInt(),
-                              enemy["damage"].toInt(),
-                              enemy["armor"].toInt(),
-                              enemy["reward"].toInt(),
-                              enemy["max_health"].toInt(),
-                              size,
-                              aura);
-    SetAnimationToGameObject(
-        &id_to_enemy_.back(),
-        {enemy["animation"].toObject()["timing"].toInt()},
-        {enemy["animation"].toObject()["path"].toString()});
+    id_to_enemy_.emplace_back(enemy["speed"].toInt(), enemy["damage"].toInt(),
+                              enemy["armor"].toInt(), enemy["reward"].toInt(),
+                              enemy["max_health"].toInt(), size, aura);
+    SetAnimationToGameObject(&id_to_enemy_.back(),
+                             {enemy["animation"].toObject()["timing"].toInt()},
+                             {enemy["animation"].toObject()["path"].toString()});
     SetParticlesToGameObject(&id_to_enemy_.back(),
                              enemy["particles"].toObject());
   }
@@ -415,7 +407,7 @@ void Model::LoadDatabase() {
         double speed = json_projectile["speed"].toDouble();
         double effect_radius = json_projectile["effect_radius"].toDouble();
         double up_force = json_projectile["up_force"].toDouble();
-        BombProjectile projectile(size, speed , effect_radius,up_force);
+        BombProjectile projectile(size, speed, effect_radius, up_force);
         id_to_projectile_.push_back(
             std::make_shared<BombProjectile>(projectile));
         break;
@@ -430,10 +422,10 @@ void Model::LoadDatabase() {
     }
     auto json_animation = json_projectile["animation"].toObject();
     SetAnimationToGameObject(
-        &*id_to_projectile_.back(),
+        id_to_projectile_.back().get(),
         {json_animation["timing"].toInt()},
         {json_animation["path"].toString()});
-    SetParticlesToGameObject(&*id_to_projectile_.back(),
+    SetParticlesToGameObject(id_to_projectile_.back().get(),
                              json_projectile["particles"].toObject());
 
   }
@@ -465,13 +457,13 @@ void Model::LoadDatabase() {
   }
 
   // backgrounds
-  backgrounds.emplace_back(
+  backgrounds_.emplace_back(
       GetImagesByFramePath("backgrounds/main_background_1"));
-  backgrounds.emplace_back(
+  backgrounds_.emplace_back(
       GetImagesByFramePath("backgrounds/settings_background_1"));
-  backgrounds.emplace_back(
+  backgrounds_.emplace_back(
       GetImagesByFramePath("backgrounds/pause_menu_background_1"));
-  backgrounds.emplace_back(GetImagesByFramePath("error"));
+  backgrounds_.emplace_back(GetImagesByFramePath("error"));
 
   // Effects
   std::vector<EffectVisualization>
@@ -534,20 +526,21 @@ std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
 void Model::SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object) {
   int at_creation = -1;
   int at_death = -1;
-  if(object.contains("at_death")){
+  if (object.contains("at_death")) {
     at_death = object["at_death"].toInt();
   }
-  if(object.contains("at_creation")){
+  if (object.contains("at_creation")) {
     at_creation = object["at_creation"].toInt();
   }
-  p_enemy->GetParticleHandler()->SetAtCreationParticlePack(at_death,at_creation);
+  p_enemy->GetParticleHandler()->SetAtCreationParticlePack(at_death,
+                                                           at_creation);
   int while_alive = -1;
   int period = 0;
 
-  if(object.contains("while_alive")){
+  if (object.contains("while_alive")) {
     while_alive = object["while_alive"].toInt();
     period = object["period"].toInt();
-    p_enemy->GetParticleHandler()->SetAliveParticlePack(while_alive,period);
+    p_enemy->GetParticleHandler()->SetAliveParticlePack(while_alive, period);
   }
 }
 

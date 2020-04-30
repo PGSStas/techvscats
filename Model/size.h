@@ -12,6 +12,7 @@ struct Size {
   Size(double x, double y) noexcept;
 
   double GetLength() const;
+  Size& Normalize();
 
   Size operator*(double right) const;
   Size operator/(double right) const;

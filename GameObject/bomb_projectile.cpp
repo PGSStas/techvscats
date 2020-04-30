@@ -27,9 +27,8 @@ void BombProjectile::Draw(QPainter* painter, const SizeHandler& handler) const {
   bomb_position.y += additional_draw_height_;
   Coordinate point = handler.GameToWindowCoordinate(
       bomb_position - size_ / 2);
+  painter->drawImage(point.x, point.y, animation_players_[0].GetCurrentFrame());
 
-  painter->translate(point.x, point.y);
-  painter->drawImage(QPoint(0, 0), animation_players_[0].GetCurrentFrame());
   painter->restore();
 }
 
@@ -42,5 +41,5 @@ void BombProjectile::SetParameters(const std::shared_ptr<Enemy>& aim,
 }
 
 bool BombProjectile::IsInAffectedArea(const Enemy& enemy) {
-  return position_.IsInEllipse(enemy.GetPosition(), effect_radius_ );
+  return position_.IsInEllipse(enemy.GetPosition(), effect_radius_);
 }

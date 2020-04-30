@@ -107,7 +107,7 @@ class Model {
   std::vector<Particle> id_to_particle_;
 
   // Images
-  std::vector<AnimationPlayer> backgrounds;
+  std::vector<AnimationPlayer> backgrounds_;
 };
 
 #endif  // MODEL_MODEL_H_

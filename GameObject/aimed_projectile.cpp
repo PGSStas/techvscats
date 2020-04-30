@@ -16,8 +16,7 @@ void AimedProjectile::Draw(QPainter* painter,
   Coordinate point = handler.GameToWindowCoordinate(
       position_ - size_ / 2);
 
-  painter->translate(point.x, point.y);
-  painter->drawImage(QPoint(0, 0), animation_players_[0].GetCurrentFrame());
+  painter->drawImage(point.x, point.y, animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }

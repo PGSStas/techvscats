@@ -18,7 +18,7 @@ void TowerMenu::Draw(QPainter* painter,
   painter->save();
   Coordinate center = size_handler.GameToWindowCoordinate(
       tower_.GetPosition());
-  center.y+=tower_.GetSize().height/3;
+  center.y += size_handler.GameToWindowLength(tower_.GetSize().height / 3);
   Size radius;
   if (hovered_option_ == nullptr) {
     radius = size_handler.GameToWindowSize(

@@ -28,7 +28,7 @@ void AnimationPlayer::Reset() {
   current_frame_ = 0;
   wait_till_next_frame_ = time_between_frames_;
 }
-#include "qdebug.h"
+
 void AnimationPlayer::Rescale(Size to_size) {
   if (frames_ == nullptr || frames_->empty()) {
     return;

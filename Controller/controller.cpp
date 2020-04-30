@@ -56,7 +56,7 @@ void Controller::GameProcess() {
   TickBuildings();
   TickProjectiles();
   TickAuras();
-  TickParticlesHandlers();
+  TickParticleHandlers();
   TickParticles();
   TickTextNotifications();
 }
@@ -197,28 +197,28 @@ void Controller::TickTextNotifications() {
   }
 }
 
-void Controller::TickParticlesHandlers() {
+void Controller::TickParticleHandlers() {
   auto enemies = model_->GetEnemies();
   for (auto& enemy : *enemies) {
-    TickParticlesHandler(enemy->GetParticleHandler());
+    TickParticleHandler(enemy->GetParticleHandler());
   }
   auto buildings = model_->GetBuildings();
   for (auto& building : buildings) {
-    TickParticlesHandler(building->GetParticleHandler());
+    TickParticleHandler(building->GetParticleHandler());
   }
   auto projectiles = model_->GetProjectiles();
   for (auto& projectile : *projectiles) {
-    TickParticlesHandler(projectile->GetParticleHandler());
+    TickParticleHandler(projectile->GetParticleHandler());
   }
   auto particles = model_->GetParticles();
   for (auto& particle : *particles) {
-    TickParticlesHandler(particle.GetParticleHandler());
+    TickParticleHandler(particle.GetParticleHandler());
   }
   auto base = model_->GetBase();
-  TickParticlesHandler(base->GetParticleHandler());
+  TickParticleHandler(base->GetParticleHandler());
 }
 
-void Controller::TickParticlesHandler(ParticleHandler* particle_handler) {
+void Controller::TickParticleHandler(ParticleHandler* particle_handler) {
   particle_handler->Tick();
   if (particle_handler->IsReadyToCreateParticle()) {
     model_->CreateParticles(particle_handler->GetWaitParticles());
@@ -397,7 +397,7 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
                                enemy.GetPosition(), Qt::yellow,
                                current_game_time_});
   model_->GetBase()->AddGoldAmount(reward);
- }
+}
 
 const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));

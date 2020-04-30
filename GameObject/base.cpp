@@ -1,5 +1,8 @@
 #include "base.h"
 
+std::mt19937 Base::random_generator_ = std::mt19937(
+    std::chrono::system_clock::now().time_since_epoch().count());
+
 Base::Base(int gold, Size size, Coordinate position, double max_health)
     : GameObject(size, position), gold_(gold), max_health_(max_health),
       current_health_(max_health) {}
@@ -7,11 +10,10 @@ Base::Base(int gold, Size size, Coordinate position, double max_health)
 void Base::Tick(int current_time) {
   UpdateTime(current_time);
   current_health_ = std::min(max_health_, current_health_ + regeneration_rate_);
-  double heal_percent = current_health_ / max_health_;
-
   int period = 0;
-  if (heal_percent < 0.8) {
-    period = 4000 * heal_percent;
+  double health_percent = current_health_ / max_health_;
+  if (health_percent < 0.8) {
+    period = 4000 * health_percent;
   }
   particle_handler_.SetPeriod(period);
 }
@@ -35,8 +37,7 @@ void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
 
   Coordinate point = size_handler.GameToWindowCoordinate(
       position_ - size_ / 2);
-  painter->drawImage(QPoint(point.x, point.y),
-                     animation_players_[0].GetCurrentFrame());
+  painter->drawImage(point.x, point.y, animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }
@@ -46,22 +47,16 @@ void Base::DecreaseHealth(double damage) {
 
   Coordinate rand_position = position_;
   rand_position +=
-      Size(qrand() % static_cast<int>(size_.width) - size_.width / 2,
-           qrand() % static_cast<int>(size_.height) - size_.height / 2);
+      Size(random_generator_() % static_cast<int>(size_.width)
+               - size_.width / 2,
+           random_generator_() % static_cast<int>(size_.height)
+               - size_.height / 2);
   particle_handler_.AddParticle(
       ParticleParameters(0, size_ / 3, rand_position));
 
   if (current_health_ <= constants::kEpsilon) {
     is_dead_ = true;
   }
-}
-
-double Base::GetCurrentHealth() const {
-  return current_health_;
-}
-
-double Base::GetMaxHealth() const {
-  return max_health_;
 }
 
 int Base::GetGold() const {

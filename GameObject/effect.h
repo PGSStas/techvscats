@@ -62,6 +62,7 @@ class Effect {
   std::vector<double> coefficients_;
   static std::vector<EffectVisualization> effect_visualizations_;
   static const Size kSize;
+  static const double kNearbyCoefficient;
 
  private:
   void DrawEffectIcon(QPainter* painter, Coordinate* point, Size size,
