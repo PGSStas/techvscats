@@ -30,7 +30,7 @@ class InfoField {
 
  private:
   Coordinate position_;
-  bool is_showed_ = false;
+  bool is_shown_ = false;
   bool is_on_bottom_ = true;
 
   QString header_;
@@ -43,7 +43,7 @@ class InfoField {
   const double kMargin = 10;
   const Size kSize = {500, 300};
   const Size kRelativeHeaderSize = {1, 0.2};
-  const Size kRelativeTextSize = {1, 0.6};
+  const Size kRelativeTextSize = {1, 0.5};
   const Size kRelativeStatisticsSize = {1.0, 0.1};
 };
 
