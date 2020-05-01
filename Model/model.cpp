@@ -282,6 +282,10 @@ const AnimationPlayer& Model::GetBackGround(int back_ground_id) const {
   return back_grounds_[back_ground_id];
 }
 
+const QImage& Model::GetEmptyZoneTexture(int index) const {
+  return empty_zone_texture_[index];
+}
+
 void Model::LoadDatabase() {
   QFile level_file(":resources/database/database.json");
   if (!level_file.open(QFile::ReadOnly)) {
@@ -397,6 +401,16 @@ void Model::LoadDatabase() {
   // Load fonts
   QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
   QFontDatabase::addApplicationFont(":resources/fonts/comics.ttf");
+
+  // Empty zone
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
 }
 
 void Model::InitializeTowerSlots() {

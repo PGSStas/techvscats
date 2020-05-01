@@ -64,6 +64,8 @@ class Model {
 
   const AnimationPlayer& GetBackGround(int back_ground_id) const;
 
+  const QImage& GetEmptyZoneTexture(int index) const;
+
  private:
   void LoadLevel(int level);
   void LoadDatabase();
@@ -102,6 +104,7 @@ class Model {
 
   // Images
   std::vector<AnimationPlayer> back_grounds_;
+  std::vector<QImage> empty_zone_texture_;
 };
 
 #endif  // MODEL_MODEL_H_

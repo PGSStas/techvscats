@@ -56,6 +56,7 @@ class AbstractController {
   virtual int GetCurrentTime() const = 0;
 
   virtual const AnimationPlayer& GetBackground(WindowType type) const = 0;
+  virtual const QImage& GetEmptyZoneTexture() const = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

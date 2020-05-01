@@ -355,3 +355,7 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
 const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));
 }
+
+const QImage& Controller::GetEmptyZoneTexture() const {
+  return model_->GetEmptyZoneTexture(static_cast<int>(game_mode_));
+}

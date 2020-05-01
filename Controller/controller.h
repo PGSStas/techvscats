@@ -35,6 +35,7 @@ class Controller : public AbstractController {
   int GetCurrentTime() const override;
 
   const AnimationPlayer& GetBackground(WindowType type) const override;
+  const QImage& GetEmptyZoneTexture() const override;
 
  private:
   std::unique_ptr<Model> model_;
