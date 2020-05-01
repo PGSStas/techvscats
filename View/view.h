@@ -54,8 +54,8 @@ class View : public QMainWindow {
   bool is_tower_menu_enabled_ = false;
   double game_speed_coefficient_ = 1;
 
-  const Coordinate kRoundPosition = {690, 0};
-  const Size kRoundSize = {540, 75};
+  const Coordinate kRoundPosition = {1758, 1001};
+  const Size kRoundSize = {120, 60};
 
  private:
   // Events

@@ -1,10 +1,10 @@
 #include "base.h"
 
 const Size Base::kBaseSize = Size(50, 50);
-const Coordinate Base::kHealthPosition = Coordinate(1465, 945);
-const Size Base::kHealthSize = Size(160, 120);
-const Coordinate Base::kGoldPosition = Coordinate(1680, 960);
-const Size Base::kGoldSize = Size(220, 80);
+const Coordinate Base::kHealthPosition = Coordinate(1748, 811);
+const Size Base::kHealthSize = Size(167, 167);
+const Coordinate Base::kGoldPosition = Coordinate(1581, 1002);
+const Size Base::kGoldSize = Size(164, 57);
 
 Base::Base(int gold, double max_health, Coordinate position)
     : GameObject(Size(0, 0), position), gold_(gold),
@@ -35,18 +35,21 @@ void Base::DrawUI(QPainter* painter, const SizeHandler& size_handler) const {
   font.setFamily(QFontDatabase::applicationFontFamilies(0).at(0));
   painter->setFont(font);
 
-  Coordinate health_top_corner = size_handler.GameToWindowCoordinate(
-      {kHealthPosition.x, kHealthPosition.y
-          + kHealthSize.height * (1 - current_health_ / max_health_)});
   Coordinate health_background = size_handler.GameToWindowCoordinate(
       kHealthPosition);
   Size health_size = size_handler.GameToWindowSize(kHealthSize);
-  painter->setBrush(Qt::black);
-  painter->drawRect(health_background.x, health_background.y,
-                    health_size.width, health_size.height);
   painter->setBrush(Qt::red);
-  painter->drawRect(health_top_corner.x, health_top_corner.y,
-                    health_size.width, health_size.height);
+  painter->drawEllipse(health_background.x, health_background.y,
+                       health_size.width, health_size.height);
+
+  painter->setBrush(Qt::black);
+  double eng = 0 + (1 - current_health_ / max_health_) * 180;
+  painter->drawChord(health_background.x,
+                     health_background.y,
+                     health_size.width,
+                     health_size.height,
+                     -eng * 16 + 90 * 16,
+                     2 * eng * 16);
 
   painter->setBrush(QBrush(qRgb(103, 103, 103)));
   Coordinate gold_top_corner = size_handler.GameToWindowCoordinate(

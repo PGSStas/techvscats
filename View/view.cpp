@@ -233,8 +233,8 @@ void View::DrawRoundInfo(QPainter* painter) {
   Coordinate round_info_position = size_handler_.GameToWindowCoordinate(
       kRoundPosition);
   Size round_info_size = size_handler_.GameToWindowSize(kRoundSize);
-  QString round_info = tr("Раунд") + " " +
-      QString::number(controller_->GetCurrentRoundNumber()) + " " + tr("из") +
+  QString round_info = tr(" ") +
+      QString::number(controller_->GetCurrentRoundNumber()) + " " + tr("/") +
       " " + QString::number(controller_->GetRoundsCount());
   painter->drawText(round_info_position.x, round_info_position.y,
                     round_info_size.width, round_info_size.height,
