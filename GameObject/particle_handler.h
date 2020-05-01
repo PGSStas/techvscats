@@ -21,7 +21,8 @@ struct ParticleParameters {
   int animation_times;
   double speed;
 };
-// Particulars are created when an object is created, when it dies, and
+
+// Particles are created when an object is created, when it dies, and
 // during its lifetime. The particulars themselves are drawn objects.
 class ParticleHandler {
  public:
@@ -35,10 +36,10 @@ class ParticleHandler {
   void SetAliveParticlePack(int while_alive_id, int period);
   void SetParticlePacks(const ParticleHandler& other);
   void SetPeriod(int period);
-  void CarrierDeath();
+  void PlayOwnerDeath();
   void Clear();
 
-  const std::list<ParticleParameters>& GetWaitParticles() const;
+  const std::list<ParticleParameters>& GetWaitingParticles() const;
   bool IsReadyToCreateParticle() const;
 
  private:
@@ -47,7 +48,7 @@ class ParticleHandler {
   const Size& carrier_size_;
   const int& carrier_delta_time_;
 
-  std::list<ParticleParameters> wait_particles_;
+  std::list<ParticleParameters> particle_queue;
 
   int at_death_id_ = -1;
   int at_creation_id_ = -1;
@@ -57,6 +58,7 @@ class ParticleHandler {
 
   int wait_time_ = 0;
 
+  bool is_at_creation_not_used_ = false;
   static std::mt19937 random_generator_;
 };
 

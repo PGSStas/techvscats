@@ -26,8 +26,8 @@ void Model::CreateBuildingAtIndex(int i, int id) {
   Coordinate position = buildings_[i]->GetPosition();
   // Create new building by id
   int sell_cost = buildings_[i]->GetTotalCost() + id_to_building_[id].GetCost();
-  buildings_[i]->GetParticleHandler()->CarrierDeath();
-  CreateParticles(buildings_[i]->GetParticleHandler()->GetWaitParticles());
+  buildings_[i]->GetParticleHandler()->PlayOwnerDeath();
+  CreateParticles(buildings_[i]->GetParticleHandler()->GetWaitingParticles());
   buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
   if (id != 0) {
     buildings_[i]->SetTotalCost(sell_cost);
@@ -464,8 +464,7 @@ void Model::LoadDatabase() {
   backgrounds_.emplace_back(GetImagesByFramePath("error"));
 
   // Effects
-  std::vector<EffectVisualization>
-      effect_visualization =
+  std::vector<EffectVisualization> effect_visualization =
       {{GetImagesByFramePath("icons/slow_1"),
         GetImagesByFramePath("icons/fast_1")},
        {GetImagesByFramePath("icons/less_armor_1"),
@@ -526,6 +525,8 @@ void Model::SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object) {
   int at_death = -1;
   if (object.contains("at_death")) {
     at_death = object["at_death"].toInt();
+  }else{
+    at_death = -1;
   }
   if (object.contains("at_creation")) {
     at_creation = object["at_creation"].toInt();
@@ -541,5 +542,3 @@ void Model::SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object) {
     p_enemy->GetParticleHandler()->SetAliveParticlePack(while_alive, period);
   }
 }
-
-

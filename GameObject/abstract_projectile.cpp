@@ -12,7 +12,7 @@ AbstractProjectile::AbstractProjectile(const AbstractProjectile& other) :
 void AbstractProjectile::Move() {
   MoveToDestination();
   if (position_ == destination_) {
-    particle_handler_.CarrierDeath();
+    particle_handler_.PlayOwnerDeath();
     is_end_reached_ = true;
     is_dead_ = true;
   }

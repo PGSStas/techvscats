@@ -3,8 +3,8 @@
 
 #include "building.h"
 
-Building::Building(int id, int settle_cost, const AuricField& aura, Size size) :
-    GameObject(size), auric_field_(aura), id_(id), cost_(settle_cost) {
+Building::Building(int id, int settle_cost, const AuricField& aura, Size size)
+    : GameObject(size), auric_field_(aura), id_(id), cost_(settle_cost) {
   auric_field_.SetCarrierCoordinate(&position_);
 }
 

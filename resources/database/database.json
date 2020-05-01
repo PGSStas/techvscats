@@ -146,8 +146,7 @@
         "timing": 300
       },
       "particles": {
-        "at_death": 3,
-        "at_creation": 5
+        "at_death": 3
       }
     }
   ],
@@ -579,7 +578,7 @@
         "height": 150
       },
       "animation": {
-        "timing": 700,
+        "timing": 630,
         "path": "particles/smoke6_9"
       }
     }

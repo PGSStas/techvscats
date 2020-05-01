@@ -106,7 +106,7 @@ Coordinate Enemy::GetPrefirePosition() const {
   Coordinate prefire_position = position_;
   prefire_position +=
       move_vector * speed_ * applied_effect_.GetMoveSpeedCoefficient()
-          * constants::kTimeScale/delta_time_;
+          * constants::kTimeScale / delta_time_;
   return prefire_position;
 }
 
@@ -120,7 +120,7 @@ void Enemy::ReceiveDamage(double damage) {
   double multiplier = 1 - ((0.052 * armor) / (0.9 + 0.048 * std::abs(armor)));
   current_health_ -= std::min(multiplier * damage, current_health_);
   if (current_health_ <= constants::kEpsilon) {
-    particle_handler_.CarrierDeath();
+    particle_handler_.PlayOwnerDeath();
     is_dead_ = true;
   }
 }

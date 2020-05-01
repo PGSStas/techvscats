@@ -2,12 +2,12 @@
 
 #include <utility>
 
-Particle::Particle(Size size, int repeat_number) :
-    GameObject(size), repeat_number_(repeat_number) {
+Particle::Particle(Size size, int repeat_number)
+    : GameObject(size), repeat_number_(repeat_number) {
 }
 
-Particle::Particle(const Particle& other) :
-    Particle(other.size_, other.repeat_number_) {
+Particle::Particle(const Particle& other)
+    : Particle(other.size_, other.repeat_number_) {
   SetAnimationPlayers(other.animation_players_);
 }
 
@@ -27,14 +27,13 @@ void Particle::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   point = size_handler.GameToWindowCoordinate(position_ - size_ / 2);
 
   painter->translate(point.x, point.y);
-  painter->drawImage(0, 0,
-                     animation_players_[0].GetCurrentFrame());
+  painter->drawImage(0, 0, animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }
 
 void Particle::SetParameters(Size size, Coordinate position,
-    int repeat_number) {
+                             int repeat_number) {
   if (size_ == Size(-1, -1)) {
     size_ = size;
   }
@@ -43,7 +42,7 @@ void Particle::SetParameters(Size size, Coordinate position,
     repeat_number_ = repeat_number;
   }
   time_to_death_ = animation_players_[0].GetAnimationDuration()
-      * repeat_number_ *0.97;
+      * repeat_number_ * 0.97;
 }
 
 bool Particle::IsDead() const {
