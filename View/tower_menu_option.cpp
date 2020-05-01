@@ -20,7 +20,7 @@ void TowerMenuOption::Draw(QPainter* painter, Coordinate position,
                     QString::number(replacing_tower_.GetId()));
   painter->setPen(Qt::yellow);
   painter->drawText(position.x, position.y + current_size.height + 15,
-      QString::number(replacing_tower_.GetCost()) + " gold");
+      QString::number(replacing_tower_.GetCost()) + " " + constants::kCurrency);
 
   painter->restore();
 }

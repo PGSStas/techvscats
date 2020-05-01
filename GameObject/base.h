@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include <QFontDatabase>
 #include "game_object.h"
 
 class Base : public GameObject {
@@ -14,12 +15,14 @@ class Base : public GameObject {
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
+  void DrawUI(QPainter* painter, const SizeHandler& size_handler) const;
   void DecreaseHealth(double damage);
 
   double GetCurrentHealth() const;
   double GetMaxHealth() const;
   int GetGold() const;
   Coordinate GetGoldPosition() const;
+  Size GetGoldSize() const;
 
   void AddGoldAmount(int gold_amount);
   void SubtractGoldAmount(int gold_amount);
@@ -36,8 +39,9 @@ class Base : public GameObject {
 
   static const Size kBaseSize;
   static const Coordinate kHealthPosition;
+  static const Size kHealthSize;
   static const Coordinate kGoldPosition;
-  static const double kFontSize;
+  static const Size kGoldSize;
 };
 
 #endif  // GAMEOBJECT_BASE_H_

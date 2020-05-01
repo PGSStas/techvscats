@@ -29,6 +29,7 @@ MenuButton::MenuButton(const Size& button_size,
   setIcon(main_icon_1_);
   setCursor(Qt::PointingHandCursor);
   setMouseTracking(true);
+  setStyleSheet("background: transparent;");
 }
 
 void MenuButton::SetGeometry(
@@ -44,27 +45,33 @@ void MenuButton::SetGeometry(
       button_constants::kMenuFontSize));
   setFont(font);
 
-  border_size_ =
-      size_handler.GameToWindowLength(button_constants::kMenuBorderSize);
-  QString style_sheet =
-      "border: " + QString::number(border_size_) + "px solid #000000;";
-  setStyleSheet(style_sheet);
+  if (text() != "") {
+    border_size_ =
+        size_handler.GameToWindowLength(button_constants::kMenuBorderSize);
+    QString style_sheet =
+        "border: " + QString::number(border_size_) + "px solid #000000;";
+    setStyleSheet(style_sheet);
+  }
 }
 
 void MenuButton::enterEvent(QEvent*) {
-  QString style_sheet =
-      "border: " + QString::number(border_size_) + "px solid #000000;";
-  style_sheet += "background-color: " +
-      QColor::fromRgb(static_cast<int32_t>(random_generator_())).name() + ";";
-  setStyleSheet(style_sheet);
+  if (text() != "") {
+    QString style_sheet =
+        "border: " + QString::number(border_size_) + "px solid #000000;";
+    style_sheet += "background-color: " +
+        QColor::fromRgb(static_cast<int32_t>(random_generator_())).name() + ";";
+    setStyleSheet(style_sheet);
+  }
   setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
 }
 
 void MenuButton::leaveEvent(QEvent*) {
-  QString style_sheet =
-      "border: " + QString::number(border_size_) + "px solid #000000;";
-  style_sheet += "background-color: #ffffff;";
-  setStyleSheet(style_sheet);
+  if (text() != "") {
+    QString style_sheet =
+        "border: " + QString::number(border_size_) + "px solid #000000;";
+    style_sheet += "background-color: #ffffff;";
+    setStyleSheet(style_sheet);
+  }
   setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);
 }
 
