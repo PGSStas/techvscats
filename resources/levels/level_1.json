@@ -3,6 +3,7 @@
   "gold": 100,
   "score": 0,
   "base": {
+    "max_health": 100,
     "size": {
       "width": 140,
       "height": 140

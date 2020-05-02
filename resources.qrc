@@ -136,6 +136,8 @@
     <file>resources/images/backgrounds/settings_background_1.png</file>
     <file>resources/images/backgrounds/pause_menu_background_1.png</file>
 
+    <file>resources/images/interface/interface_1.png</file>
+
     <file>resources/images/towers/default_tower_reload_1.png</file>
     <file>resources/images/towers/default_tower_reload_2.png</file>
     <file>resources/images/towers/default_tower_reload_3.png</file>

@@ -7,6 +7,7 @@
 #include <random>
 #include <vector>
 
+#include <QFontDatabase>
 #include "game_object.h"
 
 class Base : public GameObject {
@@ -16,10 +17,12 @@ class Base : public GameObject {
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
+  void DrawUI(QPainter* painter, const SizeHandler& size_handler) const;
   void DecreaseHealth(double damage);
 
   int GetGold() const;
   Coordinate GetGoldPosition() const;
+  Size GetGoldSize() const;
 
   void AddGoldAmount(int gold_amount);
   void SubtractGoldAmount(int gold_amount);
