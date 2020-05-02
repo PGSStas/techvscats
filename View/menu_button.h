@@ -33,6 +33,7 @@ class MenuButton : public QPushButton {
 
   ~MenuButton() override = default;
 
+  void UpdateIcon();
   void SetGeometry(Coordinate game_coordinate, SizeHandler size_handler);
   void SetSecondIconPath(const QString& main_icon_path,
                          const QString& active_icon_path);
@@ -52,6 +53,7 @@ class MenuButton : public QPushButton {
   QIcon active_icon_1_;
 
   bool is_second_icon_enabled_ = false;
+  bool is_enter_ = false;
   QIcon main_icon_2_;
   QIcon active_icon_2_;
 

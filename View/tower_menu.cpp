@@ -76,6 +76,9 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
   if (active_button_index_ != -1) {
     info_field_.Show();
   }
+  for(auto & button : buttons_){
+    button->UpdateIcon();
+  }
   if (current_force_ < 1 || possible_buildings_id_.empty()) {
     return;
   }
