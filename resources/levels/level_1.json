@@ -4,17 +4,17 @@
   "score": 0,
   "base": {
     "size": {
-      "width": 140,
-      "height": 140
+      "width": 225,
+      "height": 225
     },
     "max_health": 100,
     "position": {
       "x": 1700,
-      "y": 167
+      "y": 140
     },
     "animation": {
-      "timing": 450,
-      "path": "towers/base_0_1"
+      "timing": 750,
+      "path": "towers/base_6"
     },
     "particles": {
       "while_alive": 2,
