@@ -11,8 +11,6 @@ void TowerMenu::HeTappedMe(uint button_index) {
   }
   active_button_index_ = button_index;
   buttons_[active_button_index_]->EnableSecondIcon(true);
-
-  qDebug() << "ok...";
 }
 
 TowerMenu::TowerMenu(QMainWindow* window) {
@@ -81,6 +79,10 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
   }
   if (current_force_ < 1 || possible_buildings_id_.empty()) {
     return;
+  }else{
+    for(auto & button : buttons_){
+      button->SetIsEnter(false);
+    }
   }
   info_field_.Hide();
   if (slow_disable) {

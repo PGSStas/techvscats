@@ -34,6 +34,7 @@ class MenuButton : public QPushButton {
   ~MenuButton() override = default;
 
   void UpdateIcon();
+  void SetIsEnter(bool enter);
   void SetGeometry(Coordinate game_coordinate, SizeHandler size_handler);
   void SetSecondIconPath(const QString& main_icon_path,
                          const QString& active_icon_path);

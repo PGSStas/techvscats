@@ -32,11 +32,15 @@ MenuButton::MenuButton(const Size& button_size,
 }
 
 void MenuButton::UpdateIcon() {
-  if(is_enter_) {
+  if (is_enter_) {
     setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
-  }else {
+  } else {
     setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);
   }
+}
+
+void MenuButton::SetIsEnter(bool enter) {
+  is_enter_ = enter;
 }
 
 void MenuButton::SetGeometry(
