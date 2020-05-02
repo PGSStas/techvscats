@@ -9,6 +9,7 @@ Base::Base(int gold, Size size, Coordinate position, double max_health)
 
 void Base::Tick(int current_time) {
   UpdateTime(current_time);
+  animation_players_[0].Tick(delta_time_);
   current_health_ = std::min(max_health_, current_health_ + regeneration_rate_);
   int period = 0;
   double health_percent = current_health_ / max_health_;
