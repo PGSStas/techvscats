@@ -2,6 +2,7 @@
 #define GAMEOBJECT_PARTICLE_HANDLER_H_
 
 #include <chrono>
+#include <vector>
 #include <memory>
 #include <random>
 #include <list>
@@ -44,7 +45,7 @@ class ParticleHandler {
   void PlayOwnerDeath();
   void Clear();
 
-  const std::list<ParticleParameters>& GetParticlesInQueue() const;
+  const std::list<ParticleParameters>& GetParticlesQueue() const;
   bool IsReadyToCreateParticle() const;
 
  private:

@@ -4,7 +4,7 @@
 
 TowerMenu::TowerMenu(int creation_time, const Building& tower,
                      std::vector<std::shared_ptr<TowerMenuOption>> options)
-    : options_(std::move(options)),tower_(tower),
+    : options_(std::move(options)), tower_(tower),
       creation_time_(creation_time) {
   container_length_ = options_[0]->GetMaxSize() * options_.size() +
       kIndentBetweenButtons * (options_.size() - 1);

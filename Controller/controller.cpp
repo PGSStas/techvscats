@@ -221,7 +221,7 @@ void Controller::TickParticleHandlers() {
 void Controller::TickParticleHandler(ParticleHandler* particle_handler) {
   particle_handler->Tick();
   if (particle_handler->IsReadyToCreateParticle()) {
-    model_->CreateParticles(particle_handler->GetParticlesInQueue());
+    model_->CreateParticles(particle_handler->GetParticlesQueue());
     particle_handler->Clear();
   }
 }

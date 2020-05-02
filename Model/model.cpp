@@ -27,7 +27,7 @@ void Model::CreateBuildingAtIndex(int i, int id) {
   // Create new building by id
   int sell_cost = buildings_[i]->GetTotalCost() + id_to_building_[id].GetCost();
   buildings_[i]->GetParticleHandler()->PlayOwnerDeath();
-  CreateParticles(buildings_[i]->GetParticleHandler()->GetParticlesInQueue());
+  CreateParticles(buildings_[i]->GetParticleHandler()->GetParticlesQueue());
   buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
   if (id != 0) {
     buildings_[i]->SetTotalCost(sell_cost);
