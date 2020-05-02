@@ -1,7 +1,7 @@
 #include "effect.h"
 
 std::vector<EffectVisualization> Effect::effect_visualizations_{};
-const Size Effect::kSize = {32, 32};
+const Size Effect::kSize = {27, 27};
 const double Effect::kNearbyCoefficient = 0.9;
 
 Effect::Effect(EffectTarget effect_type,
@@ -34,8 +34,8 @@ void Effect::DrawEffectsIcons(QPainter* painter,
   painter->setBrush(Qt::red);
   Coordinate point =
       size_handler.GameToWindowCoordinate(
-          position - Size(parent_size.width / 2,
-                          -parent_size.height / 4));
+          position - Size(parent_size.width / 2 + 15,
+                          -parent_size.height / 2));
   Size size = size_handler.GameToWindowSize(kSize);
 
   DrawEffectIcon(painter, &point, size, CoefficientType::kDamage);
