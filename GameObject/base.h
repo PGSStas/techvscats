@@ -37,9 +37,10 @@ class Base : public GameObject {
 
   bool is_dead_ = false;
 
-  const Coordinate kHealthPosition = Coordinate(1700, 1000);
-  const Coordinate kGoldPosition = Coordinate(1800, 1000);
-  const double kFontSize = 22;
+  const Coordinate kHealthPosition = Coordinate(1748, 811);
+  const Size kHealthSize = Size(167, 167);
+  const Coordinate kGoldPosition = Coordinate(1581, 1002);
+  const Size kGoldSize = Size(164, 57);
 
   static std::mt19937 random_generator_;
 };

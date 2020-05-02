@@ -2,11 +2,6 @@
 
 std::mt19937 Base::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
-const Size Base::kBaseSize = Size(50, 50);
-const Coordinate Base::kHealthPosition = Coordinate(1748, 811);
-const Size Base::kHealthSize = Size(167, 167);
-const Coordinate Base::kGoldPosition = Coordinate(1581, 1002);
-const Size Base::kGoldSize = Size(164, 57);
 
 Base::Base(int gold, Size size, Coordinate position, double max_health)
     : GameObject(size, position), gold_(gold), max_health_(max_health),
@@ -26,12 +21,9 @@ void Base::Tick(int current_time) {
 void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
-  painter->setBrush(Qt::magenta);
-
-  auto point = size_handler.GameToWindowCoordinate(position_ - kBaseSize / 2);
-  Size size = size_handler.GameToWindowSize(kBaseSize);
-
-  painter->drawRect(point.x, point.y, size.width, size.height);
+  Coordinate point = size_handler.GameToWindowCoordinate(
+      position_ - size_ / 2);
+  painter->drawImage(point.x, point.y, animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }

@@ -279,8 +279,8 @@ void Model::LoadLevel(int level) {
           QString::number(level) + "_1"));
 }
 
-const AnimationPlayer& Model::GetBackGround(int back_ground_id) const {
-  return backgrounds_[back_ground_id];
+const AnimationPlayer& Model::GetBackGround(int background_id) const {
+  return backgrounds_[background_id];
 }
 
 const AnimationPlayer& Model::GetInterface() const {
@@ -344,25 +344,16 @@ void Model::LoadDatabase() {
   SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
 
   // backgrounds
-  back_grounds_.emplace_back(
+  backgrounds_.emplace_back(
       GetImagesByFramePath("backgrounds/main_background_1"));
-  back_grounds_.emplace_back(
+  backgrounds_.emplace_back(
       GetImagesByFramePath("backgrounds/settings_background_1"));
-  back_grounds_.emplace_back(
+  backgrounds_.emplace_back(
       GetImagesByFramePath("backgrounds/pause_menu_background_1"));
-  back_grounds_.emplace_back(
+  backgrounds_.emplace_back(
       GetImagesByFramePath("error"));
   // interface
   interface_ = AnimationPlayer(GetImagesByFramePath("interface/interface_1"));
-
-  // Temporary part
-  std::vector<EffectVisualization>
-      effect_visualization = {{Qt::cyan, Qt::black},
-                              {Qt::gray, Qt::darkGreen},
-                              {Qt::blue, Qt::darkBlue},
-                              {Qt::darkRed, Qt::magenta},
-                              {Qt::white, Qt::yellow}};
-  Effect::SetEffectVisualizations(effect_visualization);
 
   // Loading Buildings
   QJsonArray json_buildings = json_object["buildings"].toArray();
