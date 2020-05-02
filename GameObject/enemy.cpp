@@ -101,7 +101,7 @@ Effect* Enemy::GetAppliedEffect() {
   return &applied_effect_;
 }
 
-Coordinate Enemy::GetPrefirePosition() const {
+Coordinate Enemy::GetPredictPosition() const {
   Size move_vector = position_.GetVectorTo(destination_).Normalize();
   Coordinate prefire_position = position_;
   prefire_position +=

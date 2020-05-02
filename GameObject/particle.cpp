@@ -42,7 +42,7 @@ void Particle::SetParameters(Size size, Coordinate position,
     repeat_number_ = repeat_number;
   }
   time_to_death_ = animation_players_[0].GetAnimationDuration()
-      * repeat_number_ * 0.97;
+      * repeat_number_ * kLifetimeOffset;
 }
 
 bool Particle::IsDead() const {

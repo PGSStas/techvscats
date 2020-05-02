@@ -4,6 +4,8 @@ std::vector<EffectVisualization> Effect::effect_visualizations_{};
 const Size Effect::kSize = {32, 32};
 const double Effect::kNearbyCoefficient = 0.9;
 
+//  The size of the effect, the coefficient of
+//  inverse proximity - the smaller, the closer the effects
 Effect::Effect(EffectTarget effect_type,
                double speed_coefficient,
                double armor_coefficient,

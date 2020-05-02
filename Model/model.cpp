@@ -27,7 +27,7 @@ void Model::CreateBuildingAtIndex(int i, int id) {
   // Create new building by id
   int sell_cost = buildings_[i]->GetTotalCost() + id_to_building_[id].GetCost();
   buildings_[i]->GetParticleHandler()->PlayOwnerDeath();
-  CreateParticles(buildings_[i]->GetParticleHandler()->GetWaitingParticles());
+  CreateParticles(buildings_[i]->GetParticleHandler()->GetParticlesInQueue());
   buildings_[i] = std::make_shared<Building>(id_to_building_[id]);
   if (id != 0) {
     buildings_[i]->SetTotalCost(sell_cost);
@@ -212,7 +212,7 @@ void Model::LoadLevel(int level) {
                            {json_animation["timing"].toInt()},
                            {json_animation["path"].toString()});
   SetParticlesToGameObject(base_.get(), json_base);
-  base_->GetParticleHandler()->SetAliveParticlePack(2, 0);
+  base_->GetParticleHandler()->SetEvents({-1, -1, 2}, 0);
   // Reading information about the roads.
   roads_.clear();
   QJsonArray json_roads = json_object["roads"].toArray();
@@ -547,20 +547,19 @@ void Model::SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object) {
   int at_death = -1;
   if (object.contains("at_death")) {
     at_death = object["at_death"].toInt();
-  }else{
-    at_death = -1;
   }
   if (object.contains("at_creation")) {
     at_creation = object["at_creation"].toInt();
   }
-  p_enemy->GetParticleHandler()->SetAtCreationParticlePack(at_death,
-                                                           at_creation);
+  // for example, if there is no parameter, you leave the default value
+  // that is valid for you
   int while_alive = -1;
   int period = 0;
 
   if (object.contains("while_alive")) {
     while_alive = object["while_alive"].toInt();
     period = object["period"].toInt();
-    p_enemy->GetParticleHandler()->SetAliveParticlePack(while_alive, period);
   }
+  p_enemy->GetParticleHandler()->SetEvents({at_creation, at_death, while_alive},
+                                           period);
 }

@@ -10,9 +10,9 @@ ParticleHandler::ParticleHandler(const Size& carrier_size,
       carrier_delta_time_(carrier_delta_time) {}
 
 void ParticleHandler::Tick() {
-  if (is_at_creation_not_used_) {
-    CreateParticleFromId(at_creation_id_);
-    is_at_creation_not_used_ = false;
+  if (event_to_id_[static_cast<int>(Event::kCreate)] != -1) {
+    CreateParticleFromId(event_to_id_[static_cast<int>(Event::kCreate)]);
+    event_to_id_[static_cast<int>(Event::kCreate)] = -1;
   }
 
   if (period_ <= 0) {
@@ -28,35 +28,26 @@ void ParticleHandler::Tick() {
              random_generator_() % (static_cast<int>(carrier_size_.width))
                  - carrier_size_.width / 2);
 
-    particle_queue.emplace_back(while_alive_id_, carrier_size_,
-                                rand_coordinate);
+    particle_queue.emplace_back(event_to_id_[static_cast<int>(Event::kLive)],
+                                carrier_size_, rand_coordinate);
   }
 }
 
-void ParticleHandler::SetAtCreationParticlePack(int at_death_id,
-                                                int at_creation_id) {
-  at_death_id_ = at_death_id;
-  at_creation_id_ = at_creation_id;
-  if (at_creation_id != -1) {
-    is_at_creation_not_used_ = true;
-  }
-}
-
-void ParticleHandler::SetAliveParticlePack(int while_alive_id, int period) {
-  while_alive_id_ = while_alive_id;
+void ParticleHandler::SetEvents(const std::vector<int>& event_to_id,
+                                int period) {
+  event_to_id_ = event_to_id;
   period_ = period;
   wait_time_ = period;
 }
 
 void ParticleHandler::SetParticlePacks(const ParticleHandler& other) {
-  SetAtCreationParticlePack(other.at_death_id_, other.at_creation_id_);
-  SetAliveParticlePack(other.while_alive_id_, other.period_);
+  SetEvents(other.event_to_id_, other.period_);
 }
 
 void ParticleHandler::PlayOwnerDeath() {
-  if (at_death_id_ != -1) {
-    CreateParticleFromId(at_death_id_);
-    at_death_id_ = -1;
+  if (event_to_id_[static_cast<int>( Event::kDeath)] != -1) {
+    CreateParticleFromId(event_to_id_[static_cast<int>( Event::kDeath)]);
+    event_to_id_[static_cast<int>( Event::kDeath)] = -1;
   }
 }
 
@@ -64,7 +55,7 @@ void ParticleHandler::Clear() {
   particle_queue.clear();
 }
 
-const std::list<ParticleParameters>& ParticleHandler::GetWaitingParticles() const {
+const std::list<ParticleParameters>& ParticleHandler::GetParticlesInQueue() const {
   return particle_queue;
 }
 

@@ -29,7 +29,7 @@ class Enemy : public MovingObject {
   const AuricField& GetAuricField() const;
   Effect* GetAppliedEffect();
   double GetDamage() const;
-  Coordinate GetPrefirePosition() const;
+  Coordinate GetPredictPosition() const;
   void ReceiveDamage(double damage);
   int ComputeReward() const;
 

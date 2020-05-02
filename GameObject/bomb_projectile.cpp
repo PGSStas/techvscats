@@ -37,7 +37,7 @@ void BombProjectile::SetParameters(const std::shared_ptr<Enemy>& aim,
                                    double speed_coefficient, double damage) {
   start_position_ = position;
   AbstractProjectile::SetParameters(aim, position, speed_coefficient, damage);
-  destination_ = aim_->GetPrefirePosition();
+  destination_ = aim_->GetPredictPosition();
 }
 
 bool BombProjectile::IsInAffectedArea(const Enemy& enemy) {

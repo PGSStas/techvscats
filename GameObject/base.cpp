@@ -12,8 +12,8 @@ void Base::Tick(int current_time) {
   current_health_ = std::min(max_health_, current_health_ + regeneration_rate_);
   int period = 0;
   double health_percent = current_health_ / max_health_;
-  if (health_percent < 0.8) {
-    period = 4000 * health_percent;
+  if (health_percent < kHealthFlameTheshold) {
+    period = kFlameSpawnSpeed * health_percent;
   }
   particle_handler_.SetPeriod(period);
 }

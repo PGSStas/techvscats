@@ -27,8 +27,8 @@ class AnimationPlayer {
   int time_between_frames_ = 0;
 
   std::shared_ptr<std::vector<QImage>> frames_;
-  std::vector<QImage> frames_rescaled_ = {
-      QImage("::resources/images/error.png")};
+  std::vector<QImage> frames_rescaled_ =
+      {QImage("::resources/images/error.png")};
 };
 
 #endif  // VIEW_ANIMATION_PLAYER_H_

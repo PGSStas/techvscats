@@ -8,6 +8,12 @@
 
 #include "Model/coordinate.h"
 
+enum class Event {
+  kCreate = 0,
+  kDeath = 1,
+  kLive = 2
+};
+
 // To avoid multi include
 struct ParticleParameters {
   ParticleParameters(
@@ -32,14 +38,13 @@ class ParticleHandler {
 
   void Tick();
   void AddParticle(ParticleParameters particle);
-  void SetAtCreationParticlePack(int at_death_id, int at_creation_id = -1);
-  void SetAliveParticlePack(int while_alive_id, int period);
+  void SetEvents(const std::vector<int>& event_to_id, int period);
   void SetParticlePacks(const ParticleHandler& other);
   void SetPeriod(int period);
   void PlayOwnerDeath();
   void Clear();
 
-  const std::list<ParticleParameters>& GetWaitingParticles() const;
+  const std::list<ParticleParameters>& GetParticlesInQueue() const;
   bool IsReadyToCreateParticle() const;
 
  private:
@@ -49,16 +54,11 @@ class ParticleHandler {
   const int& carrier_delta_time_;
 
   std::list<ParticleParameters> particle_queue;
+  std::vector<int> event_to_id_ = {-1, -1, -1};
 
-  int at_death_id_ = -1;
-  int at_creation_id_ = -1;
-
-  int while_alive_id_ = -1;
   int period_ = -1;
-
   int wait_time_ = 0;
 
-  bool is_at_creation_not_used_ = false;
   static std::mt19937 random_generator_;
 };
 
