@@ -5,7 +5,6 @@
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QPushButton>
-#include <QRandomGenerator>
 
 #include <chrono>
 #include <memory>

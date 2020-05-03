@@ -10,6 +10,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
+#include <QString>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -17,13 +18,14 @@
 
 #include "Controller/spawner.h"
 #include "GameObject/abstract_projectile.h"
-#include "GameObject/aimed_projectile.h"
+#include "GameObject/homing_projectile.h"
 #include "GameObject/base.h"
 #include "GameObject/bomb_projectile.h"
 #include "GameObject/building.h"
 #include "GameObject/effect.h"
 #include "GameObject/enemy.h"
 #include "GameObject/laser_projectile.h"
+#include "GameObject/particle.h"
 #include "enemy_group.h"
 #include "road.h"
 #include "View/text_notification.h"
@@ -39,12 +41,14 @@ class Model {
   void CreateBuildingAtIndex(int i, int id);
   void CreateProjectile(const std::shared_ptr<Enemy>& aim,
                         const Building& building);
+  void CreateParticles(const std::list<ParticleParameters>& parameters);
   void RescaleDatabase(const SizeHandler& size_handler);
   void IncreaseCurrentRoundNumber();
   void ClearGameModel();
 
   Base* GetBase();
   std::list<Spawner>* GetSpawners();
+  std::list<Particle>* GetParticles();
   std::list<std::shared_ptr<Enemy>>* GetEnemies();
   std::list<std::shared_ptr<AbstractProjectile>>* GetProjectiles();
   std::list<TextNotification>* GetTextNotifications();
@@ -74,21 +78,22 @@ class Model {
       std::vector<QString> paths);
   std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(
       QString path, QString picture_type = ".png") const;
+  void SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object);
 
   // Database which is updated by Controller all time
   std::list<Spawner> spawners_;
+  std::list<Particle> particles_;
   std::list<std::shared_ptr<Enemy>> enemies_;
   std::vector<std::shared_ptr<Building>> buildings_;
   std::list<std::shared_ptr<AbstractProjectile>> projectiles_;
   std::list<TextNotification> text_notifications_;
 
   int current_round_number_ = 0;
-  int score_ = 0;
 
   // Database which is loaded in SetGameLevel once
   std::vector<Road> roads_;
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
-  Base base_;
+  std::shared_ptr<Base> base_;
 
   std::vector<Coordinate> empty_places_for_towers_;
   int prepair_time_between_rounds_ = 0;
@@ -100,9 +105,10 @@ class Model {
   std::vector<Building> id_to_building_;
   std::vector<std::vector<int>> upgrades_tree_;
   std::vector<Effect> id_to_effect_;
+  std::vector<Particle> id_to_particle_;
 
   // Images
-  std::vector<AnimationPlayer> back_grounds_;
+  std::vector<AnimationPlayer> backgrounds_;
   AnimationPlayer interface_;
 };
 

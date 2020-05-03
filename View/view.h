@@ -24,6 +24,7 @@ class View : public QMainWindow {
  public:
   explicit View(AbstractController* controller);
   ~View() override = default;
+
   void EnableGameUi();
   void DisableGameUi();
   void EnableMainMenuUi();
@@ -42,7 +43,6 @@ class View : public QMainWindow {
  private:
   AbstractController* controller_;
   SizeHandler size_handler_;
-  // WindowType window_type_ = WindowType::kMainMenu;
   QElapsedTimer view_timer_;
   int controller_timer_id_;
 
@@ -75,6 +75,8 @@ class View : public QMainWindow {
   void DrawEnemies(QPainter* painter);
   void DrawProjectiles(QPainter* painter);
   void DrawTowers(QPainter* painter);
+  void DrawParticles(QPainter* painter);
+  void DrawBars(QPainter* painter);
   void DrawAdditionalInfo(QPainter* painter);
   void DrawRoundInfo(QPainter* painter);
 };

@@ -18,7 +18,7 @@ void MovingObject::MoveToDestination() {
 
   if (move_direction.GetLength() > constants::kEpsilon) {
     move_direction /= move_direction.GetLength();
-    move_direction *= delta_tick_time_ * speed_ / constants::kTimeScale;
+    move_direction *= delta_time_ * speed_ / constants::kTimeScale;
   }
   auto first_vector = (position_ + move_direction).GetVectorTo(destination_);
   auto second_vector = position_.GetVectorTo(destination_);
