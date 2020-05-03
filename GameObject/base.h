@@ -42,7 +42,7 @@ class Base : public GameObject {
   const Coordinate kGoldPosition = Coordinate(1581, 1002);
   const Size kGoldSize = Size(164, 57);
   const double kHealthFlameTheshold = 0.8;
-  const int kFlameSpawnSpeed = 4000;
+  const int kFlameSpawnSpeed = 3000;
 
   static std::mt19937 random_generator_;
 };

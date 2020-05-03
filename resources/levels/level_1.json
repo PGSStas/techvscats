@@ -5,11 +5,11 @@
   "base": {
     "max_health": 100,
     "size": {
-      "width": 225,
-      "height": 225
+      "width": 245,
+      "height": 245
     },
     "position": {
-      "x": 1700,
+      "x": 1680,
       "y": 140
     },
     "animation": {

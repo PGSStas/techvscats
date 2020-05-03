@@ -533,12 +533,12 @@
     },
     {
       "size": {
-        "width": 30,
-        "height": 60
+        "width": 60,
+        "height": 90
       },
       "repeat_number": 8,
       "animation": {
-        "timing": 450,
+        "timing": 750,
         "path": "particles/on_fire2_5"
       }
     },
