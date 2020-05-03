@@ -17,7 +17,7 @@ SOURCES += \
         Controller/controller.cpp \
         Controller/spawner.cpp \
         GameObject/abstract_projectile.cpp \
-        GameObject/aimed_projectile.cpp \
+        GameObject/homing_projectile.cpp \
         GameObject/auric_field.cpp \
         GameObject/base.cpp \
         GameObject/bomb_projectile.cpp \
@@ -47,7 +47,7 @@ HEADERS += \
         Controller/controller.h \
         Controller/spawner.h \
         GameObject/abstract_projectile.h \
-        GameObject/aimed_projectile.h \
+        GameObject/homing_projectile.h \
         GameObject/auric_field.h \
         GameObject/base.h \
         GameObject/bomb_projectile.h \
