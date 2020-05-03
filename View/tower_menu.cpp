@@ -50,6 +50,9 @@ TowerMenu::TowerMenu(QMainWindow* window) {
 void TowerMenu::Recreate(Coordinate position, int carrier_building_index,
                          const std::vector<int>& possible_buildings_id,
                          int carrier_id, const SizeHandler& size_handler) {
+  if(is_hidden_){
+    return;
+  }
   for (auto& id : possible_buildings_id_) {
     buttons_[id]->EnableSecondIcon(false);
     buttons_[id]->hide();
@@ -74,13 +77,14 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
   if (active_button_index_ != -1) {
     info_field_.Show();
   }
-  for(auto & button : buttons_){
+  for (auto& button : buttons_) {
     button->UpdateIcon();
   }
   if (current_force_ < 1 || possible_buildings_id_.empty()) {
     return;
-  }else{
-    for(auto & button : buttons_){
+  }
+  if (current_force_ > 70) {
+    for (auto& button : buttons_) {
       button->SetIsEnter(false);
     }
   }
@@ -131,13 +135,75 @@ void TowerMenu::SetIsWantToReplaceToFalse() {
   want_to_replace_ = false;
 }
 
-void TowerMenu::DrawAdditionalInfo(QPainter* painter,
-                                   const SizeHandler& size_handler,
-                                   const Building& instance) {
+void TowerMenu::DrawTowersAuraAndRange(QPainter* painter,
+                                       const SizeHandler& size_handler,
+                                       const Building& instance) {
+  if (is_hidden_) {
+    return;
+  }
   painter->save();
+  Coordinate position = position_;
+  position.y += instance.GetSize().height / 3;
+  Coordinate center = size_handler.GameToWindowCoordinate(position);
+  Size radius;
+  int attack_range = instance.GetAttackRange();
+  radius = size_handler.GameToWindowSize(Size(attack_range, attack_range));
+  instance.GetAuricField().Draw(
+      painter, size_handler, position);
+
+  QRadialGradient gradient(
+      center.x, center.y / constants::kSemiMinorCoefficient, radius.width);
+
+  QColor gradient_color(Qt::darkRed);
+  gradient_color.setAlpha(60);
+  gradient.setColorAt(0, Qt::transparent);
+  gradient.setColorAt(0.80, Qt::transparent);
+  gradient.setColorAt(1, gradient_color);
+
+  painter->setPen(Qt::transparent);
+  painter->setBrush(gradient);
+  painter->scale(1, constants::kSemiMinorCoefficient);
+  painter->drawEllipse(QPointF(
+      center.x, center.y / constants::kSemiMinorCoefficient),
+                       radius.width, radius.height);
+
+  painter->restore();
+}
+
+void TowerMenu::DrawInfoField(QPainter* painter,
+                              const SizeHandler& size_handler,
+                              const Building& instance) {
+  if (is_hidden_) {
+    return;
+  }
+  painter->save();
+  painter->setPen(QPen(Qt::white, 3));
+  for (int i = 1; i < possible_buildings_id_.size(); i++) {
+    Coordinate button_position_1 =
+        buttons_[possible_buildings_id_[i - 1]]->GetPosition();
+    button_position_1 += kSizeOfButton / 2;
+    button_position_1 = size_handler.GameToWindowCoordinate(button_position_1);
+    Coordinate button_position_2 =
+        buttons_[possible_buildings_id_[i]]->GetPosition();
+    button_position_2 += kSizeOfButton / 2;
+    button_position_2 = size_handler.GameToWindowCoordinate(button_position_2);
+    painter->drawLine(button_position_1.x, button_position_1.y,
+                      button_position_2.x, button_position_2.y);
+  }
+
+  painter->restore();
   info_field_.Draw(painter, size_handler);
   info_field_.SetInfo(instance);
-  painter->restore();
+}
+
+void TowerMenu::Hide(bool is_hidden) {
+  if(is_hidden==is_hidden_){
+    return;
+  }
+  is_hidden_ = is_hidden;
+  for (int index : possible_buildings_id_) {
+    buttons_[index]->setHidden(is_hidden);
+  }
 }
 
 void TowerMenu::Disable(bool is_fast_disable) {
@@ -168,6 +234,7 @@ int TowerMenu::GetSellectedTowerId() const {
 bool TowerMenu::IsEnable() const {
   return !possible_buildings_id_.empty();
 }
+
 bool TowerMenu::IsWantToReplace() const {
   return want_to_replace_;
 }

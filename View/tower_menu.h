@@ -31,10 +31,12 @@ class TowerMenu {
   void Tick(const SizeHandler& size_handler, int delta_time);
   void SetIsWantToReplaceToFalse();
   void RescaleButtons(const SizeHandler& size_handler);
-  void DrawAdditionalInfo(QPainter* painter, const SizeHandler& size_handler,
-                          const Building& instance);
-
+  void DrawTowersAuraAndRange(QPainter* painter, const SizeHandler& size_handler,
+                              const Building& instance);
+  void DrawInfoField(QPainter* painter, const SizeHandler& size_handler,
+                     const Building& instance);
   void Disable(bool is_fast_disable = true);
+  void Hide(bool is_hidden);
   int GetCarrierIndex() const;
   int GetSellectedTowerId() const;
   bool IsEnable() const;
@@ -49,14 +51,15 @@ class TowerMenu {
   int active_button_index_ = -1;
   bool want_to_replace_ = false;
   bool slow_disable = false;
+  bool is_hidden_;
 
   InfoField info_field_;
 
   double current_force_;
 
-  const double kThrowForce = 65;
-  const double kSlowCoefficient = 0.92;
-  const Size kSizeOfButton = {50, 50};
+  const double kThrowForce = 100;
+  const double kSlowCoefficient = 0.88;
+  const Size kSizeOfButton = {60, 60};
 
  private:
   void HeTappedMe(uint button_index);

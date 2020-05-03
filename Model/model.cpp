@@ -322,7 +322,6 @@ void Model::LoadDatabase() {
     }
     Size size = Size(enemy["size"].toObject()["width"].toInt(),
                      enemy["size"].toObject()["height"].toInt());
-    // TODO(PGS): size of enemy please. Also i put speed on the second place.
     id_to_enemy_.emplace_back(enemy["speed"].toInt(),
                               enemy["damage"].toInt(),
                               enemy["armor"].toInt(),
@@ -370,8 +369,8 @@ void Model::LoadDatabase() {
     AuricField aura;
     if (json_building.contains("auric_field")) {
       aura = AuricField(
-          json_building["aura"].toObject()["radius"].toInt(),
-          json_building["aura"].toObject()["effect_id"].toInt());
+          json_building["auric_field"].toObject()["radius"].toInt(),
+          json_building["auric_field"].toObject()["effect_id"].toInt());
     }
 
     Building building(i, json_building["settle_cost"].toInt(), size, aura);

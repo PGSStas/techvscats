@@ -67,6 +67,7 @@ void View::DrawMainMenu(QPainter*) {
 }
 
 void View::DrawGame(QPainter* painter) {
+  DrawTowersAuraAndRange(painter);
   DrawEnemies(painter);
   DrawProjectiles(painter);
   DrawTowers(painter);
@@ -86,10 +87,12 @@ void View::DrawSettings(QPainter*) {
 void View::DrawPauseMenu(QPainter*) {
   button_handler_.SetGameUiVisible(false);
   button_handler_.SetPauseMenuUiVisible(true);
+  tower_menu_.Hide(true);
 }
 
 void View::DrawEndgameMessage(QPainter* painter) {
   if (controller_->GetCurrentStatus() != Exit::kPlay) {
+    tower_menu_.Hide(true);
     painter->save();
 
     alpha_channel_ += delta_alpha_;
@@ -112,6 +115,8 @@ void View::DrawEndgameMessage(QPainter* painter) {
     painter->drawText(point.x, point.y, endgame_message_);
 
     painter->restore();
+  }else{
+    tower_menu_.Hide(false);
   }
 }
 
@@ -134,6 +139,14 @@ bool View::IsTowerMenuEnabled() const {
 
 int View::GetRealTime() const {
   return view_timer_.elapsed();
+}
+
+void View::DrawTowersAuraAndRange(QPainter* painter) {
+  if (tower_menu_.IsEnable()) {
+    tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
+                                       controller_->GetBuildingById(
+                                           tower_menu_.GetSellectedTowerId()));
+  }
 }
 
 void View::DrawEnemies(QPainter* painter) {
@@ -218,9 +231,9 @@ void View::DrawAdditionalInfo(QPainter* painter) {
   }
 
   if (tower_menu_.IsEnable()) {
-    tower_menu_.DrawAdditionalInfo(painter, size_handler_,
-                                   controller_->GetBuildingById(
-                                       tower_menu_.GetSellectedTowerId()));
+    tower_menu_.DrawInfoField(painter, size_handler_,
+                              controller_->GetBuildingById(
+                                  tower_menu_.GetSellectedTowerId()));
   }
 }
 
