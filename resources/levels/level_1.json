@@ -6,11 +6,11 @@
     "max_health": 100,
     "size": {
       "width": 245,
-      "height": 245
+      "height": 180
     },
     "position": {
       "x": 1680,
-      "y": 140
+      "y": 170
     },
     "animation": {
       "timing": 750,

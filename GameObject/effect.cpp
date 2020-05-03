@@ -1,8 +1,8 @@
 #include "effect.h"
 
 std::vector<EffectVisualization> Effect::effect_visualizations_{};
-const Size Effect::kSize = {27, 27};
-const double Effect::kNearbyCoefficient = 0.9;
+const Size Effect::kSize = {37, 37};
+const double Effect::kNearbyCoefficient = 0.8;
 
 //  The size of the effect, the coefficient of
 //  inverse proximity - the smaller, the closer the effects

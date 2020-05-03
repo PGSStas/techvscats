@@ -22,10 +22,10 @@ void ParticleHandler::Tick() {
     wait_time_ += period_;
     Coordinate rand_coordinate = owner_coordinates_;
     rand_coordinate +=
-        Size(random_generator_() % (static_cast<int>(owner_size_.height))
-                 - owner_size_.height / 2,
-             random_generator_() % (static_cast<int>(owner_size_.width))
-                 - owner_size_.width / 2);
+        Size(random_generator_() % (static_cast<int>(owner_size_.width/1.5))
+                 - owner_size_.width / 3,
+             random_generator_() % (static_cast<int>(owner_size_.height/1.5))
+                 - owner_size_.height / 3);
 
     particle_queue.emplace_back(event_to_id_[static_cast<int>(Event::kLive)],
                                 owner_size_, rand_coordinate);

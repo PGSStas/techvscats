@@ -79,10 +79,10 @@ void Base::DecreaseHealth(double damage) {
 
   Coordinate rand_position = position_;
   rand_position +=
-      Size(random_generator_() % static_cast<int>(size_.width)
-               - size_.width / 2,
-           random_generator_() % static_cast<int>(size_.height)
-               - size_.height / 2);
+      Size(random_generator_() % static_cast<int>(size_.width/1.5)
+               - size_.width / 3,
+           random_generator_() % static_cast<int>(size_.height/1.5)
+               - size_.height / 3);
   particle_handler_.AddParticle(
       ParticleParameters(0, size_ / 3, rand_position));
 
