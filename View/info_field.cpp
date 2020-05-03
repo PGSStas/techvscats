@@ -1,7 +1,7 @@
 #include "info_field.h"
 
 void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
-  if (!is_shown_) {
+  if (!is_hidden_) {
     return;
   }
   painter->save();
@@ -98,12 +98,8 @@ void InfoField::SetPosition(Coordinate position, Size button_size,
   }
 }
 
-void InfoField::Show() {
-  is_shown_ = true;
-}
-
-void InfoField::Hide() {
-  is_shown_ = false;
+void InfoField::Hide(bool is_hide) {
+  is_hidden_ = is_hide;
 }
 
 bool InfoField::IsOnBottom() const {

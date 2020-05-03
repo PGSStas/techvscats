@@ -1,7 +1,7 @@
 #include "tower_menu.h"
 
 void TowerMenu::HeTappedMe(uint button_index) {
-  if (active_button_index_ == static_cast<int>( button_index)) {
+  if (active_button_index_ == static_cast<int>(button_index)) {
     want_to_replace_ = true;
     Disable(false);
     return;
@@ -50,7 +50,7 @@ TowerMenu::TowerMenu(QMainWindow* window) {
 void TowerMenu::Recreate(Coordinate position, int carrier_building_index,
                          const std::vector<int>& possible_buildings_id,
                          int carrier_id, const SizeHandler& size_handler) {
-  if(is_hidden_){
+  if (is_hidden_) {
     return;
   }
   for (auto& id : possible_buildings_id_) {
@@ -75,7 +75,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
   info_field_.SetPosition(position_, button_constants::kShortButtonSize,
                           button_constants::kShift);
   if (active_button_index_ != -1) {
-    info_field_.Show();
+    info_field_.Hide(false);
   }
   for (auto& button : buttons_) {
     button->UpdateIcon();
@@ -88,7 +88,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
       button->SetIsEnter(false);
     }
   }
-  info_field_.Hide();
+  info_field_.Hide(true);
   if (slow_disable) {
     delta_time *= -1;
   }
@@ -178,7 +178,7 @@ void TowerMenu::DrawInfoField(QPainter* painter,
   }
   painter->save();
   painter->setPen(QPen(Qt::white, 3));
-  for (int i = 1; i < possible_buildings_id_.size(); i++) {
+  for (uint i = 1; i < possible_buildings_id_.size(); i++) {
     Coordinate button_position_1 =
         buttons_[possible_buildings_id_[i - 1]]->GetPosition();
     button_position_1 += kSizeOfButton / 2;
@@ -197,7 +197,7 @@ void TowerMenu::DrawInfoField(QPainter* painter,
 }
 
 void TowerMenu::Hide(bool is_hidden) {
-  if(is_hidden==is_hidden_){
+  if (is_hidden == is_hidden_) {
     return;
   }
   is_hidden_ = is_hidden;

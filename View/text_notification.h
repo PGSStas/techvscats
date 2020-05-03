@@ -1,6 +1,7 @@
 #ifndef VIEW_TEXT_NOTIFICATION_H_
 #define VIEW_TEXT_NOTIFICATION_H_
 
+#include <algorithm>
 #include <memory>
 #include <QFontDatabase>
 #include <QLabel>
