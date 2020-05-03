@@ -32,8 +32,8 @@ void Particle::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->restore();
 }
 
-void Particle::SetParameters(Size size, Coordinate position,
-                             int repeat_number) {
+void Particle::SetIfEmpty(Size size, Coordinate position,
+                          int repeat_number) {
   if (size_ == Size(-1, -1)) {
     size_ = size;
   }

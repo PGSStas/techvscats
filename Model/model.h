@@ -18,7 +18,7 @@
 
 #include "Controller/spawner.h"
 #include "GameObject/abstract_projectile.h"
-#include "GameObject/aimed_projectile.h"
+#include "GameObject/homing_projectile.h"
 #include "GameObject/base.h"
 #include "GameObject/bomb_projectile.h"
 #include "GameObject/building.h"

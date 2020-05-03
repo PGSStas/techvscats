@@ -20,7 +20,7 @@ add_executable(techvscats
         Controller/controller.cpp
         Controller/spawner.cpp
         GameObject/abstract_projectile.cpp
-        GameObject/aimed_projectile.cpp
+        GameObject/homing_projectile.cpp
         GameObject/auric_field.cpp
         GameObject/base.cpp
         GameObject/bomb_projectile.cpp

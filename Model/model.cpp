@@ -39,9 +39,9 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
                              const Building& building) {
   int id = building.GetProjectileId();
   if (const auto& casted =
-        std::dynamic_pointer_cast<AimedProjectile>(id_to_projectile_[id]);
+        std::dynamic_pointer_cast<HomingProjectile>(id_to_projectile_[id]);
       casted != nullptr) {
-    projectiles_.push_back(std::make_shared<AimedProjectile>(*casted));
+    projectiles_.push_back(std::make_shared<HomingProjectile>(*casted));
   }
   if (const auto& casted =
         std::dynamic_pointer_cast<BombProjectile>(id_to_projectile_[id]);
@@ -61,9 +61,9 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
 void Model::CreateParticles(const std::list<ParticleParameters>& parameters) {
   for (const auto& particle_parameters : parameters) {
     particles_.push_back(id_to_particle_[particle_parameters.particle_id]);
-    particles_.back().SetParameters(particle_parameters.size,
-                                    particle_parameters.position,
-                                    particle_parameters.animation_times);
+    particles_.back().SetIfEmpty(particle_parameters.size,
+                                 particle_parameters.position,
+                                 particle_parameters.animation_times);
   }
 }
 
@@ -419,9 +419,9 @@ void Model::LoadDatabase() {
     switch (type) {
       case 0: {
         double speed = json_projectile["speed"].toDouble();
-        AimedProjectile projectile(size, speed);
+        HomingProjectile projectile(size, speed);
         id_to_projectile_.push_back(
-            std::make_shared<AimedProjectile>(projectile));
+            std::make_shared<HomingProjectile>(projectile));
         break;
       }
       case 1: {

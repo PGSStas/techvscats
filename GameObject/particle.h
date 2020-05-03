@@ -14,7 +14,7 @@ class Particle : public GameObject {
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
-  void SetParameters(Size size, Coordinate position, int repeat_number);
+  void SetIfEmpty(Size size, Coordinate position, int repeat_number);
   bool IsDead() const;
 
  private:
