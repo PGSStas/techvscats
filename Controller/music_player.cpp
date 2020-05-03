@@ -38,7 +38,7 @@ void MusicPlayer::StartMenuMusic() {
 }
 
 void MusicPlayer::DeathEnemySound() {
-  // enemy_death_sound_->play();
+  enemy_death_sound_->play();
 }
 
 void MusicPlayer::GameOverSound() {
