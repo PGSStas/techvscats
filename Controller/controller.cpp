@@ -2,7 +2,9 @@
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)),
-                           game_mode_(WindowType::kMainMenu) {}
+                           game_mode_(WindowType::kMainMenu) {
+  music_player_ = new MusicPlayer();
+}
 
 void Controller::StartGame(int level_id) {
   current_game_time_ = 0;
@@ -15,14 +17,19 @@ void Controller::StartGame(int level_id) {
   view_->EnableGameUi();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
+  music_player_->StartGameMusic();
 }
 
-void Controller::EndGame(Exit) {
+void Controller::EndGame(Exit exit) {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMainMenuUi();
   game_mode_ = WindowType::kMainMenu;
   current_game_time_ = 0;
+  if (exit == Exit::kLose) {
+    music_player_->GameOverSound();
+  }
+  music_player_->StartMenuMusic();
 }
 
 void Controller::Tick(int current_time) {
@@ -112,6 +119,7 @@ void Controller::TickEnemies() {
   auto enemies = model_->GetEnemies();
   enemies->remove_if([this](const auto& enemy) {
     if (enemy->IsDead()) {
+      music_player_->DeathEnemySound();
       ProcessEnemyDeath(*enemy);
     }
     return enemy->IsDead() || enemy->IsEndReached();
@@ -136,10 +144,10 @@ void Controller::TickBuildings() {
     const auto& aims = building->GetAims();
     building->SetReadyToCreateProjectileToFalse();
     for (const auto& aim : aims) {
-      model_->CreateProjectile(aim, *building);
+      auto projectile_type = model_->CreateProjectile(aim, *building);
+      music_player_->BoomSound(projectile_type);
     }
   }
-
   // Base
   model_->GetBase()->Tick(current_game_time_);
 }
@@ -354,4 +362,8 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
 
 const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));
+}
+
+MusicPlayer* Controller::GetMusicPlayer() {
+  return music_player_;
 }

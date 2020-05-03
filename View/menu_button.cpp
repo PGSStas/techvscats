@@ -76,4 +76,5 @@ void MenuButton::SetSecondIconPath(const QString& main_icon_path,
 
 void MenuButton::EnableSecondIcon(bool is_second_icon_enabled) {
   is_second_icon_enabled_ = is_second_icon_enabled;
+  setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
 }

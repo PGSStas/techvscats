@@ -10,6 +10,7 @@
 #include "GameObject/building.h"
 #include "GameObject/enemy.h"
 #include "View/text_notification.h"
+#include "music_player.h"
 
 enum class Exit {
   kWin,
@@ -56,6 +57,8 @@ class AbstractController {
   virtual int GetCurrentTime() const = 0;
 
   virtual const AnimationPlayer& GetBackground(WindowType type) const = 0;
+
+  virtual MusicPlayer* GetMusicPlayer() = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

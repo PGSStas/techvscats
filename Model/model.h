@@ -37,7 +37,7 @@ class Model {
   void AddTextNotification(const TextNotification& text_notification);
   void AddEnemyFromInstance(const Enemy& enemy_instance);
   void CreateBuildingAtIndex(int i, int id);
-  void CreateProjectile(const std::shared_ptr<Enemy>& aim,
+  ProjectileType CreateProjectile(const std::shared_ptr<Enemy>& aim,
                         const Building& building);
   void RescaleDatabase(const SizeHandler& size_handler);
   void IncreaseCurrentRoundNumber();

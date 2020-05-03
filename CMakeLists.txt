@@ -14,11 +14,13 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -Wextra ")
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
 
 add_executable(techvscats
         main.cpp
         Controller/controller.cpp
         Controller/spawner.cpp
+        Controller/music_player.cpp
         GameObject/abstract_projectile.cpp
         GameObject/aimed_projectile.cpp
         GameObject/auric_field.cpp
@@ -46,3 +48,4 @@ add_executable(techvscats
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)
+target_link_libraries(techvscats Qt5::Multimedia)

@@ -5,6 +5,11 @@
 #include <utility>
 
 #include "enemy.h"
+enum ProjectileType {
+  kAimedProjectile,
+  kBombProjectile,
+  kLaserProjectile
+};
 
 class AbstractProjectile : public MovingObject {
  public:
@@ -21,6 +26,7 @@ class AbstractProjectile : public MovingObject {
 
   double GetDamage() const;
   virtual bool IsInAffectedArea(const Enemy& enemy);
+  virtual ProjectileType GetProjectileType();
 
  protected:
   std::shared_ptr<Enemy> aim_ = {};
@@ -28,6 +34,7 @@ class AbstractProjectile : public MovingObject {
 
   QColor draw_color_ = Qt::black;
   int iteration_time_ = 0;
+  ProjectileType projectile_type;
 };
 
 #endif  // GAMEOBJECT_ABSTRACT_PROJECTILE_H_

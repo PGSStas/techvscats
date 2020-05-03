@@ -11,6 +11,8 @@ class AimedProjectile : public AbstractProjectile {
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
+ private:
+  ProjectileType projectile_type = ProjectileType::kAimedProjectile;
 };
 
 #endif  // GAMEOBJECT_AIMED_PROJECTILE_H_

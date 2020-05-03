@@ -43,3 +43,6 @@ double AbstractProjectile::GetDamage() const {
   return damage_;
 }
 
+ProjectileType AbstractProjectile::GetProjectileType() {
+  return projectile_type;
+}

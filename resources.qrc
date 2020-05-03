@@ -50,5 +50,14 @@
     <file>resources/images/backgrounds/main_background_1.png</file>
     <file>resources/images/backgrounds/settings_background_1.png</file>
     <file>resources/images/backgrounds/pause_menu_background_1.png</file>
+
+    <file>resources/sounds/menu_sound.mp3</file>
+    <file>resources/sounds/game_sound.mp3</file>
+    <file>resources/sounds/enemy_death_sound.wav</file>
+    <file>resources/sounds/game_over_sound.wav</file>
+    <file>resources/sounds/main_boom_sound.wav</file>
+    <file>resources/sounds/laser_boom_sound.wav</file>
+    <file>resources/sounds/aimed_boom_sound.wav</file>
+    <file>resources/sounds/button_click.wav</file>
 </qresource>
 </RCC>
