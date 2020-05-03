@@ -49,6 +49,9 @@ class Enemy : public MovingObject {
   const int kMoveShift = 25;
   const Size kHealthBarShift = {18, 24};
   const Size kHealthBar = {36, 5};
+
+ private:
+  Coordinate ShiftCoordinate(Coordinate coordinate) const;
 };
 
 #endif  // GAMEOBJECT_ENEMY_H_

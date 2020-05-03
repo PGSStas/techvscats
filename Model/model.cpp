@@ -29,19 +29,37 @@ void Model::SetGameLevel(int level_id) {
       "towers/default_tower_reload_4",
       "towers/default_tower_reload_4"});
 
-  SetAnimationToGameObject(&id_to_building_[1], {0, 800, 0}, {
+  SetAnimationToGameObject(&id_to_building_[1], {0, 1500, 0}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
   });
 
-  SetAnimationToGameObject(&id_to_building_[2], {0, 1500, 0}, {
+  SetAnimationToGameObject(&id_to_building_[2], {0, 6000, 0}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
   });
 
   SetAnimationToGameObject(&id_to_building_[3], {0, 50, 0}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
+
+  SetAnimationToGameObject(&id_to_building_[5], {0, 1400, 0}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
+
+  SetAnimationToGameObject(&id_to_building_[6], {0, 5500, 0}, {
+      "towers/default_tower_reload_4",
+      "towers/default_tower_pre_3",
+      "towers/default_tower_post_3",
+  });
+
+  SetAnimationToGameObject(&id_to_building_[7], {0, 50, 0}, {
       "towers/default_tower_reload_4",
       "towers/default_tower_pre_3",
       "towers/default_tower_post_3",
@@ -334,8 +352,8 @@ void Model::LoadDatabase() {
 
   SetAnimationToGameObject(&id_to_enemy_[0], {400}, {"enemies/toster_3"});
   SetAnimationToGameObject(&id_to_enemy_[1], {550}, {"enemies/toster_3"});
-  SetAnimationToGameObject(&id_to_enemy_[2], {600}, {"enemies/mouse_3"});
-  SetAnimationToGameObject(&id_to_enemy_[3], {800}, {"enemies/mouse_3"});
+  SetAnimationToGameObject(&id_to_enemy_[3], {600}, {"enemies/mouse_3"});
+  SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
 
   // backgrounds
   back_grounds_.emplace_back(

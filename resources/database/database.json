@@ -1,10 +1,10 @@
 {
   "enemies": [
     {
-      "speed": 10,
+      "speed": 6,
       "damage": 6,
       "armor": 0,
-      "reward": 9,
+      "reward": 3,
       "max_health": 30,
       "size": {
         "width": 60,
@@ -12,11 +12,11 @@
       }
     },
     {
-      "speed": 8,
+      "speed": 4,
       "damage": 9,
       "armor": 20,
-      "reward": 14,
-      "max_health": 35,
+      "reward": 6,
+      "max_health": 85,
       "auric_field": {
         "radius": 300,
         "effect_id": 0
@@ -27,10 +27,25 @@
       }
     },
     {
-      "speed": 15,
+      "speed": 4,
+      "damage": 9,
+      "armor": 20,
+      "reward": 6,
+      "max_health": 85,
+      "auric_field": {
+        "radius": 300,
+        "effect_id": 0
+      },
+      "size": {
+        "width": 90,
+        "height": 90
+      }
+    },
+    {
+      "speed": 8,
       "damage": 2,
       "armor": -5,
-      "reward": 3,
+      "reward": 1,
       "max_health": 14,
       "size": {
         "width": 40,
@@ -38,11 +53,11 @@
       }
     },
     {
-      "speed": 20,
-      "damage": 5,
+      "speed": 10,
+      "damage": 3,
       "armor": 5,
-      "reward": 10,
-      "max_health": 30,
+      "reward": 4,
+      "max_health": 45,
       "auric_field": {
         "radius": 500,
         "effect_id": 1
@@ -50,6 +65,21 @@
       "size": {
         "width": 65,
         "height": 100
+      }
+    },
+    {
+      "speed": 4,
+      "damage": 9,
+      "armor": 20,
+      "reward": 6,
+      "max_health": 85,
+      "auric_field": {
+        "radius": 300,
+        "effect_id": 0
+      },
+      "size": {
+        "width": 90,
+        "height": 90
       }
     },
     {
@@ -106,16 +136,17 @@
       "settle_cost": 70,
       "projectile": {
         "projectile_id": 0,
-        "attack_damage": 7,
+        "attack_damage": 11,
         "attack_range": 400,
         "max_aims": 1
       },
       "action_time": [
-        300,
-        50,
-        10
+        0,
+        1500,
+        0
       ],
       "upgrade_tree": [
+        5,
         0
       ]
     },
@@ -127,16 +158,17 @@
       "settle_cost": 110,
       "projectile": {
         "projectile_id": 1,
-        "attack_damage": 15,
+        "attack_damage": 23,
         "attack_range": 600,
         "max_aims": 1
       },
       "action_time": [
         0,
-        1500,
+        6000,
         0
       ],
       "upgrade_tree": [
+        6,
         0
       ]
     },
@@ -148,13 +180,9 @@
       "settle_cost": 150,
       "projectile": {
         "projectile_id": 2,
-        "attack_damage": 4,
+        "attack_damage": 1.6,
         "attack_range": 300,
         "max_aims": 1
-      },
-      "auric_field": {
-        "radius": 200,
-        "effect_id": 2
       },
       "action_time": [
         100,
@@ -162,6 +190,7 @@
         10
       ],
       "upgrade_tree": [
+        7,
         0
       ]
     },
@@ -181,6 +210,7 @@
         100
       ],
       "upgrade_tree": [
+        8,
         0
       ]
     },
@@ -189,15 +219,139 @@
         "width": 85,
         "height": 85
       },
-      "settle_cost": 24,
-      "auric_field": {
-        "radius": 200,
-        "effect_id": 2
+      "settle_cost": 60,
+      "projectile": {
+        "projectile_id": 0,
+        "attack_damage": 15,
+        "attack_range": 480,
+        "max_aims": 1
       },
+      "action_time": [
+        0,
+        1400,
+        0
+      ],
+      "upgrade_tree": [
+        9,
+        0
+      ]
+    },
+    {
+      "size": {
+        "width": 85,
+        "height": 85
+      },
+      "settle_cost": 100,
+      "projectile": {
+        "projectile_id": 1,
+        "attack_damage": 26,
+        "attack_range": 650,
+        "max_aims": 1
+      },
+      "action_time": [
+        0,
+        5000,
+        0
+      ],
+      "upgrade_tree": [
+        10,
+        0
+      ]
+    },
+    {
+      "size": {
+        "width": 85,
+        "height": 85
+      },
+      "settle_cost": 100,
       "projectile": {
         "projectile_id": 2,
-        "attack_damage": 3,
-        "attack_range": 240,
+        "attack_damage": 1.4,
+        "attack_range": 400,
+        "max_aims": 2
+      },
+      "action_time": [
+        100,
+        50,
+        10
+      ],
+      "upgrade_tree": [
+        11,
+        0
+      ]
+    },
+    {
+      "size": {
+        "width": 85,
+        "height": 85
+      },
+      "settle_cost": 125,
+      "auric_field": {
+        "radius": 600,
+        "effect_id": 3
+      },
+      "action_time": [
+        100,
+        100,
+        100
+      ],
+      "upgrade_tree": [
+        12,
+        0
+      ]
+    },
+    {
+      "size": {
+        "width": 85,
+        "height": 85
+      },
+      "settle_cost": 80,
+      "projectile": {
+        "projectile_id": 0,
+        "attack_damage": 19,
+        "attack_range": 400,
+        "max_aims": 1
+      },
+      "action_time": [
+        0,
+        1300,
+        0
+      ],
+      "upgrade_tree": [
+        0
+      ]
+    },
+    {
+      "size": {
+        "width": 85,
+        "height": 85
+      },
+      "settle_cost": 140,
+      "projectile": {
+        "projectile_id": 1,
+        "attack_damage": 20,
+        "attack_range": 800,
+        "max_aims": 3
+      },
+      "action_time": [
+        0,
+        5500,
+        0
+      ],
+      "upgrade_tree": [
+        0
+      ]
+    },
+    {
+      "size": {
+        "width": 85,
+        "height": 85
+      },
+      "settle_cost": 170,
+      "projectile": {
+        "projectile_id": 2,
+        "attack_damage": 1.2,
+        "attack_range": 300,
         "max_aims": 3
       },
       "action_time": [
@@ -206,8 +360,25 @@
         10
       ],
       "upgrade_tree": [
-        3,
-        1,
+        0
+      ]
+    },
+    {
+      "size": {
+        "width": 85,
+        "height": 85
+      },
+      "settle_cost": 175,
+      "auric_field": {
+        "radius": 600,
+        "effect_id": 4
+      },
+      "action_time": [
+        100,
+        100,
+        100
+      ],
+      "upgrade_tree": [
         0
       ]
     }
@@ -230,12 +401,28 @@
       "range_coefficient": 0
     },
     {
-      "effect_target": 1,
-      "speed_coefficient": -0.8,
-      "armor_coefficient": 1,
-      "damage_coefficient": -0.3,
-      "attack_rate_coefficient": -0.4,
-      "range_coefficient": 0.4
+      "effect_target": 2,
+      "speed_coefficient": 0.1,
+      "armor_coefficient": 0,
+      "damage_coefficient": 0.05,
+      "attack_rate_coefficient": 0.05,
+      "range_coefficient": 0.1
+    },
+    {
+      "effect_target": 2,
+      "speed_coefficient": 0.15,
+      "armor_coefficient": 0,
+      "damage_coefficient": 0.1,
+      "attack_rate_coefficient": 0.1,
+      "range_coefficient": 0.12
+    },
+    {
+      "effect_target": 2,
+      "speed_coefficient": 0.2,
+      "armor_coefficient": 0,
+      "damage_coefficient": 0.15,
+      "attack_rate_coefficient": 0.15,
+      "range_coefficient": 0.15
     }
   ]
 }
