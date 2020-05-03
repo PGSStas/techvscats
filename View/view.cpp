@@ -69,8 +69,8 @@ void View::DrawGame(QPainter* painter) {
   controller_->RescaleObjects(size_handler_);
   DrawProjectiles(painter);
   DrawTowers(painter);
-  controller_->GetBase().Draw(painter, size_handler_);
   DrawEnemies(painter);
+  controller_->GetBase().Draw(painter, size_handler_);
 
   DrawParticles(painter);
   DrawAdditionalInfo(painter);

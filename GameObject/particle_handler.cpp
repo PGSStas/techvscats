@@ -1,35 +1,34 @@
 #include "particle_handler.h"
-
+#include "queue"
 std::mt19937 ParticleHandler::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
-ParticleHandler::ParticleHandler(const Size& carrier_size,
-                                 const Coordinate& carrier_coordinates,
-                                 const int& carrier_delta_time)
-    : carrier_coordinates_(carrier_coordinates), carrier_size_(carrier_size),
-      carrier_delta_time_(carrier_delta_time) {}
+ParticleHandler::ParticleHandler(const Size& owner_size,
+                                 const Coordinate& owner_coordinates,
+                                 const int& owner_delta_time)
+    : owner_coordinates_(owner_coordinates), owner_size_(owner_size),
+      owner_delta_time_(owner_delta_time) {}
 
 void ParticleHandler::Tick() {
   if (event_to_id_[static_cast<int>(Event::kCreate)] != -1) {
     CreateParticleFromId(event_to_id_[static_cast<int>(Event::kCreate)]);
     event_to_id_[static_cast<int>(Event::kCreate)] = -1;
   }
-
   if (period_ <= 0) {
     return;
   }
-  wait_time_ -= carrier_delta_time_;
+  wait_time_ -= owner_delta_time_;
   if (wait_time_ <= 0) {
     wait_time_ += period_;
-    Coordinate rand_coordinate = carrier_coordinates_;
+    Coordinate rand_coordinate = owner_coordinates_;
     rand_coordinate +=
-        Size(random_generator_() % (static_cast<int>(carrier_size_.height))
-                 - carrier_size_.height / 2,
-             random_generator_() % (static_cast<int>(carrier_size_.width))
-                 - carrier_size_.width / 2);
+        Size(random_generator_() % (static_cast<int>(owner_size_.height))
+                 - owner_size_.height / 2,
+             random_generator_() % (static_cast<int>(owner_size_.width))
+                 - owner_size_.width / 2);
 
     particle_queue.emplace_back(event_to_id_[static_cast<int>(Event::kLive)],
-                                carrier_size_, rand_coordinate);
+                                owner_size_, rand_coordinate);
   }
 }
 
@@ -69,7 +68,7 @@ void ParticleHandler::AddParticle(ParticleParameters particle) {
 }
 
 void ParticleHandler::CreateParticleFromId(int id) {
-  particle_queue.emplace_back(id, carrier_size_, carrier_coordinates_);
+  particle_queue.emplace_back(id, owner_size_, owner_coordinates_);
 }
 
 void ParticleHandler::SetPeriod(int period) {

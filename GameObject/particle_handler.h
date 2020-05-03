@@ -30,12 +30,12 @@ struct ParticleParameters {
 };
 
 // Particles are created when an object is created, when it dies, and
-// during its lifetime. The particulars themselves are drawn objects.
+// during its lifetime.
 class ParticleHandler {
  public:
-  ParticleHandler(const Size& carrier_size,
-                  const Coordinate& carrier_coordinates,
-                  const int& carrier_delta_time);
+  ParticleHandler(const Size& owner_size,
+                  const Coordinate& owner_coordinates,
+                  const int& owner_delta_time);
 
   void Tick();
   void AddParticle(ParticleParameters particle);
@@ -50,9 +50,9 @@ class ParticleHandler {
 
  private:
   void CreateParticleFromId(int id);
-  const Coordinate& carrier_coordinates_;
-  const Size& carrier_size_;
-  const int& carrier_delta_time_;
+  const Coordinate& owner_coordinates_;
+  const Size& owner_size_;
+  const int& owner_delta_time_;
 
   std::list<ParticleParameters> particle_queue;
   std::vector<int> event_to_id_ = {-1, -1, -1};
