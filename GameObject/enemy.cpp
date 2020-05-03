@@ -101,12 +101,12 @@ Effect* Enemy::GetAppliedEffect() {
   return &applied_effect_;
 }
 
-Coordinate Enemy::GetPredictPosition() const {
+Coordinate Enemy::GetPredictPosition(double predict_power) const {
   Size move_vector = position_.GetVectorTo(destination_).Normalize();
   Coordinate prefire_position = position_;
   prefire_position +=
       move_vector * speed_ * applied_effect_.GetMoveSpeedCoefficient()
-          * constants::kTimeScale / delta_time_;
+          * predict_power * constants::kTimeScale / delta_time_;
   return prefire_position;
 }
 
