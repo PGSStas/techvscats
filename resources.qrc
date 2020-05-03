@@ -3,8 +3,6 @@
     <file>resources/levels/level_1.json</file>
     <file>resources/database/database.json</file>
 
-    <file>resources/images/towers/base_0_1.png</file>
-
     <file>resources/images/error.png</file>
 
     <file>resources/images/enemies/toster_1.png</file>
