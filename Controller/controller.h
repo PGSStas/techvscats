@@ -1,9 +1,11 @@
 #ifndef CONTROLLER_CONTROLLER_H_
 #define CONTROLLER_CONTROLLER_H_
 
+#include <algorithm>
 #include <list>
 #include <vector>
 #include <memory>
+#include <QObject>
 
 #include "abstract_controller.h"
 #include "View/view.h"
@@ -35,6 +37,10 @@ class Controller : public AbstractController {
   int GetCurrentTime() const override;
 
   const AnimationPlayer& GetBackground(WindowType type) const override;
+  const AnimationPlayer& GetInterface() const override;
+
+  int GetCurrentRoundNumber() const override;
+  int GetRoundsCount() const override;
 
  private:
   std::unique_ptr<Model> model_;

@@ -63,6 +63,7 @@ class Model {
   int GetCurrentRoundNumber() const;
 
   const AnimationPlayer& GetBackGround(int back_ground_id) const;
+  const AnimationPlayer& GetInterface() const;
 
  private:
   void LoadLevel(int level);
@@ -102,6 +103,7 @@ class Model {
 
   // Images
   std::vector<AnimationPlayer> back_grounds_;
+  AnimationPlayer interface_;
 };
 
 #endif  // MODEL_MODEL_H_

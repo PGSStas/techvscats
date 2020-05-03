@@ -57,6 +57,10 @@ class AbstractController {
   virtual int GetCurrentTime() const = 0;
 
   virtual const AnimationPlayer& GetBackground(WindowType type) const = 0;
+  virtual const AnimationPlayer& GetInterface() const = 0;
+
+  virtual int GetCurrentRoundNumber() const = 0;
+  virtual int GetRoundsCount() const = 0;
 
   virtual MusicPlayer* GetMusicPlayer() = 0;
 };

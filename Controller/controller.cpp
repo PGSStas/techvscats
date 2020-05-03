@@ -148,6 +148,7 @@ void Controller::TickBuildings() {
       music_player_->BoomSound(projectile_type);
     }
   }
+
   // Base
   model_->GetBase()->Tick(current_game_time_);
 }
@@ -244,8 +245,12 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
           * constants::kRefundCoefficient;
 
-      model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
-                                   base->GetGoldPosition(), Qt::green,
+      Coordinate notification = base->GetGoldPosition() +
+          base->GetGoldSize()
+              / std::max(QString::number(sell_cost).length(), 2);
+      model_->AddTextNotification({"+" + QString::number(sell_cost) + " "
+                                       + constants::kCurrency,
+                                   notification, Qt::green,
                                    current_game_time_});
       base->AddGoldAmount(sell_cost);
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
@@ -253,13 +258,18 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
       base->SubtractGoldAmount(settle_cost);
 
-      model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
-                                   base->GetGoldPosition(), Qt::red,
+      Coordinate notification = base->GetGoldPosition() +
+          base->GetGoldSize()
+              / std::max(QString::number(settle_cost).length(), 2);
+      model_->AddTextNotification({"-" + QString::number(settle_cost) + " "
+                                       + constants::kCurrency,
+                                   notification, Qt::red,
                                    current_game_time_});
     }
   } else {
-    model_->AddTextNotification({"Not enough gold", base->GetGoldPosition(),
-                                 Qt::blue, current_game_time_});
+    auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
+    model_->AddTextNotification({QObject::tr("Not enough ") +
+    constants::kCurrency, position, Qt::blue, current_game_time_});
   }
 }
 
@@ -354,7 +364,8 @@ int Controller::GetCurrentTime() const {
 
 void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   int reward = enemy.ComputeReward();
-  model_->AddTextNotification({QString::number(reward) + " gold",
+  model_->AddTextNotification({QString::number(reward) + " "
+                                   + constants::kCurrency,
                                enemy.GetPosition(), Qt::yellow,
                                current_game_time_});
   model_->GetBase()->AddGoldAmount(reward);
@@ -366,4 +377,16 @@ const AnimationPlayer& Controller::GetBackground(WindowType type) const {
 
 MusicPlayer* Controller::GetMusicPlayer() {
   return music_player_;
+}
+
+const AnimationPlayer& Controller::GetInterface() const {
+  return model_->GetInterface();
+}
+
+int Controller::GetCurrentRoundNumber() const {
+  return model_->GetCurrentRoundNumber();
+}
+
+int Controller::GetRoundsCount() const {
+  return model_->GetRoundsCount();
 }

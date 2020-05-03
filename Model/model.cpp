@@ -117,6 +117,7 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   for (auto& animaion : back_grounds_) {
     animaion.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
   }
+  interface_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
 }
 
 void Model::IncreaseCurrentRoundNumber() {
@@ -287,6 +288,10 @@ const AnimationPlayer& Model::GetBackGround(int back_ground_id) const {
   return back_grounds_[back_ground_id];
 }
 
+const AnimationPlayer& Model::GetInterface() const {
+  return interface_;
+}
+
 void Model::LoadDatabase() {
   QFile level_file(":resources/database/database.json");
   if (!level_file.open(QFile::ReadOnly)) {
@@ -351,6 +356,9 @@ void Model::LoadDatabase() {
       GetImagesByFramePath("backgrounds/pause_menu_background_1"));
   back_grounds_.emplace_back(
       GetImagesByFramePath("error"));
+  // interface
+  interface_ = AnimationPlayer(GetImagesByFramePath("interface/interface_1"));
+
   // Temporary part
   std::vector<EffectVisualization>
       effect_visualization = {{Qt::cyan, Qt::black},
