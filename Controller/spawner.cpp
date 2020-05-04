@@ -1,7 +1,7 @@
 #include "spawner.h"
 
-Spawner::Spawner(const EnemyGroup& group_to_spawn) :
-    group_to_spawn_(group_to_spawn) {}
+Spawner::Spawner(const EnemyGroup& group_to_spawn)
+    : group_to_spawn_(group_to_spawn) {}
 
 void Spawner::Tick(int current_time) {
   if (current_time < group_to_spawn_.time_of_next_spawn) {

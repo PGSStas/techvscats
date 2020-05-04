@@ -78,11 +78,14 @@ void Controller::GameProcess() {
   if (CanCreateNextWave() && game_status_ == Exit::kPlay) {
     CreateNextWave();
   }
+
   TickSpawners();
   TickEnemies();
   TickBuildings();
   TickProjectiles();
   TickAuras();
+  TickParticleHandlers();
+  TickParticles();
   TickTextNotifications();
 }
 
@@ -253,6 +256,45 @@ void Controller::TickTextNotifications() {
   }
 }
 
+void Controller::TickParticleHandlers() {
+  auto enemies = model_->GetEnemies();
+  for (auto& enemy : *enemies) {
+    TickParticleHandler(enemy->GetParticleHandler());
+  }
+  auto buildings = model_->GetBuildings();
+  for (auto& building : buildings) {
+    TickParticleHandler(building->GetParticleHandler());
+  }
+  auto projectiles = model_->GetProjectiles();
+  for (auto& projectile : *projectiles) {
+    TickParticleHandler(projectile->GetParticleHandler());
+  }
+  auto particles = model_->GetParticles();
+  for (auto& particle : *particles) {
+    TickParticleHandler(particle.GetParticleHandler());
+  }
+  auto base = model_->GetBase();
+  TickParticleHandler(base->GetParticleHandler());
+}
+
+void Controller::TickParticleHandler(ParticleHandler* particle_handler) {
+  particle_handler->Tick();
+  if (particle_handler->IsReadyToCreateParticle()) {
+    model_->CreateParticles(particle_handler->GetParticlesQueue());
+    particle_handler->Clear();
+  }
+}
+
+void Controller::TickParticles() {
+  auto particles = model_->GetParticles();
+  particles->remove_if([](const Particle& particle) {
+    return particle.IsDead();
+  });
+  for (auto& particle : *particles) {
+    particle.Tick(current_game_time_);
+  }
+}
+
 void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
   if (!aura.IsValid()) {
     return;
@@ -326,6 +368,10 @@ const Building& Controller::GetBuildingById(int instance_id) const {
   return model_->GetBuildingById(instance_id);
 }
 
+const std::list<Particle>& Controller::GetParticles() const {
+  return *model_->GetParticles();
+}
+
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
   return *model_->GetEnemies();
 }
@@ -354,7 +400,8 @@ int Controller::GetCurrentTime() const {
 
 void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   int reward = enemy.ComputeReward();
-  model_->AddTextNotification({QString::number(reward) + " gold",
+  model_->AddTextNotification({QString::number(reward) + " "
+                                   + constants::kCurrency,
                                enemy.GetPosition(), Qt::yellow,
                                view_->GetRealTime()});
 
@@ -367,4 +414,16 @@ const AnimationPlayer& Controller::GetBackground(WindowType type) const {
 
 Exit Controller::GetCurrentStatus() const {
   return game_status_;
+}
+
+const AnimationPlayer& Controller::GetInterface() const {
+  return model_->GetInterface();
+}
+
+int Controller::GetCurrentRoundNumber() const {
+  return model_->GetCurrentRoundNumber();
+}
+
+int Controller::GetRoundsCount() const {
+  return model_->GetRoundsCount();
 }

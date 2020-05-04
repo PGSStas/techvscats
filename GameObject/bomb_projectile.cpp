@@ -14,20 +14,21 @@ void BombProjectile::Tick(int current_time) {
   UpdateTime(current_time);
   double percent = (position_.x - destination_.x) /
       (start_position_.x - destination_.x);
-  qDebug() << delta_tick_time_;
   additional_draw_height_ += up_force_ * (1 - 2 * percent) *
-      delta_tick_time_ / constants::kTimeScale;
+      delta_time_ / constants::kTimeScale;
   Move();
+  animation_players_[0].Tick(delta_time_);
 }
 
 void BombProjectile::Draw(QPainter* painter, const SizeHandler& handler) const {
   painter->save();
-  painter->setBrush(draw_color_);
+
   Coordinate bomb_position = position_;
   bomb_position.y += additional_draw_height_;
-  Coordinate position = handler.GameToWindowCoordinate(bomb_position);
-  Size size = handler.GameToWindowSize(size_);
-  painter->drawEllipse(position.x, position.y, size.width, size.height);
+  Coordinate point = handler.GameToWindowCoordinate(
+      bomb_position - size_ / 2);
+  painter->drawImage(point.x, point.y, animation_players_[0].GetCurrentFrame());
+
   painter->restore();
 }
 
@@ -36,9 +37,9 @@ void BombProjectile::SetParameters(const std::shared_ptr<Enemy>& aim,
                                    double speed_coefficient, double damage) {
   start_position_ = position;
   AbstractProjectile::SetParameters(aim, position, speed_coefficient, damage);
+  destination_ = aim_->GetPredictPosition();
 }
 
 bool BombProjectile::IsInAffectedArea(const Enemy& enemy) {
-  return position_.GetVectorTo(enemy.GetPosition()).GetLength()
-      <= effect_radius_ + constants::kEpsilon;
+  return position_.IsInEllipse(enemy.GetPosition(), effect_radius_);
 }

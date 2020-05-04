@@ -3,7 +3,7 @@
 ButtonHandler::ButtonHandler(QMainWindow* main_window,
                              AbstractController* controller, int font_id)
     : QObject(main_window), main_window_(main_window), controller_(controller),
-    font_id_(font_id) {
+      font_id_(font_id) {
   CreateButtons();
   window_type_ = WindowType::kMainMenu;
 }
@@ -246,11 +246,10 @@ void ButtonHandler::CreateGameButtons() {
 }
 
 void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
-  Size shift = Size(short_button_size_.width + shift_, 0);
-  pause_button_->SetGeometry({0, 0}, size_handler);
+  Size shift = Size(0, short_button_size_.width + shift_);
+  pause_button_->SetGeometry({constants::kGameWidth - 80, 20}, size_handler);
   Coordinate zero_speed_button_coordinate =
-      Coordinate(constants::kGameWidth, 0) - shift * 2
-          - Size(short_button_size_.width, 0);
+      Coordinate(20, 480) + shift;
   zero_speed_button_->SetGeometry(zero_speed_button_coordinate, size_handler);
   normal_speed_button_->SetGeometry(zero_speed_button_coordinate + shift,
                                     size_handler);

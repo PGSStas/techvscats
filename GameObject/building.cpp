@@ -3,16 +3,17 @@
 
 #include "building.h"
 
-Building::Building(int id, int settle_cost, Size size, AuricField aura) :
-    GameObject(size), auric_field_(aura), id_(id), cost_(settle_cost) {
+Building::Building(int id, int settle_cost, const AuricField& aura, Size size)
+    : GameObject(size), auric_field_(aura), id_(id), cost_(settle_cost) {
   auric_field_.SetCarrierCoordinate(&position_);
 }
 
 Building::Building(const Building& other) :
-    Building(other.id_, other.cost_, other.size_, other.auric_field_) {
+    Building(other.id_, other.cost_, other.auric_field_, other.size_) {
   SetProjectile(other.projectile_id_, other.attack_damage_,
                 other.attack_range_, other.max_aims_);
   SetAnimationPlayers(other.animation_players_);
+  particle_handler_.SetParticlePacks(other.particle_handler_);
   SetInfo(other.header_, other.description_);
 }
 
@@ -21,23 +22,21 @@ void Building::Tick(int current_time) {
     return;
   }
   UpdateTime(current_time);
-  wait_time_ += delta_tick_time_ * applied_effect_.GetAttackRateCoefficient();
+  wait_time_ += delta_time_ * applied_effect_.GetAttackRateCoefficient();
 
   Action old_action = action_;
   switch (action_) {
-    case Action::kReload: {
-      if (wait_time_ > action_timings_[static_cast<int>(Action::kReload)]) {
-        if (is_ready_to_shoot_) {
-          wait_time_ = 0;
-          action_ = Action::kBeforeFire;
-        }
+    case Action::kWait: {
+      if (is_ready_to_shoot_) {
+        action_ = Action::kBeforeFire;
+        wait_time_ = 0;
       }
       break;
     }
     case Action::kBeforeFire: {
       if (!is_ready_to_shoot_) {
-        action_ = Action::kReload;
-        wait_time_ = action_timings_[static_cast<int>(Action::kReload)];
+        action_ = Action::kWait;
+        wait_time_ = 0;
         break;
       }
       if (wait_time_ > action_timings_[static_cast<int>(Action::kBeforeFire)]) {
@@ -49,13 +48,13 @@ void Building::Tick(int current_time) {
     }
     case Action::kAfterFire: {
       if (wait_time_ > action_timings_[static_cast<int>(Action::kAfterFire)]) {
-        action_ = Action::kReload;
+        action_ = Action::kWait;
       }
       break;
     }
   }
   if (old_action == action_) {
-    animation_players_[static_cast<int>(action_)].Tick(delta_tick_time_ *
+    animation_players_[static_cast<int>(action_)].Tick(delta_time_ *
         applied_effect_.GetAttackRateCoefficient());
   } else {
     animation_players_[static_cast<int>(action_)].Reset();
@@ -63,8 +62,7 @@ void Building::Tick(int current_time) {
 }
 
 void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
-  if ((wait_time_ < action_timings_[static_cast<int>(Action::kReload)]
-      && action_ == Action::kReload) || action_ == Action::kAfterFire) {
+  if (action_ == Action::kAfterFire || id_ == 0) {
     return;
   }
   if (enemies.empty()) {
@@ -107,8 +105,8 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
   Coordinate point =
       size_handler.GameToWindowCoordinate(position_ - size_ / 2);
-  painter->translate(point.x, point.y);
-  painter->drawImage(QPoint(0, 0),
+  painter->drawImage(
+      point.x, point.y,
       animation_players_[static_cast<int>(action_)].GetCurrentFrame());
   painter->restore();
 }
@@ -196,5 +194,6 @@ bool Building::IsReadyToCreateProjectiles() const {
 
 bool Building::IsInAttackRange(Coordinate coordinate) const {
   double result_range = attack_range_ * applied_effect_.GetRangeCoefficient();
+  coordinate.y -= size_.height / 3;
   return coordinate.IsInEllipse(position_, result_range);
 }

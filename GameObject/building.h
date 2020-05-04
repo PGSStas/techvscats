@@ -11,15 +11,15 @@
 #include "enemy.h"
 
 enum class Action {
-  kReload = 0,
+  kWait = 0,
   kBeforeFire = 1,
   kAfterFire = 2
 };
 
 class Building : public GameObject {
  public:
-  explicit Building(int id = 0, int settle_cost = 0, Size size = {85, 85},
-                    AuricField aura = AuricField(-1, -1));
+  explicit Building(int id, int settle_cost, const AuricField& aura,
+                    Size size = {150, 150});
   Building(const Building& other);
   ~Building() override = default;
 
@@ -60,7 +60,7 @@ class Building : public GameObject {
   int total_cost_ = 0;
 
   // action part
-  Action action_ = Action::kReload;
+  Action action_ = Action::kWait;
   int wait_time_ = 0;
 
   int projectile_id_ = 0;

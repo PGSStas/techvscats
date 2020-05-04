@@ -20,7 +20,7 @@ add_executable(techvscats
         Controller/controller.cpp
         Controller/spawner.cpp
         GameObject/abstract_projectile.cpp
-        GameObject/aimed_projectile.cpp
+        GameObject/homing_projectile.cpp
         GameObject/auric_field.cpp
         GameObject/base.cpp
         GameObject/bomb_projectile.cpp
@@ -30,11 +30,14 @@ add_executable(techvscats
         GameObject/game_object.cpp
         GameObject/laser_projectile.cpp
         GameObject/moving_object.cpp
+        GameObject/particle_handler.cpp
+        GameObject/particle.cpp
         Model/coordinate.cpp
         Model/model.cpp
         Model/road.cpp
         Model/size.cpp
         resources.qrc
+        View/animation_player.cpp
         View/animation_player.cpp
         View/button_handler.cpp
         View/info_field.cpp

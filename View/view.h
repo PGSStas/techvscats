@@ -25,6 +25,7 @@ class View : public QMainWindow {
  public:
   explicit View(AbstractController* controller);
   ~View() override = default;
+
   void EnableGameUi();
   void DisableGameUi();
   void EnableMainMenuUi();
@@ -61,6 +62,9 @@ class View : public QMainWindow {
   double alpha_channel_ = 0;
   double delta_alpha_ = 2;
 
+  const Coordinate kRoundPosition = {1758, 1001};
+  const Size kRoundSize = {120, 60};
+
  private:
   // Events
   void paintEvent(QPaintEvent*) override;
@@ -81,7 +85,10 @@ class View : public QMainWindow {
   void DrawEnemies(QPainter* painter);
   void DrawProjectiles(QPainter* painter);
   void DrawTowers(QPainter* painter);
+  void DrawParticles(QPainter* painter);
+  void DrawBars(QPainter* painter);
   void DrawAdditionalInfo(QPainter* painter);
+  void DrawRoundInfo(QPainter* painter);
 };
 
 #endif  // VIEW_VIEW_H_
