@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QString>
+#include <QSoundEffect>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -61,9 +62,11 @@ class Model {
   const Enemy& GetEnemyById(int id) const;
   const Effect& GetEffectById(int id) const;
   const Building& GetBuildingById(int id) const;
+  const Particle& GetParticleById(int id) const;
+  QSoundEffect* GetParticleSoundEffectById(int id) const;
 
   int GetRoundsCount() const;
-  int GetPrepairTimeBetweenRounds() const;
+  int GetPrepareTimeBetweenRounds() const;
   int GetCurrentRoundNumber() const;
 
   const AnimationPlayer& GetBackGround(int back_ground_id) const;
@@ -106,6 +109,7 @@ class Model {
   std::vector<std::vector<int>> upgrades_tree_;
   std::vector<Effect> id_to_effect_;
   std::vector<Particle> id_to_particle_;
+  std::vector<QSoundEffect*> id_to_particle_sound_;
 
   // Images
   std::vector<AnimationPlayer> backgrounds_;

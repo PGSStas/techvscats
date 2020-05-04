@@ -176,7 +176,7 @@ int Model::GetRoundsCount() const {
   return rounds_count_;
 }
 
-int Model::GetPrepairTimeBetweenRounds() const {
+int Model::GetPrepareTimeBetweenRounds() const {
   return prepair_time_between_rounds_;
 }
 
@@ -468,12 +468,31 @@ void Model::LoadDatabase() {
     if (json_particle.contains("repeat_number")) {
       repeat_number = json_particle["repeat_number"].toInt();
     }
+    int sound_id = -1;
+    if (json_particle.contains("sound")) {
+      sound_id = json_particle["sound"].toInt();
+    }
     id_to_particle_.emplace_back(size, repeat_number);
+    id_to_particle_.back().SetSoundId(sound_id);
     auto json_animation = json_particle["animation"].toObject();
     SetAnimationToGameObject(
         &id_to_particle_.back(),
         {json_animation["timing"].toInt()},
         {json_animation["path"].toString()});
+  }
+
+  // Loading particle sounds
+  QJsonArray json_sounds = json_object["sounds"].toArray();
+  int sounds_count = json_sounds.count();
+  id_to_particle_sound_.clear();
+  id_to_particle_sound_.reserve(sounds_count);
+  QJsonObject json_sound;
+  for (int i = 0; i < sounds_count; i++) {
+    json_sound = json_sounds[i].toObject();
+    QString path = json_sound["path"].toString();
+    auto* sound_effect = new QSoundEffect();
+    sound_effect->setSource(QUrl("qrc:resources/" + path));
+    id_to_particle_sound_.emplace_back(sound_effect);
   }
 
   // backgrounds
@@ -562,4 +581,12 @@ void Model::SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object) {
   }
   p_enemy->GetParticleHandler()->SetEvents({at_creation, at_death, while_alive},
                                            period);
+}
+
+QSoundEffect* Model::GetParticleSoundEffectById(int id) const {
+  return id_to_particle_sound_[id];
+}
+
+const Particle& Model::GetParticleById(int id) const {
+  return id_to_particle_[id];
 }

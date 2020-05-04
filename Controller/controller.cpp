@@ -61,7 +61,6 @@ void Controller::GameProcess() {
     music_player_->NewWaveSound();
     CreateNextWave();
   }
-
   TickSpawners();
   TickEnemies();
   TickBuildings();
@@ -89,7 +88,7 @@ bool Controller::CanCreateNextWave() {
   }
 
   if (current_game_time_ - last_round_start_time_
-      < model_->GetPrepairTimeBetweenRounds()) {
+      < model_->GetPrepareTimeBetweenRounds()) {
     return false;
   }
 
@@ -232,6 +231,11 @@ void Controller::TickParticleHandler(ParticleHandler* particle_handler) {
   particle_handler->Tick();
   if (particle_handler->IsReadyToCreateParticle()) {
     model_->CreateParticles(particle_handler->GetParticlesQueue());
+    const auto& particles_queue = particle_handler->GetParticlesQueue();
+    for (auto particle : particles_queue) {
+      int sound_id = model_->GetParticleById( particle.particle_id ).GetSoundId();
+      model_->GetParticleSoundEffectById(sound_id)->play();
+    }
     particle_handler->Clear();
   }
 }

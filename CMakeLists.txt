@@ -20,7 +20,6 @@ add_executable(techvscats
         main.cpp
         Controller/controller.cpp
         Controller/spawner.cpp
-        Controller/music_player.cpp
         GameObject/abstract_projectile.cpp
         GameObject/homing_projectile.cpp
         GameObject/auric_field.cpp
@@ -36,6 +35,7 @@ add_executable(techvscats
         GameObject/particle.cpp
         Model/coordinate.cpp
         Model/model.cpp
+        Model/music_player.cpp
         Model/road.cpp
         Model/size.cpp
         resources.qrc

@@ -11,7 +11,7 @@
 #include "GameObject/enemy.h"
 #include "GameObject/particle.h"
 #include "View/text_notification.h"
-#include "music_player.h"
+#include "Model/music_player.h"
 
 enum class Exit {
   kWin,
