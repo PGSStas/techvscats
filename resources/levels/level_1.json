@@ -211,14 +211,14 @@
       {
         "spawn_period": 6000,
         "enemy_id": 0,
-        "time_of_next_spawn": 1750,
+        "time_of_next_spawn": 1400,
         "group_size": 4,
         "road_to_spawn": 0
       },
       {
         "spawn_period": 6000,
         "enemy_id": 0,
-        "time_of_next_spawn": 2500,
+        "time_of_next_spawn": 1800,
         "group_size": 4,
         "road_to_spawn": 0
       },

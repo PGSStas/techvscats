@@ -7,8 +7,8 @@
       "reward": 3,
       "max_health": 30,
       "size": {
-        "width": 70,
-        "height": 70
+        "width": 60,
+        "height": 60
       },
       "animation": {
         "path": "enemies/toster_3",
@@ -29,8 +29,8 @@
         "effect_id": 0
       },
       "size": {
-        "width": 70,
-        "height": 70
+        "width": 80,
+        "height": 80
       },
       "animation": {
         "path": "enemies/toster_3",
@@ -51,11 +51,11 @@
         "effect_id": 0
       },
       "size": {
-        "width": 70,
-        "height": 70
+        "width": 100,
+        "height": 100
       },
       "animation": {
-        "path": "enemies/mouse_3",
+        "path": "enemies/toster_3",
         "timing": 600
       },
       "particles": {
@@ -69,8 +69,8 @@
       "reward": 1,
       "max_health": 14,
       "size": {
-        "width": 70,
-        "height": 70
+        "width": 40,
+        "height": 40
       },
       "animation": {
         "path": "enemies/mouse_3",
@@ -91,8 +91,8 @@
         "effect_id": 1
       },
       "size": {
-        "width": 65,
-        "height": 100
+        "width": 60,
+        "height": 60
       },
       "animation": {
         "path": "enemies/mouse_3",
@@ -287,7 +287,7 @@
       ],
       "action_time": [
         0,
-        6000,
+        5500,
         0
       ],
       "upgrade_tree": [
@@ -303,7 +303,7 @@
       "settle_cost": 150,
       "projectile": {
         "projectile_id": 2,
-        "attack_damage": 1.6,
+        "attack_damage": 4,
         "attack_range": 300,
         "max_aims": 1
       },
@@ -313,9 +313,9 @@
         "towers/laser_post_4"
       ],
       "action_time": [
-        100,
-        50,
-        10
+        0,
+        200,
+        0
       ],
       "upgrade_tree": [
         7,
@@ -402,7 +402,7 @@
       ],
       "action_time": [
         0,
-        5000,
+        4500,
         0
       ],
       "upgrade_tree": [
@@ -426,14 +426,14 @@
       "settle_cost": 100,
       "projectile": {
         "projectile_id": 2,
-        "attack_damage": 1.5,
+        "attack_damage": 3.8,
         "attack_range": 400,
         "max_aims": 2
       },
       "action_time": [
-        100,
-        50,
-        10
+        0,
+        200,
+        0
       ],
       "upgrade_tree": [
         11,
@@ -519,7 +519,7 @@
       ],
       "action_time": [
         0,
-        5500,
+        4500,
         0
       ],
       "upgrade_tree": [
@@ -537,7 +537,7 @@
       "settle_cost": 170,
       "projectile": {
         "projectile_id": 2,
-        "attack_damage": 1.4,
+        "attack_damage": 3.6,
         "attack_range": 300,
         "max_aims": 3
       },
@@ -547,9 +547,9 @@
         "towers/laser_lv3_post_4"
       ],
       "action_time": [
-        100,
-        50,
-        10
+        0,
+        200,
+        0
       ],
       "upgrade_tree": [
         0
