@@ -32,6 +32,7 @@ SOURCES += \
         GameObject/particle.cpp \
         Model/coordinate.cpp \
         Model/model.cpp \
+        Model/music_player.cpp \
         Model/road.cpp \
         Model/size.cpp \
         View/animation_player.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
         Model/coordinate.h \
         Model/enemy_group.h \
         Model/model.h \
+        Model/music_player.h \
         Model/road.h \
         Model/size.h \
         View/animation_player.h \
