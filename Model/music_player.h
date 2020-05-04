@@ -1,5 +1,5 @@
-#ifndef MUSIC_PLAYER_H
-#define MUSIC_PLAYER_H
+#ifndef  MODEL_MUSIC_PLAYER_H_
+#define  MODEL_MUSIC_PLAYER_H_
 
 #include <QtMultimedia/QSoundEffect>
 #include <QtMultimedia/QMediaPlayer>
@@ -36,4 +36,4 @@ class MusicPlayer : public QObject {
   QSoundEffect* new_wave_;
 };
 
-#endif //MUSIC_PLAYER_H
+#endif  // MODEL_MUSIC_PLAYER_H_
