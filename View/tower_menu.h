@@ -31,7 +31,8 @@ class TowerMenu {
   void Tick(const SizeHandler& size_handler, int delta_time);
   void SetIsWantToReplaceToFalse();
   void RescaleButtons(const SizeHandler& size_handler);
-  void DrawTowersAuraAndRange(QPainter* painter, const SizeHandler& size_handler,
+  void DrawTowersAuraAndRange(QPainter* painter,
+                              const SizeHandler& size_handler,
                               const Building& instance);
   void DrawInfoField(QPainter* painter, const SizeHandler& size_handler,
                      const Building& instance);

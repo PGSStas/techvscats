@@ -20,7 +20,7 @@
 #include "tower_menu.h"
 
 class View : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -46,7 +46,6 @@ class View : public QMainWindow {
   AbstractController* controller_;
   SizeHandler size_handler_;
   QElapsedTimer view_timer_;
-
 
   int controller_timer_id_;
 
