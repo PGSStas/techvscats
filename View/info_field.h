@@ -20,7 +20,7 @@ class InfoField {
 
   void SetInfo(const Building& building);
   void SetPosition(Coordinate position, Size button_size, double shift);
-  void Hide(bool is_hide);
+  void SetVisible(bool is_hide);
 
   bool IsOnBottom() const;
 

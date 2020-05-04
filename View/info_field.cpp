@@ -96,10 +96,17 @@ void InfoField::SetPosition(Coordinate position, Size button_size,
     position_.y += shift;
     is_on_bottom_ = true;
   }
+
+  if (position_.x + kSize.width > constants::kGameWidth) {
+    position_.x = constants::kGameWidth - kSize.width - 10;
+  }
+  if (position_.x < 0) {
+    position_.x = 0;
+  }
 }
 
-void InfoField::Hide(bool is_hide) {
-  is_hidden_ = is_hide;
+void InfoField::SetVisible(bool is_hide) {
+  is_hidden_ = !is_hide;
 }
 
 bool InfoField::IsOnBottom() const {

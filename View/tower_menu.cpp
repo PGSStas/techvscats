@@ -103,7 +103,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
   info_field_.SetPosition(position_, button_constants::kShortButtonSize,
                           button_constants::kShift);
   if (active_button_index_ != -1) {
-    info_field_.Hide(false);
+    info_field_.SetVisible(true);
   }
   for (auto& button : buttons_) {
     button->UpdateIcon();
@@ -116,7 +116,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
       button->SetIsEnter(false);
     }
   }
-  info_field_.Hide(true);
+  info_field_.SetVisible(false);
   if (slow_disable) {
     delta_time *= -1;
   }
@@ -221,8 +221,8 @@ void TowerMenu::DrawInfoField(QPainter* painter,
   }
 
   painter->restore();
-  info_field_.Draw(painter, size_handler);
   info_field_.SetInfo(instance);
+  info_field_.Draw(painter, size_handler);
 }
 
 void TowerMenu::Hide(bool is_hidden) {
