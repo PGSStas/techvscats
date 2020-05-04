@@ -260,7 +260,6 @@
       "description" : "Ручки крючки запускают бомбючки."
     },
     {
-      "name": "support",
       "settle_cost": 24,
       "auric_field": {
         "radius": 200,
@@ -287,7 +286,6 @@
       "description" : "Помогу"
     },
     {
-      "name": "default tower level 2",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 0,

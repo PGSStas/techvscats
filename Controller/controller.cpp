@@ -78,7 +78,9 @@ void Controller::GameProcess() {
   if (CanCreateNextWave() && game_status_ == Exit::kPlay) {
     CreateNextWave();
   }
-
+  if (game_status_ != Exit::kPlay) {
+    TickEndGame();
+  }
   TickSpawners();
   TickEnemies();
   TickBuildings();
@@ -137,6 +139,28 @@ void Controller::CreateNextWave() {
                       model_->GetRoundsCount());
 }
 
+void Controller::TickEndGame() {
+  if (last_time_end_particle_created + kParticlesPeriod < current_game_time_) {
+    last_time_end_particle_created = current_game_time_;
+    ParticleParameters particle(
+        (game_status_ == Exit::kLose) ? kLooseParticleId : kWinParticleId,
+        kEndParticlesSize,
+        Coordinate(0, 0)
+            + Size(qrand() % static_cast<int>(constants::kGameWidth),
+                   qrand() % static_cast<int>(constants::kGameHeight)));
+    model_->CreateParticles({particle});
+    if (qrand() % 1000 < 100) {
+      const auto& buildings = model_->GetBuildings();
+      for (int i = 0; i < buildings.size(); i++) {
+        if(buildings[i]->GetId()!=0){
+          model_->CreateBuildingAtIndex(i,0);
+          return;
+        }
+      }
+    }
+  }
+}
+
 void Controller::TickSpawners() {
   auto spawners = model_->GetSpawners();
   spawners->remove_if([](const Spawner& spawner) { return spawner.IsDead(); });
@@ -170,30 +194,19 @@ void Controller::TickEnemies() {
 void Controller::TickBuildings() {
   const auto& buildings = model_->GetBuildings();
   for (const auto& building : buildings) {
-    switch (game_status_) {
-      case Exit::kPlay: {
-        building->Tick(current_game_time_);
-        building->UpdateAim(*model_->GetEnemies());
-        if (!building->IsReadyToCreateProjectiles()) {
-          continue;
-        }
-        const auto& aims = building->GetAims();
-        building->SetReadyToCreateProjectileToFalse();
-        for (const auto& aim : aims) {
-          model_->CreateProjectile(aim, *building);
-        }
-        break;
-      }
-      case Exit::kLose: {
-        // Explosions will be added after merge with #17.
-        break;
-      }
-      case Exit::kWin: {
-        // Fireworks will be added after merge with #17.
-        break;
-      }
+    building->Tick(current_game_time_);
+    building->UpdateAim(*model_->GetEnemies());
+    if (!building->IsReadyToCreateProjectiles()) {
+      continue;
     }
+    const auto& aims = building->GetAims();
+    building->SetReadyToCreateProjectileToFalse();
+    for (const auto& aim : aims) {
+      model_->CreateProjectile(aim, *building);
+    }
+    break;
   }
+
 
   // Base
   model_->GetBase()->Tick(current_game_time_);

@@ -119,7 +119,7 @@ void View::DrawEndgameMessage(QPainter* painter) {
     painter->drawText(point.x, point.y, endgame_message_);
 
     painter->restore();
-  }else{
+  } else {
     tower_menu_.Hide(false);
   }
 }
@@ -250,11 +250,11 @@ void View::DisableMainMenuUi() {
 
 void View::timerEvent(QTimerEvent* event) {
   if (event->timerId() == controller_timer_id_) {
-    int delta_time = time_between_ticks_.elapsed();
+    int delta_time_ = time_between_ticks_.elapsed();
     time_between_ticks_.restart();
     controller_->Tick(controller_->GetCurrentTime()
-                          + delta_time * game_speed_coefficient_);
-    tower_menu_.Tick(size_handler_, delta_time);
+                          + delta_time_ * game_speed_coefficient_);
+    tower_menu_.Tick(size_handler_, delta_time_);
     if (tower_menu_.IsWantToReplace()) {
       controller_->SetBuilding(
           tower_menu_.GetCarrierIndex(),

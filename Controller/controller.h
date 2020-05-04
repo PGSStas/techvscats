@@ -54,12 +54,19 @@ class Controller : public AbstractController {
   int current_game_time_ = 0;
   int last_round_start_time_ = 0;
 
+  const int kWinParticleId = 0;
+  const int kLooseParticleId = 1;
+  const int kParticlesPeriod = 100;
+  const Size kEndParticlesSize = {200, 200};
+  int last_time_end_particle_created = 0;
+
  private:
   void GameProcess();
   void MenuProcess();
 
   bool CanCreateNextWave();
   void CreateNextWave();
+  void TickEndGame();
   void TickSpawners();
   void TickParticleHandlers();
   void TickParticleHandler(ParticleHandler* particle_handler);

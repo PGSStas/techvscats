@@ -20,7 +20,7 @@
 #include "tower_menu.h"
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -47,6 +47,7 @@ class View : public QMainWindow {
   AbstractController* controller_;
   SizeHandler size_handler_;
   QElapsedTimer view_timer_;
+
 
   int controller_timer_id_;
 
@@ -79,7 +80,6 @@ class View : public QMainWindow {
   void DrawSettings(QPainter* painter);
   void DrawPauseMenu(QPainter* painter);
   void DrawEndgameMessage(QPainter* painter);
-
   // Game window
   void DrawTowersAuraAndRange(QPainter* painter);
   void DrawEnemies(QPainter* painter);
