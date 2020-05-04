@@ -66,9 +66,13 @@ void View::DrawMainMenu(QPainter*) {
 }
 
 void View::DrawGame(QPainter* painter) {
-  DrawEnemies(painter);
+  controller_->RescaleObjects(size_handler_);
   DrawProjectiles(painter);
   DrawTowers(painter);
+  DrawEnemies(painter);
+  DrawBars(painter);
+  controller_->GetBase().Draw(painter, size_handler_);
+  DrawParticles(painter);
   DrawAdditionalInfo(painter);
 
   button_handler_->SetMainMenuUiVisible(false);
@@ -87,8 +91,6 @@ void View::DrawPauseMenu(QPainter*) {
 }
 
 void View::DrawTowers(QPainter* painter) {
-  controller_->GetBase().Draw(painter, size_handler_);
-
   const auto& buildings = controller_->GetBuildings();
   for (const auto& building : buildings) {
     building->Draw(painter, size_handler_);
@@ -114,6 +116,14 @@ void View::DrawProjectiles(QPainter* painter) {
   auto projectiles_list = controller_->GetProjectiles();
   for (auto& projectile : projectiles_list) {
     projectile->Draw(painter, size_handler_);
+  }
+}
+
+void View::DrawParticles(QPainter* painter) {
+  const auto& particles = controller_->GetParticles();
+  for (auto particle = particles.rbegin(); particle != particles.rend();
+       particle++) {
+    particle->Draw(painter, size_handler_);
   }
 }
 
@@ -164,31 +174,27 @@ void View::EnableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(true);
 }
 
-
 void View::DrawAdditionalInfo(QPainter* painter) {
-  const auto& enemies_list = controller_->GetEnemies();
-  for (auto& enemy : enemies_list) {
-    enemy->DrawHealthBar(painter, size_handler_);
-    enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
-                                                enemy->GetPosition(),
-                                                enemy->GetSize());
-  }
+  painter->save();
 
-  const auto& buildings_list = controller_->GetBuildings();
-  for (const auto& building : buildings_list) {
-    building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
-                                                   building->GetPosition(),
-                                                   building->GetSize());
-  }
+  controller_->GetBase().DrawUI(painter, size_handler_);
 
   if (is_tower_menu_enabled_) {
     tower_menu_->Draw(painter, size_handler_, controller_->GetCurrentTime());
   }
 
+  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+  painter->drawImage(origin.x, origin.y,
+                     controller_->GetInterface().GetCurrentFrame());
+
+  DrawRoundInfo(painter);
+
   const auto& text_notifications = controller_->GetTextNotifications();
   for (auto& notification : text_notifications) {
     notification.Draw(painter, size_handler_);
   }
+
+  painter->restore();
 }
 
 void View::DisableMainMenuUi() {
@@ -205,10 +211,45 @@ void View::timerEvent(QTimerEvent* event) {
   }
 }
 
-void View::UpdateRounds(int current_round_number, int number_of_rounds) {
+void View::UpdateRounds(int, int) {
   // Here will be some kind of round indicator.
 }
 
 void View::ChangeGameSpeed(Speed speed) {
   game_speed_coefficient_ = static_cast<int>(speed);
+}
+
+void View::DrawRoundInfo(QPainter* painter) {
+  auto font = painter->font();
+  font.setPixelSize(size_handler_.GameToWindowLength(constants::kFontSize));
+  font.setFamily(QFontDatabase::applicationFontFamilies(0).at(0));
+  painter->setFont(font);
+  painter->setPen(Qt::white);
+
+  Coordinate round_info_position = size_handler_.GameToWindowCoordinate(
+      kRoundPosition);
+  Size round_info_size = size_handler_.GameToWindowSize(kRoundSize);
+  QString round_info = tr(" ") +
+      QString::number(controller_->GetCurrentRoundNumber()) + " " + tr("/") +
+      " " + QString::number(controller_->GetRoundsCount());
+  painter->drawText(round_info_position.x, round_info_position.y,
+                    round_info_size.width, round_info_size.height,
+                    Qt::AlignCenter, round_info);
+}
+
+void View::DrawBars(QPainter* painter) {
+  const auto& enemies_list = controller_->GetEnemies();
+  for (auto& enemy : enemies_list) {
+    enemy->DrawHealthBar(painter, size_handler_);
+    enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                enemy->GetPosition(),
+                                                enemy->GetSize());
+  }
+
+  const auto& buildings_list = controller_->GetBuildings();
+  for (const auto& building : buildings_list) {
+    building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                   building->GetPosition(),
+                                                   building->GetSize());
+  }
 }

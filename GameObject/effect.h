@@ -8,6 +8,7 @@
 
 #include "Model/coordinate.h"
 #include "Model/size.h"
+#include "View/animation_player.h"
 #include "View/size_handler.h"
 
 enum class EffectTarget {
@@ -25,8 +26,8 @@ enum class CoefficientType {
 };
 
 struct EffectVisualization {
-  QColor reduced;
-  QColor increased;
+  AnimationPlayer reduced;
+  AnimationPlayer increased;
 };
 
 class Effect {
@@ -44,6 +45,8 @@ class Effect {
 
   static void SetEffectVisualizations(
       const std::vector<EffectVisualization>& effect_visualization);
+  static void Rescale(Size size);
+  static Size GetSize();
 
   EffectTarget GetEffectTarget() const;
   double GetMoveSpeedCoefficient() const;
@@ -58,6 +61,8 @@ class Effect {
   EffectTarget effect_target_;
   std::vector<double> coefficients_;
   static std::vector<EffectVisualization> effect_visualizations_;
+  static const Size kSize;
+  static const double kNearbyCoefficient;
 
  private:
   void DrawEffectIcon(QPainter* painter, Coordinate* point, Size size,

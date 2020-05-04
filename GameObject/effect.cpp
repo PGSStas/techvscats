@@ -1,7 +1,11 @@
 #include "effect.h"
 
 std::vector<EffectVisualization> Effect::effect_visualizations_{};
+const Size Effect::kSize = {37, 37};
+const double Effect::kNearbyCoefficient = 0.8;
 
+//  The size of the effect, the coefficient of
+//  inverse proximity - the smaller, the closer the effects
 Effect::Effect(EffectTarget effect_type,
                double speed_coefficient,
                double armor_coefficient,
@@ -32,9 +36,9 @@ void Effect::DrawEffectsIcons(QPainter* painter,
   painter->setBrush(Qt::red);
   Coordinate point =
       size_handler.GameToWindowCoordinate(
-          position - Size(parent_size.width / 2 + 2,
-                          - parent_size.height / 2 - 2));
-  Size size = size_handler.GameToWindowSize(Size(10, 10));
+          position - Size(parent_size.width / 2 + 15,
+                          -parent_size.height / 2));
+  Size size = size_handler.GameToWindowSize(kSize);
 
   DrawEffectIcon(painter, &point, size, CoefficientType::kDamage);
 
@@ -43,8 +47,8 @@ void Effect::DrawEffectsIcons(QPainter* painter,
     DrawEffectIcon(painter, &point, size, CoefficientType::kArmor);
   }
   if (effect_target_ == EffectTarget::kBuilding) {
-    DrawEffectIcon(painter, &point, size, CoefficientType::kRange);
     DrawEffectIcon(painter, &point, size, CoefficientType::kAttackRate);
+    DrawEffectIcon(painter, &point, size, CoefficientType::kRange);
   }
   painter->restore();
 }
@@ -52,6 +56,17 @@ void Effect::DrawEffectsIcons(QPainter* painter,
 void Effect::SetEffectVisualizations(
     const std::vector<EffectVisualization>& effect_visualization) {
   effect_visualizations_ = effect_visualization;
+}
+
+void Effect::Rescale(Size size) {
+  for (auto& effect_visualise : effect_visualizations_) {
+    effect_visualise.increased.Rescale(size);
+    effect_visualise.reduced.Rescale(size);
+  }
+}
+
+Size Effect::GetSize() {
+  return kSize;
 }
 
 EffectTarget Effect::GetEffectTarget() const {
@@ -97,11 +112,12 @@ void Effect::DrawEffectIcon(QPainter* painter, Coordinate* point,
   painter->save();
   EffectVisualization effect_visualization = effect_visualizations_[index];
   if (coefficient > 1) {
-    painter->setBrush(effect_visualization.increased);
+    painter->drawImage(QPoint(point->x, point->y),
+                       effect_visualization.increased.GetCurrentFrame());
   } else if (coefficient < 1) {
-    painter->setBrush(effect_visualization.reduced);
+    painter->drawImage(QPoint(point->x, point->y),
+                       effect_visualization.reduced.GetCurrentFrame());
   }
-  painter->drawEllipse(point->x, point->y, size.width, size.height);
-  point->x += size.width + std::max(size.width * 0.1, 2.0);
+  point->x += size.width * kNearbyCoefficient;
   painter->restore();
 }

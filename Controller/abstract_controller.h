@@ -9,6 +9,7 @@
 #include "GameObject/base.h"
 #include "GameObject/building.h"
 #include "GameObject/enemy.h"
+#include "GameObject/particle.h"
 #include "View/text_notification.h"
 
 enum class Exit {
@@ -45,6 +46,7 @@ class AbstractController {
   virtual void MouseMove(Coordinate position) = 0;
   virtual void RescaleObjects(const SizeHandler& size_handler) = 0;
 
+  virtual const std::list<Particle>& GetParticles() const = 0;
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
   virtual const std::list<std::shared_ptr<AbstractProjectile>>&
     GetProjectiles() const = 0;
@@ -56,6 +58,10 @@ class AbstractController {
   virtual int GetCurrentTime() const = 0;
 
   virtual const AnimationPlayer& GetBackground(WindowType type) const = 0;
+  virtual const AnimationPlayer& GetInterface() const = 0;
+
+  virtual int GetCurrentRoundNumber() const = 0;
+  virtual int GetRoundsCount() const = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

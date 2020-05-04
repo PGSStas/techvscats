@@ -12,6 +12,7 @@ struct Size {
   Size(double x, double y) noexcept;
 
   double GetLength() const;
+  Size& Normalize();
 
   Size operator*(double right) const;
   Size operator/(double right) const;
@@ -24,6 +25,7 @@ struct Size {
   Size& operator-=(Size right);
 
   bool operator==(Size right) const;
+  bool operator!=(Size right) const;
 };
 
 #endif  // MODEL_SIZE_H_

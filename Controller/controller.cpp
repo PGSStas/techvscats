@@ -50,11 +50,14 @@ void Controller::GameProcess() {
   if (CanCreateNextWave()) {
     CreateNextWave();
   }
+
   TickSpawners();
   TickEnemies();
   TickBuildings();
   TickProjectiles();
   TickAuras();
+  TickParticleHandlers();
+  TickParticles();
   TickTextNotifications();
 }
 
@@ -194,6 +197,45 @@ void Controller::TickTextNotifications() {
   }
 }
 
+void Controller::TickParticleHandlers() {
+  auto enemies = model_->GetEnemies();
+  for (auto& enemy : *enemies) {
+    TickParticleHandler(enemy->GetParticleHandler());
+  }
+  auto buildings = model_->GetBuildings();
+  for (auto& building : buildings) {
+    TickParticleHandler(building->GetParticleHandler());
+  }
+  auto projectiles = model_->GetProjectiles();
+  for (auto& projectile : *projectiles) {
+    TickParticleHandler(projectile->GetParticleHandler());
+  }
+  auto particles = model_->GetParticles();
+  for (auto& particle : *particles) {
+    TickParticleHandler(particle.GetParticleHandler());
+  }
+  auto base = model_->GetBase();
+  TickParticleHandler(base->GetParticleHandler());
+}
+
+void Controller::TickParticleHandler(ParticleHandler* particle_handler) {
+  particle_handler->Tick();
+  if (particle_handler->IsReadyToCreateParticle()) {
+    model_->CreateParticles(particle_handler->GetParticlesQueue());
+    particle_handler->Clear();
+  }
+}
+
+void Controller::TickParticles() {
+  auto particles = model_->GetParticles();
+  particles->remove_if([](const Particle& particle) {
+    return particle.IsDead();
+  });
+  for (auto& particle : *particles) {
+    particle.Tick(current_game_time_);
+  }
+}
+
 void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
   if (!aura.IsValid()) {
     return;
@@ -236,8 +278,12 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
           * constants::kRefundCoefficient;
 
-      model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
-                                   base->GetGoldPosition(), Qt::green,
+      Coordinate notification = base->GetGoldPosition() +
+          base->GetGoldSize()
+              / std::max(QString::number(sell_cost).length(), 2);
+      model_->AddTextNotification({"+" + QString::number(sell_cost) + " "
+                                       + constants::kCurrency,
+                                   notification, Qt::green,
                                    current_game_time_});
       base->AddGoldAmount(sell_cost);
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
@@ -245,13 +291,18 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
       base->SubtractGoldAmount(settle_cost);
 
-      model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
-                                   base->GetGoldPosition(), Qt::red,
+      Coordinate notification = base->GetGoldPosition() +
+          base->GetGoldSize()
+              / std::max(QString::number(settle_cost).length(), 2);
+      model_->AddTextNotification({"-" + QString::number(settle_cost) + " "
+                                       + constants::kCurrency,
+                                   notification, Qt::red,
                                    current_game_time_});
     }
   } else {
-    model_->AddTextNotification({"Not enough gold", base->GetGoldPosition(),
-                                 Qt::blue, current_game_time_});
+    auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
+    model_->AddTextNotification({QObject::tr("Not enough ") +
+    constants::kCurrency, position, Qt::blue, current_game_time_});
   }
 }
 
@@ -298,6 +349,7 @@ void Controller::MousePress(Coordinate position) {
     return;
   }
 
+  // TODO(elizabethfeden): qt buttons.
   auto pressed = view_->GetTowerMenu()->GetButtonInside(position);
   if (pressed != nullptr) {
     pressed->MakeAction();
@@ -316,6 +368,10 @@ void Controller::MouseMove(Coordinate position) {
 
 void Controller::RescaleObjects(const SizeHandler& size_handler) {
   model_->RescaleDatabase(size_handler);
+}
+
+const std::list<Particle>& Controller::GetParticles() const {
+  return *model_->GetParticles();
 }
 
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {
@@ -346,7 +402,8 @@ int Controller::GetCurrentTime() const {
 
 void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   int reward = enemy.ComputeReward();
-  model_->AddTextNotification({QString::number(reward) + " gold",
+  model_->AddTextNotification({QString::number(reward) + " "
+                                   + constants::kCurrency,
                                enemy.GetPosition(), Qt::yellow,
                                current_game_time_});
   model_->GetBase()->AddGoldAmount(reward);
@@ -354,4 +411,16 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
 
 const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));
+}
+
+const AnimationPlayer& Controller::GetInterface() const {
+  return model_->GetInterface();
+}
+
+int Controller::GetCurrentRoundNumber() const {
+  return model_->GetCurrentRoundNumber();
+}
+
+int Controller::GetRoundsCount() const {
+  return model_->GetRoundsCount();
 }
