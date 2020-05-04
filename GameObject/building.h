@@ -28,7 +28,7 @@ class Building : public GameObject {
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
 
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
-                     int max_aims);
+                     int max_aims, Size shooting_anchor);
   void SetReadyToCreateProjectileToFalse();
   void SetTotalCost(int total_cost);
 
@@ -43,6 +43,8 @@ class Building : public GameObject {
   Effect* GetAppliedEffect();
   const AuricField& GetAuricField() const;
   const std::list<std::shared_ptr<Enemy>>& GetAims() const;
+  Size GetShootingAnchor() const;
+
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
   bool IsInAttackRange(Coordinate coordinate) const;
@@ -63,6 +65,7 @@ class Building : public GameObject {
   int attack_range_ = 0;
   uint max_aims_ = 1;
   double attack_damage_ = 0;
+  Size shooting_anchor_ = {0, 0};
   bool is_ready_to_create_projectiles_ = false;
   bool is_ready_to_shoot_ = false;
   std::list<std::shared_ptr<Enemy>> aims_;

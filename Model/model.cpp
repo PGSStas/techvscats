@@ -53,9 +53,9 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
       casted != nullptr) {
     projectiles_.push_back(std::make_shared<LaserProjectile>(*casted));
   }
-  projectiles_.back()->SetParameters(aim, building.GetPosition(),
-                                     building.GetProjectileSpeedCoefficient(),
-                                     building.GetDamage());
+  projectiles_.back()->SetParameters(aim,
+      building.GetPosition() + building.GetShootingAnchor(),
+      building.GetProjectileSpeedCoefficient(), building.GetDamage());
 }
 
 void Model::CreateParticles(const std::list<ParticleParameters>& parameters) {
@@ -375,10 +375,13 @@ void Model::LoadDatabase() {
     Building building(i, json_building["settle_cost"].toInt(), aura);
     if (json_building.contains("projectile")) {
       auto json_projectile = json_building["projectile"].toObject();
+      Size anchor = Size(
+          json_projectile["shooting_anchor"].toObject()["x"].toInt(),
+          json_projectile["shooting_anchor"].toObject()["y"].toInt());
       building.SetProjectile(json_projectile["projectile_id"].toInt(),
                              json_projectile["attack_damage"].toDouble(),
                              json_projectile["attack_range"].toInt(),
-                             json_projectile["max_aims"].toInt());
+                             json_projectile["max_aims"].toInt(), anchor);
     }
     auto json_timings = json_building["action_time"].toArray();
     auto json_paths = json_building["animation_path"].toArray();
