@@ -50,6 +50,10 @@
     <file>resources/buttons_resources/upgrade_button_h.png</file>
     <file>resources/buttons_resources/second_upgrade_button.png</file>
     <file>resources/buttons_resources/second_upgrade_button_h.png</file>
+    <file>resources/buttons_resources/decline.png</file>
+    <file>resources/buttons_resources/decline_h.png</file>
+    <file>resources/buttons_resources/accept.png</file>
+    <file>resources/buttons_resources/accept_h.png</file>
 
     <file>resources/fonts/gui_font.ttf</file>
 

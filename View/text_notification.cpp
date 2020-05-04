@@ -12,11 +12,11 @@ TextNotification::TextNotification(const QString& message,
 
 void TextNotification::Tick(int current_time) {
   UpdateTime(current_time);
-  position_ += moving_vector_ * delta_tick_time_ / constants::kTimeScale;
+  position_ += moving_vector_ * delta_time_ / constants::kTimeScale;
   font_size *= size_change_coefficient_;
   font_size = std::min(font_size, 40000.0);
   moving_vector_ *= kSlowdownCoefficient;
-  life_time_ -= delta_tick_time_;
+  life_time_ -= delta_time_;
   if (life_time_ < 0) {
     is_dead_ = true;
   }

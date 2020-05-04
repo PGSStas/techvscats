@@ -1,7 +1,7 @@
 #include "info_field.h"
 
 void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
-  if (!is_hidden_) {
+  if (is_hidden_) {
     return;
   }
   painter->save();

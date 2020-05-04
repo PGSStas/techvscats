@@ -16,20 +16,48 @@ void TowerMenu::HeTappedMe(uint button_index) {
 TowerMenu::TowerMenu(QMainWindow* window) {
   std::vector<ButtonImagePath> button_images;
   button_images.emplace_back(
-      ":resources/buttons_resources/sell_up.png",
-      ":resources/buttons_resources/sell_down.png");
+      ":resources/buttons_resources/empty_button.png",
+      ":resources/buttons_resources/empty_button_h.png");
   button_images.emplace_back(
-      ":resources/buttons_resources/building_up.png",
-      ":resources/buttons_resources/building_down.png");
+      ":resources/buttons_resources/default_tower_button.png",
+      ":resources/buttons_resources/default_tower_button_h.png");
   button_images.emplace_back(
-      ":resources/buttons_resources/building_up.png",
-      ":resources/buttons_resources/building_down.png");
+      ":resources/buttons_resources/laser_button.png",
+      ":resources/buttons_resources/laser_button_h.png");
   button_images.emplace_back(
-      ":resources/buttons_resources/building_up.png",
-      ":resources/buttons_resources/building_down.png");
+      ":resources/buttons_resources/bomb_button.png",
+      ":resources/buttons_resources/bomb_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/support_button.png",
+      ":resources/buttons_resources/support_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/upgrade_button.png",
+      ":resources/buttons_resources/upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/second_upgrade_button.png",
+      ":resources/buttons_resources/second_upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/upgrade_button.png",
+      ":resources/buttons_resources/upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/second_upgrade_button.png",
+      ":resources/buttons_resources/second_upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/upgrade_button.png",
+      ":resources/buttons_resources/upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/second_upgrade_button.png",
+      ":resources/buttons_resources/second_upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/upgrade_button.png",
+      ":resources/buttons_resources/upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/second_upgrade_button.png",
+      ":resources/buttons_resources/second_upgrade_button_h.png");
+
   ButtonImagePath confirm(
-      ":resources/buttons_resources/confirm_up.png",
-      ":resources/buttons_resources/confirm_down.png");
+      ":resources/buttons_resources/accept.png",
+      ":resources/buttons_resources/accept_h.png");
 
   for (auto& button_image : button_images) {
     buttons_.push_back(

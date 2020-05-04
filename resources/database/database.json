@@ -171,9 +171,7 @@
       ],
       "particles": {
         "at_death": 6
-      }
-        2
-      ],
+      },
       "header" : "Продажа башни",
       "description" : "Ну продажа и продажа, что бубнить то"
     },
@@ -284,7 +282,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Саппорт lvl. 1",
+      "description" : "Помогу"
     },
     {
       "name": "default tower level 2",
@@ -311,7 +311,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Обычная бума lvl 2",
+      "description" : "Ну бума и бума, что бумбнить то"
     },
     {
       "name": "default tower level 3",
@@ -337,7 +339,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Обычная супер бума lvl 3",
+      "description" : "Ну супер бума и супер бума, что супер бумбнить то"
     },
     {
       "name": "bomb level 2",
@@ -364,7 +368,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Бабаха lvl 2",
+      "description" : "Бабаха бабахает бабахами"
     },
     {
       "name": "bomb level 3",
@@ -390,7 +396,10 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Бубуха lvl 3",
+      "description" : "Бубуха не бубуха, если не бубуха"
+
     },
     {
       "name": "support level 2",
@@ -415,7 +424,10 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Саппорт lvl 2",
+      "description" : "Помогает "
+
     },
     {
       "name": "support level 3",
@@ -439,7 +451,10 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Саппорт lvl 3",
+      "description" : "Помогает"
+
     },
     {
       "name": "laser level 2",
@@ -466,8 +481,10 @@
       ],
       "particles": {
         "at_death": 6
-      }
-    }, 
+      },
+      "header" : "Лэйсер lvl 2",
+      "description" : "лулу"
+    },
     {
       "settle_cost": 24,
       "projectile": {
