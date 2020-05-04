@@ -38,12 +38,12 @@ void MusicPlayer::SetVolume(int volume) {
     main_player_->play();
   }
   main_player_->setVolume(volume);
-  game_over_sound_->setVolume(volume);
-  button_sound_->setVolume(volume);
-  game_won_sound_->setVolume(volume);
-  sale_sound_->setVolume(volume);
-  not_enough_money_sound_->setVolume(volume);
-  new_wave_->setVolume(volume);
+  game_over_sound_->setVolume(volume / 100.);
+  button_sound_->setVolume(volume / 100.);
+  game_won_sound_->setVolume(volume / 100.);
+  sale_sound_->setVolume(volume / 100.);
+  not_enough_money_sound_->setVolume(volume / 100.);
+  new_wave_->setVolume(0.4 * volume / 100.);
 }
 
 void MusicPlayer::StartMenuMusic() {

@@ -149,6 +149,7 @@ void Controller::TickBuildings() {
     const auto& aims = building->GetAims();
     building->SetReadyToCreateProjectileToFalse();
     for (const auto& aim : aims) {
+      model_->CreateProjectile(aim, *building);
     }
   }
 
@@ -234,7 +235,9 @@ void Controller::TickParticleHandler(ParticleHandler* particle_handler) {
     const auto& particles_queue = particle_handler->GetParticlesQueue();
     for (auto particle : particles_queue) {
       int sound_id = model_->GetParticleById( particle.particle_id ).GetSoundId();
-      model_->GetParticleSoundEffectById(sound_id)->play();
+      if (sound_id != -1) {
+        model_->GetParticleSoundEffectById(sound_id)->play();
+      }
     }
     particle_handler->Clear();
   }

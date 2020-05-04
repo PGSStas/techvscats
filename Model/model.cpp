@@ -491,6 +491,7 @@ void Model::LoadDatabase() {
     json_sound = json_sounds[i].toObject();
     QString path = json_sound["path"].toString();
     auto* sound_effect = new QSoundEffect();
+    sound_effect->setVolume(0.4);
     sound_effect->setSource(QUrl("qrc:resources/" + path));
     id_to_particle_sound_.emplace_back(sound_effect);
   }

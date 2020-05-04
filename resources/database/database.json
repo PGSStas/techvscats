@@ -520,7 +520,7 @@
         "timing": 400,
         "path": "particles/kaboom0_8"
       },
-      "sound" : 0
+      "sound": 0
     },
     {
       "size": {
@@ -531,7 +531,7 @@
         "timing": 650,
         "path": "particles/kaboom1_8"
       },
-      "sound" : 1
+      "sound": 1
     },
     {
       "size": {
@@ -543,7 +543,7 @@
         "timing": 750,
         "path": "particles/on_fire2_5"
       },
-      "sound" : 2
+      "sound": 2
     },
     {
       "size": {
@@ -554,7 +554,7 @@
         "timing": 300,
         "path": "particles/scar3_6"
       },
-      "sound" : 3
+      "sound": 3
     },
     {
       "size": {
@@ -564,8 +564,7 @@
       "animation": {
         "timing": 450,
         "path": "particles/flash4_4"
-      },
-      "sound" : 0
+      }
     },
     {
       "size": {
@@ -576,7 +575,7 @@
         "timing": 200,
         "path": "particles/poof5_3"
       },
-      "sound" : 1
+      "sound": 5
     },
     {
       "size": {
@@ -587,7 +586,28 @@
         "timing": 630,
         "path": "particles/smoke6_9"
       },
-      "sound" : 2
+      "sound": 6
+    },
+    {
+      "size": {
+        "width": 0,
+        "height": 0
+      },
+      "sound": 4
+    },
+    {
+      "size": {
+        "width": 0,
+        "height": 0
+      },
+      "sound": 5
+    },
+    {
+      "size": {
+        "width": 0,
+        "height": 0
+      },
+      "sound": 6
     }
   ],
   "sounds": [
@@ -602,6 +622,15 @@
     },
     {
       "path": "sounds/particle_sound_3.wav"
+    },
+    {
+      "path": "sounds/particle_sound_4.wav"
+    },
+    {
+      "path": "sounds/particle_sound_5.wav"
+    },
+    {
+      "path": "sounds/particle_sound_6.wav"
     }
   ]
 }
