@@ -39,7 +39,7 @@ class Model {
   void AddTextNotification(const TextNotification& text_notification);
   void AddEnemyFromInstance(const Enemy& enemy_instance);
   void CreateBuildingAtIndex(int i, int id);
-  ProjectileType CreateProjectile(const std::shared_ptr<Enemy>& aim,
+  void CreateProjectile(const std::shared_ptr<Enemy>& aim,
                         const Building& building);
   void CreateParticles(const std::list<ParticleParameters>& parameters);
   void RescaleDatabase(const SizeHandler& size_handler);

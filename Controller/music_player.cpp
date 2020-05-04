@@ -10,57 +10,25 @@ MusicPlayer::MusicPlayer() {
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/game_sound.mp3"));
   main_playlist_->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop); // Зацикливание трека
 
-
   button_sound_ = new QSoundEffect();
   button_sound_->setSource(QUrl("qrc:resources/sounds/button_click.wav"));
-
-  enemy_death_sound_ = new QSoundEffect();
-  enemy_death_sound_->setSource(QUrl(
-      "qrc:resources/sounds/enemy_death_sound.wav"));
-
-  bomb_boom_sound_ = new QSoundEffect();
-  bomb_boom_sound_->setSource(QUrl("qrc:resources/sounds/main_boom_sound.wav"));
-  laser_boom_sound_ = new QSoundEffect();
-  laser_boom_sound_->setSource(QUrl("qrc:resources/sounds/laser_boom_sound.wav"));
-  aimed_boom_sound_ = new QSoundEffect();
-  aimed_boom_sound_->setSource(QUrl("qrc:resources/sounds/aimed_boom_sound.wav"));
 
   game_over_sound_ = new QSoundEffect();
   game_over_sound_->setSource(QUrl("qrc:resources/sounds/game_over_sound.wav"));
 
+  game_won_sound_ = new QSoundEffect();
+  game_won_sound_->setSource(QUrl("qrc:resources/sounds/game_won_sound.wav"));
+
+  sale_sound_ = new QSoundEffect();
+  sale_sound_->setSource(QUrl("qrc:resources/sounds/sale_sound.wav"));
+  not_enough_money_sound_ = new QSoundEffect();
+  not_enough_money_sound_->setSource(QUrl("qrc:resources/sounds/not_enough_money_sound.wav"));
+
+  new_wave_ = new QSoundEffect();
+  new_wave_->setSource(QUrl("qrc:resources/sounds/new_wave_sound.wav"));
+
   main_player_->play();
   SetVolume(100);
-}
-
-void MusicPlayer::StartMenuMusic() {
-  main_playlist_->setCurrentIndex(0);
-  qDebug() << main_playlist_->currentIndex();
-}
-
-void MusicPlayer::DeathEnemySound() {
-  enemy_death_sound_->play();
-}
-
-void MusicPlayer::GameOverSound() {
-  game_over_sound_->play();
-}
-
-void MusicPlayer::StopMenuMusic() {
-  main_player_->stop();
-}
-
-void MusicPlayer::StartGameMusic() {
-  main_playlist_->setCurrentIndex(1);
-  qDebug() << main_playlist_->currentIndex();
-  main_player_->play();
-}
-
-void MusicPlayer::StopGameMusic() {
-  main_player_->stop();
-}
-
-void MusicPlayer::ButtonSound() {
-  button_sound_->play();
 }
 
 void MusicPlayer::SetVolume(int volume) {
@@ -70,24 +38,46 @@ void MusicPlayer::SetVolume(int volume) {
     main_player_->play();
   }
   main_player_->setVolume(volume);
-  enemy_death_sound_->setVolume(volume);
-  bomb_boom_sound_->setVolume(volume);
-  laser_boom_sound_->setVolume(volume * 0.1);
-  aimed_boom_sound_->setVolume(volume);
   game_over_sound_->setVolume(volume);
   button_sound_->setVolume(volume);
+  game_won_sound_->setVolume(volume);
+  sale_sound_->setVolume(volume);
+  not_enough_money_sound_->setVolume(volume);
+  new_wave_->setVolume(volume);
 }
 
-void MusicPlayer::BoomSound(ProjectileType projectile_type) {
-  switch (projectile_type) {
-    case ProjectileType::kLaserProjectile:
-      laser_boom_sound_->play();
-      break;
-    case ProjectileType::kBombProjectile:
-      bomb_boom_sound_->play();
-      break;
-    case ProjectileType::kAimedProjectile:
-      aimed_boom_sound_->play();
-      break;
-  }
+void MusicPlayer::StartMenuMusic() {
+  main_playlist_->setCurrentIndex(0);
+  qDebug() << main_playlist_->currentIndex();
 }
+
+void MusicPlayer::StartGameMusic() {
+  main_playlist_->setCurrentIndex(1);
+  qDebug() << main_playlist_->currentIndex();
+  main_player_->play();
+}
+
+void MusicPlayer::GameOverSound() {
+  game_over_sound_->play();
+}
+
+void MusicPlayer::ButtonSound() {
+  button_sound_->play();
+}
+
+void MusicPlayer::GameWonSound() {
+  game_won_sound_->play();
+}
+
+void MusicPlayer::NewWaveSound() {
+  new_wave_->play();
+}
+
+void MusicPlayer::SaleSound() {
+  sale_sound_->play();
+}
+
+void MusicPlayer::NotEnoughMoneySound() {
+  not_enough_money_sound_->play();
+}
+

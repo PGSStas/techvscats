@@ -25,7 +25,6 @@ class BombProjectile : public AbstractProjectile {
   double up_force_;
   Coordinate start_position_;
   double additional_draw_height_ = 0;
-  ProjectileType projectile_type = ProjectileType::kBombProjectile;
 };
 
 #endif  // GAMEOBJECT_BOMB_PROJECTILE_H_

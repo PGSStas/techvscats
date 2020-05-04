@@ -15,8 +15,6 @@ class LaserProjectile : public AbstractProjectile {
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& handler) const override;
- private:
-  ProjectileType projectile_type = ProjectileType::kLaserProjectile;
 };
 
 #endif  // GAMEOBJECT_LASER_PROJECTILE_H_

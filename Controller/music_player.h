@@ -10,15 +10,16 @@
 class MusicPlayer : public QObject {
  public:
   MusicPlayer();
-  void StartMenuMusic();
-  void StopMenuMusic();
-  void StartGameMusic();
-  void StopGameMusic();
-  void DeathEnemySound();
-  void BoomSound(ProjectileType projectile_type);
-  void GameOverSound();
-  void ButtonSound();
   void SetVolume(int volume);
+
+  void StartMenuMusic();
+  void StartGameMusic();
+  void ButtonSound();
+  void GameOverSound();
+  void GameWonSound();
+  void NewWaveSound();
+  void SaleSound();
+  void NotEnoughMoneySound();
 
  private:
   QMediaPlayer* main_player_;
@@ -26,13 +27,13 @@ class MusicPlayer : public QObject {
 
   QSoundEffect* button_sound_;
 
-  QSoundEffect* enemy_death_sound_;
-
-  QSoundEffect* bomb_boom_sound_;
-  QSoundEffect* laser_boom_sound_;
-  QSoundEffect* aimed_boom_sound_;
-
   QSoundEffect* game_over_sound_;
+  QSoundEffect* game_won_sound_;
+
+  QSoundEffect* sale_sound_;
+  QSoundEffect* not_enough_money_sound_;
+
+  QSoundEffect* new_wave_;
 };
 
 #endif //MUSIC_PLAYER_H

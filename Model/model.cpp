@@ -35,32 +35,27 @@ void Model::CreateBuildingAtIndex(int i, int id) {
   buildings_[i]->SetPosition(position);
 }
 
-ProjectileType Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
+void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
                              const Building& building) {
-  ProjectileType projectile_type;
   int id = building.GetProjectileId();
   if (const auto& casted =
         std::dynamic_pointer_cast<HomingProjectile>(id_to_projectile_[id]);
       casted != nullptr) {
     projectiles_.push_back(std::make_shared<HomingProjectile>(*casted));
-    projectile_type =  ProjectileType::kAimedProjectile;
   }
   if (const auto& casted =
         std::dynamic_pointer_cast<BombProjectile>(id_to_projectile_[id]);
       casted != nullptr) {
     projectiles_.push_back(std::make_shared<BombProjectile>(*casted));
-    projectile_type = ProjectileType::kBombProjectile;
   }
   if (const auto& casted =
         std::dynamic_pointer_cast<LaserProjectile>(id_to_projectile_[id]);
       casted != nullptr) {
     projectiles_.push_back(std::make_shared<LaserProjectile>(*casted));
-    projectile_type = ProjectileType::kLaserProjectile;
   }
   projectiles_.back()->SetParameters(aim, building.GetPosition(),
                                      building.GetProjectileSpeedCoefficient(),
                                      building.GetDamage());
-  return projectile_type;
 }
 
 void Model::CreateParticles(const std::list<ParticleParameters>& parameters) {
