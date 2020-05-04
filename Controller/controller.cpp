@@ -7,8 +7,9 @@ Controller::Controller() : model_(std::make_unique<Model>()),
 void Controller::StartGame(int level_id) {
   game_status_ = Exit::kPlay;
   current_game_time_ = 0;
+  last_time_end_particle_created = 0;
   game_mode_ = WindowType::kGame;
-  last_round_start_time_ = current_game_time_;
+  last_round_start_time_ = 0;
   model_->SetGameLevel(level_id);
 
   SetSpeedCoefficient(Speed::kNormalSpeed);
