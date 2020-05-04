@@ -35,7 +35,6 @@ class View : public QMainWindow {
                         const std::vector<int>& possible_buildings_id,
                         int carrier_id_);
   void DisableTowerMenu();
-  void UpdateRounds(int current_round_number, int number_of_rounds);
 
   void ChangeGameSpeed(Speed speed);
   const SizeHandler& GetSizeHandler() const;
@@ -80,6 +79,7 @@ class View : public QMainWindow {
   void DrawSettings(QPainter* painter);
   void DrawPauseMenu(QPainter* painter);
   void DrawEndgameMessage(QPainter* painter);
+
   // Game window
   void DrawTowersAuraAndRange(QPainter* painter);
   void DrawEnemies(QPainter* painter);

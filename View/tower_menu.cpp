@@ -205,6 +205,7 @@ void TowerMenu::DrawInfoField(QPainter* painter,
     return;
   }
   painter->save();
+
   painter->setPen(QPen(Qt::white, 3));
   for (uint i = 1; i < possible_buildings_id_.size(); i++) {
     Coordinate button_position_1 =
@@ -237,7 +238,7 @@ void TowerMenu::Hide(bool is_hidden) {
 void TowerMenu::Disable(bool is_fast_disable) {
   if (!is_fast_disable) {
     slow_disable = true;
-    current_force_ = kThrowForce;
+    current_force_ = kThrowForce * 1.3;
     return;
   }
   slow_disable = false;

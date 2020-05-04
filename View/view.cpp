@@ -222,13 +222,13 @@ void View::EnableMainMenuUi() {
 void View::DrawAdditionalInfo(QPainter* painter) {
   painter->save();
 
-  controller_->GetBase().DrawUI(painter, size_handler_);
-
   if (tower_menu_.IsEnable()) {
     tower_menu_.DrawInfoField(painter, size_handler_,
                               controller_->GetBuildingById(
                                   tower_menu_.GetSellectedTowerId()));
   }
+
+  controller_->GetBase().DrawUI(painter, size_handler_);
 
   Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
   painter->drawImage(origin.x, origin.y,
@@ -263,10 +263,6 @@ void View::timerEvent(QTimerEvent* event) {
     }
     repaint();
   }
-}
-
-void View::UpdateRounds(int, int) {
-  // Here will be some kind of round indicator.
 }
 
 void View::ChangeGameSpeed(Speed speed) {

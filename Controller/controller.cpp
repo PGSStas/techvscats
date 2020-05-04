@@ -15,8 +15,6 @@ void Controller::StartGame(int level_id) {
   SetSpeedCoefficient(Speed::kNormalSpeed);
   view_->DisableMainMenuUi();
   view_->EnableGameUi();
-  view_->UpdateRounds(model_->GetCurrentRoundNumber(),
-                      model_->GetRoundsCount());
 }
 
 void Controller::EndGame(Exit) {
@@ -70,8 +68,9 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
                                    current_game_time_});
     }
   } else {
-    model_->AddTextNotification({"Not enough gold", base->GetGoldPosition(),
-                                 Qt::blue, current_game_time_});
+    auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
+    model_->AddTextNotification({QObject::tr("Not enough ") +
+        constants::kCurrency, position, Qt::blue, current_game_time_});
   }
 }
 
@@ -136,8 +135,6 @@ void Controller::CreateNextWave() {
     model_->AddSpawner(enemy_group);
   }
   model_->IncreaseCurrentRoundNumber();
-  view_->UpdateRounds(model_->GetCurrentRoundNumber(),
-                      model_->GetRoundsCount());
 }
 
 void Controller::TickEndGame() {
@@ -152,9 +149,9 @@ void Controller::TickEndGame() {
     model_->CreateParticles({particle});
     if (qrand() % 1000 < 100) {
       const auto& buildings = model_->GetBuildings();
-      for (int i = 0; i < buildings.size(); i++) {
-        if(buildings[i]->GetId()!=0){
-          model_->CreateBuildingAtIndex(i,0);
+      for (uint i = 0; i < buildings.size(); i++) {
+        if (buildings[i]->GetId() != 0) {
+          model_->CreateBuildingAtIndex(i, 0);
           return;
         }
       }
