@@ -136,11 +136,3 @@ int Enemy::ComputeReward() const {
 int Enemy::GetPriority() const {
   return priority_;
 }
-
-std::shared_ptr<const Road> Enemy::GetRoad() const {
-  return road_;
-}
-
-int Enemy::GetCurrentRoadNode() const {
-  return node_number_;
-}

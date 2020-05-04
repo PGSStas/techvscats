@@ -69,14 +69,6 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
     aims_.clear();
     return;
   }
-  std::remove_if(aims_.begin(), aims_.end(), [&](const auto& object) {
-    return (object->IsDead() || !IsInAttackRange(object->GetPosition()));
-  });
-
-  if (aims_.size() == max_aims_) {
-    is_ready_to_shoot_ = true;
-    return;
-  }
 
   aims_.clear();
   for (const auto& enemy : enemies) {
@@ -85,22 +77,14 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
     }
   }
   Coordinate position = position_;
-  std::sort(aims_.begin(), aims_.end(), [&position](const std::shared_ptr<Enemy>& one, const std::shared_ptr<Enemy>& other) {
+  std::sort(aims_.begin(), aims_.end(),
+      [&position](const std::shared_ptr<Enemy>& one,
+          const std::shared_ptr<Enemy>& other) {
     if (one->GetPriority() != other->GetPriority()) {
       return one->GetPriority() < other->GetPriority();
     }
-    /*if (one->GetRoad().get() == other->GetRoad().get()) {
-      if (one->GetCurrentRoadNode() != other->GetCurrentRoadNode()) {
-        return one->GetCurrentRoadNode() > other->GetCurrentRoadNode();
-      }
-      return one->GetPosition().GetVectorTo(one->GetRoad()->GetNode(one->GetCurrentRoadNode())).GetLength() <
-          other->GetPosition().GetVectorTo(other->GetRoad()->GetNode(other->GetCurrentRoadNode())).GetLength();
-    }
-    if (one->GetRoad()->GetNode(one->GetCurrentRoadNode()) == one->GetRoad()->GetNode(one->GetCurrentRoadNode())) {
-      return one->GetPosition().GetVectorTo(one->GetRoad()->GetNode(one->GetCurrentRoadNode())).GetLength() <
-          other->GetPosition().GetVectorTo(other->GetRoad()->GetNode(other.GetCurrentRoadNode())).GetLength();
-    }*/
-    return one->GetPosition().GetVectorTo(position).GetLength() < other->GetPosition().GetVectorTo(position).GetLength();
+    return one->GetPosition().GetVectorTo(position).GetLength() <
+      other->GetPosition().GetVectorTo(position).GetLength();
   });
   if (aims_.size() > max_aims_) {
     aims_.resize(max_aims_);

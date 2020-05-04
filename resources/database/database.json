@@ -5,7 +5,7 @@
       "damage": 1,
       "armor": 2,
       "reward": 100,
-      "max_health": 50,
+      "max_health": 100,
       "priority": 2,
       "aura": {
         "radius": 250,
@@ -28,7 +28,7 @@
       "damage": 15,
       "armor": 43,
       "reward": 500,
-      "max_health": 11,
+      "max_health": 500,
       "priority": 1,
       "size": {
         "width": 100,
@@ -184,7 +184,7 @@
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 0,
-        "attack_damage": 100,
+        "attack_damage": 10,
         "attack_range": 340,
         "max_aims": 2
       },

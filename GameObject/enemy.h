@@ -30,8 +30,6 @@ class Enemy : public MovingObject {
   Effect* GetAppliedEffect();
   double GetDamage() const;
   int GetPriority() const;
-  std::shared_ptr<const Road> GetRoad() const;
-  int GetCurrentRoadNode() const;
   Coordinate GetPredictPosition(double predict_power = 1) const;
   void ReceiveDamage(double damage);
   int ComputeReward() const;
