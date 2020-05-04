@@ -2,15 +2,17 @@
 #define GAMEOBJECT_BASE_H_
 
 #include <algorithm>
+#include <chrono>
 #include <memory>
+#include <random>
 #include <vector>
+
 #include <QFontDatabase>
 #include "game_object.h"
 
 class Base : public GameObject {
  public:
-  explicit Base(int gold = 0, double max_health = 0,
-                Coordinate position = {0, 0});
+  Base(int gold, Size size, Coordinate position, double max_health);
   ~Base() override = default;
 
   void Tick(int current_time) override;
@@ -18,8 +20,6 @@ class Base : public GameObject {
   void DrawUI(QPainter* painter, const SizeHandler& size_handler) const;
   void DecreaseHealth(double damage);
 
-  double GetCurrentHealth() const;
-  double GetMaxHealth() const;
   int GetGold() const;
   Coordinate GetGoldPosition() const;
   Size GetGoldSize() const;
@@ -37,11 +37,14 @@ class Base : public GameObject {
 
   bool is_dead_ = false;
 
-  static const Size kBaseSize;
-  static const Coordinate kHealthPosition;
-  static const Size kHealthSize;
-  static const Coordinate kGoldPosition;
-  static const Size kGoldSize;
+  const Coordinate kHealthPosition = Coordinate(1748, 811);
+  const Size kHealthSize = Size(167, 167);
+  const Coordinate kGoldPosition = Coordinate(1581, 1002);
+  const Size kGoldSize = Size(164, 57);
+  const double kHealthFlameTheshold = 0.8;
+  const int kFlameSpawnSpeed = 3000;
+
+  static std::mt19937 random_generator_;
 };
 
 #endif  // GAMEOBJECT_BASE_H_

@@ -66,10 +66,13 @@ void View::DrawMainMenu(QPainter*) {
 }
 
 void View::DrawGame(QPainter* painter) {
-  DrawEnemies(painter);
+  controller_->RescaleObjects(size_handler_);
   DrawProjectiles(painter);
   DrawTowers(painter);
+  DrawEnemies(painter);
+  DrawBars(painter);
   controller_->GetBase().Draw(painter, size_handler_);
+  DrawParticles(painter);
   DrawAdditionalInfo(painter);
 
   button_handler_->SetMainMenuUiVisible(false);
@@ -113,6 +116,14 @@ void View::DrawProjectiles(QPainter* painter) {
   auto projectiles_list = controller_->GetProjectiles();
   for (auto& projectile : projectiles_list) {
     projectile->Draw(painter, size_handler_);
+  }
+}
+
+void View::DrawParticles(QPainter* painter) {
+  const auto& particles = controller_->GetParticles();
+  for (auto particle = particles.rbegin(); particle != particles.rend();
+       particle++) {
+    particle->Draw(painter, size_handler_);
   }
 }
 
@@ -166,21 +177,6 @@ void View::EnableMainMenuUi() {
 void View::DrawAdditionalInfo(QPainter* painter) {
   painter->save();
 
-  const auto& enemies_list = controller_->GetEnemies();
-  for (auto& enemy : enemies_list) {
-    enemy->DrawHealthBar(painter, size_handler_);
-    enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
-                                                enemy->GetPosition(),
-                                                enemy->GetSize());
-  }
-
-  const auto& buildings_list = controller_->GetBuildings();
-  for (const auto& building : buildings_list) {
-    building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
-                                                   building->GetPosition(),
-                                                   building->GetSize());
-  }
-
   controller_->GetBase().DrawUI(painter, size_handler_);
 
   if (is_tower_menu_enabled_) {
@@ -215,7 +211,7 @@ void View::timerEvent(QTimerEvent* event) {
   }
 }
 
-void View::UpdateRounds(int current_round_number, int number_of_rounds) {
+void View::UpdateRounds(int, int) {
   // Here will be some kind of round indicator.
 }
 
@@ -239,4 +235,21 @@ void View::DrawRoundInfo(QPainter* painter) {
   painter->drawText(round_info_position.x, round_info_position.y,
                     round_info_size.width, round_info_size.height,
                     Qt::AlignCenter, round_info);
+}
+
+void View::DrawBars(QPainter* painter) {
+  const auto& enemies_list = controller_->GetEnemies();
+  for (auto& enemy : enemies_list) {
+    enemy->DrawHealthBar(painter, size_handler_);
+    enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                enemy->GetPosition(),
+                                                enemy->GetSize());
+  }
+
+  const auto& buildings_list = controller_->GetBuildings();
+  for (const auto& building : buildings_list) {
+    building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                   building->GetPosition(),
+                                                   building->GetSize());
+  }
 }

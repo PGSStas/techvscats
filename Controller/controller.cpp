@@ -57,11 +57,14 @@ void Controller::GameProcess() {
   if (CanCreateNextWave()) {
     CreateNextWave();
   }
+
   TickSpawners();
   TickEnemies();
   TickBuildings();
   TickProjectiles();
   TickAuras();
+  TickParticleHandlers();
+  TickParticles();
   TickTextNotifications();
 }
 
@@ -203,6 +206,45 @@ void Controller::TickTextNotifications() {
   }
 }
 
+void Controller::TickParticleHandlers() {
+  auto enemies = model_->GetEnemies();
+  for (auto& enemy : *enemies) {
+    TickParticleHandler(enemy->GetParticleHandler());
+  }
+  auto buildings = model_->GetBuildings();
+  for (auto& building : buildings) {
+    TickParticleHandler(building->GetParticleHandler());
+  }
+  auto projectiles = model_->GetProjectiles();
+  for (auto& projectile : *projectiles) {
+    TickParticleHandler(projectile->GetParticleHandler());
+  }
+  auto particles = model_->GetParticles();
+  for (auto& particle : *particles) {
+    TickParticleHandler(particle.GetParticleHandler());
+  }
+  auto base = model_->GetBase();
+  TickParticleHandler(base->GetParticleHandler());
+}
+
+void Controller::TickParticleHandler(ParticleHandler* particle_handler) {
+  particle_handler->Tick();
+  if (particle_handler->IsReadyToCreateParticle()) {
+    model_->CreateParticles(particle_handler->GetParticlesQueue());
+    particle_handler->Clear();
+  }
+}
+
+void Controller::TickParticles() {
+  auto particles = model_->GetParticles();
+  particles->remove_if([](const Particle& particle) {
+    return particle.IsDead();
+  });
+  for (auto& particle : *particles) {
+    particle.Tick(current_game_time_);
+  }
+}
+
 void Controller::ApplyEffectToAllInstances(const AuricField& aura) {
   if (!aura.IsValid()) {
     return;
@@ -316,6 +358,7 @@ void Controller::MousePress(Coordinate position) {
     return;
   }
 
+  // TODO(elizabethfeden): qt buttons.
   auto pressed = view_->GetTowerMenu()->GetButtonInside(position);
   if (pressed != nullptr) {
     pressed->MakeAction();
@@ -334,6 +377,10 @@ void Controller::MouseMove(Coordinate position) {
 
 void Controller::RescaleObjects(const SizeHandler& size_handler) {
   model_->RescaleDatabase(size_handler);
+}
+
+const std::list<Particle>& Controller::GetParticles() const {
+  return *model_->GetParticles();
 }
 
 const std::list<std::shared_ptr<Enemy>>& Controller::GetEnemies() const {

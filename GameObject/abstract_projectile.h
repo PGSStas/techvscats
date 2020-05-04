@@ -22,7 +22,6 @@ class AbstractProjectile : public MovingObject {
   virtual void SetParameters(const std::shared_ptr<Enemy>& aim,
                              Coordinate position, double speed_coefficient,
                              double damage);
-  void SetAnimationParameters(const QColor& draw_color, int iteration_time);
 
   double GetDamage() const;
   virtual bool IsInAffectedArea(const Enemy& enemy);
@@ -32,8 +31,6 @@ class AbstractProjectile : public MovingObject {
   std::shared_ptr<Enemy> aim_ = {};
   double damage_ = 0;
 
-  QColor draw_color_ = Qt::black;
-  int iteration_time_ = 0;
   ProjectileType projectile_type;
 };
 

@@ -26,6 +26,7 @@ class Controller : public AbstractController {
   void MouseMove(Coordinate position) override;
   void RescaleObjects(const SizeHandler& size_handler) override;
 
+  const std::list<Particle>& GetParticles() const override;
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
 
@@ -60,6 +61,9 @@ class Controller : public AbstractController {
   bool CanCreateNextWave();
   void CreateNextWave();
   void TickSpawners();
+  void TickParticleHandlers();
+  void TickParticleHandler(ParticleHandler* particle_handler);
+  void TickParticles();
   void TickEnemies();
   void TickBuildings();
   void TickProjectiles();

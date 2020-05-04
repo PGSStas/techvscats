@@ -9,6 +9,7 @@
 #include "GameObject/base.h"
 #include "GameObject/building.h"
 #include "GameObject/enemy.h"
+#include "GameObject/particle.h"
 #include "View/text_notification.h"
 #include "music_player.h"
 
@@ -46,6 +47,7 @@ class AbstractController {
   virtual void MouseMove(Coordinate position) = 0;
   virtual void RescaleObjects(const SizeHandler& size_handler) = 0;
 
+  virtual const std::list<Particle>& GetParticles() const = 0;
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
   virtual const std::list<std::shared_ptr<AbstractProjectile>>&
     GetProjectiles() const = 0;

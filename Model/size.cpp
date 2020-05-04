@@ -1,9 +1,14 @@
 #include "size.h"
 
-Size::Size(double x, double y) noexcept : width(x), height(y) {}
+Size::Size(double x, double y) noexcept: width(x), height(y) {}
 
 double Size::GetLength() const {
   return std::sqrt(width * width + height * height);
+}
+
+Size& Size::Normalize() {
+  *this /= GetLength();
+  return *this;
 }
 
 Size Size::operator*(double right) const {
@@ -45,4 +50,7 @@ Size& Size::operator-=(Size right) {
 bool Size::operator==(Size right) const {
   return (width - right.width < constants::kEpsilon)
       && (height - right.height < constants::kEpsilon);
+}
+bool Size::operator!=(Size right) const {
+  return !(*this == right);
 }
