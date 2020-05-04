@@ -222,19 +222,19 @@ void View::EnableMainMenuUi() {
 void View::DrawAdditionalInfo(QPainter* painter) {
   painter->save();
 
-  if (tower_menu_.IsEnable()) {
-    tower_menu_.DrawInfoField(painter, size_handler_,
-                              controller_->GetBuildingById(
-                                  tower_menu_.GetSellectedTowerId()));
-  }
-
   controller_->GetBase().DrawUI(painter, size_handler_);
 
   Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
   painter->drawImage(origin.x, origin.y,
                      controller_->GetInterface().GetCurrentFrame());
-
   DrawRoundInfo(painter);
+
+
+  if (tower_menu_.IsEnable()) {
+    tower_menu_.DrawInfoField(painter, size_handler_,
+                              controller_->GetBuildingById(
+                                  tower_menu_.GetSellectedTowerId()));
+  }
 
   const auto& text_notifications = controller_->GetTextNotifications();
   for (auto& notification : text_notifications) {
