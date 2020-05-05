@@ -17,7 +17,7 @@ SOURCES += \
         Controller/controller.cpp \
         Controller/spawner.cpp \
         GameObject/abstract_projectile.cpp \
-        GameObject/aimed_projectile.cpp \
+        GameObject/homing_projectile.cpp \
         GameObject/auric_field.cpp \
         GameObject/base.cpp \
         GameObject/bomb_projectile.cpp \
@@ -27,6 +27,8 @@ SOURCES += \
         GameObject/game_object.cpp \
         GameObject/laser_projectile.cpp \
         GameObject/moving_object.cpp \
+        GameObject/particle_handler.cpp \
+        GameObject/particle.cpp \
         Model/coordinate.cpp \
         Model/model.cpp \
         Model/road.cpp \
@@ -45,7 +47,7 @@ HEADERS += \
         Controller/controller.h \
         Controller/spawner.h \
         GameObject/abstract_projectile.h \
-        GameObject/aimed_projectile.h \
+        GameObject/homing_projectile.h \
         GameObject/auric_field.h \
         GameObject/base.h \
         GameObject/bomb_projectile.h \
@@ -55,6 +57,8 @@ HEADERS += \
         GameObject/game_object.h \
         GameObject/laser_projectile.h \
         GameObject/moving_object.h \
+        GameObject/particle_handler.h \
+        GameObject/particle.h \
         Model/constants.h \
         Model/coordinate.h \
         Model/enemy_group.h \

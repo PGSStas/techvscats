@@ -5,7 +5,6 @@
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QPushButton>
-#include <QRandomGenerator>
 
 #include <chrono>
 #include <memory>
@@ -21,7 +20,7 @@ const Size kLongButtonSize = Size(640, 72);
 const Size kShortButtonSize = Size(72, 72);
 const int kMenuFontSize = 36;
 const Coordinate kFirstButtonCoordinate = Coordinate(640, 360);
-const int kShift = 8;
+const int kShift = 20;
 }  // namespace button_constants
 
 class MenuButton : public QPushButton {
