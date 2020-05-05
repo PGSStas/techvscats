@@ -494,7 +494,7 @@ void Model::LoadDatabase() {
     auto sound_effect = std::make_shared<QSoundEffect>();
     sound_effect->setVolume(0.4);
     sound_effect->setSource(QUrl("qrc:resources/" + path));
-    id_to_particle_sound_.emplace_back(sound_effect);
+    id_to_particle_sound_.push_back(std::move(sound_effect));
   }
 
   // backgrounds

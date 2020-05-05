@@ -1,5 +1,4 @@
 #include "music_player.h"
-#include <QDebug>
 
 MusicPlayer::MusicPlayer()
     : main_player_(std::make_shared<QMediaPlayer>()),
@@ -47,12 +46,10 @@ void MusicPlayer::SetVolume(int volume) {
 
 void MusicPlayer::StartMenuMusic() {
   main_playlist_->setCurrentIndex(kMenuMusic);
-  qDebug() << main_playlist_->currentIndex();
 }
 
 void MusicPlayer::StartGameMusic() {
   main_playlist_->setCurrentIndex(kGameMusic);
-  qDebug() << main_playlist_->currentIndex();
   main_player_->play();
 }
 
