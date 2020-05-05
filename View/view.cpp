@@ -257,7 +257,7 @@ void View::timerEvent(QTimerEvent* event) {
     tower_menu_.Tick(size_handler_, delta_time_);
     if (tower_menu_.IsWantToReplace()) {
       controller_->SetBuilding(
-          tower_menu_.GetCarrierIndex(),
+          tower_menu_.GetTownerIndex(),
           tower_menu_.GetSellectedTowerId());
       tower_menu_.SetIsWantToReplaceToFalse();
     }
