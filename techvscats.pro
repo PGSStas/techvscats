@@ -16,7 +16,6 @@ SOURCES += \
         main.cpp \
         Controller/controller.cpp \
         Controller/spawner.cpp \
-        Controller/music_player.cpp \
         GameObject/abstract_projectile.cpp \
         GameObject/homing_projectile.cpp \
         GameObject/auric_field.cpp \
@@ -48,7 +47,6 @@ HEADERS += \
         Controller/abstract_controller.h \
         Controller/controller.h \
         Controller/spawner.h \
-        Controller/music_player.h \
         GameObject/abstract_projectile.h \
         GameObject/homing_projectile.h \
         GameObject/auric_field.h \
