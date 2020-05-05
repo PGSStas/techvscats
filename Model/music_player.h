@@ -5,6 +5,7 @@
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
 #include <QSoundEffect>
+#include <memory>
 #include "GameObject/abstract_projectile.h"
 
 enum MainMusic {
