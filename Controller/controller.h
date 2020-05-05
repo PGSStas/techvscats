@@ -43,9 +43,10 @@ class Controller : public AbstractController {
   int GetCurrentRoundNumber() const override;
   int GetRoundsCount() const override;
 
+  std::unique_ptr<MusicPlayer>& GetMusicPlayer() override;
  private:
   std::unique_ptr<Model> model_;
-  MusicPlayer* music_player_;
+  std::unique_ptr<MusicPlayer> music_player_;
   std::unique_ptr<View> view_;
 
   WindowType game_mode_;
@@ -76,8 +77,6 @@ class Controller : public AbstractController {
   void SetBuilding(int index_in_buildings, int replacing_id);
   void CreateTowerMenu(int tower_index);
   void ProcessEnemyDeath(const Enemy& enemy) const;
-
-  MusicPlayer* GetMusicPlayer() override;
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

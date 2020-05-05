@@ -64,7 +64,7 @@ class AbstractController {
   virtual int GetCurrentRoundNumber() const = 0;
   virtual int GetRoundsCount() const = 0;
 
-  virtual MusicPlayer* GetMusicPlayer() = 0;
+  virtual std::unique_ptr<MusicPlayer>& GetMusicPlayer() = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

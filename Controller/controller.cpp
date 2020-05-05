@@ -1,9 +1,9 @@
 #include "controller.h"
 
 Controller::Controller() : model_(std::make_unique<Model>()),
+                           music_player_(std::make_unique<MusicPlayer>()),
                            view_(std::make_unique<View>(this)),
                            game_mode_(WindowType::kMainMenu) {
-  music_player_ = new MusicPlayer();
 }
 
 void Controller::StartGame(int level_id) {
@@ -433,7 +433,7 @@ const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));
 }
 
-MusicPlayer* Controller::GetMusicPlayer() {
+std::unique_ptr<MusicPlayer>& Controller::GetMusicPlayer() {
   return music_player_;
 }
 
