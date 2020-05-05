@@ -1,29 +1,34 @@
 #ifndef  MODEL_MUSIC_PLAYER_H_
 #define  MODEL_MUSIC_PLAYER_H_
 
-#include <QtMultimedia/QSoundEffect>
-#include <QtMultimedia/QMediaPlayer>
-#include <QtMultimedia/QMediaPlaylist>
-#include "GameObject/abstract_projectile.h"
 #include <QMainWindow>
+#include <QMediaPlaylist>
+#include <QMediaPlayer>
+#include <QSoundEffect>
+#include "GameObject/abstract_projectile.h"
 
-class MusicPlayer : public QObject {
+enum MainMusic {
+  kMenuMusic,
+  kGameMusic
+};
+
+class MusicPlayer {
  public:
   MusicPlayer();
   void SetVolume(int volume);
 
   void StartMenuMusic();
   void StartGameMusic();
-  void ButtonSound();
-  void GameOverSound();
-  void GameWonSound();
-  void NewWaveSound();
-  void SaleSound();
-  void NotEnoughMoneySound();
+  void PlayButtonSound();
+  void PlayGameOverSound();
+  void PlayGameWonSound();
+  void PlayNewWaveSound();
+  void PlaySaleSound();
+  void PlayNotEnoughMoneySound();
 
  private:
   QMediaPlayer* main_player_;
-  QMediaPlaylist* main_playlist_;    // Плейлист
+  QMediaPlaylist* main_playlist_;
 
   QSoundEffect* button_sound_;
 

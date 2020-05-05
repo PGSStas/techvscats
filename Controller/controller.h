@@ -43,7 +43,7 @@ class Controller : public AbstractController {
   int GetCurrentRoundNumber() const override;
   int GetRoundsCount() const override;
 
-  std::unique_ptr<MusicPlayer>& GetMusicPlayer() override;
+  const std::unique_ptr<MusicPlayer>& GetMusicPlayer() const override;
 
  private:
   std::unique_ptr<Model> model_;

@@ -28,8 +28,8 @@ MusicPlayer::MusicPlayer() {
   new_wave_ = new QSoundEffect();
   new_wave_->setSource(QUrl("qrc:resources/sounds/new_wave_sound.wav"));
 
-  main_player_->play();
   SetVolume(100);
+  main_player_->play();
 }
 
 void MusicPlayer::SetVolume(int volume) {
@@ -38,6 +38,8 @@ void MusicPlayer::SetVolume(int volume) {
   } else {
     main_player_->play();
   }
+  // Volume in QMediaPlayer is ranging from 0 to 100,
+  // and in QSoundEffect from 0 to 1.0
   main_player_->setVolume(volume);
   game_over_sound_->setVolume(volume / 100.);
   button_sound_->setVolume(volume / 100.);
@@ -48,37 +50,37 @@ void MusicPlayer::SetVolume(int volume) {
 }
 
 void MusicPlayer::StartMenuMusic() {
-  main_playlist_->setCurrentIndex(0);
+  main_playlist_->setCurrentIndex(kMenuMusic);
   qDebug() << main_playlist_->currentIndex();
 }
 
 void MusicPlayer::StartGameMusic() {
-  main_playlist_->setCurrentIndex(1);
+  main_playlist_->setCurrentIndex(kGameMusic);
   qDebug() << main_playlist_->currentIndex();
   main_player_->play();
 }
 
-void MusicPlayer::GameOverSound() {
+void MusicPlayer::PlayGameOverSound() {
   game_over_sound_->play();
 }
 
-void MusicPlayer::ButtonSound() {
+void MusicPlayer::PlayButtonSound() {
   button_sound_->play();
 }
 
-void MusicPlayer::GameWonSound() {
+void MusicPlayer::PlayGameWonSound() {
   game_won_sound_->play();
 }
 
-void MusicPlayer::NewWaveSound() {
+void MusicPlayer::PlayNewWaveSound() {
   new_wave_->play();
 }
 
-void MusicPlayer::SaleSound() {
+void MusicPlayer::PlaySaleSound() {
   sale_sound_->play();
 }
 
-void MusicPlayer::NotEnoughMoneySound() {
+void MusicPlayer::PlayNotEnoughMoneySound() {
   not_enough_money_sound_->play();
 }
 

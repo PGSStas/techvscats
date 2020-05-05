@@ -27,10 +27,10 @@ void Controller::EndGame(Exit exit) {
   game_mode_ = WindowType::kMainMenu;
   current_game_time_ = 0;
   if (exit == Exit::kLose) {
-    music_player_->GameOverSound();
+    music_player_->PlayGameOverSound();
   }
   if (exit == Exit::kWin) {
-    music_player_->GameWonSound();
+    music_player_->PlayGameWonSound();
   }
   music_player_->StartMenuMusic();
 }
@@ -58,7 +58,7 @@ void Controller::SetSpeedCoefficient(Speed speed) {
 
 void Controller::GameProcess() {
   if (CanCreateNextWave()) {
-    music_player_->NewWaveSound();
+    music_player_->PlayNewWaveSound();
     CreateNextWave();
   }
   TickSpawners();
@@ -233,7 +233,7 @@ void Controller::TickParticleHandler(ParticleHandler* particle_handler) {
   if (particle_handler->IsReadyToCreateParticle()) {
     model_->CreateParticles(particle_handler->GetParticlesQueue());
     const auto& particles_queue = particle_handler->GetParticlesQueue();
-    for (auto particle : particles_queue) {
+    for (const auto& particle : particles_queue) {
       int sound_id = model_->GetParticleById(particle.particle_id).GetSoundId();
       if (sound_id != -1) {
         model_->GetParticleSoundEffectById(sound_id)->play();
@@ -304,7 +304,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
                                    current_game_time_});
       base->AddGoldAmount(sell_cost);
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
-      music_player_->SaleSound();
+      music_player_->PlaySaleSound();
     } else {
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
       base->SubtractGoldAmount(settle_cost);
@@ -316,13 +316,13 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
                                        + constants::kCurrency,
                                    notification, Qt::red,
                                    current_game_time_});
-      music_player_->SaleSound();
+      music_player_->PlaySaleSound();
     }
   } else {
     auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
     model_->AddTextNotification({QObject::tr("Not enough ") +
     constants::kCurrency, position, Qt::blue, current_game_time_});
-    music_player_->NotEnoughMoneySound();
+    music_player_->PlayNotEnoughMoneySound();
   }
 }
 
@@ -433,7 +433,7 @@ const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));
 }
 
-std::unique_ptr<MusicPlayer>& Controller::GetMusicPlayer() {
+const std::unique_ptr<MusicPlayer>& Controller::GetMusicPlayer() const {
   return music_player_;
 }
 
