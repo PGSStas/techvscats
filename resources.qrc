@@ -8,10 +8,20 @@
     <file>resources/images/enemies/toster_1.png</file>
     <file>resources/images/enemies/toster_2.png</file>
     <file>resources/images/enemies/toster_3.png</file>
+    <file>resources/images/enemies/toster_4.png</file>
 
     <file>resources/images/enemies/mouse_1.png</file>
     <file>resources/images/enemies/mouse_2.png</file>
     <file>resources/images/enemies/mouse_3.png</file>
+    <file>resources/images/enemies/mouse_4.png</file>
+
+    <file>resources/images/enemies/washmachine_1.png</file>
+    <file>resources/images/enemies/washmachine_2.png</file>
+    <file>resources/images/enemies/washmachine_3.png</file>
+    <file>resources/images/enemies/washmachine_4.png</file>
+    <file>resources/images/enemies/washmachine_5.png</file>
+    <file>resources/images/enemies/washmachine_6.png</file>
+    <file>resources/images/enemies/washmachine_7.png</file>
 
     <file>resources/buttons_resources/dec_level_button.png</file>
     <file>resources/buttons_resources/dec_level_button_active.png</file>

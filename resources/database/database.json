@@ -5,7 +5,8 @@
       "damage": 1,
       "armor": 2,
       "reward": 100,
-      "max_health": 50,
+      "max_health": 100,
+      "priority": 2,
       "aura": {
         "radius": 250,
         "effect_id": 1
@@ -15,7 +16,7 @@
         "height": 70
       },
       "animation": {
-        "path": "enemies/toster_3",
+        "path": "enemies/toster_4",
         "timing": 400
       },
       "particles": {
@@ -27,13 +28,14 @@
       "damage": 15,
       "armor": 43,
       "reward": 500,
-      "max_health": 11,
+      "max_health": 500,
+      "priority": 1,
       "size": {
-        "width": 70,
-        "height": 70
+        "width": 100,
+        "height": 100
       },
       "animation": {
-        "path": "enemies/toster_3",
+        "path": "enemies/washmachine_7",
         "timing": 550
       },
       "particles": {
@@ -46,12 +48,13 @@
       "armor": 6,
       "reward": 10,
       "max_health": 30,
+      "priority": 3,
       "size": {
         "width": 70,
         "height": 70
       },
       "animation": {
-        "path": "enemies/mouse_3",
+        "path": "enemies/mouse_4",
         "timing": 600
       },
       "particles": {
@@ -64,12 +67,13 @@
       "armor": -5,
       "reward": 13,
       "max_health": 100,
+      "priority": 3,
       "size": {
         "width": 70,
         "height": 70
       },
       "animation": {
-        "path": "enemies/mouse_3",
+        "path": "enemies/mouse_4",
         "timing": 800
       },
       "particles": {
@@ -82,6 +86,7 @@
       "armor": 6,
       "reward": 10,
       "max_health": 70,
+      "priority": 2,
       "aura": {
         "radius": 250,
         "effect_id": 1
@@ -91,7 +96,7 @@
         "height": 70
       },
       "animation": {
-        "path": "enemies/toster_3",
+        "path": "enemies/toster_4",
         "timing": 400
       },
       "particles": {
@@ -179,7 +184,7 @@
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 0,
-        "attack_damage": 100,
+        "attack_damage": 10,
         "attack_range": 340,
         "max_aims": 2
       },
