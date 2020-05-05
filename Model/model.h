@@ -110,11 +110,10 @@ class Model {
   std::vector<Particle> id_to_particle_;
 
   // Images
-  
+
   std::vector<QImage> empty_zone_texture_;
   std::vector<AnimationPlayer> backgrounds_;
   AnimationPlayer interface_;
-
 };
 
 #endif  // MODEL_MODEL_H_

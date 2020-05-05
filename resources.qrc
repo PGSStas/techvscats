@@ -317,5 +317,6 @@
     <file>resources/images/towers/base_6.png</file>
 
     <file>resources/images/towers/empty_1.png</file>
+    <file>resources/images/backgrounds/texture_level_1.png</file>
 </qresource>
 </RCC>

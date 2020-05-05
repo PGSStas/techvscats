@@ -53,7 +53,7 @@ void View::DrawEmptyZones(QPainter* painter) {
   painter->fillRect(0, 0, vertical_zone.width, vertical_zone.height, image);
   painter->fillRect(
       size_handler_.GameToWindowCoordinate({constants::kGameWidth, 0}).x,
-      0, vertical_zone.width + 2, vertical_zone.height + 2, image );
+      0, vertical_zone.width + 2, vertical_zone.height + 2, image);
 
   painter->restore();
 }
