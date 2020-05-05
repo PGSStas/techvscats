@@ -538,6 +538,7 @@ std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
 
   for (int i = 1; i <= count; i++) {
     splitted_path.back() = QString::number(i);
+    std::string lol = (splitted_path.join("_") + picture_type).toStdString();
     images->emplace_back(splitted_path.join("_") + picture_type);
   }
 

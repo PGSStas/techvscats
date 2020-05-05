@@ -2,8 +2,8 @@
 
 void TowerMenu::ButtonTapped(int button_index) {
   if (active_button_index_ == static_cast<int>(button_index)) {
-    want_to_replace_ = true;
-    Disable(false);
+    id_to_replace_ = true;
+    Close();
     return;
   }
   if (active_button_index_ != -1) {
@@ -96,7 +96,7 @@ void TowerMenu::Recreate(Coordinate position, int owner_building_index,
   current_force_ = kThrowForce;
   active_button_index_ = -1;
   slow_disable = false;
-  want_to_replace_ = false;
+  id_to_replace_ = false;
 }
 
 void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
@@ -130,7 +130,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
 
   double move_degree = -90 + delta_degree;
   Size move_vector;
-  current_force_ *= kSlowCoefficient;
+  current_force_ *= kSlowdownCoefficient;
   for (auto& id : possible_buildings_id_) {
     double radian = move_degree * std::acos(-1) / 180;
     move_degree += delta_degree;
@@ -144,7 +144,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
           position_ - kSizeOfButton / 2);
       if (first_vector.GetLength() > second_vector.GetLength()
           || current_force_ < 1) {
-        Disable(true);
+        Disable();
         return;
       }
     }
@@ -160,7 +160,7 @@ void TowerMenu::RescaleButtons(const SizeHandler& size_handler) {
 }
 
 void TowerMenu::SetIsWantToReplaceToFalse() {
-  want_to_replace_ = false;
+  id_to_replace_ = false;
 }
 
 void TowerMenu::DrawTowersAuraAndRange(QPainter* painter,
@@ -235,18 +235,10 @@ void TowerMenu::Hide(bool is_hidden) {
   }
 }
 
-void TowerMenu::Disable(bool is_fast_disable) {
-  if (!is_fast_disable) {
-    slow_disable = true;
-    current_force_ = kThrowForce * 1.3;
-    return;
-  }
-  slow_disable = false;
-  for (auto& id : possible_buildings_id_) {
-    buttons_[id]->EnableSecondIcon(false);
-    buttons_[id]->hide();
-  }
-  possible_buildings_id_.clear();
+void TowerMenu::Close() {
+  slow_disable = true;
+  current_force_ = kThrowForce * 1.3;
+  return;
 }
 
 int TowerMenu::GetTownerIndex() const {
@@ -265,6 +257,15 @@ bool TowerMenu::IsEnable() const {
 }
 
 bool TowerMenu::IsWantToReplace() const {
-  return want_to_replace_;
+  return id_to_replace_;
+}
+
+void TowerMenu::Disable() {
+  slow_disable = false;
+  for (auto& id : possible_buildings_id_) {
+    buttons_[id]->EnableSecondIcon(false);
+    buttons_[id]->hide();
+  }
+  possible_buildings_id_.clear();
 }
 

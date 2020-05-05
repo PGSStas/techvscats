@@ -6,16 +6,16 @@ TextNotification::TextNotification(const QString& message,
                                    int life_time,
                                    double size_change_coefficient)
     : GameObject({0, 0}, start_position), message_(message),
-      moving_vector_(moving_vector), color_(color),
+      force_vector_(moving_vector), color_(color),
       creation_time_(creation_time), life_time_(life_time),
       size_change_coefficient_(size_change_coefficient) {}
 
 void TextNotification::Tick(int current_time) {
   UpdateTime(current_time);
-  position_ += moving_vector_ * delta_time_ / constants::kTimeScale;
+  position_ += force_vector_ * delta_time_ / constants::kTimeScale;
   font_size *= size_change_coefficient_;
   font_size = std::min(font_size, 40000.0);
-  moving_vector_ *= kSlowdownCoefficient;
+  force_vector_ *= kSlowdownCoefficient;
   life_time_ -= delta_time_;
   if (life_time_ < 0) {
     is_dead_ = true;

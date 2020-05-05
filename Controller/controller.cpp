@@ -8,7 +8,7 @@ Controller::Controller() : model_(std::make_unique<Model>()),
                            game_mode_(WindowType::kMainMenu) {}
 
 void Controller::StartGame(int level_id) {
-  game_status_ = Exit::kPlay;
+  game_status_ = GameStatus::kPlay;
   current_game_time_ = 0;
   last_time_end_particle_created = 0;
   game_mode_ = WindowType::kGame;
@@ -78,10 +78,10 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
 }
 
 void Controller::GameProcess() {
-  if (CanCreateNextWave() && game_status_ == Exit::kPlay) {
+  if (CanCreateNextWave() && game_status_ == GameStatus::kPlay) {
     CreateNextWave();
   }
-  if (game_status_ != Exit::kPlay) {
+  if (game_status_ != GameStatus::kPlay) {
     TickEndGame();
   }
   TickSpawners();
@@ -102,8 +102,8 @@ bool Controller::CanCreateNextWave() {
 
   if (current_round_number == model_->GetRoundsCount() &&
       model_->GetEnemies()->empty() && model_->GetSpawners()->empty()
-      && game_status_ == Exit::kPlay) {
-    game_status_ = Exit::kWin;
+      && game_status_ == GameStatus::kPlay) {
+    game_status_ = GameStatus::kWin;
     model_->AddTextNotification({"Level Complete",
                                  {constants::kGameWidth / 2,
                                   constants::kGameHeight / 2}, Qt::red,
@@ -144,8 +144,8 @@ void Controller::TickEndGame() {
   if (last_time_end_particle_created + kParticlesPeriod < current_game_time_) {
     last_time_end_particle_created = current_game_time_;
     ParticleParameters particle(
-        (game_status_ == Exit::kLose) ? kLooseParticleId : kWinParticleId,
-        kEndParticlesSize,
+        (game_status_ == GameStatus::kLose) ? kLooseParticleId : kWinParticleId,
+        {-1, -1},
         Coordinate(0, 0) + Size(
             random_generator_() % static_cast<int>(constants::kGameWidth),
             random_generator_()
@@ -212,8 +212,8 @@ void Controller::TickBuildings() {
 
   // Base
   model_->GetBase()->Tick(current_game_time_);
-  if (model_->GetBase()->IsDead() && game_status_ == Exit::kPlay) {
-    game_status_ = Exit::kLose;
+  if (model_->GetBase()->IsDead() && game_status_ == GameStatus::kPlay) {
+    game_status_ = GameStatus::kLose;
     model_->AddTextNotification({"GameOver:(",
                                  {constants::kGameWidth / 2,
                                   constants::kGameHeight / 2}, Qt::red,
@@ -427,7 +427,7 @@ const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));
 }
 
-Exit Controller::GetCurrentStatus() const {
+GameStatus Controller::GetCurrentStatus() const {
   return game_status_;
 }
 

@@ -13,9 +13,8 @@
 #include "View/menu_button.h"
 
 struct ButtonImagePath {
-  ButtonImagePath(const QString& frame_up_path,
-                  const QString& frames_down_path) :
-      main_path(frame_up_path), active_path(frames_down_path) {}
+  ButtonImagePath(const QString& frame_up_path, const QString& frames_down_path)
+      : main_path(frame_up_path), active_path(frames_down_path) {}
   QString main_path;
   QString active_path;
 };
@@ -36,7 +35,7 @@ class TowerMenu {
                               const Building& instance);
   void DrawInfoField(QPainter* painter, const SizeHandler& size_handler,
                      const Building& instance);
-  void Disable(bool is_fast_disable = true);
+  void Close();
   void Hide(bool is_hidden);
   int GetTownerIndex() const;
   int GetSellectedTowerId() const;
@@ -50,7 +49,7 @@ class TowerMenu {
   Coordinate position_;
   int owner_building_index_ = -1;
   int active_button_index_ = -1;
-  bool want_to_replace_ = false;
+  bool id_to_replace_ = false;
   bool slow_disable = false;
   bool is_hidden_;
 
@@ -59,10 +58,11 @@ class TowerMenu {
   double current_force_;
 
   const double kThrowForce = 100;
-  const double kSlowCoefficient = 0.88;
+  const double kSlowdownCoefficient = 0.88;
   const Size kSizeOfButton = {60, 60};
 
  private:
+  void Disable();
   void ButtonTapped(int button_index);
 };
 

@@ -25,7 +25,7 @@ class TextNotification : public GameObject {
 
  private:
   QString message_;
-  Size moving_vector_;
+  Size force_vector_;
   QColor color_;
   int creation_time_;
   int life_time_;

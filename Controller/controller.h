@@ -36,7 +36,7 @@ class Controller : public AbstractController {
 
   const Base& GetBase() const override;
   int GetCurrentTime() const override;
-  Exit GetCurrentStatus() const override;
+  GameStatus GetCurrentStatus() const override;
 
   const AnimationPlayer& GetBackground(WindowType type) const override;
   const AnimationPlayer& GetInterface() const override;
@@ -48,16 +48,15 @@ class Controller : public AbstractController {
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
 
-  Exit game_status_ = Exit::kPlay;
+  GameStatus game_status_ = GameStatus::kPlay;
   WindowType game_mode_;
   bool is_prepairing_to_spawn_ = false;
   int current_game_time_ = 0;
   int last_round_start_time_ = 0;
 
-  const int kWinParticleId = 0;
+  const int kWinParticleId = 7;
   const int kLooseParticleId = 1;
   const int kParticlesPeriod = 100;
-  const Size kEndParticlesSize = {200, 200};
   int last_time_end_particle_created = 0;
 
   static std::mt19937 random_generator_;

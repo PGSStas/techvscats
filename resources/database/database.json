@@ -603,6 +603,16 @@
         "timing": 630,
         "path": "particles/smoke6_9"
       }
+    },
+    {
+      "size": {
+        "width": 300,
+        "height": 300
+      },
+      "animation": {
+        "timing": 830,
+        "path": "particles/friework7_12"
+      }
     }
   ]
 }

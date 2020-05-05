@@ -95,7 +95,7 @@ void View::DrawPauseMenu(QPainter*) {
 }
 
 void View::DrawEndgameMessage(QPainter* painter) {
-  if (controller_->GetCurrentStatus() != Exit::kPlay) {
+  if (controller_->GetCurrentStatus() != GameStatus::kPlay) {
     tower_menu_.Hide(true);
     painter->save();
 
@@ -181,7 +181,7 @@ void View::ReplaceTowerMenu(Coordinate position, int carrier_building_index,
 }
 
 void View::DisableTowerMenu() {
-  tower_menu_.Disable(false);
+  tower_menu_.Close();
 }
 
 void View::mouseReleaseEvent(QMouseEvent* event) {

@@ -12,7 +12,7 @@
 #include "GameObject/particle.h"
 #include "View/text_notification.h"
 
-enum class Exit {
+enum class GameStatus {
   kWin,
   kLose,
   kPlay
@@ -57,7 +57,7 @@ class AbstractController {
 
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
-  virtual Exit GetCurrentStatus() const = 0;
+  virtual GameStatus GetCurrentStatus() const = 0;
 
   virtual const AnimationPlayer& GetBackground(WindowType type) const = 0;
   virtual const AnimationPlayer& GetInterface() const = 0;
