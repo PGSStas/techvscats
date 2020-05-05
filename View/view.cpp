@@ -178,9 +178,10 @@ void View::DrawParticles(QPainter* painter) {
 
 void View::ReplaceTowerMenu(Coordinate position, int carrier_building_index,
                             const std::vector<int>& possible_buildings_id,
-                            int carrier_id) {
+                            int carrier_id, int total_cost) {
   tower_menu_.Recreate(position, carrier_building_index,
-                       possible_buildings_id, carrier_id, size_handler_);
+                       possible_buildings_id, carrier_id,
+                       size_handler_, total_cost);
 }
 
 void View::DisableTowerMenu() {

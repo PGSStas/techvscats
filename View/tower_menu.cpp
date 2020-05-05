@@ -77,7 +77,8 @@ TowerMenu::TowerMenu(QMainWindow* window) {
 
 void TowerMenu::Recreate(Coordinate position, int owner_building_index,
                          const std::vector<int>& possible_buildings_id,
-                         int owner_id, const SizeHandler& size_handler) {
+                         int owner_id, const SizeHandler& size_handler,
+                         int total_cost) {
   if (is_hidden_) {
     return;
   }
@@ -97,6 +98,7 @@ void TowerMenu::Recreate(Coordinate position, int owner_building_index,
   active_button_index_ = -1;
   slow_disable = false;
   id_to_replace_ = false;
+  total_cost_ = total_cost;
 }
 
 void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
@@ -221,7 +223,7 @@ void TowerMenu::DrawInfoField(QPainter* painter,
   }
 
   painter->restore();
-  info_field_.SetInfo(instance);
+  info_field_.SetInfo(instance, total_cost_);
   info_field_.Draw(painter, size_handler);
 }
 

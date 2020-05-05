@@ -26,7 +26,8 @@ class TowerMenu {
 
   void Recreate(Coordinate position, int owner_building_index,
                 const std::vector<int>& possible_buildings_id,
-                int owner_id, const SizeHandler& size_handler);
+                int owner_id, const SizeHandler& size_handler,
+                int total_cost);
   void Tick(const SizeHandler& size_handler, int delta_time);
   void SetIsWantToReplaceToFalse();
   void RescaleButtons(const SizeHandler& size_handler);
@@ -52,6 +53,7 @@ class TowerMenu {
   bool id_to_replace_ = false;
   bool slow_disable = false;
   bool is_hidden_;
+  int total_cost_;
 
   InfoField info_field_;
 

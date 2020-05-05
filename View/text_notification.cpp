@@ -32,6 +32,7 @@ void TextNotification::Draw(QPainter* painter,
   font.setFamily(QFontDatabase::applicationFontFamilies(kFontId).at(0));
   painter->setFont(font);
 
+  // Position, for camera span
   Coordinate point = size_handler.GameToWindowCoordinate(
       {position_.x - font_size * message_.size() * 0.35,
        position_.y + font_size / 4});

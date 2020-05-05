@@ -17,8 +17,12 @@
 class InfoField {
  public:
   void Draw(QPainter* painter, const SizeHandler& size_handler) const;
+  void DrawStatistics(QPainter* painter, const SizeHandler& size_handler,
+                      double text_height) const;
+  void DrawSellInfo(QPainter* painter, const SizeHandler& size_handler,
+                    double text_height) const;
 
-  void SetInfo(const Building& building);
+  void SetInfo(const Building& building, int total_cost);
   void SetPosition(Coordinate position, Size button_size, double shift);
   void SetVisible(bool is_hide);
 
@@ -28,6 +32,7 @@ class InfoField {
   Coordinate position_;
   bool is_hidden_ = false;
   bool is_on_bottom_ = true;
+  bool is_sell_info_ = false;
 
   QString header_;
   QString info_;

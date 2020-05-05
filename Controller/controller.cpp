@@ -348,7 +348,8 @@ void Controller::CreateTowerMenu(int tower_index) {
   const auto& building = model_->GetBuildings()[tower_index];
   const auto& possible_upgrades = model_->GetUpgradesTree()[building->GetId()];
   view_->ReplaceTowerMenu(building->GetPosition(), tower_index,
-                          possible_upgrades, building->GetId());
+                          possible_upgrades, building->GetId(),
+                          building->GetTotalCost());
 }
 
 void Controller::MouseEvent(Coordinate position, bool is_press) {

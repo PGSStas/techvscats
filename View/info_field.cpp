@@ -47,10 +47,24 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->drawText(point.x, point.y,
                     size.width, size.height, Qt::TextWordWrap, info_);
 
-  point = size_handler.GameToWindowCoordinate(
+  if (is_sell_info_) {
+    DrawSellInfo(painter, size_handler, text_height);
+  } else {
+    DrawStatistics(painter, size_handler, text_height);
+  }
+
+  painter->restore();
+}
+
+void InfoField::DrawStatistics(QPainter* painter,
+                               const SizeHandler& size_handler,
+                               double text_height) const {
+  painter->save();
+
+  Coordinate point = size_handler.GameToWindowCoordinate(
       {position_.x, position_.y + kSize.height * kRelativeHeaderSize.height
           + text_height + 2 * kMargin});
-  size = size_handler.GameToWindowSize(
+  Size size = size_handler.GameToWindowSize(
       {kSize.width * kRelativeStatisticsSize.width,
        kSize.height * kRelativeStatisticsSize.height});
   painter->drawText(point.x, point.y, size.width, size.height,
@@ -76,12 +90,36 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->restore();
 }
 
-void InfoField::SetInfo(const Building& building) {
+void InfoField::DrawSellInfo(QPainter* painter,
+                             const SizeHandler& size_handler,
+                             double text_height) const {
+  painter->save();
+
+  Coordinate point = size_handler.GameToWindowCoordinate(
+      {position_.x, position_.y + kSize.height * (kRelativeHeaderSize.height +
+          kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
+  Size size = size_handler.GameToWindowSize(
+      {kSize.width * kRelativeStatisticsSize.width,
+       kSize.height * kRelativeStatisticsSize.height});
+  painter->drawText(point.x, point.y, size.width, size.height,
+                    Qt::AlignCenter, QObject::tr("Стоимость продажи") +
+          ": " + QString::number(cost_));
+
+  painter->restore();
+}
+
+void InfoField::SetInfo(const Building& building, int total_cost) {
   header_ = building.GetHeader();
   info_ = building.GetDescription();
-  cost_ = building.GetCost();
   damage_ = building.GetDamage();
   aims_count_ = building.GetMaxAims();
+  if (building.GetId() == 0) {
+    is_sell_info_ = true;
+    cost_ = total_cost * constants::kRefundCoefficient;
+  } else {
+    is_sell_info_ = false;
+    cost_ = building.GetCost();
+  }
 }
 
 void InfoField::SetPosition(Coordinate position, Size button_size,

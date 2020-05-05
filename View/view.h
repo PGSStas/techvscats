@@ -33,7 +33,7 @@ class View : public QMainWindow {
 
   void ReplaceTowerMenu(Coordinate position, int carrier_building_index,
                         const std::vector<int>& possible_buildings_id,
-                        int carrier_id_);
+                        int carrier_id_, int total_cost);
   void DisableTowerMenu();
 
   void ChangeGameSpeed(Speed speed);
