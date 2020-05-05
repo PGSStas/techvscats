@@ -69,34 +69,27 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
     aims_.clear();
     return;
   }
-  aims_.remove_if([&](const auto& object) {
-    return (object->IsDead() || !IsInAttackRange(object->GetPosition()));
-  });
 
-  if (aims_.size() == max_aims_) {
-    is_ready_to_shoot_ = true;
-    return;
-  }
-
+  aims_.clear();
   for (const auto& enemy : enemies) {
-    if (aims_.size() == max_aims_
-        || aims_.size() == enemies.size()) {
-      break;
-    }
-    if (!IsInAttackRange(enemy->GetPosition())) {
-      continue;
-    }
-    bool can_add = true;
-    for (auto& aim : aims_) {
-      if (aim == enemy) {
-        can_add = false;
-        break;
-      }
-    }
-    if (can_add) {
+    if (IsInAttackRange(enemy->GetPosition())) {
       aims_.push_back(enemy);
     }
   }
+  Coordinate position = position_;
+  std::sort(aims_.begin(), aims_.end(),
+      [&position](const std::shared_ptr<Enemy>& one,
+          const std::shared_ptr<Enemy>& other) {
+    if (one->GetPriority() != other->GetPriority()) {
+      return one->GetPriority() < other->GetPriority();
+    }
+    return one->GetPosition().GetVectorTo(position).GetLength() <
+      other->GetPosition().GetVectorTo(position).GetLength();
+  });
+  if (aims_.size() > max_aims_) {
+    aims_.resize(max_aims_);
+  }
+
   is_ready_to_shoot_ = !aims_.empty();
 }
 
@@ -162,7 +155,7 @@ const AuricField& Building::GetAuricField() const {
   return auric_field_;
 }
 
-const std::list<std::shared_ptr<Enemy>>& Building::GetAims() const {
+const std::vector<std::shared_ptr<Enemy>>& Building::GetAims() const {
   return aims_;
 }
 

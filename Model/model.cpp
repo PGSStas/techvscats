@@ -329,7 +329,8 @@ void Model::LoadDatabase() {
                      enemy["size"].toObject()["height"].toInt());
     id_to_enemy_.emplace_back(enemy["speed"].toInt(), enemy["damage"].toInt(),
                               enemy["armor"].toInt(), enemy["reward"].toInt(),
-                              enemy["max_health"].toInt(), size, aura);
+                              enemy["max_health"].toInt(),
+                              size, enemy["priority"].toInt(), aura);
     SetAnimationToGameObject(
         &id_to_enemy_.back(),
         {enemy["animation"].toObject()["timing"].toInt()},
