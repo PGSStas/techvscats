@@ -27,18 +27,15 @@ class MusicPlayer {
   void PlayNotEnoughMoneySound();
 
  private:
-  QMediaPlayer* main_player_;
-  QMediaPlaylist* main_playlist_;
+  std::shared_ptr<QMediaPlayer> main_player_;
+  std::shared_ptr<QMediaPlaylist> main_playlist_;
 
-  QSoundEffect* button_sound_;
-
-  QSoundEffect* game_over_sound_;
-  QSoundEffect* game_won_sound_;
-
-  QSoundEffect* sale_sound_;
-  QSoundEffect* not_enough_money_sound_;
-
-  QSoundEffect* new_wave_;
+  std::shared_ptr<QSoundEffect> button_sound_;
+  std::shared_ptr<QSoundEffect> game_over_sound_;
+  std::shared_ptr<QSoundEffect> game_won_sound_;
+  std::shared_ptr<QSoundEffect> sale_sound_;
+  std::shared_ptr<QSoundEffect> not_enough_money_sound_;
+  std::shared_ptr<QSoundEffect> new_wave_;
 };
 
 #endif  // MODEL_MUSIC_PLAYER_H_

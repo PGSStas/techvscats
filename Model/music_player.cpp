@@ -1,31 +1,27 @@
 #include "music_player.h"
 #include <QDebug>
 
-MusicPlayer::MusicPlayer() {
-  main_player_ = new QMediaPlayer();
-  main_playlist_ = new QMediaPlaylist(main_player_);
-  main_player_->setPlaylist(main_playlist_);
+MusicPlayer::MusicPlayer()
+    : main_player_(std::make_shared<QMediaPlayer>()),
+      main_playlist_(std::make_shared<QMediaPlaylist>(main_player_.get())),
+      button_sound_(std::make_shared<QSoundEffect>()),
+      game_over_sound_(std::make_shared<QSoundEffect>()),
+      game_won_sound_(std::make_shared<QSoundEffect>()),
+      sale_sound_(std::make_shared<QSoundEffect>()),
+      not_enough_money_sound_(std::make_shared<QSoundEffect>()),
+      new_wave_(std::make_shared<QSoundEffect>()) {
+  main_player_->setPlaylist(main_playlist_.get());
 
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/menu_sound.mp3"));
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/game_sound.mp3"));
   main_playlist_->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
 
-  button_sound_ = new QSoundEffect();
   button_sound_->setSource(QUrl("qrc:resources/sounds/button_click.wav"));
-
-  game_over_sound_ = new QSoundEffect();
   game_over_sound_->setSource(QUrl("qrc:resources/sounds/game_over_sound.wav"));
-
-  game_won_sound_ = new QSoundEffect();
   game_won_sound_->setSource(QUrl("qrc:resources/sounds/game_won_sound.wav"));
-
-  sale_sound_ = new QSoundEffect();
   sale_sound_->setSource(QUrl("qrc:resources/sounds/sale_sound.wav"));
-  not_enough_money_sound_ = new QSoundEffect();
   not_enough_money_sound_->setSource(QUrl(
       "qrc:resources/sounds/not_enough_money_sound.wav"));
-
-  new_wave_ = new QSoundEffect();
   new_wave_->setSource(QUrl("qrc:resources/sounds/new_wave_sound.wav"));
 
   SetVolume(100);

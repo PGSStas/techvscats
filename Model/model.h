@@ -63,7 +63,7 @@ class Model {
   const Effect& GetEffectById(int id) const;
   const Building& GetBuildingById(int id) const;
   const Particle& GetParticleById(int id) const;
-  QSoundEffect* GetParticleSoundEffectById(int id) const;
+  std::shared_ptr<QSoundEffect> GetParticleSoundEffectById(int id) const;
 
   int GetRoundsCount() const;
   int GetPrepareTimeBetweenRounds() const;
@@ -109,7 +109,7 @@ class Model {
   std::vector<std::vector<int>> upgrades_tree_;
   std::vector<Effect> id_to_effect_;
   std::vector<Particle> id_to_particle_;
-  std::vector<QSoundEffect*> id_to_particle_sound_;
+  std::vector<std::shared_ptr<QSoundEffect>> id_to_particle_sound_;
 
   // Images
   std::vector<AnimationPlayer> backgrounds_;

@@ -491,7 +491,7 @@ void Model::LoadDatabase() {
   for (int i = 0; i < sounds_count; i++) {
     json_sound = json_sounds[i].toObject();
     QString path = json_sound["path"].toString();
-    auto* sound_effect = new QSoundEffect();
+    auto sound_effect = std::make_shared<QSoundEffect>();
     sound_effect->setVolume(0.4);
     sound_effect->setSource(QUrl("qrc:resources/" + path));
     id_to_particle_sound_.emplace_back(sound_effect);
@@ -585,7 +585,7 @@ void Model::SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object) {
                                            period);
 }
 
-QSoundEffect* Model::GetParticleSoundEffectById(int id) const {
+std::shared_ptr<QSoundEffect> Model::GetParticleSoundEffectById(int id) const {
   return id_to_particle_sound_[id];
 }
 
