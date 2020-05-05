@@ -113,10 +113,13 @@ void View::DrawEndgameMessage(QPainter* painter) {
     font.setFamily(QFontDatabase::applicationFontFamilies(0).at(0));
     painter->setFont(font);
 
+    QFontMetrics metrics(font);
+
     Coordinate point = size_handler_.GameToWindowCoordinate(
-        {message_position_.x - endgame_message_.size() * constants::kFontSize,
+        {message_position_.x - metrics.boundingRect(0, 0, constants::kGameWidth,
+                                                    constants::kGameHeight, Qt::AlignLeft, kEndgameMessage).width() / 2,
          message_position_.y});
-    painter->drawText(point.x, point.y, endgame_message_);
+    painter->drawText(point.x, point.y, kEndgameMessage);
 
     painter->restore();
   } else {

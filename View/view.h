@@ -56,8 +56,8 @@ class View : public QMainWindow {
 
   double game_speed_coefficient_ = 1;
 
-  const QString endgame_message_ = "Restart level or go to the main menu...";
-  Coordinate message_position_ = {constants::kGameWidth, 900};
+  const QString kEndgameMessage = tr("Restart level or go to the main menu");
+  Coordinate message_position_ = {constants::kGameWidth / 2, 900};
   double alpha_channel_ = 0;
   double delta_alpha_ = 2;
 
