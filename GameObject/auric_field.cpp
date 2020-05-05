@@ -26,7 +26,7 @@ void AuricField::Draw(QPainter* painter, const SizeHandler& size_handler,
                                / constants::kSemiMinorCoefficient,
                            size.width);
 
-  QColor color(Qt:: blue);
+  QColor color(Qt::blue);
   color.setAlpha(60);
   gradient.setColorAt(0, Qt::transparent);
   gradient.setColorAt(0.80, Qt::transparent);
@@ -36,8 +36,8 @@ void AuricField::Draw(QPainter* painter, const SizeHandler& size_handler,
 
   painter->drawEllipse(QPointF(point.x,
                                point.y * 1 / constants::kSemiMinorCoefficient),
-                               size.width,
-                               size.height);
+                       size.width,
+                       size.height);
   painter->restore();
 }
 

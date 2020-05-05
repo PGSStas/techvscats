@@ -1,5 +1,8 @@
 #include "controller.h"
 
+std::mt19937 Controller::random_generator_ = std::mt19937(
+    std::chrono::system_clock::now().time_since_epoch().count());
+
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)),
                            game_mode_(WindowType::kMainMenu) {}
@@ -17,7 +20,7 @@ void Controller::StartGame(int level_id) {
   view_->EnableGameUi();
 }
 
-void Controller::EndGame(Exit) {
+void Controller::EndGame() {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMainMenuUi();
@@ -143,11 +146,12 @@ void Controller::TickEndGame() {
     ParticleParameters particle(
         (game_status_ == Exit::kLose) ? kLooseParticleId : kWinParticleId,
         kEndParticlesSize,
-        Coordinate(0, 0)
-            + Size(qrand() % static_cast<int>(constants::kGameWidth),
-                   qrand() % static_cast<int>(constants::kGameHeight)));
+        Coordinate(0, 0) + Size(
+            random_generator_() % static_cast<int>(constants::kGameWidth),
+            random_generator_()
+                % static_cast<int>(constants::kGameHeight)));
     model_->CreateParticles({particle});
-    if (qrand() % 1000 < 100) {
+    if (random_generator_() % 1000 < 100) {
       const auto& buildings = model_->GetBuildings();
       for (uint i = 0; i < buildings.size(); i++) {
         if (buildings[i]->GetId() != 0) {

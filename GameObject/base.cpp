@@ -14,7 +14,9 @@ void Base::Tick(int current_time) {
   double health_percent = current_health_ / max_health_;
   if (health_percent < kHealthFlameTheshold) {
     period = kFlameSpawnSpeed * health_percent;
+    period = std::max(period, 200);
   }
+
   particle_handler_.SetPeriod(period);
 }
 
@@ -78,9 +80,9 @@ void Base::DecreaseHealth(double damage) {
 
   Coordinate rand_position = position_;
   rand_position +=
-      Size(random_generator_() % static_cast<int>(size_.width/1.5)
+      Size(random_generator_() % static_cast<int>(size_.width / 1.5)
                - size_.width / 3,
-           random_generator_() % static_cast<int>(size_.height/1.5)
+           random_generator_() % static_cast<int>(size_.height / 1.5)
                - size_.height / 3);
   particle_handler_.AddParticle(
       ParticleParameters(0, size_ / 3, rand_position));

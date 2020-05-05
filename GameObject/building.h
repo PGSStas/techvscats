@@ -42,7 +42,7 @@ class Building : public GameObject {
 
   const QString& GetHeader() const;
   const QString& GetDescription() const;
-  uint32_t GetMaxAims() const;
+  uint GetMaxAims() const;
   double GetProjectileSpeedCoefficient() const;
   Effect* GetAppliedEffect();
   const AuricField& GetAuricField() const;

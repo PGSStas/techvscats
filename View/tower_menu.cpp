@@ -1,6 +1,6 @@
 #include "tower_menu.h"
 
-void TowerMenu::HeTappedMe(uint button_index) {
+void TowerMenu::ButtonTapped(int button_index) {
   if (active_button_index_ == static_cast<int>(button_index)) {
     want_to_replace_ = true;
     Disable(false);
@@ -66,18 +66,18 @@ TowerMenu::TowerMenu(QMainWindow* window) {
     buttons_.back()->SetSecondIconPath(
         confirm.main_path, confirm.active_path);
     buttons_.back()->hide();
-    int tap = buttons_.size() - 1;
-    auto settings_button_click = [this, tap]() {
-      HeTappedMe(tap);
+    int index = buttons_.size() - 1;
+    auto button_click = [this, index]() {
+      ButtonTapped(index);
     };
     QObject::connect(buttons_.back(), &QPushButton::clicked,
-                     settings_button_click);
+                     button_click);
   }
 }
 
-void TowerMenu::Recreate(Coordinate position, int carrier_building_index,
+void TowerMenu::Recreate(Coordinate position, int owner_building_index,
                          const std::vector<int>& possible_buildings_id,
-                         int carrier_id, const SizeHandler& size_handler) {
+                         int owner_id, const SizeHandler& size_handler) {
   if (is_hidden_) {
     return;
   }
@@ -90,8 +90,8 @@ void TowerMenu::Recreate(Coordinate position, int carrier_building_index,
     buttons_[id]->SetGeometry(position - kSizeOfButton / 2, size_handler);
     buttons_[id]->show();
   }
-  carrier_id_ = carrier_id;
-  carrier_building_index_ = carrier_building_index;
+  owner_id_ = owner_id;
+  owner_building_index_ = owner_building_index;
   position_ = position;
   current_force_ = kThrowForce;
   active_button_index_ = -1;
@@ -249,13 +249,13 @@ void TowerMenu::Disable(bool is_fast_disable) {
   possible_buildings_id_.clear();
 }
 
-int TowerMenu::GetCarrierIndex() const {
-  return carrier_building_index_;
+int TowerMenu::GetTownerIndex() const {
+  return owner_building_index_;
 }
 
 int TowerMenu::GetSellectedTowerId() const {
   if (active_button_index_ == -1) {
-    return carrier_id_;
+    return owner_id_;
   }
   return active_button_index_;
 }

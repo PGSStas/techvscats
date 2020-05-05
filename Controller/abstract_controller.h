@@ -39,20 +39,20 @@ class AbstractController {
 
   virtual void StartGame(int level) = 0;
   virtual void Tick(int current_time) = 0;
-  virtual void EndGame(Exit exit) = 0;
+  virtual void EndGame() = 0;
   virtual void SetSpeedCoefficient(Speed speed) = 0;
   virtual void SetBuilding(int index_in_buildings, int replacing_id) = 0;
 
-  virtual void MouseEvent(Coordinate position , bool is_press) = 0;
-  virtual void RescaleObjects(const SizeHandler& size_handler)  = 0;
+  virtual void MouseEvent(Coordinate position, bool is_press) = 0;
+  virtual void RescaleObjects(const SizeHandler& size_handler) = 0;
 
   virtual const Building& GetBuildingById(int instance_id) const = 0;
   virtual const std::list<Particle>& GetParticles() const = 0;
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
   virtual const std::list<std::shared_ptr<AbstractProjectile>>&
-  GetProjectiles() const = 0;
+    GetProjectiles() const = 0;
   virtual const std::vector<std::shared_ptr<Building>>&
-  GetBuildings() const = 0;
+    GetBuildings() const = 0;
   virtual const std::list<TextNotification>& GetTextNotifications() const = 0;
 
   virtual const Base& GetBase() const = 0;

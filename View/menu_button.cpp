@@ -33,7 +33,7 @@ MenuButton::MenuButton(const Size& button_size,
 }
 
 void MenuButton::UpdateIcon() {
-  if (is_enter_) {
+  if (have_entered_event_) {
     setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
   } else {
     setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);
@@ -41,7 +41,7 @@ void MenuButton::UpdateIcon() {
 }
 
 void MenuButton::SetIsEnter(bool enter) {
-  is_enter_ = enter;
+  have_entered_event_ = enter;
 }
 
 void MenuButton::SetGeometry(
@@ -75,7 +75,7 @@ void MenuButton::enterEvent(QEvent*) {
         QColor::fromRgb(static_cast<int32_t>(random_generator_())).name() + ";";
     setStyleSheet(style_sheet);
   }
-  is_enter_ = true;
+  have_entered_event_ = true;
   setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
 }
 
@@ -86,7 +86,7 @@ void MenuButton::leaveEvent(QEvent*) {
     style_sheet += "background-color: #ffffff;";
     setStyleSheet(style_sheet);
   }
-  is_enter_ = false;
+  have_entered_event_ = false;
   setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);
 }
 

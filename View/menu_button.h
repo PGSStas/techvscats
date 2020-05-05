@@ -53,7 +53,7 @@ class MenuButton : public QPushButton {
   QIcon active_icon_1_;
 
   bool is_second_icon_enabled_ = false;
-  bool is_enter_ = false;
+  bool have_entered_event_ = false;
   QIcon main_icon_2_;
   QIcon active_icon_2_;
 

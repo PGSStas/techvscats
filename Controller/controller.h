@@ -18,7 +18,7 @@ class Controller : public AbstractController {
   ~Controller() override = default;
 
   void StartGame(int level) override;
-  void EndGame(Exit exit) override;
+  void EndGame() override;
   void Tick(int current_time) override;
   void SetSpeedCoefficient(Speed speed) override;
   void SetBuilding(int index_in_buildings, int replacing_id) override;
@@ -31,7 +31,7 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
   const std::list<std::shared_ptr<AbstractProjectile>>&
-  GetProjectiles() const override;
+    GetProjectiles() const override;
   const std::list<TextNotification>& GetTextNotifications() const override;
 
   const Base& GetBase() const override;
@@ -59,6 +59,8 @@ class Controller : public AbstractController {
   const int kParticlesPeriod = 100;
   const Size kEndParticlesSize = {200, 200};
   int last_time_end_particle_created = 0;
+
+  static std::mt19937 random_generator_;
 
  private:
   void GameProcess();
