@@ -151,6 +151,7 @@
         "timing": 300
       },
       "particles": {
+        "at_creation": 7,
         "at_death": 3
       }
     }
@@ -598,21 +599,11 @@
         "width": 0,
         "height": 0
       },
-      "sound": 4
-    },
-    {
-      "size": {
-        "width": 0,
-        "height": 0
+      "animation": {
+        "timing": 630,
+        "path": "particles/smoke6_9"
       },
-      "sound": 5
-    },
-    {
-      "size": {
-        "width": 0,
-        "height": 0
-      },
-      "sound": 6
+      "sound": 7
     }
   ],
   "sounds": [
@@ -636,6 +627,9 @@
     },
     {
       "path": "sounds/particle_sound_6.wav"
+    },
+    {
+      "path": "sounds/particle_sound_7.wav"
     }
   ]
 }
