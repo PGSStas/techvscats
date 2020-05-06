@@ -41,7 +41,7 @@ void View::paintEvent(QPaintEvent*) {
 
 void View::DrawEmptyZones(QPainter* painter) {
   painter->save();
-  QImage image = controller_->GetEmptyZoneTexture();
+  const QImage& image = controller_->GetEmptyZoneTexture();
   Size horizontal_zone =
       Size(width(), size_handler_.GameToWindowCoordinate({0, 0}).y);
   painter->fillRect(0, 0, horizontal_zone.width, horizontal_zone.height, image);
