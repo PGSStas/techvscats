@@ -48,21 +48,20 @@ void View::paintEvent(QPaintEvent*) {
 
 void View::DrawEmptyZones(QPainter* painter) {
   painter->save();
+  QImage image = controller_->GetEmptyZoneTexture();
   Size horizontal_zone =
       Size(width(), size_handler_.GameToWindowCoordinate({0, 0}).y);
-  painter->fillRect(
-      0, 0, horizontal_zone.width, horizontal_zone.height, QColor("#ffffff"));
+  painter->fillRect(0, 0, horizontal_zone.width, horizontal_zone.height, image);
   painter->fillRect(
       0,
       size_handler_.GameToWindowCoordinate({0, constants::kGameHeight}).y - 1,
-      horizontal_zone.width + 2, horizontal_zone.height + 2, QColor("#ffffff"));
+      horizontal_zone.width + 2, horizontal_zone.height + 2, image);
   Size vertical_zone =
       Size(size_handler_.GameToWindowCoordinate({0, 0}).x, height());
-  painter->fillRect(
-      0, 0, vertical_zone.width, vertical_zone.height, QColor("#ffffff"));
+  painter->fillRect(0, 0, vertical_zone.width, vertical_zone.height, image);
   painter->fillRect(
       size_handler_.GameToWindowCoordinate({constants::kGameWidth, 0}).x,
-      0, vertical_zone.width + 2, vertical_zone.height + 2, QColor("#ffffff"));
+      0, vertical_zone.width + 2, vertical_zone.height + 2, image);
 
   painter->restore();
 }

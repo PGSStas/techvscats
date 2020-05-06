@@ -437,6 +437,10 @@ const std::unique_ptr<MusicPlayer>& Controller::GetMusicPlayer() const {
   return music_player_;
 }
 
+const QImage& Controller::GetEmptyZoneTexture() const {
+  return model_->GetEmptyZoneTexture(static_cast<int>(game_mode_));
+}
+
 const AnimationPlayer& Controller::GetInterface() const {
   return model_->GetInterface();
 }

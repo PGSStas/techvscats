@@ -38,6 +38,8 @@ class Controller : public AbstractController {
   int GetCurrentTime() const override;
 
   const AnimationPlayer& GetBackground(WindowType type) const override;
+
+  const QImage& GetEmptyZoneTexture() const override;
   const AnimationPlayer& GetInterface() const override;
 
   int GetCurrentRoundNumber() const override;
