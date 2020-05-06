@@ -61,7 +61,7 @@ class AbstractController {
 
   virtual const AnimationPlayer& GetBackground(WindowType type) const = 0;
 
-  virtual const QImage& GetEmptyZoneTexture() const = 0;
+  virtual const QImage& GetEmptyZoneTexture(WindowType type) const = 0;
   virtual const AnimationPlayer& GetInterface() const = 0;
 
   virtual int GetCurrentRoundNumber() const = 0;

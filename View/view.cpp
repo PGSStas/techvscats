@@ -7,7 +7,7 @@ View::View(AbstractController* controller)
       tower_menu_(this) {
   setMinimumSize(1280, 720);
   setMouseTracking(true);
-  show();
+  showFullScreen();
 
   view_timer_.start();
   time_between_ticks_.start();
@@ -41,7 +41,8 @@ void View::paintEvent(QPaintEvent*) {
 
 void View::DrawEmptyZones(QPainter* painter) {
   painter->save();
-  const QImage& image = controller_->GetEmptyZoneTexture();
+  const QImage& image = controller_->GetEmptyZoneTexture(
+      button_handler_.GetWindowType());
   Size horizontal_zone =
       Size(width(), size_handler_.GameToWindowCoordinate({0, 0}).y);
   painter->fillRect(0, 0, horizontal_zone.width, horizontal_zone.height, image);

@@ -12,7 +12,7 @@ void Controller::StartGame(int level_id) {
   game_status_ = GameStatus::kPlay;
   current_game_time_ = 0;
   last_time_end_particle_created = 0;
-  game_mode_ = WindowType::kGame;
+  window_type_ = WindowType::kGame;
   last_round_start_time_ = 0;
   model_->SetGameLevel(level_id);
 
@@ -25,13 +25,13 @@ void Controller::EndGame() {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMainMenuUi();
-  game_mode_ = WindowType::kMainMenu;
+  window_type_ = WindowType::kMainMenu;
   current_game_time_ = 0;
 }
 
 void Controller::Tick(int current_time) {
   current_game_time_ = current_time;
-  switch (game_mode_) {
+  switch (window_type_) {
     case WindowType::kGame: {
       GameProcess();
       break;
@@ -432,8 +432,8 @@ GameStatus Controller::GetCurrentStatus() const {
   return game_status_;
 }
 
-const QImage& Controller::GetEmptyZoneTexture() const {
-  return model_->GetEmptyZoneTexture(static_cast<int>(game_mode_));
+const QImage& Controller::GetEmptyZoneTexture(WindowType type) const {
+  return model_->GetEmptyZoneTexture(static_cast<int>(type));
 }
 
 const AnimationPlayer& Controller::GetInterface() const {

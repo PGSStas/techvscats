@@ -41,7 +41,7 @@ class Controller : public AbstractController {
 
   const AnimationPlayer& GetBackground(WindowType type) const override;
 
-  const QImage& GetEmptyZoneTexture() const override;
+  const QImage& GetEmptyZoneTexture(WindowType type) const override;
   const AnimationPlayer& GetInterface() const override;
 
   int GetCurrentRoundNumber() const override;
@@ -53,7 +53,7 @@ class Controller : public AbstractController {
   std::unique_ptr<View> view_;
 
   GameStatus game_status_ = GameStatus::kPlay;
-  WindowType game_mode_ = WindowType::kMainMenu;
+  WindowType window_type_ = WindowType::kMainMenu;
   bool is_prepairing_to_spawn_ = false;
   int current_game_time_ = 0;
   int last_round_start_time_ = 0;
