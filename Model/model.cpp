@@ -96,7 +96,8 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
     base_->Rescale(size_handler.GameToWindowSize(base_->GetSize()));
   }
   for (auto& animaion : backgrounds_) {
-    animaion.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
+    animaion.Rescale(size_handler.GameToWindowSize(
+        size_handler.GetGameSize() ));
   }
   interface_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
   Effect::Rescale(size_handler.GameToWindowSize(Effect::GetSize()));

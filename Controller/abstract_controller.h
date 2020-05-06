@@ -13,9 +13,9 @@
 #include "View/text_notification.h"
 
 enum class GameStatus {
-  kWin,
-  kLose,
-  kPlay
+  kWin = 0,
+  kLose = 1,
+  kPlay = 2
 };
 
 enum class Speed {
@@ -25,10 +25,10 @@ enum class Speed {
 };
 
 enum class WindowType {
-  kMainMenu,
-  kSettings,
-  kPauseMenu,
-  kGame
+  kMainMenu = 0,
+  kSettings = 1,
+  kPauseMenu = 2,
+  kGame = 3
 };
 
 // AbstractController is needed to avoid the problem with looping include
@@ -50,9 +50,9 @@ class AbstractController {
   virtual const std::list<Particle>& GetParticles() const = 0;
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
   virtual const std::list<std::shared_ptr<AbstractProjectile>>&
-    GetProjectiles() const = 0;
+  GetProjectiles() const = 0;
   virtual const std::vector<std::shared_ptr<Building>>&
-    GetBuildings() const = 0;
+  GetBuildings() const = 0;
   virtual const std::list<TextNotification>& GetTextNotifications() const = 0;
 
   virtual const Base& GetBase() const = 0;

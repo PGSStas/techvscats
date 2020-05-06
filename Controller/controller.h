@@ -51,7 +51,7 @@ class Controller : public AbstractController {
   std::unique_ptr<View> view_;
 
   GameStatus game_status_ = GameStatus::kPlay;
-  WindowType game_mode_;
+  WindowType game_mode_ = WindowType::kMainMenu;
   bool is_prepairing_to_spawn_ = false;
   int current_game_time_ = 0;
   int last_round_start_time_ = 0;
