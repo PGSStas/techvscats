@@ -100,6 +100,8 @@ void View::DrawEndgameMessage(QPainter* painter) {
     painter->save();
 
     alpha_channel_ += delta_alpha_;
+    // Change the way, that text blinks. From solid to
+    // transparent or vice versa.
     if (alpha_channel_ < 0 || alpha_channel_ > 255) {
       delta_alpha_ *= -1;
       alpha_channel_ += 2 * delta_alpha_;
