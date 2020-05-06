@@ -118,8 +118,12 @@ void View::DrawEndgameMessage(QPainter* painter) {
     QFontMetrics metrics(font);
 
     Coordinate point = size_handler_.GameToWindowCoordinate(
-        {message_position_.x - metrics.boundingRect(0, 0, constants::kGameWidth,
-                                                    constants::kGameHeight, Qt::AlignLeft, kEndgameMessage).width() / 2,
+        {message_position_.x - metrics.boundingRect(0, 0,
+                                                    constants::kGameWidth,
+                                                    constants::kGameHeight,
+                                                    Qt::AlignLeft,
+                                                    kEndgameMessage).width()
+            / 2,
          message_position_.y});
     painter->drawText(point.x, point.y, kEndgameMessage);
 
@@ -234,7 +238,6 @@ void View::DrawAdditionalInfo(QPainter* painter) {
   painter->drawImage(origin.x, origin.y,
                      controller_->GetInterface().GetCurrentFrame());
   DrawRoundInfo(painter);
-
 
   if (tower_menu_.IsEnable()) {
     tower_menu_.DrawInfoField(painter, size_handler_,

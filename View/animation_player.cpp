@@ -15,9 +15,8 @@ void AnimationPlayer::Tick(int delta_time) {
   current_frame_ = (current_frame_ + 1) % frames_->size();
   wait_till_next_frame_ += time_between_frames_;
 }
-#include <qdebug.h>
+
 const QImage& AnimationPlayer::GetCurrentFrame() const {
-  qDebug()<<current_frame_;
   return frames_rescaled_[current_frame_];
 }
 
