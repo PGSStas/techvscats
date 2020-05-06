@@ -7,7 +7,7 @@ View::View(AbstractController* controller)
       tower_menu_(this) {
   setMinimumSize(1280, 720);
   setMouseTracking(true);
-  show();
+  showFullScreen();
 
   view_timer_.start();
   time_between_ticks_.start();
