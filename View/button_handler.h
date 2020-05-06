@@ -42,7 +42,7 @@ class ButtonHandler : QObject {
 
  private:
   QMainWindow* main_window_;
-  WindowType window_type_;
+  WindowType window_type_ = WindowType::kMainMenu;
   AbstractController* controller_;
 
   // main_menu

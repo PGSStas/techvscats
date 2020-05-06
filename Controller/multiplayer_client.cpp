@@ -28,6 +28,7 @@ void MultiplayerClient::onConnected() {
   connect(web_socket_, &QWebSocket::textMessageReceived,
           this, &MultiplayerClient::onTextMessageReceived);
   web_socket_->sendTextMessage(ServerMessage().ToCode());
+  is_online_ = true;
 }
 
 void MultiplayerClient::onTextMessageReceived(QString message) {
@@ -39,4 +40,5 @@ void MultiplayerClient::onTextMessageReceived(QString message) {
 
 void MultiplayerClient::onClose() {
   qDebug() << "server killed you";
+  is_online_ = false;
 }

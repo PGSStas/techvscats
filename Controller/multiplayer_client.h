@@ -26,7 +26,7 @@ class MultiplayerClient : public QObject {
 
  private:
   QWebSocket* web_socket_;
-  const QString address = " ws://localhost:1234";
+  const QString address = "ws://localhost:1234";
   bool is_online_ = false;
 
   std::list<ServerMessage> messages_;
