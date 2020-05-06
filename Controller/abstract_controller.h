@@ -50,9 +50,9 @@ class AbstractController {
   virtual const std::list<Particle>& GetParticles() const = 0;
   virtual const std::list<std::shared_ptr<Enemy>>& GetEnemies() const = 0;
   virtual const std::list<std::shared_ptr<AbstractProjectile>>&
-    GetProjectiles() const = 0;
+  GetProjectiles() const = 0;
   virtual const std::vector<std::shared_ptr<Building>>&
-    GetBuildings() const = 0;
+  GetBuildings() const = 0;
   virtual const std::list<TextNotification>& GetTextNotifications() const = 0;
 
   virtual const Base& GetBase() const = 0;
@@ -64,7 +64,7 @@ class AbstractController {
   virtual int GetCurrentRoundNumber() const = 0;
   virtual int GetRoundsCount() const = 0;
 
-  virtual const std::unique_ptr<MusicPlayer>& GetMusicPlayer() const = 0;
+  virtual MusicPlayer* GetMusicPlayer() = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_
