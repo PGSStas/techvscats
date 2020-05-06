@@ -1,6 +1,7 @@
 #ifndef GAMEOBJECT_BUILDING_H_
 #define GAMEOBJECT_BUILDING_H_
 
+#include <algorithm>
 #include <list>
 #include <memory>
 #include <vector>
@@ -46,7 +47,7 @@ class Building : public GameObject {
   double GetProjectileSpeedCoefficient() const;
   Effect* GetAppliedEffect();
   const AuricField& GetAuricField() const;
-  const std::list<std::shared_ptr<Enemy>>& GetAims() const;
+  const std::vector<std::shared_ptr<Enemy>>& GetAims() const;
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
   bool IsInAttackRange(Coordinate coordinate) const;
@@ -69,7 +70,7 @@ class Building : public GameObject {
   double attack_damage_ = 0;
   bool is_ready_to_create_projectiles_ = false;
   bool is_ready_to_shoot_ = false;
-  std::list<std::shared_ptr<Enemy>> aims_;
+  std::vector<std::shared_ptr<Enemy>> aims_;
 
   QString header_;
   QString description_;

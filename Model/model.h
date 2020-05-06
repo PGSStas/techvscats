@@ -70,6 +70,8 @@ class Model {
   const AnimationPlayer& GetBackGround(int back_ground_id) const;
   const AnimationPlayer& GetInterface() const;
 
+  const QImage& GetEmptyZoneTexture(int index) const;
+
  private:
   void LoadLevel(int level);
   void LoadDatabase();
@@ -109,6 +111,8 @@ class Model {
   std::vector<Particle> id_to_particle_;
 
   // Images
+
+  std::vector<QImage> empty_zone_texture_;
   std::vector<AnimationPlayer> backgrounds_;
   AnimationPlayer interface_;
 };

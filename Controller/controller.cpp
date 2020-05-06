@@ -206,7 +206,6 @@ void Controller::TickBuildings() {
     for (const auto& aim : aims) {
       model_->CreateProjectile(aim, *building);
     }
-    break;
   }
 
 
@@ -430,6 +429,10 @@ const AnimationPlayer& Controller::GetBackground(WindowType type) const {
 
 GameStatus Controller::GetCurrentStatus() const {
   return game_status_;
+}
+
+const QImage& Controller::GetEmptyZoneTexture() const {
+  return model_->GetEmptyZoneTexture(static_cast<int>(game_mode_));
 }
 
 const AnimationPlayer& Controller::GetInterface() const {

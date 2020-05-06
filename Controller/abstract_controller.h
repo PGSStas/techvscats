@@ -60,6 +60,8 @@ class AbstractController {
   virtual GameStatus GetCurrentStatus() const = 0;
 
   virtual const AnimationPlayer& GetBackground(WindowType type) const = 0;
+
+  virtual const QImage& GetEmptyZoneTexture() const = 0;
   virtual const AnimationPlayer& GetInterface() const = 0;
 
   virtual int GetCurrentRoundNumber() const = 0;

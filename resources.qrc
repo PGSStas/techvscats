@@ -8,10 +8,20 @@
     <file>resources/images/enemies/toster_1.png</file>
     <file>resources/images/enemies/toster_2.png</file>
     <file>resources/images/enemies/toster_3.png</file>
+    <file>resources/images/enemies/toster_4.png</file>
 
     <file>resources/images/enemies/mouse_1.png</file>
     <file>resources/images/enemies/mouse_2.png</file>
     <file>resources/images/enemies/mouse_3.png</file>
+    <file>resources/images/enemies/mouse_4.png</file>
+
+    <file>resources/images/enemies/washmachine_1.png</file>
+    <file>resources/images/enemies/washmachine_2.png</file>
+    <file>resources/images/enemies/washmachine_3.png</file>
+    <file>resources/images/enemies/washmachine_4.png</file>
+    <file>resources/images/enemies/washmachine_5.png</file>
+    <file>resources/images/enemies/washmachine_6.png</file>
+    <file>resources/images/enemies/washmachine_7.png</file>
 
     <file>resources/buttons_resources/dec_level_button.png</file>
     <file>resources/buttons_resources/dec_level_button_active.png</file>
@@ -150,6 +160,8 @@
     <file>resources/images/backgrounds/main_background_1.png</file>
     <file>resources/images/backgrounds/settings_background_1.png</file>
     <file>resources/images/backgrounds/pause_menu_background_1.png</file>
+
+    <file>resources/images/backgrounds/cloud.png</file>
 
     <file>resources/images/interface/interface_1.png</file>
 
@@ -332,5 +344,6 @@
     <file>resources/images/towers/base_6.png</file>
 
     <file>resources/images/towers/empty_1.png</file>
+    <file>resources/images/backgrounds/texture_level_1.png</file>
 </qresource>
 </RCC>

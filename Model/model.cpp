@@ -277,6 +277,9 @@ void Model::LoadLevel(int level) {
   backgrounds_[3] = AnimationPlayer(
       GetImagesByFramePath("backgrounds/map_level_" +
           QString::number(level) + "_1"));
+
+  empty_zone_texture_[3] = QImage(":resources/images/backgrounds/texture_level_"
+                                      + QString::number(level) + ".png");
 }
 
 const AnimationPlayer& Model::GetBackGround(int background_id) const {
@@ -285,6 +288,10 @@ const AnimationPlayer& Model::GetBackGround(int background_id) const {
 
 const AnimationPlayer& Model::GetInterface() const {
   return interface_;
+}
+
+const QImage& Model::GetEmptyZoneTexture(int index) const {
+  return empty_zone_texture_[index];
 }
 
 void Model::LoadDatabase() {
@@ -329,7 +336,8 @@ void Model::LoadDatabase() {
                      enemy["size"].toObject()["height"].toInt());
     id_to_enemy_.emplace_back(enemy["speed"].toInt(), enemy["damage"].toInt(),
                               enemy["armor"].toInt(), enemy["reward"].toInt(),
-                              enemy["max_health"].toInt(), size, aura);
+                              enemy["max_health"].toInt(),
+                              size, enemy["priority"].toInt(), aura);
     SetAnimationToGameObject(
         &id_to_enemy_.back(),
         {enemy["animation"].toObject()["timing"].toInt()},
@@ -506,6 +514,16 @@ void Model::LoadDatabase() {
   // Load fonts
   QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
   QFontDatabase::addApplicationFont(":resources/fonts/comics.ttf");
+
+  // Empty zone
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
 }
 
 void Model::InitializeTowerSlots() {
