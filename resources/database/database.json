@@ -608,28 +608,36 @@
   ],
   "sounds": [
     {
-      "path": "sounds/particle_sound_0.wav"
+      "path": "sounds/particle_sound_0.wav",
+      "roads_count": 3
     },
     {
-      "path": "sounds/particle_sound_1.wav"
+      "path": "sounds/particle_sound_1.wav",
+      "roads_count": 1
     },
     {
-      "path": "sounds/particle_sound_2.wav"
+      "path": "sounds/particle_sound_2.wav",
+      "roads_count": 1
     },
     {
-      "path": "sounds/particle_sound_3.wav"
+      "path": "sounds/particle_sound_3.wav",
+      "roads_count": 1
     },
     {
-      "path": "sounds/particle_sound_4.wav"
+      "path": "sounds/particle_sound_4.wav",
+      "roads_count": 1
     },
     {
-      "path": "sounds/particle_sound_5.wav"
+      "path": "sounds/particle_sound_5.wav",
+      "roads_count": 1
     },
     {
-      "path": "sounds/particle_sound_6.wav"
+      "path": "sounds/particle_sound_6.wav",
+      "roads_count": 1
     },
     {
-      "path": "sounds/particle_sound_7.wav"
+      "path": "sounds/particle_sound_7.wav",
+      "roads_count": 1
     }
   ]
 }

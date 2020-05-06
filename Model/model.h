@@ -29,6 +29,7 @@
 #include "GameObject/particle.h"
 #include "enemy_group.h"
 #include "road.h"
+#include "sound_vector.h"
 #include "View/text_notification.h"
 
 class Model {
@@ -63,7 +64,7 @@ class Model {
   const Effect& GetEffectById(int id) const;
   const Building& GetBuildingById(int id) const;
   const Particle& GetParticleById(int id) const;
-  std::shared_ptr<QSoundEffect> GetParticleSoundEffectById(int id) const;
+  SoundVector* GetParticleSoundEffectById(int id);
 
   int GetRoundsCount() const;
   int GetPrepareTimeBetweenRounds() const;
@@ -111,7 +112,7 @@ class Model {
   std::vector<std::vector<int>> upgrades_tree_;
   std::vector<Effect> id_to_effect_;
   std::vector<Particle> id_to_particle_;
-  std::vector<std::shared_ptr<QSoundEffect>> id_to_particle_sound_;
+  std::vector<SoundVector> id_to_particle_sound_;
 
   // Images
 
