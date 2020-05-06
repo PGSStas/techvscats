@@ -48,9 +48,9 @@ class Controller : public AbstractController {
   int GetRoundsCount() const override;
 
  private:
-  MultiplayerClient client;
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
+  MultiplayerClient client_;
 
   GameStatus game_status_ = GameStatus::kPlay;
   WindowType window_type_ = WindowType::kMainMenu;

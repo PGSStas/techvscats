@@ -1,5 +1,8 @@
 #include "multiplayer_client.h"
 
+std::mt19937 MultiplayerClient::random_generator_ = std::mt19937(
+    std::chrono::system_clock::now().time_since_epoch().count());
+
 MultiplayerClient::~MultiplayerClient() {
   Close();
 }
@@ -42,6 +45,14 @@ void MultiplayerClient::onClose() {
 }
 
 QString MultiplayerClient::AutoGenerateNickName() const {
-  return first_name[qrand() % first_name.size()]+"_"
-      + sur_name[qrand() % sur_name.size()];
+  return first_name[random_generator_() % first_name.size()] + "_"
+      + sur_name[random_generator_() % sur_name.size()];
+}
+
+bool MultiplayerClient::GetIsOnline() const {
+  return is_online_;
+}
+
+void MultiplayerClient::EnterRoom(int level_id) {
+  web_socket_->sendBinaryMessage(ServerMessages().EnterRoomMessage(level_id));
 }

@@ -5,7 +5,7 @@ std::mt19937 Controller::random_generator_ = std::mt19937(
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)) {
-   client.Connect();
+   client_.Connect();
 }
 
 void Controller::StartGame(int level_id) {
@@ -19,6 +19,9 @@ void Controller::StartGame(int level_id) {
   SetSpeedCoefficient(Speed::kNormalSpeed);
   view_->DisableMainMenuUi();
   view_->EnableGameUi();
+  if(client_.GetIsOnline()){
+    client_.EnterRoom(level_id);
+  }
 }
 
 void Controller::EndGame() {

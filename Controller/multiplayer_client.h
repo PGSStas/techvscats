@@ -6,7 +6,9 @@
 #include <QtCore/QCommandLineOption>
 #include <QtWebSockets/QWebSocket>
 
+#include <chrono>
 #include <list>
+#include <random>
 
 #include "Server/server_message.h"
 
@@ -18,6 +20,8 @@ class MultiplayerClient : public QObject {
 
   void Connect();
   void Close();
+  void EnterRoom(int level_id);
+  bool GetIsOnline() const;
 
  private Q_SLOTS:
   void OnConnect();
@@ -31,6 +35,7 @@ class MultiplayerClient : public QObject {
   bool is_online_ = false;
 
   std::list<ServerMessages> messages_;
+  static std::mt19937 random_generator_;
 
  private:
   QString AutoGenerateNickName() const;

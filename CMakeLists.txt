@@ -39,6 +39,7 @@ add_executable(techvscats
         Model/road.cpp
         Model/size.cpp
         resources.qrc
+        Server/server_message.cpp
         View/animation_player.cpp
         View/animation_player.cpp
         View/button_handler.cpp
@@ -48,12 +49,14 @@ add_executable(techvscats
         View/text_notification.cpp
         View/tower_menu.cpp
         View/view.cpp
-        Server/server_message.h Server/server_message.cpp)
+        )
 
 
 add_executable(server
         Server/main.cpp
-        Server/server.cpp)
+        Server/server_message.cpp
+        Server/server.cpp
+        )
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

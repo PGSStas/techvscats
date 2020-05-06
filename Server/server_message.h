@@ -8,20 +8,25 @@
 #include <QJsonObject>
 
 enum class MessageType {
-  kNewConnection = 0
+  kNewConnection = 0,
+  kEnterRoom = 1
 };
 
 class ServerMessages {
  public:
   QByteArray NewConnectionMessage(QString nick_name);
+  QByteArray EnterRoomMessage(int level_id);
 
   ServerMessages& ToDecode(const QByteArray& array);
   QByteArray ToCode() const;
-  QString GetMessage() const;
   MessageType GetType() const;
+  QString GetMessage() const;
+  int GetNumber() const;
+
  private:
   MessageType type_;
-  QString message_;
+  QString message_ = "";
+  int number_ = 0;
 };
 
 #endif  // SERVER_MESSAGE_H_

@@ -5,7 +5,7 @@
 QT_USE_NAMESPACE
 
 bool GameClient::operator==(const GameClient& other) const {
-  return other.socket == socket && other.id == id;
+  return other.socket == socket;
 }
 
 Server::Server(quint16 port)
@@ -18,6 +18,7 @@ Server::Server(quint16 port)
             this, &Server::OnNewConnection);
     connect(web_socket_server_, &QWebSocketServer::closed,
             this, &Server::closed);
+    timer_.start();
   }
 }
 
@@ -29,25 +30,29 @@ Server::~Server() {
 }
 
 void Server::ProcessReceivedMessage(const ServerMessages& message,
-                                    QWebSocket* owner) {
+                                    QWebSocket* owner_socket) {
+  GameClient* client;
+  for (auto& client_tmp:clients_) {
+    if (client_tmp.socket == owner_socket) {
+      client = &client_tmp;
+    }
+  }
+
   switch (message.GetType()) {
     case MessageType::kNewConnection: {
-      ProcessNewConnectionMessage(message, owner);
+      ProcessNewConnectionMessage(message, client);
+    }
+    case MessageType::kEnterRoom: {
+      ProcessRoomEnter(message, client);
     }
     default: { break; }
   }
 }
 
 void Server::ProcessNewConnectionMessage(const ServerMessages& message,
-                                         QWebSocket* owner) {
-  for (auto& client:clients_) {
-    if (client.socket == owner) {
-      client.nick_name = message.GetMessage();
-      qDebug() << "new name" << client.nick_name;
-      break;
-    }
-  }
-
+                                         GameClient* client) {
+  client->nick_name = message.GetMessage();
+  qDebug() << "new name" << client->nick_name;
 }
 
 void Server::OnNewConnection() {
@@ -56,7 +61,7 @@ void Server::OnNewConnection() {
           this, &Server::ReceiveMessage);
   connect(other_socket, &QWebSocket::disconnected,
           this, &Server::OnDisconnect);
-  clients_.emplace_back(other_socket, ++user_counter_);
+  clients_.emplace_back(other_socket);
   qDebug() << "new connection!";
 }
 
@@ -69,8 +74,36 @@ void Server::ReceiveMessage(const QByteArray& array) {
 
 void Server::OnDisconnect() {
   QWebSocket* client_socket = qobject_cast<QWebSocket*>(sender());
-  clients_.remove_if([&client_socket](const GameClient& client) {
-    return client.socket == client_socket;
+  clients_.remove_if([&client_socket, this](const GameClient& client) {
+    if (client.socket == client_socket) {
+      if (client.room != nullptr) {
+        LeaveRoom(client);
+      }
+      return true;
+    }
+    return false;
   });
   client_socket->deleteLater();
+}
+
+void Server::ProcessRoomEnter(const ServerMessages& message,
+                              GameClient* client) {
+  for (auto& room : rooms_) {
+    if (room.level_id == message.GetNumber() && room.is_in_active_search
+        && room.wait_time > 1000) {
+      room.wait_time += 10000;
+      room.player_count++;
+      client->room = &room;
+      return;
+    }
+  }
+  rooms_.emplace_back(timer_.elapsed(), message.GetNumber());
+  client->room = &rooms_.back();
+  qDebug() << "new_room";
+}
+
+void Server::LeaveRoom(const GameClient& client) {
+  client.room->player_count--;
+  rooms_.remove_if([](const Room& room) { return room.player_count == 0; });
+  // for all players in room send message
 }
