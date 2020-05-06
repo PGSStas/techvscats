@@ -15,6 +15,7 @@ RESOURCES += resources.qrc
 SOURCES += \
         main.cpp \
         Controller/controller.cpp \
+        Controller/multiplayer_client.cpp \
         Controller/spawner.cpp \
         GameObject/abstract_projectile.cpp \
         GameObject/homing_projectile.cpp \
@@ -45,6 +46,7 @@ SOURCES += \
 HEADERS += \
         Controller/abstract_controller.h \
         Controller/controller.h \
+        Controller/multiplayer_client.h \
         Controller/spawner.h \
         GameObject/abstract_projectile.h \
         GameObject/homing_projectile.h \

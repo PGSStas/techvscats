@@ -35,6 +35,7 @@ void EchoServer::onNewConnection() {
   connect(other_socket, &QWebSocket::disconnected,
           this, &EchoServer::socketDisconnected);
   clients_.emplace_back(other_socket, ++user_counter_);
+  qDebug()<<"new connection!";
 }
 
 void EchoServer::processTextMessage(QString message) {
@@ -45,6 +46,7 @@ void EchoServer::processTextMessage(QString message) {
         client.socket->sendTextMessage(message);
       }
   }
+  qDebug()<<"new message";
 }
 
 void EchoServer::socketDisconnected() {

@@ -19,6 +19,7 @@ find_package(Qt5 COMPONENTS WebSockets REQUIRED)
 add_executable(techvscats
         main.cpp
         Controller/controller.cpp
+        Controller/multiplayer_client.cpp
         Controller/spawner.cpp
         GameObject/abstract_projectile.cpp
         GameObject/homing_projectile.cpp
@@ -46,7 +47,8 @@ add_executable(techvscats
         View/size_handler.cpp
         View/text_notification.cpp
         View/tower_menu.cpp
-        View/view.cpp)
+        View/view.cpp
+        Model/server_message.h Model/server_message.cpp)
 
 
 add_executable(server
@@ -55,6 +57,7 @@ add_executable(server
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)
+target_link_libraries(techvscats Qt5::WebSockets)
 
 target_link_libraries(server Qt5::Core)
 target_link_libraries(server Qt5::WebSockets)

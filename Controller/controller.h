@@ -10,6 +10,7 @@
 #include "abstract_controller.h"
 #include "View/view.h"
 #include "Model/model.h"
+#include "multiplayer_client.h"
 
 // This class controls the interaction between objects.
 class Controller : public AbstractController {
@@ -47,6 +48,7 @@ class Controller : public AbstractController {
   int GetRoundsCount() const override;
 
  private:
+  MultiplayerClient client;
   std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
 

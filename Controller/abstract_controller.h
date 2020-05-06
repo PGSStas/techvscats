@@ -25,10 +25,10 @@ enum class Speed {
 };
 
 enum class WindowType {
-  kMainMenu = 0,
-  kSettings = 1,
-  kPauseMenu = 2,
-  kGame = 3
+  kMainMenu,
+  kSettings,
+  kPauseMenu,
+  kGame
 };
 
 // AbstractController is needed to avoid the problem with looping include

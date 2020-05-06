@@ -4,8 +4,9 @@ std::mt19937 Controller::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
 Controller::Controller() : model_(std::make_unique<Model>()),
-                           view_(std::make_unique<View>(this)),
-                           game_mode_(WindowType::kMainMenu) {}
+                           view_(std::make_unique<View>(this)) {
+  // client.Connect();
+}
 
 void Controller::StartGame(int level_id) {
   game_status_ = GameStatus::kPlay;
