@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <vector>
+#include <utility>
 
 class SoundVector {
  public:
@@ -16,4 +17,4 @@ class SoundVector {
   int current_sound_ = 0;
 };
 
-#endif  // MODEL_SOUND_VECTOR_H
+#endif  // MODEL_SOUND_VECTOR_H_

@@ -38,6 +38,7 @@ add_executable(techvscats
         Model/music_player.cpp
         Model/road.cpp
         Model/size.cpp
+        Model/sound_vector.cpp
         resources.qrc
         View/animation_player.cpp
         View/animation_player.cpp
@@ -47,7 +48,8 @@ add_executable(techvscats
         View/text_notification.cpp
         View/tower_menu.cpp
         View/tower_menu_option.cpp
-        View/view.cpp Model/sound_vector.cpp Model/sound_vector.h)
+        View/view.cpp
+        )
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

@@ -1,6 +1,6 @@
 #include "sound_vector.h"
 
-SoundVector::SoundVector(const QString& path,int audio_roads_count) {
+SoundVector::SoundVector(const QString& path, int audio_roads_count) {
   for (int i = 0; i < audio_roads_count; i++) {
     auto sound_effect = std::make_shared<QSoundEffect>();
     sound_effect->setVolume(0.4);
@@ -10,7 +10,7 @@ SoundVector::SoundVector(const QString& path,int audio_roads_count) {
 }
 
 void SoundVector::Play() {
-  if(sounds_.empty()){
+  if (sounds_.empty()) {
     return;
   }
   sounds_[current_sound_++]->play();

@@ -499,7 +499,7 @@ void Model::LoadDatabase() {
     json_sound = json_sounds[i].toObject();
     QString path = json_sound["path"].toString();
     int sound_roads_count = json_sound["roads_count"].toInt();
-    id_to_particle_sound_.emplace_back(path,sound_roads_count);
+    id_to_particle_sound_.emplace_back(path, sound_roads_count);
   }
 
   // backgrounds

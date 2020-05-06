@@ -34,6 +34,7 @@ SOURCES += \
         Model/music_player.cpp \
         Model/road.cpp \
         Model/size.cpp \
+        Model/sound_vector.cpp \
         View/animation_player.cpp \
         View/button_handler.cpp \
         View/menu_button.cpp \
@@ -67,6 +68,7 @@ HEADERS += \
         Model/music_player.h \
         Model/road.h \
         Model/size.h \
+        Model/sound_vector.h \
         View/animation_player.h \
         View/button_handler.h \
         View/menu_button.h \
