@@ -1,7 +1,8 @@
-#ifndef ECHOSERVER_H
-#define ECHOSERVER_H
+#ifndef SERVER_H
+#define SERVER_H
 
 #include <QtCore/QObject>
+#include "server_message.h"
 
 QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
@@ -15,21 +16,20 @@ struct GameClient {
   uint id;
 };
 
-class EchoServer : public QObject {
+class Server : public QObject {
  Q_OBJECT
 
  public:
-  explicit EchoServer(quint16 port,
-                      QObject* parent = nullptr);
-  ~EchoServer();
+  explicit Server(quint16 port);
+  ~Server();
 
  Q_SIGNALS:
   void closed();
 
  private Q_SLOTS:
-  void onNewConnection();
-  void processTextMessage(QString message);
-  void socketDisconnected();
+  void OnNewConnection();
+  void ReceiveMessage(const QByteArray& array);
+  void OnDisconnect();
 
  private:
   uint64_t user_counter_ = 0;
@@ -37,4 +37,4 @@ class EchoServer : public QObject {
   std::list<GameClient> clients_;
 };
 
-#endif //ECHOSERVER_H
+#endif //SERVER_H

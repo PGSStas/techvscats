@@ -48,12 +48,12 @@ add_executable(techvscats
         View/text_notification.cpp
         View/tower_menu.cpp
         View/view.cpp
-        Model/server_message.h Model/server_message.cpp)
+        Server/server_message.h Server/server_message.cpp)
 
 
 add_executable(server
         Server/main.cpp
-        Server/echoserver.cpp)
+        Server/server.cpp)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

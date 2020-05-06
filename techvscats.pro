@@ -34,6 +34,7 @@ SOURCES += \
         Model/model.cpp \
         Model/road.cpp \
         Model/size.cpp \
+        Server/server_message.cpp \
         View/animation_player.cpp \
         View/button_handler.cpp \
         View/info_field.cpp \
@@ -67,6 +68,7 @@ HEADERS += \
         Model/model.h \
         Model/road.h \
         Model/size.h \
+        Server/server_message.h \
         View/animation_player.h \
         View/button_handler.h \
         View/info_field.h \

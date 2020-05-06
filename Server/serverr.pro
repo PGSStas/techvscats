@@ -8,13 +8,13 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 SOURCES += \
-    echoserver.cpp \
+    server.cpp \
+    server_message.cpp \
     main.cpp \
 
 HEADERS += \
-    echoserver.h
-
-EXAMPLE_FILES += echoclient.html
+    server.h \
+    server_message.h \
 
 target.path = $$[QT_INSTALL_EXAMPLES]/websockets/echoserver
 INSTALLS += target

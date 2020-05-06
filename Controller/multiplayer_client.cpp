@@ -1,9 +1,5 @@
 #include "multiplayer_client.h"
 
-void MultiplayerClient::SetIsOnline(bool is_online) {
-  is_online_ = is_online;
-}
-
 MultiplayerClient::~MultiplayerClient() {
   Close();
 }
@@ -11,7 +7,7 @@ MultiplayerClient::~MultiplayerClient() {
 void MultiplayerClient::Connect() {
   web_socket_ = new QWebSocket();
   connect(web_socket_, &QWebSocket::connected,
-          this, &MultiplayerClient::onConnected);
+          this, &MultiplayerClient::OnConnect);
   connect(web_socket_, &QWebSocket::disconnected,
           this, &MultiplayerClient::onClose);
   web_socket_->open(QUrl(address));
@@ -23,22 +19,29 @@ void MultiplayerClient::Close() {
   web_socket_->deleteLater();
 }
 
-void MultiplayerClient::onConnected() {
-  qDebug() << "It works!";
-  connect(web_socket_, &QWebSocket::textMessageReceived,
-          this, &MultiplayerClient::onTextMessageReceived);
-  web_socket_->sendTextMessage(ServerMessage().ToCode());
+void MultiplayerClient::OnConnect() {
+  connect(web_socket_, &QWebSocket::binaryMessageReceived,
+          this, &MultiplayerClient::OnMessageReceived);
+  is_online_ = true;
+  nick_name_ = AutoGenerateNickName();
+  web_socket_->sendBinaryMessage(ServerMessages().NewConnectionMessage(
+      nick_name_));
   is_online_ = true;
 }
 
-void MultiplayerClient::onTextMessageReceived(QString message) {
-  ServerMessage new_message;
-  new_message.ToDecode(message);
+void MultiplayerClient::OnMessageReceived(const QByteArray& array) {
+  ServerMessages new_message;
+  new_message.ToDecode(array);
   messages_.push_back(new_message);
-  qDebug() << "new message " << message;
+  qDebug() << "new message " << new_message.GetMessage();
 }
 
 void MultiplayerClient::onClose() {
   qDebug() << "server killed you";
   is_online_ = false;
+}
+
+QString MultiplayerClient::AutoGenerateNickName() const {
+  return first_name[qrand() % first_name.size()]+"_"
+      + sur_name[qrand() % sur_name.size()];
 }

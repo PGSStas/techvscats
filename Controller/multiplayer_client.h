@@ -8,28 +8,35 @@
 
 #include <list>
 
-#include "Model/server_message.h"
+#include "Server/server_message.h"
 
 class MultiplayerClient : public QObject {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   ~MultiplayerClient();
-  void SetIsOnline(bool is_online);
+
   void Connect();
   void Close();
 
  private Q_SLOTS:
-  void onConnected();
-  void onTextMessageReceived(QString message);
+  void OnConnect();
+  void OnMessageReceived(const QByteArray& array);
   void onClose();
 
  private:
+  QString nick_name_;
   QWebSocket* web_socket_;
   const QString address = "ws://localhost:1234";
   bool is_online_ = false;
 
-  std::list<ServerMessage> messages_;
+  std::list<ServerMessages> messages_;
+
+ private:
+  QString AutoGenerateNickName() const;
+  const QStringList first_name = {"Greedy", "Bloody", "Big", "Mega", "Optimus"};
+  const QStringList sur_name = {"finger", "cup", "flex", "cringe", "sage"};
+
 };
 
 #endif  // CONTROLLER_MULTIPLAYER_CLIENT_H_
