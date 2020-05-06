@@ -1,7 +1,6 @@
 #include "controller.h"
 
 Controller::Controller() : model_(std::make_unique<Model>()),
-                           music_player_(std::make_unique<MusicPlayer>()),
                            view_(std::make_unique<View>(this)),
                            game_mode_(WindowType::kMainMenu) {
 }
@@ -17,7 +16,7 @@ void Controller::StartGame(int level_id) {
   view_->EnableGameUi();
   view_->UpdateRounds(model_->GetCurrentRoundNumber(),
                       model_->GetRoundsCount());
-  music_player_->StartGameMusic();
+  music_player_.StartGameMusic();
 }
 
 void Controller::EndGame(Exit exit) {
@@ -27,12 +26,12 @@ void Controller::EndGame(Exit exit) {
   game_mode_ = WindowType::kMainMenu;
   current_game_time_ = 0;
   if (exit == Exit::kLose) {
-    music_player_->PlayGameOverSound();
+    music_player_.PlayGameOverSound();
   }
   if (exit == Exit::kWin) {
-    music_player_->PlayGameWonSound();
+    music_player_.PlayGameWonSound();
   }
-  music_player_->StartMenuMusic();
+  music_player_.StartMenuMusic();
 }
 
 void Controller::Tick(int current_time) {
@@ -58,7 +57,7 @@ void Controller::SetSpeedCoefficient(Speed speed) {
 
 void Controller::GameProcess() {
   if (CanCreateNextWave()) {
-    music_player_->PlayNewWaveSound();
+    music_player_.PlayNewWaveSound();
     CreateNextWave();
   }
   TickSpawners();
@@ -304,7 +303,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
                                    current_game_time_});
       base->AddGoldAmount(sell_cost);
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
-      music_player_->PlaySaleSound();
+      music_player_.PlaySaleSound();
     } else {
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
       base->SubtractGoldAmount(settle_cost);
@@ -316,13 +315,13 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
                                        + constants::kCurrency,
                                    notification, Qt::red,
                                    current_game_time_});
-      music_player_->PlaySaleSound();
+      music_player_.PlaySaleSound();
     }
   } else {
     auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
     model_->AddTextNotification({QObject::tr("Not enough ") +
-    constants::kCurrency, position, Qt::blue, current_game_time_});
-    music_player_->PlayNotEnoughMoneySound();
+        constants::kCurrency, position, Qt::blue, current_game_time_});
+    music_player_.PlayNotEnoughMoneySound();
   }
 }
 
@@ -433,8 +432,8 @@ const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));
 }
 
-const std::unique_ptr<MusicPlayer>& Controller::GetMusicPlayer() const {
-  return music_player_;
+MusicPlayer* Controller::GetMusicPlayer() {
+  return &music_player_;
 }
 
 const QImage& Controller::GetEmptyZoneTexture() const {
