@@ -1,15 +1,17 @@
 #ifndef VIEW_BUTTON_HANDLER_H_
 #define VIEW_BUTTON_HANDLER_H_
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QPushButton>
 #include <QString>
+#include <QTranslator>
 
 #include "Controller/abstract_controller.h"
 #include "menu_button.h"
 #include "size_handler.h"
 
-class ButtonHandler : QObject {
+class ButtonHandler : public QWidget {
  public:
   ButtonHandler(QMainWindow* main_window, AbstractController* controller,
                 int font_id);
@@ -39,7 +41,8 @@ class ButtonHandler : QObject {
   // creating pause menu
   void CreatePauseMenuButtons();
   void RescalePauseMenuButtons(SizeHandler size_handler);
-
+  // Update languages
+  void changeEvent(QEvent* event);
  private:
   QMainWindow* main_window_;
   WindowType window_type_;

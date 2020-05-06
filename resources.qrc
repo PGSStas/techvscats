@@ -328,5 +328,8 @@
 
     <file>resources/images/towers/empty_1.png</file>
     <file>resources/images/backgrounds/texture_level_1.png</file>
+
+    <file>resources/translations/translation_en_US.qm</file>
+    <file>resources/translations/translation_ru_RU.qm</file>
 </qresource>
 </RCC>

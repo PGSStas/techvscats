@@ -73,3 +73,7 @@ HEADERS += \
         View/tower_menu.h \
         View/tower_menu_option.h \
         View/view.h \
+
+TRANSLATIONS += \
+    resources/translations/translation_en_US.ts \
+    resources/translations/translation_ru_RU.ts \

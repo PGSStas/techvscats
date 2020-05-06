@@ -2,7 +2,7 @@
 
 ButtonHandler::ButtonHandler(QMainWindow* main_window,
                              AbstractController* controller, int font_id)
-    : QObject(main_window), main_window_(main_window), controller_(controller),
+    : QWidget(main_window), main_window_(main_window), controller_(controller),
       font_id_(font_id) {
   CreateButtons();
   window_type_ = WindowType::kMainMenu;
@@ -140,6 +140,20 @@ void ButtonHandler::CreateSettingsButtons() {
     // changing language
     language_button_->EnableSecondIcon(!is_language_russian_);
     is_language_russian_ = !is_language_russian_;
+
+    QString language;
+    if (is_language_russian_) {
+      language = "ru_RU";
+    } else {
+      language = "en_US";
+    }
+    QTranslator translator;
+    if (!translator.load(":resources/translations/translation_" + language)) {
+      translator.load(":resources/translations/translation_en_US");
+      language = "en_US";
+    }
+
+    QApplication::installTranslator(&translator);
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
 
@@ -288,4 +302,20 @@ void ButtonHandler::SetSpeedButtonsState(Speed speed) {
   zero_speed_button_->setDisabled(speed == Speed::kZeroSpeed);
   normal_speed_button_->setDisabled(speed == Speed::kNormalSpeed);
   double_speed_button_->setDisabled(speed == Speed::kDoubleSpeed);
+}
+
+void ButtonHandler::changeEvent(QEvent* event) {
+  if (event->type() == QEvent::LanguageChange) {
+    // start_game_button_->setText(tr("НАЧАТЬ ИГРУ"));
+    // settings_button_->setText(tr("НАСТРОЙКИ"));
+    // exit_button_->setText(tr("ВЫЙТИ ИЗ ИГРЫ"));
+    // choose_level_number_->setText(
+    //     tr("УРОВЕНЬ ") + QString::number(level_number_));
+    // reset_game_button_->setText(tr("СБРОСИТЬ ПРОГРЕСС"));
+    // to_main_menu_button_->setText(tr("ВЕРНУТЬСЯ В МЕНЮ"));
+    // restart_button_->setText(tr("НАЧАТЬ УРОВЕНЬ ЗАНОВО"));
+    // continue_button_->setText(tr("ПРОДОЛЖИТЬ"));
+  } else {
+    QWidget::changeEvent(event);
+  }
 }
