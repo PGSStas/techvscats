@@ -8,19 +8,17 @@
 #include <QJsonObject>
 
 enum class MessageType {
-  kOk = 0,
-  kError = 1,
-  kNewConnection = 2
+  kNewConnection = 0
 };
 
 class ServerMessages {
  public:
   QByteArray NewConnectionMessage(QString nick_name);
 
-  void ToDecode(const QByteArray& array);
+  ServerMessages& ToDecode(const QByteArray& array);
   QByteArray ToCode() const;
-  QString GetMessage();
-
+  QString GetMessage() const;
+  MessageType GetType() const;
  private:
   MessageType type_;
   QString message_;

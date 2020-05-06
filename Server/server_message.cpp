@@ -15,13 +15,18 @@ QByteArray ServerMessages::ToCode() const {
   return json_document.toBinaryData();
 }
 
-void ServerMessages::ToDecode(const QByteArray& array) {
+ServerMessages& ServerMessages::ToDecode(const QByteArray& array) {
   QJsonDocument json_document = QJsonDocument::fromBinaryData(array);
   message_ = json_document["message"].toString();
   type_ = static_cast<MessageType>(json_document["type"].toInt());
+  return *this;
 }
 
-QString ServerMessages::GetMessage() {
+QString ServerMessages::GetMessage() const{
   return message_;
+}
+
+MessageType ServerMessages::GetType() const {
+  return type_;
 }
 

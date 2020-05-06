@@ -27,6 +27,9 @@ class Server : public QObject {
   void closed();
 
  private Q_SLOTS:
+  void ProcessReceivedMessage(const ServerMessages& message, QWebSocket* onwer);
+  void ProcessNewConnectionMessage(const ServerMessages& message, QWebSocket*);
+
   void OnNewConnection();
   void ReceiveMessage(const QByteArray& array);
   void OnDisconnect();

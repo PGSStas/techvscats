@@ -11,7 +11,6 @@ void MultiplayerClient::Connect() {
   connect(web_socket_, &QWebSocket::disconnected,
           this, &MultiplayerClient::onClose);
   web_socket_->open(QUrl(address));
-  qDebug() << "Start connection...";
 }
 
 void MultiplayerClient::Close() {
@@ -20,6 +19,7 @@ void MultiplayerClient::Close() {
 }
 
 void MultiplayerClient::OnConnect() {
+  qDebug() << "Connected!!!";
   connect(web_socket_, &QWebSocket::binaryMessageReceived,
           this, &MultiplayerClient::OnMessageReceived);
   is_online_ = true;

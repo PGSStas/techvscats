@@ -8,8 +8,8 @@ bool GameClient::operator==(const GameClient& other) const {
   return other.socket == socket && other.id == id;
 }
 
-Server::Server(quint16 port, QObject* parent)
-    : QObject(parent), web_socket_server_(new QWebSocketServer(
+Server::Server(quint16 port)
+    : web_socket_server_(new QWebSocketServer(
     QString("TechVsCats Server"),
     QWebSocketServer::NonSecureMode, this)) {
   if (web_socket_server_->listen(QHostAddress::Any, port)) {
@@ -28,6 +28,28 @@ Server::~Server() {
   }
 }
 
+void Server::ProcessReceivedMessage(const ServerMessages& message,
+                                    QWebSocket* owner) {
+  switch (message.GetType()) {
+    case MessageType::kNewConnection: {
+      ProcessNewConnectionMessage(message, owner);
+    }
+    default: { break; }
+  }
+}
+
+void Server::ProcessNewConnectionMessage(const ServerMessages& message,
+                                         QWebSocket* owner) {
+  for (auto& client:clients_) {
+    if (client.socket == owner) {
+      client.nick_name = message.GetMessage();
+      qDebug() << "new name" << client.nick_name;
+      break;
+    }
+  }
+
+}
+
 void Server::OnNewConnection() {
   QWebSocket* other_socket = web_socket_server_->nextPendingConnection();
   connect(other_socket, &QWebSocket::binaryMessageReceived,
@@ -41,9 +63,7 @@ void Server::OnNewConnection() {
 void Server::ReceiveMessage(const QByteArray& array) {
   QWebSocket* client_socket = qobject_cast<QWebSocket*>(sender());
   if (client_socket) {
-    ServerMessages message;
-     message.ToDecode(array);
-    qDebug() << message.GetMessage();
+    ProcessReceivedMessage(ServerMessages().ToDecode(array), client_socket);
   }
 }
 
