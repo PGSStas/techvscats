@@ -210,8 +210,8 @@
       },
       {
         "spawn_period": 500,
-        "enemy_id": 4,
-        "time_of_next_spawn": 20,
+        "enemy_id": 1,
+        "time_of_next_spawn": 100,
         "group_size": 4,
         "road_to_spawn": 1
       },

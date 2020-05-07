@@ -413,6 +413,10 @@ const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));
 }
 
+const QImage& Controller::GetEmptyZoneTexture() const {
+  return model_->GetEmptyZoneTexture(static_cast<int>(game_mode_));
+}
+
 const AnimationPlayer& Controller::GetInterface() const {
   return model_->GetInterface();
 }
