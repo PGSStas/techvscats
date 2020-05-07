@@ -381,7 +381,8 @@ void Model::LoadDatabase() {
       building.SetProjectile(json_projectile["projectile_id"].toInt(),
                              json_projectile["attack_damage"].toDouble(),
                              json_projectile["attack_range"].toInt(),
-                             json_projectile["max_aims"].toInt(), anchor);
+                             json_projectile["max_aims"].toInt(),
+                             anchor);
     }
     auto json_timings = json_building["action_time"].toArray();
     auto json_paths = json_building["animation_path"].toArray();
