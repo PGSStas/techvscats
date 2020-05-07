@@ -5,7 +5,7 @@ std::mt19937 Controller::random_generator_ = std::mt19937(
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)) {
-   client_.Connect();
+  client_.Connect();
 }
 
 void Controller::StartGame(int level_id) {
@@ -19,8 +19,9 @@ void Controller::StartGame(int level_id) {
   SetSpeedCoefficient(Speed::kNormalSpeed);
   view_->DisableMainMenuUi();
   view_->EnableGameUi();
-  if(client_.GetIsOnline()){
+  if (client_.GetIsOnline()) {
     client_.EnterRoom(level_id);
+    qDebug() << "GoToRoom";
   }
 }
 
@@ -82,9 +83,15 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
 }
 
 void Controller::GameProcess() {
-  if (CanCreateNextWave() && game_status_ == GameStatus::kPlay) {
+  if (CanCreateNextWave() && game_status_ == GameStatus::kPlay
+      && client_.IsReady()) {
     CreateNextWave();
+    client_.SetIsReady(false);
   }
+  if (client_.GetIsOnline()) {
+    TickClient();
+  }
+
   if (game_status_ != GameStatus::kPlay) {
     TickEndGame();
   }
@@ -142,6 +149,25 @@ void Controller::CreateNextWave() {
     model_->AddSpawner(enemy_group);
   }
   model_->IncreaseCurrentRoundNumber();
+}
+
+void Controller::TickClient() {
+  if (!client_.IsMessagesEmpty()) {
+    const auto& messages = client_.GetMessages();
+    for (auto& message : messages) {
+      switch (message.GetType()) {
+        case MessageType::kStartRound: {
+          client_.SetIsReady(true);
+          break;
+        }
+        default: {
+          qDebug() << "error";
+          break;
+        }
+      }
+    }
+    client_.MessagesClear();
+  }
 }
 
 void Controller::TickEndGame() {

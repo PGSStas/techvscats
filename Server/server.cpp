@@ -19,6 +19,7 @@ Server::Server(quint16 port)
     connect(web_socket_server_, &QWebSocketServer::closed,
             this, &Server::closed);
     timer_.start();
+    startTimer(20);
   }
 }
 
@@ -29,7 +30,7 @@ Server::~Server() {
   }
 }
 
-void Server::ProcessReceivedMessage(const ServerMessages& message,
+void Server::ProcessReceivedMessage(const Message& message,
                                     QWebSocket* owner_socket) {
   GameClient* client;
   for (auto& client_tmp:clients_) {
@@ -37,22 +38,66 @@ void Server::ProcessReceivedMessage(const ServerMessages& message,
       client = &client_tmp;
     }
   }
-
+  qDebug() << "new message from:" << client->nick_name;
   switch (message.GetType()) {
     case MessageType::kNewConnection: {
       ProcessNewConnectionMessage(message, client);
+      break;
     }
     case MessageType::kEnterRoom: {
       ProcessRoomEnter(message, client);
+      break;
     }
-    default: { break; }
+    default: {
+      qDebug() << "error message";
+      break;
+    }
   }
 }
 
-void Server::ProcessNewConnectionMessage(const ServerMessages& message,
+void Server::ProcessNewConnectionMessage(const Message& message,
                                          GameClient* client) {
   client->nick_name = message.GetMessage();
   qDebug() << "new name" << client->nick_name;
+}
+
+void Server::ProcessRoomEnter(const Message& message,
+                              GameClient* client) {
+
+  for (auto& room : rooms_) {
+    if (room.level_id == message.GetNumber() && room.is_in_active_search
+        && room.wait_time > 1000) {
+      room.wait_time += 8000;
+      room.players_count++;
+      client->room = &room;
+      qDebug() << "connected_to_room";
+      return;
+    }
+  }
+  rooms_.emplace_back(timer_.elapsed(), message.GetNumber());
+  client->room = &rooms_.back();
+  qDebug() << "new_room";
+}
+
+void Server::StartRoom(Room* room) {
+  room->is_in_active_search = false;
+  room->players_in_process = room->players_count;
+  for (auto& client: clients_) {
+    if (client.room == room) {
+      client.socket->sendBinaryMessage(Message().StartRoundMessage());
+      qDebug() << "StartRoom";
+    }
+  }
+}
+
+void Server::LeaveRoom(const GameClient& client) {
+  client.room->players_count--;
+  client.room->players_in_process--;
+  rooms_.remove_if([](const Room& room) {
+    if (room.players_count == 0) { qDebug() << "room close"; }
+    return room.players_count == 0;
+  });
+  // for all players in room send message
 }
 
 void Server::OnNewConnection() {
@@ -68,7 +113,7 @@ void Server::OnNewConnection() {
 void Server::ReceiveMessage(const QByteArray& array) {
   QWebSocket* client_socket = qobject_cast<QWebSocket*>(sender());
   if (client_socket) {
-    ProcessReceivedMessage(ServerMessages().ToDecode(array), client_socket);
+    ProcessReceivedMessage(Message().ToDecode(array), client_socket);
   }
 }
 
@@ -79,6 +124,7 @@ void Server::OnDisconnect() {
       if (client.room != nullptr) {
         LeaveRoom(client);
       }
+      qDebug() << "bye bye," << client.nick_name;
       return true;
     }
     return false;
@@ -86,24 +132,16 @@ void Server::OnDisconnect() {
   client_socket->deleteLater();
 }
 
-void Server::ProcessRoomEnter(const ServerMessages& message,
-                              GameClient* client) {
+void Server::timerEvent(QTimerEvent*) {
+  if (clients_.empty()) {
+    return;
+  }
+  int delta_time = timer_.elapsed() - current_time_;
+  current_time_ += delta_time;
   for (auto& room : rooms_) {
-    if (room.level_id == message.GetNumber() && room.is_in_active_search
-        && room.wait_time > 1000) {
-      room.wait_time += 10000;
-      room.player_count++;
-      client->room = &room;
-      return;
+    room.wait_time -= delta_time;
+    if (room.wait_time <= 100 && room.players_in_process == 0) {
+      StartRoom(&room);
     }
   }
-  rooms_.emplace_back(timer_.elapsed(), message.GetNumber());
-  client->room = &rooms_.back();
-  qDebug() << "new_room";
-}
-
-void Server::LeaveRoom(const GameClient& client) {
-  client.room->player_count--;
-  rooms_.remove_if([](const Room& room) { return room.player_count == 0; });
-  // for all players in room send message
 }

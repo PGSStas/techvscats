@@ -9,12 +9,12 @@ TEMPLATE = app
 
 SOURCES += \
     server.cpp \
-    server_message.cpp \
+    message.cpp \
     main.cpp \
 
 HEADERS += \
     server.h \
-    server_message.h \
+    message.h \
 
 target.path = $$[QT_INSTALL_EXAMPLES]/websockets/echoserver
 INSTALLS += target

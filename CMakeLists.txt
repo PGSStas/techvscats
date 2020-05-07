@@ -39,7 +39,7 @@ add_executable(techvscats
         Model/road.cpp
         Model/size.cpp
         resources.qrc
-        Server/server_message.cpp
+        Server/message.cpp
         View/animation_player.cpp
         View/animation_player.cpp
         View/button_handler.cpp
@@ -54,7 +54,7 @@ add_executable(techvscats
 
 add_executable(server
         Server/main.cpp
-        Server/server_message.cpp
+        Server/message.cpp
         Server/server.cpp
         )
 

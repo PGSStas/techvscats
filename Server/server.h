@@ -3,8 +3,9 @@
 
 #include <QtCore/QObject>
 #include <QElapsedTimer>
+#include <QTimerEvent>
 
-#include "server_message.h"
+#include "message.h"
 
 QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
@@ -14,8 +15,9 @@ struct Room {
       : start_time(start_time), level_id(level_id) {}
   int start_time;
   int level_id;
-  int player_count = 1;
-  int wait_time = 15000;
+  int players_count = 1;
+  int players_in_process = 0;
+  int wait_time = 8000;
   bool is_in_active_search = true;
 };
 
@@ -39,9 +41,11 @@ class Server : public QObject {
   void closed();
 
  private Q_SLOTS:
-  void ProcessReceivedMessage(const ServerMessages& message, QWebSocket* onwer);
-  void ProcessNewConnectionMessage(const ServerMessages& message, GameClient*);
-  void ProcessRoomEnter(const ServerMessages& message, GameClient*);
+  void ProcessReceivedMessage(const Message& message, QWebSocket* onwer);
+  void ProcessNewConnectionMessage(const Message& message, GameClient*);
+  void ProcessRoomEnter(const Message& message, GameClient*);
+
+  void StartRoom(Room* room);
 
   void LeaveRoom(const GameClient& client);
   void OnNewConnection();
@@ -49,10 +53,12 @@ class Server : public QObject {
   void OnDisconnect();
 
  private:
+  void timerEvent(QTimerEvent*);
   QWebSocketServer* web_socket_server_;
   std::list<GameClient> clients_;
   std::list<Room> rooms_;
   QElapsedTimer timer_;
+  int current_time_;
 };
 
 #endif //SERVER_H
