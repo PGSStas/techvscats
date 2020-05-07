@@ -36,8 +36,8 @@ void AuricField::Draw(QPainter* painter, const SizeHandler& size_handler,
 
   painter->drawEllipse(QPointF(point.x,
                                point.y * 1 / constants::kSemiMinorCoefficient),
-                               size.width,
-                               size.height);
+                       size.width,
+                       size.height);
   painter->restore();
 }
 
