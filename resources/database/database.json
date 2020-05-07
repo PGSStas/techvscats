@@ -157,7 +157,6 @@
   ],
   "buildings": [
     {
-      "name": "empty tower",
       "settle_cost": 0,
       "animation_path": [
         "towers/empty_1",
@@ -177,10 +176,11 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Продажа башни",
+      "description" : "Ну продажа и продажа, что бубнить то"
     },
     {
-      "name": "default tower",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 0,
@@ -208,10 +208,11 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Стрелок клубками lvl. 1",
+      "description" : "Новейшая разработка немецких ученых"
     },
     {
-      "name": "laser",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 2,
@@ -239,10 +240,11 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Лазерная указка lvl. 1",
+      "description" : "Стырено у школьника первоклассника."
     },
     {
-      "name": "bomb",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 1,
@@ -270,10 +272,11 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Атомный бомбомет lvl. 1",
+      "description" : "Ручки крючки запускают бомбючки."
     },
     {
-      "name": "support",
       "settle_cost": 24,
       "auric_field": {
         "radius": 200,
@@ -295,10 +298,11 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Саппорт lvl. 1",
+      "description" : "Помогу"
     },
     {
-      "name": "default tower level 2",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 0,
@@ -326,7 +330,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Обычная бума lvl 2",
+      "description" : "Ну бума и бума, что бумбнить то"
     },
     {
       "name": "default tower level 3",
@@ -356,7 +362,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Обычная супер бума lvl 3",
+      "description" : "Ну супер бума и супер бума, что супер бумбнить то"
     },
     {
       "name": "bomb level 2",
@@ -387,7 +395,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Бабаха lvl 2",
+      "description" : "Бабаха бабахает бабахами"
     },
     {
       "name": "bomb level 3",
@@ -417,7 +427,10 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Бубуха lvl 3",
+      "description" : "Бубуха не бубуха, если не бубуха"
+
     },
     {
       "name": "support level 2",
@@ -442,7 +455,10 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Саппорт lvl 2",
+      "description" : "Помогает "
+
     },
     {
       "name": "support level 3",
@@ -466,7 +482,10 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Саппорт lvl 3",
+      "description" : "Помогает"
+
     },
     {
       "name": "laser level 2",
@@ -497,10 +516,11 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Лэйсер lvl 2",
+      "description" : "лулу"
     },
     {
-      "name": "laser level 3",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 2,
@@ -527,7 +547,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Супер пупер лазер lvl. 3",
+      "description" : "Очень очень крутой."
     }
   ],
   "effects": [
@@ -621,6 +643,16 @@
       "animation": {
         "timing": 630,
         "path": "particles/smoke6_9"
+      }
+    },
+    {
+      "size": {
+        "width": 300,
+        "height": 300
+      },
+      "animation": {
+        "timing": 830,
+        "path": "particles/friework7_12"
       }
     }
   ]

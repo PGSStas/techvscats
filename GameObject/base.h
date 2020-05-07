@@ -31,7 +31,6 @@ class Base : public GameObject {
 
  private:
   int gold_;
-  double regeneration_rate_ = 0.05;
   double max_health_;
   double current_health_;
 

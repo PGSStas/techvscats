@@ -68,6 +68,10 @@
     <file>resources/buttons_resources/upgrade_button_h.png</file>
     <file>resources/buttons_resources/second_upgrade_button.png</file>
     <file>resources/buttons_resources/second_upgrade_button_h.png</file>
+    <file>resources/buttons_resources/decline.png</file>
+    <file>resources/buttons_resources/decline_h.png</file>
+    <file>resources/buttons_resources/accept.png</file>
+    <file>resources/buttons_resources/accept_h.png</file>
 
     <file>resources/fonts/gui_font.ttf</file>
 
@@ -119,6 +123,19 @@
     <file>resources/images/particles/poof5_1.png</file>
     <file>resources/images/particles/poof5_2.png</file>
     <file>resources/images/particles/poof5_3.png</file>
+
+    <file>resources/images/particles/friework7_1.png</file>
+    <file>resources/images/particles/friework7_2.png</file>
+    <file>resources/images/particles/friework7_3.png</file>
+    <file>resources/images/particles/friework7_4.png</file>
+    <file>resources/images/particles/friework7_5.png</file>
+    <file>resources/images/particles/friework7_6.png</file>
+    <file>resources/images/particles/friework7_7.png</file>
+    <file>resources/images/particles/friework7_8.png</file>
+    <file>resources/images/particles/friework7_9.png</file>
+    <file>resources/images/particles/friework7_10.png</file>
+    <file>resources/images/particles/friework7_11.png</file>
+    <file>resources/images/particles/friework7_12.png</file>
 
     <file>resources/images/projectiles/bullet0_1.png</file>
 
