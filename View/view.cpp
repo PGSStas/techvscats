@@ -273,6 +273,7 @@ void View::timerEvent(QTimerEvent* event) {
           tower_menu_.GetSellectedTowerId());
       tower_menu_.SetIsWantToReplaceToFalse();
     }
+    button_handler_.UpdateButtonsStatus(controller_->GetClient()->IsOnline());
     repaint();
   }
 }

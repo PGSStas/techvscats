@@ -4,7 +4,7 @@ std::mt19937 MultiplayerClient::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
 MultiplayerClient::~MultiplayerClient() {
-  Close();
+  Disconnect();
 }
 
 void MultiplayerClient::Connect() {
@@ -16,9 +16,11 @@ void MultiplayerClient::Connect() {
   web_socket_->open(QUrl(address));
 }
 
-void MultiplayerClient::Close() {
+void MultiplayerClient::Disconnect() {
   web_socket_->close();
   web_socket_->deleteLater();
+  auto data = Message().DialogMessage("Disconnect", DialogType::kWarning);
+  messages_.push_back(Message().DecodeFromBinary(data));
 }
 
 void MultiplayerClient::EnterRoom(int level_id) {
@@ -65,7 +67,6 @@ bool MultiplayerClient::IsReady() const {
 }
 
 void MultiplayerClient::OnConnect() {
-  qDebug() << "Connected!!!";
   connect(web_socket_, &QWebSocket::binaryMessageReceived,
           this, &MultiplayerClient::OnMessageReceived);
   is_online_ = true;
@@ -74,6 +75,8 @@ void MultiplayerClient::OnConnect() {
       nick_name_));
   is_online_ = true;
   is_ready_ = true;
+  auto data = Message().DialogMessage("Connected", DialogType::kWarning);
+  messages_.push_back(Message().DecodeFromBinary(data));
 }
 
 void MultiplayerClient::OnMessageReceived(const QByteArray& array) {

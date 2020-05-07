@@ -16,6 +16,7 @@ class ButtonHandler : QObject {
   ~ButtonHandler() override = default;
 
   void CreateButtons();
+  void UpdateButtonsStatus(bool online_status);
   void RescaleButtons(SizeHandler size_handler);
 
   void SetMainMenuUiVisible(bool visible);
@@ -52,6 +53,7 @@ class ButtonHandler : QObject {
   MenuButton* dec_level_button_;
   MenuButton* settings_button_;
   MenuButton* exit_button_;
+  MenuButton* online_button_;
 
   // Game window
   MenuButton* pause_button_;

@@ -110,7 +110,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
   for (auto& button : buttons_) {
     button->UpdateIcon();
   }
-  if (current_force_ < 1 || possible_buildings_id_.empty()) {
+  if (current_force_ < 1 || possible_buildings_id_.empty() || delta_time > 50) {
     return;
   }
   if (current_force_ > 70) {

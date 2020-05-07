@@ -9,7 +9,6 @@
 
 enum class DialogType {
   kDefault,
-  kError,
   kWarning
 };
 
@@ -27,15 +26,17 @@ enum class MessageType {
 class Message {
  public:
   // To server
-  QByteArray NewConnectionMessage(QString nick_name);
+  QByteArray NewConnectionMessage(const QString& nick_name);
   QByteArray EnterRoomMessage(int level_id);
   QByteArray RoundCompletedMessage(int current_health);
   QByteArray LeaveRoomMessage();
   // To client
   QByteArray StartRoundMessage();
-  QByteArray SimpleDialogMessage(QString message, DialogType type,
-                                 QString nick_name = "");
+  QByteArray DialogMessage(const QString& message, DialogType type,
+                           const QString& nick_name = "");
 
+  Message& SetDialogMessage(const QString& message, DialogType type,
+                            const QString& nick_name = "");
   Message& DecodeFromBinary(const QByteArray& array);
   QByteArray CodeToBinary() const;
   MessageType GetType() const;

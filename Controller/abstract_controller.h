@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "multiplayer_client.h"
 #include "GameObject/abstract_projectile.h"
 #include "GameObject/base.h"
 #include "GameObject/building.h"
@@ -66,6 +67,7 @@ class AbstractController {
 
   virtual int GetCurrentRoundNumber() const = 0;
   virtual int GetRoundsCount() const = 0;
+  virtual MultiplayerClient* GetClient()  = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

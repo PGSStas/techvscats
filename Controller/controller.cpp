@@ -5,7 +5,6 @@ std::mt19937 Controller::random_generator_ = std::mt19937(
 
 Controller::Controller() : model_(std::make_unique<Model>()),
                            view_(std::make_unique<View>(this)) {
-  client_.Connect();
 }
 
 void Controller::StartGame(int level_id) {
@@ -30,7 +29,7 @@ void Controller::EndGame() {
   view_->DisableGameUi();
   view_->EnableMainMenuUi();
   window_type_ = WindowType::kMainMenu;
-  if(client_.IsOnline()){
+  if (client_.IsOnline()) {
     client_.LeaveRoom();
   }
   current_game_time_ = 0;
@@ -51,9 +50,7 @@ void Controller::Tick(int current_time) {
       break;
     }
   }
-  if (client_.IsOnline()) {
-    TickClient();
-  }
+  TickClient();
   TickTextNotifications();
 }
 
@@ -498,37 +495,30 @@ int Controller::GetRoundsCount() const {
   return model_->GetRoundsCount();
 }
 
+MultiplayerClient* Controller::GetClient() {
+  return &client_;
+}
+
 void Controller::ProcessDialogMessage(const Message& message) {
   switch (static_cast<DialogType>(message.GetNumber())) {
-    case DialogType::kError: {
-      model_->AddTextNotification(
-          {message.GetMessage(),
-           {constants::kGameWidth / 2,
-            constants::kGameHeight / 1.2},
-           Qt::red, view_->GetRealTime(),
-           {0, -30}, 4000, 1,
-           40});
-      break;
-
-    }
     case DialogType::kWarning: {
       model_->AddTextNotification(
           {message.GetMessage(),
-           {constants::kGameWidth /2,
-            constants::kGameHeight / 1.2},
+           {constants::kGameWidth / 2,
+            constants::kGameHeight / 1.1},
            Qt::darkCyan, view_->GetRealTime(),
-           {0, -30}, 4000, 1,
-           40});
+           {0, -40}, 3000, 1,
+           50, true});
       break;
     }
     case DialogType::kDefault: {
       model_->AddTextNotification(
           {message.GetMessage(),
            {constants::kGameWidth / 2,
-            constants::kGameHeight / 1.2},
+            constants::kGameHeight / 1.1},
            Qt::white, view_->GetRealTime(),
-           {0, -30}, 4000, 1,
-           40});
+           {0, -50}, 4000, 1,
+           40, true});
       break;
     }
   }

@@ -88,7 +88,7 @@ void Server::ProcessRoomEnter(const Message& message,
 
 void Server::ProcessRoundCompletedByPlayer(const Message& message,
                                            GameClient* owner) {
-  SendMessageToRoom(Message().SimpleDialogMessage(
+  SendMessageToRoom(Message().DialogMessage(
       "finished the round with " + QString::number(message.GetNumber()) + "HP",
       DialogType::kWarning, owner->nick_name), *owner, true);
   owner->room->players_in_process--;
@@ -121,7 +121,7 @@ void Server::SendMessageToRoom(const QByteArray& array, const GameClient& owner,
 void Server::LeaveRoom(const GameClient& client) {
   client.room->players_count--;
   client.room->players_in_process--;
-  SendMessageToRoom(Message().SimpleDialogMessage(
+  SendMessageToRoom(Message().DialogMessage(
       " leave the game!",
       DialogType::kWarning, client.nick_name), client,
                     true);

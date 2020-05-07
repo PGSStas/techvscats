@@ -1,6 +1,6 @@
 #include "message.h"
 
-QByteArray Message::NewConnectionMessage(QString nick_name) {
+QByteArray Message::NewConnectionMessage(const QString& nick_name) {
   message_ = nick_name;
   type_ = MessageType::kNewConnection;
   return CodeToBinary();
@@ -28,8 +28,14 @@ QByteArray Message::StartRoundMessage() {
   return CodeToBinary();
 }
 
-QByteArray Message::SimpleDialogMessage(QString message, DialogType type,
-                                        QString nick_name) {
+QByteArray Message::DialogMessage(const QString& message, DialogType type,
+                                  const QString& nick_name) {
+  SetDialogMessage(message,type,nick_name);
+  return CodeToBinary();
+}
+
+Message& Message::SetDialogMessage(const QString& message, DialogType type,
+                                   const QString& nick_name) {
   type_ = MessageType::kDialog;
   number_ = static_cast<int>(type);
   message_ = "";
@@ -37,7 +43,7 @@ QByteArray Message::SimpleDialogMessage(QString message, DialogType type,
     message_ += nick_name + " => ";
   }
   message_ += message;
-  return CodeToBinary();
+  return *this;
 }
 
 Message& Message::DecodeFromBinary(const QByteArray& array) {

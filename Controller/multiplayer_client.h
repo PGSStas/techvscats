@@ -19,7 +19,7 @@ class MultiplayerClient : public QObject {
   ~MultiplayerClient();
 
   void Connect();
-  void Close();
+  void Disconnect();
 
   void EnterRoom(int level_id);
   void RoundCompleted(int base_current_health);

@@ -54,6 +54,11 @@
     <file>resources/buttons_resources/zero_speed_button.png</file>
     <file>resources/buttons_resources/zero_speed_button_active.png</file>
 
+    <file>resources/buttons_resources/online_button_offline.png</file>
+    <file>resources/buttons_resources/online_button_offline_active.png</file>
+    <file>resources/buttons_resources/online_button_online.png</file>
+    <file>resources/buttons_resources/online_button_online_active.png</file>
+
     <file>resources/buttons_resources/bomb_button.png</file>
     <file>resources/buttons_resources/bomb_button_h.png</file>
     <file>resources/buttons_resources/default_tower_button.png</file>
