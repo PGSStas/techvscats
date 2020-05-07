@@ -540,7 +540,7 @@ void Model::SetAnimationToGameObject(
     GameObject* object, std::vector<int> timmings,
     std::vector<QString> paths) {
   std::vector<AnimationPlayer> animations;
-  for (uint i = 0; i < timmings.size(); i++) {
+  for (uint32_t i = 0; i < timmings.size(); i++) {
     animations.emplace_back(GetImagesByFramePath(paths[i]), timmings[i]);
   }
   object->SetAnimationPlayers(animations);

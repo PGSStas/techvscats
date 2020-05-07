@@ -209,7 +209,7 @@ void TowerMenu::DrawInfoField(QPainter* painter,
   painter->save();
 
   painter->setPen(QPen(Qt::white, 3));
-  for (uint i = 1; i < possible_buildings_id_.size(); i++) {
+  for (uint32_t i = 1; i < possible_buildings_id_.size(); i++) {
     Coordinate button_position_1 =
         buttons_[possible_buildings_id_[i - 1]]->GetPosition();
     button_position_1 += kSizeOfButton / 2;

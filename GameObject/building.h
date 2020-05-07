@@ -43,7 +43,7 @@ class Building : public GameObject {
 
   const QString& GetHeader() const;
   const QString& GetDescription() const;
-  uint GetMaxAims() const;
+  uint32_t GetMaxAims() const;
   double GetProjectileSpeedCoefficient() const;
   Effect* GetAppliedEffect();
   const AuricField& GetAuricField() const;
@@ -66,7 +66,7 @@ class Building : public GameObject {
 
   int projectile_id_ = 0;
   int attack_range_ = 0;
-  uint max_aims_ = 1;
+  uint32_t max_aims_ = 1;
   double attack_damage_ = 0;
   bool is_ready_to_create_projectiles_ = false;
   bool is_ready_to_shoot_ = false;

@@ -157,7 +157,7 @@ const QString& Building::GetDescription() const {
   return description_;
 }
 
-uint Building::GetMaxAims() const {
+uint32_t Building::GetMaxAims() const {
   return max_aims_;
 }
 
