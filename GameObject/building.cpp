@@ -64,21 +64,18 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   if (action_ == Action::kAfterFire || id_ == 0) {
     return;
   }
+  aims_.clear();
   if (enemies.empty()) {
     is_ready_to_shoot_ = false;
-    aims_.clear();
     return;
   }
-
-  aims_.clear();
   for (const auto& enemy : enemies) {
     if (IsInAttackRange(enemy->GetPosition())) {
       aims_.push_back(enemy);
     }
   }
   Coordinate position = position_;
-  std::sort(aims_.begin(), aims_.end(),
-      [&position](const std::shared_ptr<Enemy>& one,
+  aims_.sort([&position](const std::shared_ptr<Enemy>& one,
           const std::shared_ptr<Enemy>& other) {
     if (one->GetPriority() != other->GetPriority()) {
       return one->GetPriority() < other->GetPriority();
@@ -156,7 +153,7 @@ const AuricField& Building::GetAuricField() const {
   return auric_field_;
 }
 
-const std::vector<std::shared_ptr<Enemy>>& Building::GetAims() const {
+const std::list<std::shared_ptr<Enemy>>& Building::GetAims() const {
   return aims_;
 }
 
