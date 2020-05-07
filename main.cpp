@@ -6,8 +6,6 @@
 
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
-  auto controller = std::make_shared<Controller>();
-
   // Получение текущей системной локали. Чаще всего используется
   // формат вида "en_US" (сначала код языка по ISO 639, затем код
   // страны по ISO 3166).
@@ -26,6 +24,8 @@ int main(int argc, char* argv[]) {
 
   // Установка текущего ресурса (языка) в качестве языка приложения.
   QApplication::installTranslator(&translator);
+
+  auto controller = std::make_shared<Controller>();
 
   return a.exec();
 }
