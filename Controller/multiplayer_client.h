@@ -22,6 +22,8 @@ class MultiplayerClient : public QObject {
   void Close();
 
   void EnterRoom(int level_id);
+  void RoundCompleted(int base_current_health);
+  void LeaveRoom();
 
   bool IsMessagesEmpty() const;
   const std::list<Message>& GetMessages() const;
@@ -42,6 +44,7 @@ class MultiplayerClient : public QObject {
   const QString address = "ws://localhost:1234";
   bool is_online_ = false;
   bool is_ready_ = true;
+  bool is_send_ = true;
   std::list<Message> messages_;
   static std::mt19937 random_generator_;
 

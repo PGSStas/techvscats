@@ -30,6 +30,9 @@ void Controller::EndGame() {
   view_->DisableGameUi();
   view_->EnableMainMenuUi();
   window_type_ = WindowType::kMainMenu;
+  if(client_.IsOnline()){
+    client_.LeaveRoom();
+  }
   current_game_time_ = 0;
 }
 
@@ -48,6 +51,10 @@ void Controller::Tick(int current_time) {
       break;
     }
   }
+  if (client_.IsOnline()) {
+    TickClient();
+  }
+  TickTextNotifications();
 }
 
 void Controller::SetSpeedCoefficient(Speed speed) {
@@ -83,17 +90,9 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
 }
 
 void Controller::GameProcess() {
-  if (CanCreateNextWave() && game_status_ == GameStatus::kPlay
-      && client_.IsReady()) {
+  if (CanCreateNextWave() && game_status_ == GameStatus::kPlay) {
     CreateNextWave();
-    if(client_.IsOnline()) {
-      client_.SetIsReady(false);
-    }
   }
-  if (client_.IsOnline()) {
-    TickClient();
-  }
-
   if (game_status_ != GameStatus::kPlay) {
     TickEndGame();
   }
@@ -104,7 +103,6 @@ void Controller::GameProcess() {
   TickAuras();
   TickParticleHandlers();
   TickParticles();
-  TickTextNotifications();
 }
 
 void Controller::MenuProcess() {}
@@ -128,19 +126,30 @@ bool Controller::CanCreateNextWave() {
       || !model_->GetSpawners()->empty()) {
     return false;
   }
+
+  if (client_.IsOnline()) {
+    if (!client_.IsReady()) {
+      if (current_round_number != 0) {
+        client_.RoundCompleted(model_->GetBase()->GetCurrentHealth());
+      }
+      return false;
+    }
+  }
   if (!is_prepairing_to_spawn_) {
     last_round_start_time_ = current_game_time_;
     is_prepairing_to_spawn_ = true;
-    qDebug()<<"enemy clear";
   }
-
   if (current_game_time_ - last_round_start_time_
       < model_->GetPrepairTimeBetweenRounds()) {
     return false;
   }
-
-  last_round_start_time_ = current_game_time_;
-  is_prepairing_to_spawn_ = false;
+  if (is_prepairing_to_spawn_ == true) {
+    last_round_start_time_ = current_game_time_;
+    is_prepairing_to_spawn_ = false;
+  }
+  if (client_.IsOnline()) {
+    client_.SetIsReady(false);
+  }
   return true;
 }
 
@@ -160,6 +169,10 @@ void Controller::TickClient() {
       switch (message.GetType()) {
         case MessageType::kStartRound: {
           client_.SetIsReady(true);
+          break;
+        }
+        case MessageType::kDialog: {
+          ProcessDialogMessage(message);
           break;
         }
         default: {
@@ -477,4 +490,40 @@ int Controller::GetCurrentRoundNumber() const {
 
 int Controller::GetRoundsCount() const {
   return model_->GetRoundsCount();
+}
+
+void Controller::ProcessDialogMessage(const Message& message) {
+  switch (static_cast<DialogType>(message.GetNumber())) {
+    case DialogType::kError: {
+      model_->AddTextNotification(
+          {message.GetMessage(),
+           {constants::kGameWidth / 2,
+            constants::kGameHeight / 1.2},
+           Qt::red, view_->GetRealTime(),
+           {0, -30}, 4000, 1,
+           40});
+      break;
+
+    }
+    case DialogType::kWarning: {
+      model_->AddTextNotification(
+          {message.GetMessage(),
+           {constants::kGameWidth /2,
+            constants::kGameHeight / 1.2},
+           Qt::darkCyan, view_->GetRealTime(),
+           {0, -30}, 4000, 1,
+           40});
+      break;
+    }
+    case DialogType::kDefault: {
+      model_->AddTextNotification(
+          {message.GetMessage(),
+           {constants::kGameWidth / 2,
+            constants::kGameHeight / 1.2},
+           Qt::white, view_->GetRealTime(),
+           {0, -30}, 4000, 1,
+           40});
+      break;
+    }
+  }
 }

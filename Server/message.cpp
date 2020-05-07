@@ -12,8 +12,31 @@ QByteArray Message::EnterRoomMessage(int level_id) {
   return CodeToBinary();
 }
 
+QByteArray Message::RoundCompletedMessage(int base_current_health) {
+  number_ = base_current_health;
+  type_ = MessageType::kRoundCompletedByPlayer;
+  return CodeToBinary();
+}
+
+QByteArray Message::LeaveRoomMessage() {
+  type_ = MessageType::kLeaveRoom;
+  return CodeToBinary();
+}
+
 QByteArray Message::StartRoundMessage() {
-  type_=MessageType::kStartRound;
+  type_ = MessageType::kStartRound;
+  return CodeToBinary();
+}
+
+QByteArray Message::SimpleDialogMessage(QString message, DialogType type,
+                                        QString nick_name) {
+  type_ = MessageType::kDialog;
+  number_ = static_cast<int>(type);
+  message_ = "";
+  if (nick_name != "") {
+    message_ += nick_name + " => ";
+  }
+  message_ += message;
   return CodeToBinary();
 }
 
@@ -46,4 +69,3 @@ QString Message::GetMessage() const {
 int Message::GetNumber() const {
   return number_;
 }
-

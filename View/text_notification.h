@@ -15,7 +15,7 @@ class TextNotification : public GameObject {
   TextNotification(const QString& message, Coordinate start_position,
                    QColor color, int creation_time,
                    Size moving_vector = Size(0, -50), int life_time = 1000,
-                   double size_change_coefficient = 1);
+                   double size_change_coefficient = 1, double font_size = 18);
   ~TextNotification() override = default;
 
   void Tick(int current_time) override;
@@ -32,7 +32,7 @@ class TextNotification : public GameObject {
   double size_change_coefficient_;
 
   bool is_dead_ = false;
-  double font_size = 18;
+  double font_size_;
 
   const double kSlowdownCoefficient = 0.9;
   const int kFontId = 0;

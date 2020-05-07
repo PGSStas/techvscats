@@ -5,7 +5,7 @@ View::View(AbstractController* controller)
       size_handler_(),
       button_handler_(ButtonHandler(this, controller, 0)),
       tower_menu_(this) {
-  setMinimumSize(1280, 720);
+  setMinimumSize(960, 540);
   setMouseTracking(true);
   show();
   //showFullScreen();
@@ -37,6 +37,7 @@ void View::paintEvent(QPaintEvent*) {
     case WindowType::kPauseMenu:DrawPauseMenu(&painter);
       break;
   }
+  DrawTextNotification(&painter);
   DrawEmptyZones(&painter);
 }
 
@@ -130,6 +131,13 @@ void View::DrawEndgameMessage(QPainter* painter) {
     painter->restore();
   } else {
     tower_menu_.Hide(false);
+  }
+}
+
+void View::DrawTextNotification(QPainter* painter) {
+  const auto& text_notifications = controller_->GetTextNotifications();
+  for (auto& notification : text_notifications) {
+    notification.Draw(painter, size_handler_);
   }
 }
 
@@ -243,11 +251,6 @@ void View::DrawAdditionalInfo(QPainter* painter) {
     tower_menu_.DrawInfoField(painter, size_handler_,
                               controller_->GetBuildingById(
                                   tower_menu_.GetSellectedTowerId()));
-  }
-
-  const auto& text_notifications = controller_->GetTextNotifications();
-  for (auto& notification : text_notifications) {
-    notification.Draw(painter, size_handler_);
   }
 
   painter->restore();

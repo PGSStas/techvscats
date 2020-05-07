@@ -32,20 +32,28 @@ Server::~Server() {
 
 void Server::ProcessReceivedMessage(const Message& message,
                                     QWebSocket* owner_socket) {
-  GameClient* client;
+  GameClient* message_owner;
   for (auto& client_tmp:clients_) {
     if (client_tmp.socket == owner_socket) {
-      client = &client_tmp;
+      message_owner = &client_tmp;
     }
   }
-  qDebug() << "new message from:" << client->nick_name;
+  qDebug() << "new message from:" << message_owner->nick_name;
   switch (message.GetType()) {
     case MessageType::kNewConnection: {
-      ProcessNewConnectionMessage(message, client);
+      ProcessNewConnectionMessage(message, message_owner);
       break;
     }
     case MessageType::kEnterRoom: {
-      ProcessRoomEnter(message, client);
+      ProcessRoomEnter(message, message_owner);
+      break;
+    }
+    case MessageType::kRoundCompletedByPlayer: {
+      ProcessRoundCompletedByPlayer(message, message_owner);
+      break;
+    }
+    case MessageType::kLeaveRoom: {
+      LeaveRoom(*message_owner);
       break;
     }
     default: {
@@ -56,27 +64,38 @@ void Server::ProcessReceivedMessage(const Message& message,
 }
 
 void Server::ProcessNewConnectionMessage(const Message& message,
-                                         GameClient* client) {
-  client->nick_name = message.GetMessage();
-  qDebug() << "new name" << client->nick_name;
+                                         GameClient* owner) {
+  owner->nick_name = message.GetMessage();
+  qDebug() << "new name" << owner->nick_name;
 }
 
 void Server::ProcessRoomEnter(const Message& message,
-                              GameClient* client) {
-
+                              GameClient* owner) {
   for (auto& room : rooms_) {
     if (room.level_id == message.GetNumber() && room.is_in_active_search
         && room.wait_time > 1000) {
       room.wait_time += 8000;
       room.players_count++;
-      client->room = &room;
+      owner->room = &room;
       qDebug() << "connected_to_room";
       return;
     }
   }
   rooms_.emplace_back(timer_.elapsed(), message.GetNumber());
-  client->room = &rooms_.back();
+  owner->room = &rooms_.back();
   qDebug() << "new_room";
+}
+
+void Server::ProcessRoundCompletedByPlayer(const Message& message,
+                                           GameClient* owner) {
+  SendMessageToRoom(Message().SimpleDialogMessage(
+      "finished the round with " + QString::number(message.GetNumber()) + "HP",
+      DialogType::kWarning, owner->nick_name), *owner, true);
+  owner->room->players_in_process--;
+  if (owner->room->players_in_process == 0) {
+    owner->room->wait_time = 2000;
+  }
+  qDebug() << "I have finished round";
 }
 
 void Server::StartRoom(Room* room) {
@@ -90,14 +109,26 @@ void Server::StartRoom(Room* room) {
   }
 }
 
+void Server::SendMessageToRoom(const QByteArray& array, const GameClient& owner,
+                               bool self_message) {
+  for (auto& client: clients_) {
+    if (client.room == owner.room && (self_message || !(client == owner))) {
+      client.socket->sendBinaryMessage(array);
+    }
+  }
+}
+
 void Server::LeaveRoom(const GameClient& client) {
   client.room->players_count--;
   client.room->players_in_process--;
+  SendMessageToRoom(Message().SimpleDialogMessage(
+      " leave the game!",
+      DialogType::kWarning, client.nick_name), client,
+                    true);
   rooms_.remove_if([](const Room& room) {
     if (room.players_count == 0) { qDebug() << "room close"; }
     return room.players_count == 0;
   });
-  // for all players in room send message
 }
 
 void Server::OnNewConnection() {

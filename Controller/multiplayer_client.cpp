@@ -26,6 +26,18 @@ void MultiplayerClient::EnterRoom(int level_id) {
   is_ready_ = false;
 }
 
+void MultiplayerClient::RoundCompleted(int base_current_health) {
+  if (!is_send_) {
+    web_socket_->sendBinaryMessage(Message().RoundCompletedMessage(
+        base_current_health));
+    is_send_ = true;
+  }
+}
+
+void MultiplayerClient::LeaveRoom() {
+  web_socket_->sendBinaryMessage(Message().LeaveRoomMessage());
+}
+
 bool MultiplayerClient::IsMessagesEmpty() const {
   return messages_.empty();
 }
@@ -38,8 +50,11 @@ void MultiplayerClient::MessagesClear() {
   messages_.clear();
 }
 
-void MultiplayerClient::SetIsReady(bool is_ready) {
-  is_ready_ = is_ready;
+void MultiplayerClient::SetIsReady(bool new_is_ready) {
+  if (!is_ready_ && new_is_ready) {
+    is_send_ = false;
+  }
+  is_ready_ = new_is_ready;
 }
 
 bool MultiplayerClient::IsOnline() const {
@@ -65,7 +80,6 @@ void MultiplayerClient::OnMessageReceived(const QByteArray& array) {
   Message new_message;
   new_message.DecodeFromBinary(array);
   messages_.push_back(new_message);
-  qDebug() << "new message ";
 }
 
 void MultiplayerClient::onClose() {

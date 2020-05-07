@@ -44,10 +44,13 @@ class Server : public QObject {
   void ProcessReceivedMessage(const Message& message, QWebSocket* onwer);
   void ProcessNewConnectionMessage(const Message& message, GameClient*);
   void ProcessRoomEnter(const Message& message, GameClient*);
+  void ProcessRoundCompletedByPlayer(const Message& message, GameClient*);
 
   void StartRoom(Room* room);
-
+  void SendMessageToRoom(const QByteArray& array, const GameClient& owner,
+                         bool self_message = false);
   void LeaveRoom(const GameClient& client);
+
   void OnNewConnection();
   void ReceiveMessage(const QByteArray& array);
   void OnDisconnect();

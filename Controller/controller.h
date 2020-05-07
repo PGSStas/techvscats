@@ -88,6 +88,7 @@ class Controller : public AbstractController {
 
   void CreateTowerMenu(int tower_index);
   void ProcessEnemyDeath(const Enemy& enemy) const;
+  void ProcessDialogMessage(const Message& message);
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

@@ -21,6 +21,7 @@ class Base : public GameObject {
   void DecreaseHealth(double damage);
 
   int GetGold() const;
+  double GetCurrentHealth() const;
   Coordinate GetGoldPosition() const;
   Size GetGoldSize() const;
 

@@ -7,12 +7,21 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+enum class DialogType {
+  kDefault,
+  kError,
+  kWarning
+};
+
 enum class MessageType {
   // To server
   kNewConnection = 0,
   kEnterRoom = 1,
+  kRoundCompletedByPlayer = 2,
+  kLeaveRoom = 3,
   // To client
-  kStartRound = 2
+  kStartRound = 4,
+  kDialog = 5
 };
 
 class Message {
@@ -20,8 +29,12 @@ class Message {
   // To server
   QByteArray NewConnectionMessage(QString nick_name);
   QByteArray EnterRoomMessage(int level_id);
+  QByteArray RoundCompletedMessage(int current_health);
+  QByteArray LeaveRoomMessage();
   // To client
   QByteArray StartRoundMessage();
+  QByteArray SimpleDialogMessage(QString message, DialogType type,
+                                 QString nick_name = "");
 
   Message& DecodeFromBinary(const QByteArray& array);
   QByteArray CodeToBinary() const;

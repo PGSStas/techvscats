@@ -78,6 +78,7 @@ class View : public QMainWindow {
   void DrawSettings(QPainter* painter);
   void DrawPauseMenu(QPainter* painter);
   void DrawEndgameMessage(QPainter* painter);
+  void DrawTextNotification(QPainter* painter);
 
   // Game window
   void DrawTowersAuraAndRange(QPainter* painter);

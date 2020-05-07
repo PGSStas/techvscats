@@ -92,6 +92,10 @@ void Base::DecreaseHealth(double damage) {
   }
 }
 
+double Base::GetCurrentHealth() const {
+  return current_health_;
+}
+
 int Base::GetGold() const {
   return gold_;
 }
@@ -115,4 +119,3 @@ bool Base::IsDead() const {
 Size Base::GetGoldSize() const {
   return kGoldSize;
 }
-
