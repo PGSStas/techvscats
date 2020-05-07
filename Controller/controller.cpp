@@ -103,10 +103,13 @@ bool Controller::CanCreateNextWave() {
       model_->GetEnemies()->empty() && model_->GetSpawners()->empty()
       && game_status_ == GameStatus::kPlay) {
     game_status_ = GameStatus::kWin;
+    int life_time = 16000;
+    double size_coefficient = 1.03;
     model_->AddTextNotification({"Level Complete",
                                  {constants::kGameWidth / 2,
                                   constants::kGameHeight / 2}, Qt::red,
-                                 view_->GetRealTime(), {0, 0}, 16000, 1.03});
+                                 view_->GetRealTime(), {0, 0}, life_time,
+                                 size_coefficient});
   }
 
   if (!model_->GetEnemies()->empty()
@@ -212,10 +215,13 @@ void Controller::TickBuildings() {
   model_->GetBase()->Tick(current_game_time_);
   if (model_->GetBase()->IsDead() && game_status_ == GameStatus::kPlay) {
     game_status_ = GameStatus::kLose;
+    int life_time = 16000;
+    double size_coefficient = 1.03;
     model_->AddTextNotification({"GameOver:(",
                                  {constants::kGameWidth / 2,
                                   constants::kGameHeight / 2}, Qt::red,
-                                 view_->GetRealTime(), {0, 0}, 16000, 1.03});
+                                 view_->GetRealTime(), {0, 0}, life_time,
+                                 size_coefficient});
   }
 }
 

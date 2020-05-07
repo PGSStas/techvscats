@@ -14,7 +14,7 @@ void TextNotification::Tick(int current_time) {
   UpdateTime(current_time);
   position_ += force_vector_ * delta_time_ / constants::kTimeScale;
   font_size *= size_change_coefficient_;
-  font_size = std::min(font_size, 40000.0);
+  font_size = std::min(font_size, kMaxTextSize);
   force_vector_ *= kSlowdownCoefficient;
   life_time_ -= delta_time_;
   if (life_time_ < 0) {
@@ -36,8 +36,9 @@ void TextNotification::Draw(QPainter* painter,
   Coordinate point = size_handler.GameToWindowCoordinate(
       {position_.x - font_size * message_.size() * 0.35,
        position_.y + font_size / 4});
-  if (font_size != 40000)
-  painter->drawText(point.x, point.y, message_);
+  if (font_size <= kMaxTextSize + constants::kEpsilon) {
+    painter->drawText(point.x, point.y, message_);
+  }
 
   painter->restore();
 }
