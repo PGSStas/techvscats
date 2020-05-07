@@ -185,7 +185,7 @@ bool Building::IsReadyToCreateProjectiles() const {
 
 bool Building::IsInAttackRange(Coordinate coordinate) const {
   double result_range = attack_range_ * applied_effect_.GetRangeCoefficient();
-  // lower ellipse to the basement of the tower
+  // Lower ellipse to the basement of the tower.
   coordinate.y -= size_.height / 3;
   return coordinate.IsInEllipse(position_, result_range);
 }
