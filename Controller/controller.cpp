@@ -19,7 +19,7 @@ void Controller::StartGame(int level_id) {
   SetSpeedCoefficient(Speed::kNormalSpeed);
   view_->DisableMainMenuUi();
   view_->EnableGameUi();
-  if (client_.GetIsOnline()) {
+  if (client_.IsOnline()) {
     client_.EnterRoom(level_id);
     qDebug() << "GoToRoom";
   }
@@ -86,9 +86,11 @@ void Controller::GameProcess() {
   if (CanCreateNextWave() && game_status_ == GameStatus::kPlay
       && client_.IsReady()) {
     CreateNextWave();
-    client_.SetIsReady(false);
+    if(client_.IsOnline()) {
+      client_.SetIsReady(false);
+    }
   }
-  if (client_.GetIsOnline()) {
+  if (client_.IsOnline()) {
     TickClient();
   }
 
@@ -126,10 +128,10 @@ bool Controller::CanCreateNextWave() {
       || !model_->GetSpawners()->empty()) {
     return false;
   }
-
   if (!is_prepairing_to_spawn_) {
     last_round_start_time_ = current_game_time_;
     is_prepairing_to_spawn_ = true;
+    qDebug()<<"enemy clear";
   }
 
   if (current_game_time_ - last_round_start_time_

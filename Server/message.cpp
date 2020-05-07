@@ -3,21 +3,21 @@
 QByteArray Message::NewConnectionMessage(QString nick_name) {
   message_ = nick_name;
   type_ = MessageType::kNewConnection;
-  return ToCode();
+  return CodeToBinary();
 }
 
 QByteArray Message::EnterRoomMessage(int level_id) {
   number_ = level_id;
   type_ = MessageType::kEnterRoom;
-  return ToCode();
+  return CodeToBinary();
 }
 
 QByteArray Message::StartRoundMessage() {
   type_=MessageType::kStartRound;
-  return ToCode();
+  return CodeToBinary();
 }
 
-Message& Message::ToDecode(const QByteArray& array) {
+Message& Message::DecodeFromBinary(const QByteArray& array) {
   QJsonDocument json_document = QJsonDocument::fromBinaryData(array);
   type_ = static_cast<MessageType>(json_document["type"].toInt());
   message_ = json_document["message"].toString();
@@ -25,7 +25,7 @@ Message& Message::ToDecode(const QByteArray& array) {
   return *this;
 }
 
-QByteArray Message::ToCode() const {
+QByteArray Message::CodeToBinary() const {
   QJsonDocument json_document;
   QJsonObject json_object;
   json_object["type"] = static_cast<int>(type_);

@@ -113,7 +113,7 @@ void Server::OnNewConnection() {
 void Server::ReceiveMessage(const QByteArray& array) {
   QWebSocket* client_socket = qobject_cast<QWebSocket*>(sender());
   if (client_socket) {
-    ProcessReceivedMessage(Message().ToDecode(array), client_socket);
+    ProcessReceivedMessage(Message().DecodeFromBinary(array), client_socket);
   }
 }
 

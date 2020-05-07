@@ -5,7 +5,7 @@
       "damage": 1,
       "armor": 2,
       "reward": 100,
-      "max_health": 100,
+      "max_health": 10,
       "priority": 2,
       "aura": {
         "radius": 250,
@@ -28,7 +28,7 @@
       "damage": 15,
       "armor": 43,
       "reward": 500,
-      "max_health": 500,
+      "max_health": 100,
       "priority": 1,
       "size": {
         "width": 100,

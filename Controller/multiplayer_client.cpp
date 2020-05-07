@@ -42,7 +42,7 @@ void MultiplayerClient::SetIsReady(bool is_ready) {
   is_ready_ = is_ready;
 }
 
-bool MultiplayerClient::GetIsOnline() const {
+bool MultiplayerClient::IsOnline() const {
   return is_online_;
 }
 bool MultiplayerClient::IsReady() const {
@@ -63,7 +63,7 @@ void MultiplayerClient::OnConnect() {
 
 void MultiplayerClient::OnMessageReceived(const QByteArray& array) {
   Message new_message;
-  new_message.ToDecode(array);
+  new_message.DecodeFromBinary(array);
   messages_.push_back(new_message);
   qDebug() << "new message ";
 }

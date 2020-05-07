@@ -23,8 +23,8 @@ class Message {
   // To client
   QByteArray StartRoundMessage();
 
-  Message& ToDecode(const QByteArray& array);
-  QByteArray ToCode() const;
+  Message& DecodeFromBinary(const QByteArray& array);
+  QByteArray CodeToBinary() const;
   MessageType GetType() const;
   QString GetMessage() const;
   int GetNumber() const;

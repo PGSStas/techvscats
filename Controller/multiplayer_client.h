@@ -28,7 +28,7 @@ class MultiplayerClient : public QObject {
   void MessagesClear();
 
   void SetIsReady(bool is_ready);
-  bool GetIsOnline() const;
+  bool IsOnline() const;
   bool IsReady() const;
 
  private Q_SLOTS:
@@ -49,7 +49,6 @@ class MultiplayerClient : public QObject {
   QString AutoGenerateNickName() const;
   const QStringList first_name = {"Greedy", "Bloody", "Big", "Mega", "Optimus"};
   const QStringList sur_name = {"finger", "cup", "flex", "cringe", "sage"};
-
 };
 
 #endif  // CONTROLLER_MULTIPLAYER_CLIENT_H_
