@@ -660,7 +660,8 @@
       "animation": {
         "timing": 830,
         "path": "particles/friework7_12"
-      }
+      },
+      "sound": 8
     },
     {
       "size": {
@@ -705,6 +706,10 @@
     },
     {
       "path": "sounds/particle_sound_7.wav",
+      "roads_count": 1
+    },
+    {
+      "path": "sounds/particle_sound_8.wav",
       "roads_count": 1
     }
   ]

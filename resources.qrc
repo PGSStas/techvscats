@@ -371,6 +371,7 @@
     <file>resources/sounds/particle_sound_5.wav</file>
     <file>resources/sounds/particle_sound_6.wav</file>
     <file>resources/sounds/particle_sound_7.wav</file>
+    <file>resources/sounds/particle_sound_8.wav</file>
 
 </qresource>
 </RCC>

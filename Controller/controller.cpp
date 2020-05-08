@@ -62,6 +62,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
                                    base->GetGoldPosition(), Qt::green,
                                    current_game_time_});
+      music_player_.PlaySaleSound();
       base->AddGoldAmount(sell_cost);
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
     } else {
@@ -71,11 +72,13 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
                                    base->GetGoldPosition(), Qt::red,
                                    current_game_time_});
+      music_player_.PlaySaleSound();
     }
   } else {
     auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
     model_->AddTextNotification({QObject::tr("Not enough ") +
         constants::kCurrency, position, Qt::blue, current_game_time_});
+    music_player_.PlayNotEnoughMoneySound();
   }
 }
 
@@ -114,6 +117,7 @@ bool Controller::CanCreateNextWave() {
                                   constants::kGameHeight / 2}, Qt::red,
                                  view_->GetRealTime(), {0, 0}, life_time,
                                  size_coefficient});
+    music_player_.PlayGameWonSound();
   }
 
   if (!model_->GetEnemies()->empty()
@@ -450,12 +454,10 @@ GameStatus Controller::GetCurrentStatus() const {
 
 const QImage& Controller::GetEmptyZoneTexture(WindowType type) const {
   return model_->GetEmptyZoneTexture(static_cast<int>(type));
-MusicPlayer* Controller::GetMusicPlayer() {
-  return &music_player_;
 }
 
-const QImage& Controller::GetEmptyZoneTexture() const {
-  return model_->GetEmptyZoneTexture(static_cast<int>(game_mode_));
+MusicPlayer* Controller::GetMusicPlayer() {
+  return &music_player_;
 }
 
 const AnimationPlayer& Controller::GetInterface() const {
