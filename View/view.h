@@ -66,7 +66,7 @@ class View : public QMainWindow {
   const Coordinate kRoundPosition = {1758, 1001};
   const Size kRoundSize = {120, 60};
 
-  const QImage logo_ = QImage(":resources/images/backgrounds/logo.png");
+  QImage logo_ = QImage(":resources/images/backgrounds/logo.png");
   bool is_model_loaded_ = false;
 
  private:

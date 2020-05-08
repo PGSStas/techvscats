@@ -6,7 +6,7 @@ View::View(AbstractController* controller)
       tower_menu_(this) {
   setMinimumSize(960, 540);
   setMouseTracking(true);
-  show();
+  showFullScreen();
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
@@ -26,7 +26,7 @@ void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   if (!is_model_loaded_) {
     Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-    painter.drawImage(origin.x, origin.y, logo_.scaled(width(),height()));
+    painter.drawImage(origin.x, origin.y, logo_.scaled(width(), height()));
     return;
   }
 

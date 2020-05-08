@@ -313,7 +313,6 @@ void Model::LoadDatabase() {
   // Load fonts
   QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
   QFontDatabase::addApplicationFont(":resources/fonts/comics.ttf");
-
 }
 
 void Model::InitializeTowerSlots() {
@@ -353,7 +352,6 @@ void Model::LoadEffects(const QJsonObject& json_object) {
        {GetImagesByFramePath("icons/less_range_1"),
         GetImagesByFramePath("icons/more_range_1")},
       };
-
   Effect::SetEffectVisualizations(effect_visualization);
 }
 
@@ -369,7 +367,6 @@ void Model::SetAnimationToGameObject(
 
 std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
     QString animation_last_frames, QString picture_type) const {
-
   QString clear_path = ":resources/images/" + animation_last_frames;
   QStringList splitted_path = clear_path.split("_");
 
