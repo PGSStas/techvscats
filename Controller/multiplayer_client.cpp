@@ -99,7 +99,7 @@ void MultiplayerClient::onClose() {
   is_online_ = false;
   is_ready_ = true;
   auto message =
-      Message().SetDialogMessage("Server closed", DialogType::kWarning);
+      Message().SetDialogMessage("< Server closed", DialogType::kChat);
   received_messages_.push_back(message);
 }
 

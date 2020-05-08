@@ -9,7 +9,6 @@ View::View(AbstractController* controller)
   setMouseTracking(true);
   show();
   //showFullScreen();
-
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
@@ -120,12 +119,10 @@ void View::DrawEndgameMessage(QPainter* painter) {
     QFontMetrics metrics(font);
 
     Coordinate point = size_handler_.GameToWindowCoordinate(
-        {message_position_.x - metrics.boundingRect(0, 0,
-                                                    constants::kGameWidth,
-                                                    constants::kGameHeight,
-                                                    Qt::AlignLeft,
-                                                    kEndgameMessage).width()
-            / 2,
+        {message_position_.x - metrics.boundingRect(
+            0, 0,
+            constants::kGameWidth, constants::kGameHeight,
+            Qt::AlignLeft, kEndgameMessage).width() / 2,
          message_position_.y});
     painter->drawText(point.x, point.y, kEndgameMessage);
 
@@ -227,6 +224,9 @@ void View::resizeEvent(QResizeEvent*) {
 
 void View::EnableGameUi() {
   controller_->RescaleObjects(size_handler_);
+  if (controller_->GetClient()->IsOnline()) {
+    global_chat_.Clear();
+  }
   DisableTowerMenu();
   button_handler_.SetGameUiVisible(true);
 }
@@ -236,6 +236,9 @@ void View::DisableGameUi() {
 }
 
 void View::EnableMainMenuUi() {
+  if (controller_->GetClient()->IsOnline()) {
+    global_chat_.Clear();
+  }
   button_handler_.SetMainMenuUiVisible(true);
 }
 

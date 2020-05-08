@@ -34,6 +34,8 @@ GlobalChat::GlobalChat(QMainWindow* window) {
   QObject::connect(close_open_button,
                    &QPushButton::clicked,
                    close_open_button_click);
+
+  ChangeStyle();
 }
 
 void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
@@ -87,6 +89,27 @@ void GlobalChat::Tick(const SizeHandler& size_handler, int delta_time) {
     up_percent_ = std::max(0, up_percent_);
     RescaleChat(size_handler);
   }
+}
+
+
+void GlobalChat::HideShow() {
+  if (is_go_up_ && up_percent_ == 100) {
+    is_go_up_ = false;
+  }
+  if (!is_go_up_ && up_percent_ == 0) {
+    is_go_up_ = true;
+  }
+}
+
+void GlobalChat::ChangeStyle() {
+  game_style_ = !game_style_;
+//   QString style_sheet =
+//       "border: " + QString::number(border_size_) + "px solid #000000;";
+//   style_sheet += "background-color: " +
+//       QColor::fromRgb(static_cast<int32_t>(random_generator_())).name() + ";";
+//   setStyleSheet(style_sheet);
+// }
+//  setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
 }
 
 bool GlobalChat::IsSendMessagesEmpty() const {
@@ -144,13 +167,4 @@ void GlobalChat::SendMessage() {
   }
   message = message.split(" ", QString::SkipEmptyParts).join(" ");
   send_messages_.push_back(message);
-}
-
-void GlobalChat::HideShow() {
-  if (is_go_up_ && up_percent_ == 100) {
-    is_go_up_ = false;
-  }
-  if (!is_go_up_ && up_percent_ == 0) {
-    is_go_up_ = true;
-  }
 }

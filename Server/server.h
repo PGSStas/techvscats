@@ -44,7 +44,7 @@ class Server : public QObject {
  private Q_SLOTS:
   void ProcessReceivedMessage(const Message& message, QWebSocket* onwer);
   void ProcessNewConnectionMessage(const Message& message, GameClient*);
-  void ProcessRoomEnter(const Message& message, GameClient*);
+  void ProcessRoomEnterMessage(const Message& message, GameClient* owner);
   void ProcessRoundCompletedByPlayer(const Message& message, GameClient*);
   void ProcessGlobalChatMessage(const Message& message, GameClient*);
 
@@ -66,7 +66,7 @@ class Server : public QObject {
   QElapsedTimer timer_;
   int current_time_;
 
-  const int kMaxChatSize = 3;
+  const int kMaxChatSize = 5;
 };
 
 #endif //SERVER_H

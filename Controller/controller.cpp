@@ -20,7 +20,9 @@ void Controller::StartGame(int level_id) {
   view_->EnableGameUi();
   if (client_.IsOnline()) {
     client_.EnterRoom(level_id);
-    qDebug() << "GoToRoom";
+    ProcessDialogMessage(
+        Message().SetDialogMessage("< You joined the room.",
+                                   DialogType::kChat));
   }
 }
 
@@ -31,6 +33,9 @@ void Controller::EndGame() {
   window_type_ = WindowType::kMainMenu;
   if (client_.IsOnline()) {
     client_.LeaveRoom();
+    ProcessDialogMessage(
+        Message().SetDialogMessage("< You leave the room.",
+                                   DialogType::kChat));
   }
   current_game_time_ = 0;
 }

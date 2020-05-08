@@ -17,6 +17,7 @@ class GlobalChat {
   void RescaleChat(const SizeHandler& size_handler);
   void Tick( const SizeHandler&,int delta_time);
   void HideShow();
+  void ChangeStyle();
 
   bool IsSendMessagesEmpty() const;
   const QString& GetMessageToSend() const;
@@ -26,6 +27,7 @@ class GlobalChat {
   void ReceiveNewMessages(const QStringList& messages);
 
  private:
+  bool game_style_ = false;
   int up_percent_ = 100;
   bool is_go_up_ = true;
   QStringList text_browser_messages_;
@@ -40,7 +42,7 @@ class GlobalChat {
   const Size kTextEditSize = {700, 60};
   const double kFondSize = 26;
   const int kFontId = 0;
-  const int kCloseSpeed = 40;
+  const int kCloseSpeed = 60;
 
  private:
   void SendMessage();
