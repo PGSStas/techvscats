@@ -353,5 +353,7 @@
 
     <file>resources/images/towers/empty_1.png</file>
     <file>resources/images/backgrounds/texture_level_1.png</file>
+
+    <file>resources/images/backgrounds/logo.png</file>
 </qresource>
 </RCC>

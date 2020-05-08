@@ -46,9 +46,11 @@ class Controller : public AbstractController {
   int GetCurrentRoundNumber() const override;
   int GetRoundsCount() const override;
 
+  virtual bool IsDatabaseLoaded() override;
+
  private:
-  std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
+  std::unique_ptr<Model> model_;
 
   GameStatus game_status_ = GameStatus::kPlay;
   WindowType window_type_ = WindowType::kMainMenu;
@@ -62,6 +64,8 @@ class Controller : public AbstractController {
   int last_time_end_particle_created = 0;
 
   static std::mt19937 random_generator_;
+
+  bool is_model_loaded_ = false;
 
  private:
   void GameProcess();

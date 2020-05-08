@@ -3,8 +3,8 @@
 std::mt19937 Controller::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
-Controller::Controller() : model_(std::make_unique<Model>()),
-                           view_(std::make_unique<View>(this)) {}
+Controller::Controller() : view_(std::make_unique<View>(this)),
+                           model_(std::make_unique<Model>()) {}
 
 void Controller::StartGame(int level_id) {
   game_status_ = GameStatus::kPlay;
@@ -450,4 +450,8 @@ int Controller::GetCurrentRoundNumber() const {
 
 int Controller::GetRoundsCount() const {
   return model_->GetRoundsCount();
+}
+
+bool Controller::IsDatabaseLoaded() {
+  return model_->IsLoaded();
 }

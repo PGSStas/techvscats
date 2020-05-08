@@ -72,16 +72,24 @@ class Model {
 
   const QImage& GetEmptyZoneTexture(int index) const;
 
+  void LoadDatabase();
+  bool IsLoaded() const;
+
  private:
   void LoadLevel(int level);
-  void LoadDatabase();
   void InitializeTowerSlots();
-  void SetAnimationToGameObject(
-      GameObject* object, std::vector<int> timmings,
-      std::vector<QString> paths);
+
+  void SetAnimationToGameObject(GameObject* object, std::vector<int> timings,
+                                std::vector<QString> paths);
   std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(
       QString path, QString picture_type = ".png") const;
   void SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object);
+  void LoadEffects(const QJsonObject& json_object);
+  void LoadEnemies(const QJsonObject& json_object);
+  void LoadBackground(const QJsonObject& json_object);
+  void LoadBuildings(const QJsonObject& json_object);
+  void LoadProjectiles(const QJsonObject& json_object);
+  void LoadParticles(const QJsonObject& json_object);
 
   // Database which is updated by Controller all time
   std::list<Spawner> spawners_;
@@ -111,10 +119,11 @@ class Model {
   std::vector<Particle> id_to_particle_;
 
   // Images
-
   std::vector<QImage> empty_zone_texture_;
   std::vector<AnimationPlayer> backgrounds_;
   AnimationPlayer interface_;
+
+  bool is_loaded_ = false;
 };
 
 #endif  // MODEL_MODEL_H_
