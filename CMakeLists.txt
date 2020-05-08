@@ -48,8 +48,7 @@ add_executable(techvscats
         View/size_handler.cpp
         View/text_notification.cpp
         View/tower_menu.cpp
-        View/tower_menu_option.cpp
-        View/view.cpp)
+        View/view.cpp View/global_chat.cpp View/global_chat.h)
 
 add_executable(server
         Server/main.cpp

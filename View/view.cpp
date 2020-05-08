@@ -1,9 +1,9 @@
 #include "view.h"
 
 View::View(AbstractController* controller)
-    : controller_(controller),
-      size_handler_(),
+    : controller_(controller), size_handler_(),
       button_handler_(ButtonHandler(this, controller, 0)),
+      global_chat_(this),
       tower_menu_(this) {
   setMinimumSize(960, 540);
   setMouseTracking(true);
@@ -220,6 +220,7 @@ void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
   button_handler_.RescaleButtons(size_handler_);
   tower_menu_.RescaleButtons(size_handler_);
+  global_chat_.RescaleChat(size_handler_);
   controller_->RescaleObjects(size_handler_);
 }
 

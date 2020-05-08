@@ -44,7 +44,7 @@ void MenuButton::SetIsEnter(bool enter) {
   have_entered_event_ = enter;
 }
 
-void MenuButton::SetGeometry(
+void MenuButton:: SetGeometry(
     Coordinate game_coordinate, SizeHandler size_handler) {
   position_ = game_coordinate;
   auto window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);

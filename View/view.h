@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "Controller/abstract_controller.h"
+#include "global_chat.h"
 #include "button_handler.h"
 #include "tower_menu.h"
 
@@ -49,9 +50,11 @@ class View : public QMainWindow {
 
   int controller_timer_id_;
 
+  // Main Ui
+  ButtonHandler button_handler_;
+  GlobalChat global_chat_;
   // Game window
   QElapsedTimer time_between_ticks_;
-  ButtonHandler button_handler_;
   TowerMenu tower_menu_;
 
   double game_speed_coefficient_ = 1;
