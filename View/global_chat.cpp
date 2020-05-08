@@ -91,7 +91,6 @@ void GlobalChat::Tick(const SizeHandler& size_handler, int delta_time) {
   }
 }
 
-
 void GlobalChat::HideShow() {
   if (is_go_up_ && up_percent_ == 100) {
     is_go_up_ = false;

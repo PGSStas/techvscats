@@ -133,7 +133,6 @@ void ButtonHandler::CreateMainMenuButtons() {
       ":resources/buttons_resources/online_button_online_active.png");
   connect(
       online_button_, &QPushButton::clicked, main_window_, online_click);
-
 }
 
 void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
@@ -152,9 +151,8 @@ void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
   exit_button_->SetGeometry(first_button_coordinate_ + shift * 3, size_handler);
   online_button_->SetGeometry(
       Coordinate(constants::kGameWidth, constants::kGameHeight)
-      - Size(short_button_size_.height+20,100),
+          - Size(short_button_size_.height + 20, 100),
       size_handler);
-
 }
 
 void ButtonHandler::CreateSettingsButtons() {

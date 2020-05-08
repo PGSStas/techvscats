@@ -1,15 +1,18 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef SERVER_SERVER_H_
+#define SERVER_SERVER_H_
 
 #include <QtCore/QObject>
 #include <QElapsedTimer>
 #include <QTimerEvent>
+
+#include <list>
 
 #include "message.h"
 
 QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
 
+// Room to hold players in one game
 struct Room {
   Room(int start_time, int level_id)
       : start_time(start_time), level_id(level_id) {}
@@ -24,13 +27,15 @@ struct Room {
 
 struct GameClient {
   GameClient() = default;
-  GameClient(QWebSocket* socket) : socket(socket) {}
+  explicit GameClient(QWebSocket* socket) : socket(socket) {}
   bool operator==(const GameClient& other) const;
   QWebSocket* socket = nullptr;
   QString nick_name;
   Room* room = nullptr;
 };
 
+// The server is responsible for forwarding messages between users.
+// It also supports global chats and rooms.
 class Server : public QObject {
  Q_OBJECT
 
@@ -38,21 +43,23 @@ class Server : public QObject {
   explicit Server(quint16 port);
   ~Server();
 
- Q_SIGNALS:
-  void closed();
-
- private Q_SLOTS:
+ private:
+  // Received Messages
   void ProcessReceivedMessage(const Message& message, QWebSocket* onwer);
   void ProcessNewConnectionMessage(const Message& message, GameClient*);
   void ProcessRoomEnterMessage(const Message& message, GameClient* owner);
   void ProcessRoundCompletedByPlayer(const Message& message, GameClient*);
   void ProcessGlobalChatMessage(const Message& message, GameClient*);
-
+  // Room methods
   void StartRoom(Room* room);
   void SendMessageToRoom(const QByteArray& array, const GameClient& owner,
                          bool self_message = false);
-  void LeaveRoom(const GameClient& client);
+  void RoomLeave(const GameClient& client);
 
+ signals:
+  void closed();
+
+ private slots:
   void OnNewConnection();
   void ReceiveMessage(const QByteArray& array);
   void OnDisconnect();
@@ -69,4 +76,4 @@ class Server : public QObject {
   const int kMaxChatSize = 5;
 };
 
-#endif //SERVER_H
+#endif  // SERVER_SERVER_H_

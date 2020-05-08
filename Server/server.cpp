@@ -33,7 +33,7 @@ Server::~Server() {
 void Server::ProcessReceivedMessage(const Message& message,
                                     QWebSocket* owner_socket) {
   GameClient* message_owner;
-  for (auto& client_tmp:clients_) {
+  for (auto& client_tmp : clients_) {
     if (client_tmp.socket == owner_socket) {
       message_owner = &client_tmp;
     }
@@ -53,7 +53,7 @@ void Server::ProcessReceivedMessage(const Message& message,
       break;
     }
     case MessageType::kLeaveRoom: {
-      LeaveRoom(*message_owner);
+      RoomLeave(*message_owner);
       message_owner->room = nullptr;
       message_owner->socket->sendBinaryMessage(
           Message().DialogMessage(global_chat_.join("\n"),
@@ -137,7 +137,7 @@ void Server::ProcessGlobalChatMessage(const Message& message,
 void Server::StartRoom(Room* room) {
   room->is_in_active_search = false;
   room->players_in_process = room->players_count;
-  for (auto& client: clients_) {
+  for (auto& client : clients_) {
     if (client.room == room) {
       client.socket->sendBinaryMessage(Message().StartRoundMessage());
       qDebug() << "StartRoom";
@@ -147,14 +147,14 @@ void Server::StartRoom(Room* room) {
 
 void Server::SendMessageToRoom(const QByteArray& array, const GameClient& owner,
                                bool self_message) {
-  for (auto& client: clients_) {
+  for (auto& client : clients_) {
     if (client.room == owner.room && (self_message || !(client == owner))) {
       client.socket->sendBinaryMessage(array);
     }
   }
 }
 
-void Server::LeaveRoom(const GameClient& client) {
+void Server::RoomLeave(const GameClient& client) {
   client.room->players_count--;
   client.room->players_in_process--;
   SendMessageToRoom(Message().DialogMessage(
@@ -189,7 +189,7 @@ void Server::OnDisconnect() {
   clients_.remove_if([&client_socket, this](const GameClient& client) {
     if (client.socket == client_socket) {
       if (client.room != nullptr) {
-        LeaveRoom(client);
+        RoomLeave(client);
       }
       qDebug() << "bye bye," << client.nick_name;
       return true;

@@ -12,19 +12,23 @@
 
 #include "Server/message.h"
 
+// The multiplayer client is responsible for the connection between the game
+// and the server.
 class MultiplayerClient : public QObject {
  Q_OBJECT
 
  public:
-  ~MultiplayerClient();
+  ~MultiplayerClient() override;
 
   void Connect();
   void Disconnect();
 
+  // Send
   void EnterRoom(int level_id);
   void RoundCompleted(int base_current_health);
   void LeaveRoom();
 
+  // Receive
   bool IsReceivedMessagesEmpty() const;
   const std::list<Message>& GetReceivedMessages() const;
   void ReceivedMessagesClear();
@@ -35,7 +39,7 @@ class MultiplayerClient : public QObject {
 
   void NewClientMessage(const QString& messages);
 
- private Q_SLOTS:
+ private slots:
   void OnConnect();
   void OnMessageReceived(const QByteArray& array);
   void onClose();

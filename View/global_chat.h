@@ -1,5 +1,5 @@
-#ifndef VIEW_GLOBAL_CHAT_H
-#define VIEW_GLOBAL_CHAT_H
+#ifndef VIEW_GLOBAL_CHAT_H_
+#define VIEW_GLOBAL_CHAT_H_
 
 #include <QStringList>
 #include <QTextEdit>
@@ -7,15 +7,17 @@
 #include <QMainWindow>
 #include <QScrollBar>
 
+#include <algorithm>
+
 #include "View/menu_button.h"
 #include "Model/coordinate.h"
 #include "size_handler.h"
 
 class GlobalChat {
  public:
-  GlobalChat(QMainWindow*);
+  explicit GlobalChat(QMainWindow*);
   void RescaleChat(const SizeHandler& size_handler);
-  void Tick( const SizeHandler&,int delta_time);
+  void Tick(const SizeHandler&, int delta_time);
   void HideShow();
   void ChangeStyle();
 
@@ -48,4 +50,4 @@ class GlobalChat {
   void SendMessage();
 };
 
-#endif //  VIEW_GLOBAL_CHAT_H
+#endif //  VIEW_GLOBAL_CHAT_H_

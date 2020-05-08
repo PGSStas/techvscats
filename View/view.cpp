@@ -8,7 +8,7 @@ View::View(AbstractController* controller)
   setMinimumSize(960, 540);
   setMouseTracking(true);
   show();
-  //showFullScreen();
+  // showFullScreen();
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);

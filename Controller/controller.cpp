@@ -4,8 +4,7 @@ std::mt19937 Controller::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
 Controller::Controller() : model_(std::make_unique<Model>()),
-                           view_(std::make_unique<View>(this)) {
-}
+                           view_(std::make_unique<View>(this)) {}
 
 void Controller::StartGame(int level_id) {
   game_status_ = GameStatus::kPlay;
@@ -47,7 +46,6 @@ void Controller::Tick(int current_time) {
   if (window_type_ == WindowType::kGame) {
     GameProcess();
   }
-
 }
 
 void Controller::SetSpeedCoefficient(Speed speed) {
@@ -509,6 +507,5 @@ void Controller::ProcessDialogMessage(const Message& message) {
       view_->AddGlobalChatMessage(message.GetMessage().split("\n"));
       break;
     }
-
   }
 }

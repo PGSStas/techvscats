@@ -34,8 +34,8 @@ class TextNotification : public GameObject {
   double size_change_coefficient_;
 
   bool is_dead_ = false;
-  bool is_fade_ = false;
   double font_size_;
+  bool is_fade_ = false;
 
   const double kSlowdownCoefficient = 0.85;
   const double kMaxTextSize = 40000;

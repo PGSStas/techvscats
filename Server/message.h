@@ -24,6 +24,8 @@ enum class MessageType {
   kDialog = 6
 };
 
+// The main class of data transfer between the server and the client.
+// The server and client communicate in the language of messages
 class Message {
  public:
   // To server
