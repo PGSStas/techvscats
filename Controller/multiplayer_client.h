@@ -15,7 +15,7 @@
 // The multiplayer client is responsible for the connection between the game
 // and the server.
 class MultiplayerClient : public QObject {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   ~MultiplayerClient() override;
@@ -39,7 +39,7 @@ class MultiplayerClient : public QObject {
 
   void NewClientMessage(const QString& messages);
 
- private slots:
+ private slots:  // NOLINT
   void OnConnect();
   void OnMessageReceived(const QByteArray& array);
   void onClose();

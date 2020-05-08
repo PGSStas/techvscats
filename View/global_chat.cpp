@@ -15,7 +15,9 @@ GlobalChat::GlobalChat(QMainWindow* window) {
       Size(kTextEditSize.height, kTextEditSize.height), window,
       ":resources/buttons_resources/inc_level_button.png",
       ":resources/buttons_resources/inc_level_button_active.png");
-
+  send_button->SetSecondIconPath(
+      ":resources/buttons_resources/normal_speed_button.png",
+      ":resources/buttons_resources/normal_speed_button_active.png");
   auto send_button_click = [this]() {
     SendMessage();
   };
@@ -26,6 +28,9 @@ GlobalChat::GlobalChat(QMainWindow* window) {
       Size(kTextEditSize.height, kTextEditSize.height), window,
       ":resources/buttons_resources/dec_level_button.png",
       ":resources/buttons_resources/dec_level_button_active.png");
+  close_open_button->SetSecondIconPath(
+      ":resources/buttons_resources/pause_button.png",
+      ":resources/buttons_resources/pause_button_active.png");
 
   auto close_open_button_click = [this]() {
     HideShow();
@@ -102,13 +107,15 @@ void GlobalChat::HideShow() {
 
 void GlobalChat::ChangeStyle() {
   game_style_ = !game_style_;
-//   QString style_sheet =
-//       "border: " + QString::number(border_size_) + "px solid #000000;";
-//   style_sheet += "background-color: " +
-//       QColor::fromRgb(static_cast<int32_t>(random_generator_())).name() + ";";
-//   setStyleSheet(style_sheet);
-// }
-//  setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
+
+  QString style_sheet;
+  if (game_style_) {
+    style_sheet = " background-color : rgba(190,162,173,0.8);";
+  }
+  q_text_edit_->setStyleSheet(style_sheet);
+  q_text_browser_->setStyleSheet(style_sheet);
+  close_open_button->EnableSecondIcon(game_style_);
+  send_button->EnableSecondIcon(game_style_);
 }
 
 bool GlobalChat::IsSendMessagesEmpty() const {

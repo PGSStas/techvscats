@@ -1,5 +1,5 @@
-#ifndef SERVER_SERVER_MESSAGE_H_
-#define SERVER_SERVER_MESSAGE_H_
+#ifndef SERVER_MESSAGE_H_
+#define SERVER_MESSAGE_H_
 
 #include <QStringList>
 #include <QByteArray>

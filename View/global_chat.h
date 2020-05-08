@@ -29,7 +29,7 @@ class GlobalChat {
   void ReceiveNewMessages(const QStringList& messages);
 
  private:
-  bool game_style_ = false;
+  bool game_style_ = true;
   int up_percent_ = 100;
   bool is_go_up_ = true;
   QStringList text_browser_messages_;
@@ -50,4 +50,4 @@ class GlobalChat {
   void SendMessage();
 };
 
-#endif //  VIEW_GLOBAL_CHAT_H_
+#endif  // VIEW_GLOBAL_CHAT_H_

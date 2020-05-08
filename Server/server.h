@@ -56,10 +56,10 @@ class Server : public QObject {
                          bool self_message = false);
   void RoomLeave(const GameClient& client);
 
- signals:
+ signals:  // NOLINT
   void closed();
 
- private slots:
+ private slots:  // NOLINT
   void OnNewConnection();
   void ReceiveMessage(const QByteArray& array);
   void OnDisconnect();

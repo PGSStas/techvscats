@@ -224,6 +224,7 @@ void View::resizeEvent(QResizeEvent*) {
 
 void View::EnableGameUi() {
   controller_->RescaleObjects(size_handler_);
+  global_chat_.ChangeStyle();
   if (controller_->GetClient()->IsOnline()) {
     global_chat_.Clear();
   }
@@ -236,6 +237,7 @@ void View::DisableGameUi() {
 }
 
 void View::EnableMainMenuUi() {
+  global_chat_.ChangeStyle();
   if (controller_->GetClient()->IsOnline()) {
     global_chat_.Clear();
   }
