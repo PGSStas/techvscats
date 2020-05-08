@@ -19,7 +19,7 @@ void MultiplayerClient::Connect() {
 void MultiplayerClient::Disconnect() {
   web_socket_->close();
   web_socket_->deleteLater();
-  auto message = Message().SetDialogMessage("Disconnect", DialogType::kWarning);
+  auto message = Message().SetDialogMessage("< Disconnect", DialogType::kChat);
   received_messages_.push_back(message);
 }
 
@@ -71,8 +71,8 @@ void MultiplayerClient::NewClientMessage(const QString& messages) {
     web_socket_->sendBinaryMessage(Message().GlobalChatMessage(messages));
     return;
   }
-  auto message = Message().SetDialogMessage("Your chat is offline",
-                                            DialogType::kGlobal);
+  auto message = Message().SetDialogMessage("< Your chat is offline",
+                                            DialogType::kChat);
   received_messages_.push_back(message);
 }
 

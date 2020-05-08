@@ -23,7 +23,7 @@ class GlobalChat {
   void PopMessageToSend();
 
   void Clear();
-  void ReceiveNewMessages(const QStringList& messages, QColor color);
+  void ReceiveNewMessages(const QStringList& messages);
 
  private:
   int up_percent_ = 100;
@@ -36,8 +36,8 @@ class GlobalChat {
   MenuButton* send_button;
   MenuButton* close_open_button;
 
-  const Coordinate kBottomLeftPosition = {346, 880};
-  const Size kTextEditSize = {400, 60};
+  const Coordinate kBottomLeftPosition = {20, 1080};
+  const Size kTextEditSize = {700, 60};
   const double kFondSize = 26;
   const int kFontId = 0;
   const int kCloseSpeed = 40;

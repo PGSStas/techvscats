@@ -106,12 +106,32 @@ void GlobalChat::Clear() {
   text_browser_messages_.clear();
 }
 
-void GlobalChat::ReceiveNewMessages(const QStringList& messages, QColor color) {
+void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
   text_browser_messages_ += messages;
   while (text_browser_messages_.size() > 3) {
     text_browser_messages_.removeAt(0);
   }
-  q_text_browser_->setText(text_browser_messages_.join("\n"));
+
+  QString html_style("<style>"
+                     "p.global{color: black; margin: 0; padding: 0;}"
+                     "p.local{color: green; margin: 0; padding: 0;}"
+                     "</style>");
+  QString global_format = "<p class=\"global\">%1</p>";
+  QString local_format = "<p class=\"local\">%1</p>";
+
+  QString text;
+  for (int i = 0; i < text_browser_messages_.length(); i++) {
+    QString line = text_browser_messages_[i];
+    if (line.startsWith(">")) {
+      text.append(global_format.arg(line.replace(">",
+                                                 "&#62;")));
+    } else if (line.startsWith("<")) {
+      text.append(local_format.arg(line.replace("<",
+                                                "&#60;")));
+    }
+  }
+  q_text_browser_->setHtml(html_style + text);
+
   QScrollBar* scroll = q_text_browser_->verticalScrollBar();
   scroll->setValue(scroll->maximum());
 }
@@ -119,6 +139,10 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages, QColor color) {
 void GlobalChat::SendMessage() {
   QString message = q_text_edit_->toPlainText();
   q_text_edit_->clear();
+  if (message == "") {
+    return;
+  }
+  message = message.split(" ", QString::SkipEmptyParts).join(" ");
   send_messages_.push_back(message);
 }
 

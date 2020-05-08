@@ -8,9 +8,8 @@
 #include <QJsonObject>
 
 enum class DialogType {
-  kGlobal,
-  kWarning,
-  kLocal
+  kChat,
+  kWarning
 };
 
 enum class MessageType {

@@ -500,13 +500,10 @@ void Controller::ProcessDialogMessage(const Message& message) {
            50, true});
       break;
     }
-    case DialogType::kGlobal: {
+    case DialogType::kChat: {
       view_->AddGlobalChatMessage(message.GetMessage().split("\n"));
       break;
     }
-    case DialogType::kLocal: {
-      view_->AddGlobalChatMessage(message.GetMessage().split("\n"),Qt::yellow);
-      break;
-    }
+
   }
 }

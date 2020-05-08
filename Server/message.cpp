@@ -46,9 +46,10 @@ Message& Message::SetDialogMessage(const QString& message, DialogType type,
   number_ = static_cast<int>(type);
   message_ = "";
   if (nick_name != "") {
-    message_ += nick_name + " : ";
+    message_ = "> " + nick_name + " : ";
   }
   message_ += message;
+
   return *this;
 }
 

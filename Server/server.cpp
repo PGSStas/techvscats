@@ -72,7 +72,7 @@ void Server::ProcessNewConnectionMessage(const Message& message,
   owner->nick_name = message.GetMessage();
   owner->socket->sendBinaryMessage(
       Message().DialogMessage(global_chat_.join("\n"),
-                              DialogType::kGlobal));
+                              DialogType::kChat));
   qDebug() << "new name" << owner->nick_name;
 }
 
@@ -113,7 +113,7 @@ void Server::ProcessGlobalChatMessage(const Message& message,
     is_room = true;
     chat = &owner->room->room_chat_;
   }
-  *chat += owner->nick_name + " : " + message.GetMessage();
+  *chat +="> " + owner->nick_name + " : " + message.GetMessage();
   while (chat->size() > kMaxChatSize) {
     chat->removeAt(0);
   }
@@ -121,7 +121,7 @@ void Server::ProcessGlobalChatMessage(const Message& message,
     if (!is_room || client.room == owner->room) {
       client.socket->sendBinaryMessage(
           Message().DialogMessage(message.GetMessage(),
-                                  DialogType::kGlobal,
+                                  DialogType::kChat,
                                   owner->nick_name));
     }
   }

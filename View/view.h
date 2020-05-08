@@ -32,8 +32,7 @@ class View : public QMainWindow {
   void EnableMainMenuUi();
   void DisableMainMenuUi();
 
-  void AddGlobalChatMessage(const QStringList& message,
-                            QColor color = Qt::black);
+  void AddGlobalChatMessage(const QStringList& message);
 
   void ReplaceTowerMenu(Coordinate position, int carrier_building_index,
                         const std::vector<int>& possible_buildings_id,
