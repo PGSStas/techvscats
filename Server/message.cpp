@@ -55,9 +55,10 @@ Message& Message::SetDialogMessage(const QString& message, DialogType type,
 
 Message& Message::DecodeFromBinary(const QByteArray& array) {
   QJsonDocument json_document = QJsonDocument::fromBinaryData(array);
-  type_ = static_cast<MessageType>(json_document["type"].toInt());
-  message_ = json_document["message"].toString();
-  number_ = json_document["number"].toInt();
+  auto object = json_document.object();
+  type_ = static_cast<MessageType>(object["type"].toInt());
+  message_ = object["message"].toString();
+  number_ = object["number"].toInt();
   return *this;
 }
 

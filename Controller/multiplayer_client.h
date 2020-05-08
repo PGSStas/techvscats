@@ -44,6 +44,7 @@ class MultiplayerClient : public QObject {
   QString nick_name_;
   QWebSocket* web_socket_;
   const QString address = "ws://localhost:1234";
+  // const QString address = "ws://49.12.75.135:1234";
   bool is_online_ = false;
   bool is_ready_ = true;
   bool is_send_ = true;
