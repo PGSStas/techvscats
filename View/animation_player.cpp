@@ -37,7 +37,7 @@ void AnimationPlayer::Rescale(Size to_size) {
       + std::abs(picture_size_.height - to_size.height) < 5) {
     return;
   }
-  for (uint i = 0; i < frames_->size(); i++) {
+  for (uint32_t i = 0; i < frames_->size(); i++) {
     frames_rescaled_[i] =
         (*frames_)[i].scaled(to_size.width + 1, to_size.height + 1,
                              Qt::KeepAspectRatio);

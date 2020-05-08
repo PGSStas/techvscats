@@ -29,7 +29,7 @@ class Particle : public GameObject {
   // Due to the fact that the partial is removed not on the tick X but on X+1,
   // the animation between them has time to change from the last to the first
   // frame. And there is an instant glare.
-  const double kLifetimeOffset = 0.97;
+  const double kLifetimeOffset = 0.95;
 };
 
 #endif  // GAMEOBJECT_PARTICLE_H_

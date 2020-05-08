@@ -178,7 +178,7 @@ void ButtonHandler::CreateSettingsButtons() {
   auto back_to_main_menu_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     if (window_type_ == WindowType::kPauseMenu) {
-      controller_->EndGame(Exit::kMenu);
+      controller_->EndGame();
     }
     window_type_ = WindowType::kMainMenu;
     main_window_->repaint();
@@ -276,7 +276,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   auto restart_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
-    controller_->EndGame(Exit::kLose);
+    controller_->EndGame();
     controller_->StartGame(level_number_);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };

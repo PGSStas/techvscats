@@ -31,6 +31,7 @@
 #include "road.h"
 #include "sound_vector.h"
 #include "View/text_notification.h"
+#include "View/tower_menu.h"
 
 class Model {
  public:

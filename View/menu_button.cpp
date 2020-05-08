@@ -32,8 +32,21 @@ MenuButton::MenuButton(const Size& button_size,
   setStyleSheet("background: transparent;");
 }
 
+void MenuButton::UpdateIcon() {
+  if (have_entered_event_) {
+    setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
+  } else {
+    setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);
+  }
+}
+
+void MenuButton::SetIsEnter(bool enter) {
+  have_entered_event_ = enter;
+}
+
 void MenuButton::SetGeometry(
     Coordinate game_coordinate, SizeHandler size_handler) {
+  position_ = game_coordinate;
   auto window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);
   Size window_size = size_handler.GameToWindowSize(button_size_);
   this->setGeometry(window_coordinate.x, window_coordinate.y,
@@ -62,6 +75,7 @@ void MenuButton::enterEvent(QEvent*) {
         QColor::fromRgb(static_cast<int32_t>(random_generator_())).name() + ";";
     setStyleSheet(style_sheet);
   }
+  have_entered_event_ = true;
   setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
 }
 
@@ -72,6 +86,7 @@ void MenuButton::leaveEvent(QEvent*) {
     style_sheet += "background-color: #ffffff;";
     setStyleSheet(style_sheet);
   }
+  have_entered_event_ = false;
   setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);
 }
 
@@ -84,4 +99,8 @@ void MenuButton::SetSecondIconPath(const QString& main_icon_path,
 void MenuButton::EnableSecondIcon(bool is_second_icon_enabled) {
   is_second_icon_enabled_ = is_second_icon_enabled;
   setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
+}
+
+Coordinate MenuButton::GetPosition() const {
+  return position_;
 }

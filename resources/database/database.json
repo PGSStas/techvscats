@@ -158,7 +158,6 @@
   ],
   "buildings": [
     {
-      "name": "empty tower",
       "settle_cost": 0,
       "animation_path": [
         "towers/empty_1",
@@ -178,16 +177,21 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Продажа башни",
+      "description" : "Ну продажа и продажа, что бубнить то"
     },
     {
-      "name": "default tower",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 0,
         "attack_damage": 10,
         "attack_range": 340,
-        "max_aims": 2
+        "max_aims": 2,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -25
+        }
       },
       "animation_path": [
         "towers/default_tower_reload_4",
@@ -205,16 +209,21 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Стрелок клубками lvl. 1",
+      "description" : "Новейшая разработка немецких ученых"
     },
     {
-      "name": "laser",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 2,
         "attack_damage": 3,
         "attack_range": 240,
-        "max_aims": 3
+        "max_aims": 3,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -34
+        }
       },
       "animation_path": [
         "towers/laser_reload_7",
@@ -232,16 +241,21 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Лазерная указка lvl. 1",
+      "description" : "Стырено у школьника первоклассника."
     },
     {
-      "name": "bomb",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 1,
         "attack_damage": 54,
         "attack_range": 540,
-        "max_aims": 1
+        "max_aims": 1,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -25
+        }
       },
       "animation_path": [
         "towers/bomb_reload_8",
@@ -259,10 +273,11 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Атомный бомбомет lvl. 1",
+      "description" : "Ручки крючки запускают бомбючки."
     },
     {
-      "name": "support",
       "settle_cost": 24,
       "auric_field": {
         "radius": 200,
@@ -284,16 +299,21 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Саппорт lvl. 1",
+      "description" : "Помогу"
     },
     {
-      "name": "default tower level 2",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 0,
         "attack_damage": 100,
         "attack_range": 340,
-        "max_aims": 2
+        "max_aims": 2,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -25
+        }
       },
       "animation_path": [
         "towers/default_tower_lv2_reload_4",
@@ -311,7 +331,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Обычная бума lvl 2",
+      "description" : "Ну бума и бума, что бумбнить то"
     },
     {
       "name": "default tower level 3",
@@ -320,7 +342,11 @@
         "projectile_id": 0,
         "attack_damage": 100,
         "attack_range": 340,
-        "max_aims": 2
+        "max_aims": 2,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -25
+        }
       },
       "animation_path": [
         "towers/default_tower_lv3_reload_4",
@@ -337,7 +363,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Обычная супер бума lvl 3",
+      "description" : "Ну супер бума и супер бума, что супер бумбнить то"
     },
     {
       "name": "bomb level 2",
@@ -346,7 +374,11 @@
         "projectile_id": 1,
         "attack_damage": 54,
         "attack_range": 540,
-        "max_aims": 1
+        "max_aims": 1,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -25
+        }
       },
       "animation_path": [
         "towers/bomb_lv2_reload_8",
@@ -364,7 +396,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Бабаха lvl 2",
+      "description" : "Бабаха бабахает бабахами"
     },
     {
       "name": "bomb level 3",
@@ -373,7 +407,11 @@
         "projectile_id": 1,
         "attack_damage": 54,
         "attack_range": 540,
-        "max_aims": 1
+        "max_aims": 1,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -25
+        }
       },
       "animation_path": [
         "towers/bomb_lv3_reload_8",
@@ -390,7 +428,10 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Бубуха lvl 3",
+      "description" : "Бубуха не бубуха, если не бубуха"
+
     },
     {
       "name": "support level 2",
@@ -415,7 +456,10 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Саппорт lvl 2",
+      "description" : "Помогает "
+
     },
     {
       "name": "support level 3",
@@ -439,7 +483,10 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Саппорт lvl 3",
+      "description" : "Помогает"
+
     },
     {
       "name": "laser level 2",
@@ -448,7 +495,11 @@
         "projectile_id": 2,
         "attack_damage": 3,
         "attack_range": 240,
-        "max_aims": 3
+        "max_aims": 3,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -34
+        }
       },
       "animation_path": [
         "towers/laser_lv2_reload_7",
@@ -466,16 +517,21 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Лэйсер lvl 2",
+      "description" : "лулу"
     },
     {
-      "name": "laser level 3",
       "settle_cost": 24,
       "projectile": {
         "projectile_id": 2,
         "attack_damage": 3,
         "attack_range": 240,
-        "max_aims": 3
+        "max_aims": 3,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -34
+        }
       },
       "animation_path": [
         "towers/laser_lv3_reload_7",
@@ -492,7 +548,9 @@
       ],
       "particles": {
         "at_death": 6
-      }
+      },
+      "header" : "Супер пупер лазер lvl. 3",
+      "description" : "Очень очень крутой."
     }
   ],
   "effects": [
@@ -592,7 +650,17 @@
         "timing": 630,
         "path": "particles/smoke6_9"
       },
-      "sound": 6
+    "sound": 6
+    },
+    {
+      "size": {
+        "width": 300,
+        "height": 300
+      },
+      "animation": {
+        "timing": 830,
+        "path": "particles/friework7_12"
+      }
     },
     {
       "size": {
