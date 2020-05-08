@@ -4,6 +4,7 @@
     <file>resources/database/database.json</file>
 
     <file>resources/images/error.png</file>
+    <file>resources/images/icon.png</file>
 
     <file>resources/images/enemies/toster_1.png</file>
     <file>resources/images/enemies/toster_2.png</file>
