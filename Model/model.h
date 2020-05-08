@@ -35,6 +35,8 @@ class Model {
  public:
   Model();
 
+  void LoadDatabase();
+
   void SetGameLevel(int level);
   void AddSpawner(const EnemyGroup& enemy_group);
   void AddTextNotification(const TextNotification& text_notification);
@@ -71,9 +73,6 @@ class Model {
   const AnimationPlayer& GetInterface() const;
 
   const QImage& GetEmptyZoneTexture(int index) const;
-
-  void LoadDatabase();
-  bool IsLoaded() const;
 
  private:
   void LoadLevel(int level);
@@ -122,8 +121,6 @@ class Model {
   std::vector<QImage> empty_zone_texture_;
   std::vector<AnimationPlayer> backgrounds_;
   AnimationPlayer interface_;
-
-  bool is_loaded_ = false;
 };
 
 #endif  // MODEL_MODEL_H_

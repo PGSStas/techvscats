@@ -27,6 +27,7 @@ class View : public QMainWindow {
   explicit View(AbstractController* controller);
   ~View() override = default;
 
+  void SecondConstructorPart();
   void EnableGameUi();
   void DisableGameUi();
   void EnableMainMenuUi();
@@ -66,8 +67,6 @@ class View : public QMainWindow {
   const Size kRoundSize = {120, 60};
 
   const QImage logo_ = QImage(":resources/images/backgrounds/logo.png");
-  const int logo_show_time_ = 2000;
-
   bool is_model_loaded_ = false;
 
  private:

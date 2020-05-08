@@ -1,12 +1,6 @@
 #include "model.h"
 
-Model::Model() {
-  qDebug() << "Model Constructor";
-  current_round_number_ = 0;
-  LoadDatabase();
-  is_loaded_ = true;
-  qDebug() << "Model Loaded";
-}
+Model::Model() { }
 
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
@@ -589,8 +583,4 @@ void Model::LoadParticles(const QJsonObject& json_object) {
         {json_animation["timing"].toInt()},
         {json_animation["path"].toString()});
   }
-}
-
-bool Model::IsLoaded() const {
-  return is_loaded_;
 }

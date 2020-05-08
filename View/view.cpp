@@ -3,37 +3,37 @@
 View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(),
-    // button_handler_(ButtonHandler(this, controller, 0)),
       tower_menu_(this) {
-  qDebug() << "View";
-
-  setMinimumSize(1280, 720);
+  setMinimumSize(960, 540);
   setMouseTracking(true);
   show();
-
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
+
+}
+
+void View::SecondConstructorPart() {
+  button_handler_ = std::make_shared<ButtonHandler>(this, controller_, 0);
+  button_handler_->SetGameUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(false);
+  button_handler_->SetSettingsUiVisible(false);
+  button_handler_->SetMainMenuUiVisible(false);
+  is_model_loaded_ = true;
+  Resize();
 }
 
 void View::paintEvent(QPaintEvent*) {
-  if (is_model_loaded_ != controller_->IsDatabaseLoaded()) {
-    is_model_loaded_ = !is_model_loaded_;
-    Resize();
-  }
-
   QPainter painter(this);
-  if (!is_model_loaded_ && button_handler_ == nullptr) {
-    Coordinate point = size_handler_.GameToWindowCoordinate({0, 0});
-    Size size = size_handler_.GameToWindowSize({constants::kGameWidth,
-                                                constants::kGameHeight});
-    painter.drawImage(point.x, point.y, logo_);
+  if (!is_model_loaded_) {
+    Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+    painter.drawImage(origin.x, origin.y, logo_.scaled(width(),height()));
     return;
   }
 
   Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
   painter.drawImage(origin.x, origin.y, controller_->GetBackground(
-          button_handler_->GetWindowType()).GetCurrentFrame());
+      button_handler_->GetWindowType()).GetCurrentFrame());
 
   auto window_type = button_handler_->GetWindowType();
   switch (window_type) {
@@ -281,13 +281,8 @@ void View::DisableMainMenuUi() {
 }
 
 void View::timerEvent(QTimerEvent* event) {
-  if (button_handler_ == nullptr) {
-    button_handler_ = std::make_shared<ButtonHandler>(this, controller_, 0);
-
-    button_handler_->SetGameUiVisible(false);
-    button_handler_->SetPauseMenuUiVisible(false);
-    button_handler_->SetSettingsUiVisible(false);
-    button_handler_->SetMainMenuUiVisible(false);
+  if (!is_model_loaded_) {
+    return;
   }
   if (event->timerId() == controller_timer_id_) {
     int delta_time_ = time_between_ticks_.elapsed();

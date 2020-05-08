@@ -46,8 +46,6 @@ class Controller : public AbstractController {
   int GetCurrentRoundNumber() const override;
   int GetRoundsCount() const override;
 
-  virtual bool IsDatabaseLoaded() override;
-
  private:
   std::unique_ptr<View> view_;
   std::unique_ptr<Model> model_;
