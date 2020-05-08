@@ -137,7 +137,7 @@ void GlobalChat::Clear() {
 
 void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
   text_browser_messages_ += messages;
-  while (text_browser_messages_.size() > 3) {
+  while (text_browser_messages_.size() > kMaxChatSize) {
     text_browser_messages_.removeAt(0);
   }
 

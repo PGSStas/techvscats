@@ -40,6 +40,7 @@ class GlobalChat {
   MenuButton* send_button;
   MenuButton* close_open_button;
 
+  const int kMaxChatSize = 9;
   const Coordinate kBottomLeftPosition = {20, 1080};
   const Size kTextEditSize = {700, 60};
   const double kFondSize = 26;

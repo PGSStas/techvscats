@@ -37,7 +37,7 @@ struct GameClient {
 // The server is responsible for forwarding messages between users.
 // It also supports global chats and rooms.
 class Server : public QObject {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   explicit Server(quint16 port);
@@ -73,7 +73,7 @@ class Server : public QObject {
   QElapsedTimer timer_;
   int current_time_;
 
-  const int kMaxChatSize = 5;
+  const int kMaxChatSize = 9;
 };
 
 #endif  // SERVER_SERVER_H_
