@@ -19,6 +19,7 @@ struct Room {
   int players_in_process = 0;
   int wait_time = 8000;
   bool is_in_active_search = true;
+  QStringList room_chat_;
 };
 
 struct GameClient {
@@ -45,6 +46,7 @@ class Server : public QObject {
   void ProcessNewConnectionMessage(const Message& message, GameClient*);
   void ProcessRoomEnter(const Message& message, GameClient*);
   void ProcessRoundCompletedByPlayer(const Message& message, GameClient*);
+  void ProcessGlobalChatMessage(const Message& message, GameClient*);
 
   void StartRoom(Room* room);
   void SendMessageToRoom(const QByteArray& array, const GameClient& owner,
@@ -56,12 +58,15 @@ class Server : public QObject {
   void OnDisconnect();
 
  private:
+  QStringList global_chat_;
   void timerEvent(QTimerEvent*);
   QWebSocketServer* web_socket_server_;
   std::list<GameClient> clients_;
   std::list<Room> rooms_;
   QElapsedTimer timer_;
   int current_time_;
+
+  const int kMaxChatSize = 3;
 };
 
 #endif //SERVER_H

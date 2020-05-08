@@ -30,7 +30,13 @@ QByteArray Message::StartRoundMessage() {
 
 QByteArray Message::DialogMessage(const QString& message, DialogType type,
                                   const QString& nick_name) {
-  SetDialogMessage(message,type,nick_name);
+  SetDialogMessage(message, type, nick_name);
+  return CodeToBinary();
+}
+
+QByteArray Message::GlobalChatMessage(const QString& messages) {
+  type_ = MessageType::kGlobalChat;
+  message_ = messages;
   return CodeToBinary();
 }
 
@@ -40,7 +46,7 @@ Message& Message::SetDialogMessage(const QString& message, DialogType type,
   number_ = static_cast<int>(type);
   message_ = "";
   if (nick_name != "") {
-    message_ += nick_name + " => ";
+    message_ += nick_name + " : ";
   }
   message_ += message;
   return *this;

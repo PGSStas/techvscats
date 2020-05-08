@@ -67,7 +67,6 @@ class Controller : public AbstractController {
 
  private:
   void GameProcess();
-  void MenuProcess();
 
   bool CanCreateNextWave();
   void CreateNextWave();

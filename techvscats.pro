@@ -37,6 +37,7 @@ SOURCES += \
         Server/message.cpp \
         View/animation_player.cpp \
         View/button_handler.cpp \
+        View/global_chat.cpp \
         View/info_field.cpp \
         View/menu_button.cpp \
         View/size_handler.cpp \
@@ -71,6 +72,7 @@ HEADERS += \
         Server/message.h \
         View/animation_player.h \
         View/button_handler.h \
+        View/global_chat.h \
         View/info_field.h \
         View/menu_button.h \
         View/size_handler.h \

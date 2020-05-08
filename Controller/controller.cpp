@@ -37,21 +37,12 @@ void Controller::EndGame() {
 
 void Controller::Tick(int current_time) {
   current_game_time_ = current_time;
-  switch (window_type_) {
-    case WindowType::kGame: {
-      GameProcess();
-      break;
-    }
-    case WindowType::kMainMenu: {
-      MenuProcess();
-      break;
-    }
-    default: {
-      break;
-    }
-  }
   TickClient();
   TickTextNotifications();
+  if (window_type_ == WindowType::kGame) {
+    GameProcess();
+  }
+
 }
 
 void Controller::SetSpeedCoefficient(Speed speed) {
@@ -101,8 +92,6 @@ void Controller::GameProcess() {
   TickParticleHandlers();
   TickParticles();
 }
-
-void Controller::MenuProcess() {}
 
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
@@ -163,8 +152,8 @@ void Controller::CreateNextWave() {
 }
 
 void Controller::TickClient() {
-  if (!client_.IsMessagesEmpty()) {
-    const auto& messages = client_.GetMessages();
+  if (!client_.IsReceivedMessagesEmpty()) {
+    const auto& messages = client_.GetReceivedMessages();
     for (auto& message : messages) {
       switch (message.GetType()) {
         case MessageType::kStartRound: {
@@ -181,7 +170,7 @@ void Controller::TickClient() {
         }
       }
     }
-    client_.MessagesClear();
+    client_.ReceivedMessagesClear();
   }
 }
 
@@ -511,14 +500,12 @@ void Controller::ProcessDialogMessage(const Message& message) {
            50, true});
       break;
     }
-    case DialogType::kDefault: {
-      model_->AddTextNotification(
-          {message.GetMessage(),
-           {constants::kGameWidth / 2,
-            constants::kGameHeight / 1.1},
-           Qt::white, view_->GetRealTime(),
-           {0, -50}, 4000, 1,
-           40, true});
+    case DialogType::kGlobal: {
+      view_->AddGlobalChatMessage(message.GetMessage().split("\n"));
+      break;
+    }
+    case DialogType::kLocal: {
+      view_->AddGlobalChatMessage(message.GetMessage().split("\n"),Qt::yellow);
       break;
     }
   }

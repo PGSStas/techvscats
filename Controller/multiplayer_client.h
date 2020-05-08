@@ -25,13 +25,15 @@ class MultiplayerClient : public QObject {
   void RoundCompleted(int base_current_health);
   void LeaveRoom();
 
-  bool IsMessagesEmpty() const;
-  const std::list<Message>& GetMessages() const;
-  void MessagesClear();
+  bool IsReceivedMessagesEmpty() const;
+  const std::list<Message>& GetReceivedMessages() const;
+  void ReceivedMessagesClear();
 
   void SetIsReady(bool is_ready);
   bool IsOnline() const;
   bool IsReady() const;
+
+  void NewClientMessage(const QString& messages);
 
  private Q_SLOTS:
   void OnConnect();
@@ -45,7 +47,7 @@ class MultiplayerClient : public QObject {
   bool is_online_ = false;
   bool is_ready_ = true;
   bool is_send_ = true;
-  std::list<Message> messages_;
+  std::list<Message> received_messages_;
   static std::mt19937 random_generator_;
 
  private:

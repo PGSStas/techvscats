@@ -56,6 +56,10 @@ void Server::ProcessReceivedMessage(const Message& message,
       LeaveRoom(*message_owner);
       break;
     }
+    case MessageType::kGlobalChat: {
+      ProcessGlobalChatMessage(message, message_owner);
+      break;
+    }
     default: {
       qDebug() << "error message";
       break;
@@ -66,6 +70,9 @@ void Server::ProcessReceivedMessage(const Message& message,
 void Server::ProcessNewConnectionMessage(const Message& message,
                                          GameClient* owner) {
   owner->nick_name = message.GetMessage();
+  owner->socket->sendBinaryMessage(
+      Message().DialogMessage(global_chat_.join("\n"),
+                              DialogType::kGlobal));
   qDebug() << "new name" << owner->nick_name;
 }
 
@@ -96,6 +103,28 @@ void Server::ProcessRoundCompletedByPlayer(const Message& message,
     owner->room->wait_time = 2000;
   }
   qDebug() << "I have finished round";
+}
+
+void Server::ProcessGlobalChatMessage(const Message& message,
+                                      GameClient* owner) {
+  auto chat = &global_chat_;
+  bool is_room = false;
+  if (owner->room != nullptr) {
+    is_room = true;
+    chat = &owner->room->room_chat_;
+  }
+  *chat += owner->nick_name + " : " + message.GetMessage();
+  while (chat->size() > kMaxChatSize) {
+    chat->removeAt(0);
+  }
+  for (auto& client : clients_) {
+    if (!is_room || client.room == owner->room) {
+      client.socket->sendBinaryMessage(
+          Message().DialogMessage(message.GetMessage(),
+                                  DialogType::kGlobal,
+                                  owner->nick_name));
+    }
+  }
 }
 
 void Server::StartRoom(Room* room) {

@@ -21,7 +21,7 @@
 #include "tower_menu.h"
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -31,6 +31,9 @@ class View : public QMainWindow {
   void DisableGameUi();
   void EnableMainMenuUi();
   void DisableMainMenuUi();
+
+  void AddGlobalChatMessage(const QStringList& message,
+                            QColor color = Qt::black);
 
   void ReplaceTowerMenu(Coordinate position, int carrier_building_index,
                         const std::vector<int>& possible_buildings_id,

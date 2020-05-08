@@ -1,15 +1,16 @@
 #ifndef SERVER_SERVER_MESSAGE_H_
 #define SERVER_SERVER_MESSAGE_H_
 
-#include <QString>
+#include <QStringList>
 #include <QByteArray>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 
 enum class DialogType {
-  kDefault,
-  kWarning
+  kGlobal,
+  kWarning,
+  kLocal
 };
 
 enum class MessageType {
@@ -18,9 +19,10 @@ enum class MessageType {
   kEnterRoom = 1,
   kRoundCompletedByPlayer = 2,
   kLeaveRoom = 3,
+  kGlobalChat = 4,
   // To client
-  kStartRound = 4,
-  kDialog = 5
+  kStartRound = 5,
+  kDialog = 6
 };
 
 class Message {
@@ -30,6 +32,8 @@ class Message {
   QByteArray EnterRoomMessage(int level_id);
   QByteArray RoundCompletedMessage(int current_health);
   QByteArray LeaveRoomMessage();
+  QByteArray GlobalChatMessage(const QString& messages);
+
   // To client
   QByteArray StartRoundMessage();
   QByteArray DialogMessage(const QString& message, DialogType type,

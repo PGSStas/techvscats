@@ -48,8 +48,9 @@ void View::DrawEmptyZones(QPainter* painter) {
   Size horizontal_zone =
       Size(width(), size_handler_.GameToWindowCoordinate({0, 0}).y);
   painter->fillRect(0, 0, horizontal_zone.width, horizontal_zone.height, image);
-  painter->fillRect(0,
-      size_handler_.GameToWindowCoordinate({0, constants::kGameHeight}).y - 1,
+  painter->fillRect(
+      0, size_handler_.GameToWindowCoordinate(
+          {0, constants::kGameHeight}).y - 1,
       horizontal_zone.width + 2, horizontal_zone.height + 2, image);
   Size vertical_zone =
       Size(size_handler_.GameToWindowCoordinate({0, 0}).x, height());
@@ -261,12 +262,17 @@ void View::DisableMainMenuUi() {
   button_handler_.SetMainMenuUiVisible(false);
 }
 
+void View::AddGlobalChatMessage(const QStringList& message) {
+  global_chat_.ReceiveNewMessages(message);
+}
+
 void View::timerEvent(QTimerEvent* event) {
   if (event->timerId() == controller_timer_id_) {
     int delta_time_ = time_between_ticks_.elapsed();
     time_between_ticks_.restart();
     controller_->Tick(controller_->GetCurrentTime()
                           + delta_time_ * game_speed_coefficient_);
+    // TowerMenu tick
     tower_menu_.Tick(size_handler_, delta_time_);
     if (tower_menu_.IsWantToReplace()) {
       controller_->SetBuilding(
@@ -274,6 +280,14 @@ void View::timerEvent(QTimerEvent* event) {
           tower_menu_.GetSellectedTowerId());
       tower_menu_.SetIsWantToReplaceToFalse();
     }
+    // Global ChatTick
+    global_chat_.Tick(size_handler_, delta_time_);
+    if (!global_chat_.IsSendMessagesEmpty()) {
+      controller_->GetClient()->NewClientMessage(
+          global_chat_.GetMessageToSend());
+      global_chat_.PopMessageToSend();
+    }
+
     button_handler_.UpdateButtonsStatus(controller_->GetClient()->IsOnline());
     repaint();
   }

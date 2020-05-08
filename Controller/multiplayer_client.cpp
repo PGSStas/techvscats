@@ -19,8 +19,8 @@ void MultiplayerClient::Connect() {
 void MultiplayerClient::Disconnect() {
   web_socket_->close();
   web_socket_->deleteLater();
-  auto data = Message().DialogMessage("Disconnect", DialogType::kWarning);
-  messages_.push_back(Message().DecodeFromBinary(data));
+  auto message = Message().SetDialogMessage("Disconnect", DialogType::kWarning);
+  received_messages_.push_back(message);
 }
 
 void MultiplayerClient::EnterRoom(int level_id) {
@@ -40,16 +40,16 @@ void MultiplayerClient::LeaveRoom() {
   web_socket_->sendBinaryMessage(Message().LeaveRoomMessage());
 }
 
-bool MultiplayerClient::IsMessagesEmpty() const {
-  return messages_.empty();
+bool MultiplayerClient::IsReceivedMessagesEmpty() const {
+  return received_messages_.empty();
 }
 
-const std::list<Message>& MultiplayerClient::GetMessages() const {
-  return messages_;
+const std::list<Message>& MultiplayerClient::GetReceivedMessages() const {
+  return received_messages_;
 }
 
-void MultiplayerClient::MessagesClear() {
-  messages_.clear();
+void MultiplayerClient::ReceivedMessagesClear() {
+  received_messages_.clear();
 }
 
 void MultiplayerClient::SetIsReady(bool new_is_ready) {
@@ -66,6 +66,16 @@ bool MultiplayerClient::IsReady() const {
   return is_ready_;
 }
 
+void MultiplayerClient::NewClientMessage(const QString& messages) {
+  if (is_online_) {
+    web_socket_->sendBinaryMessage(Message().GlobalChatMessage(messages));
+    return;
+  }
+  auto message = Message().SetDialogMessage("Your chat is offline",
+                                            DialogType::kGlobal);
+  received_messages_.push_back(message);
+}
+
 void MultiplayerClient::OnConnect() {
   connect(web_socket_, &QWebSocket::binaryMessageReceived,
           this, &MultiplayerClient::OnMessageReceived);
@@ -75,20 +85,22 @@ void MultiplayerClient::OnConnect() {
       nick_name_));
   is_online_ = true;
   is_ready_ = true;
-  auto data = Message().DialogMessage("Connected", DialogType::kWarning);
-  messages_.push_back(Message().DecodeFromBinary(data));
+  auto message = Message().SetDialogMessage("Connected", DialogType::kWarning);
+  received_messages_.push_back(message);
 }
 
 void MultiplayerClient::OnMessageReceived(const QByteArray& array) {
   Message new_message;
   new_message.DecodeFromBinary(array);
-  messages_.push_back(new_message);
+  received_messages_.push_back(new_message);
 }
 
 void MultiplayerClient::onClose() {
-  qDebug() << "server killed you";
   is_online_ = false;
   is_ready_ = true;
+  auto message =
+      Message().SetDialogMessage("Server closed", DialogType::kWarning);
+  received_messages_.push_back(message);
 }
 
 QString MultiplayerClient::AutoGenerateNickName() const {
