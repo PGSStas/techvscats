@@ -17,6 +17,8 @@ class Controller : public AbstractController {
   Controller();
   ~Controller() override = default;
 
+  void SecondConstructorPart() override;
+
   void StartGame(int level) override;
   void EndGame() override;
   void Tick(int current_time) override;

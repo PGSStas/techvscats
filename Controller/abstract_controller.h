@@ -37,6 +37,8 @@ class AbstractController {
  public:
   virtual ~AbstractController() = default;
 
+  virtual void SecondConstructorPart() = 0;
+
   virtual void StartGame(int level) = 0;
   virtual void Tick(int current_time) = 0;
   virtual void EndGame() = 0;

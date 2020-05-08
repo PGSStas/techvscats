@@ -10,7 +10,6 @@ View::View(AbstractController* controller)
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
-
 }
 
 void View::SecondConstructorPart() {
@@ -281,10 +280,12 @@ void View::DisableMainMenuUi() {
 }
 
 void View::timerEvent(QTimerEvent* event) {
-  if (!is_model_loaded_) {
-    return;
-  }
   if (event->timerId() == controller_timer_id_) {
+    if (!is_model_loaded_) {
+      repaint();
+      controller_->SecondConstructorPart();
+      return;
+    }
     int delta_time_ = time_between_ticks_.elapsed();
     time_between_ticks_.restart();
     controller_->Tick(controller_->GetCurrentTime()
