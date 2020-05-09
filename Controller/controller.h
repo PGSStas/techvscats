@@ -51,11 +51,9 @@ class Controller : public AbstractController {
   MusicPlayer* GetMusicPlayer() override;
 
  private:
-  std::unique_ptr<Model> model_;
-  MusicPlayer music_player_;
-
   std::unique_ptr<View> view_;
   std::unique_ptr<Model> model_;
+  MusicPlayer music_player_;
 
   GameStatus game_status_ = GameStatus::kPlay;
   WindowType window_type_ = WindowType::kMainMenu;
