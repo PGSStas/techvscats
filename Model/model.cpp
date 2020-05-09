@@ -53,9 +53,9 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
       casted != nullptr) {
     projectiles_.push_back(std::make_shared<LaserProjectile>(*casted));
   }
-  projectiles_.back()->SetParameters(aim, building.GetPosition(),
-                                     building.GetProjectileSpeedCoefficient(),
-                                     building.GetDamage());
+  projectiles_.back()->SetParameters(aim,
+      building.GetPosition() + building.GetShootingAnchor(),
+      building.GetProjectileSpeedCoefficient(), building.GetDamage());
 }
 
 void Model::CreateParticles(const std::list<ParticleParameters>& parameters) {
@@ -96,7 +96,8 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
     base_->Rescale(size_handler.GameToWindowSize(base_->GetSize()));
   }
   for (auto& animaion : backgrounds_) {
-    animaion.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
+    animaion.Rescale(size_handler.GameToWindowSize(
+        size_handler.GetGameSize() ));
   }
   interface_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
   Effect::Rescale(size_handler.GameToWindowSize(Effect::GetSize()));
@@ -376,17 +377,21 @@ void Model::LoadDatabase() {
     AuricField aura;
     if (json_building.contains("auric_field")) {
       aura = AuricField(
-          json_building["aura"].toObject()["radius"].toInt(),
-          json_building["aura"].toObject()["effect_id"].toInt());
+          json_building["auric_field"].toObject()["radius"].toInt(),
+          json_building["auric_field"].toObject()["effect_id"].toInt());
     }
 
     Building building(i, json_building["settle_cost"].toInt(), aura);
     if (json_building.contains("projectile")) {
       auto json_projectile = json_building["projectile"].toObject();
+      Size anchor = Size(
+          json_projectile["shooting_anchor"].toObject()["x"].toInt(),
+          json_projectile["shooting_anchor"].toObject()["y"].toInt());
       building.SetProjectile(json_projectile["projectile_id"].toInt(),
                              json_projectile["attack_damage"].toDouble(),
                              json_projectile["attack_range"].toInt(),
-                             json_projectile["max_aims"].toInt());
+                             json_projectile["max_aims"].toInt(),
+                             anchor);
     }
     auto json_timings = json_building["action_time"].toArray();
     auto json_paths = json_building["animation_path"].toArray();
@@ -405,6 +410,8 @@ void Model::LoadDatabase() {
     for (int j = 0; j < upgrade_tree_count; j++) {
       upgrade_tree.push_back(json_upgrade_tree[j].toInt());
     }
+    building.SetInfo(json_building["header"].toString(),
+                     json_building["description"].toString());
     upgrades_tree_.push_back(std::move(upgrade_tree));
     id_to_building_.push_back(std::move(building));
     SetParticlesToGameObject(&id_to_building_.back(),
@@ -537,7 +544,7 @@ void Model::SetAnimationToGameObject(
     GameObject* object, std::vector<int> timmings,
     std::vector<QString> paths) {
   std::vector<AnimationPlayer> animations;
-  for (uint i = 0; i < timmings.size(); i++) {
+  for (uint32_t i = 0; i < timmings.size(); i++) {
     animations.emplace_back(GetImagesByFramePath(paths[i]), timmings[i]);
   }
   object->SetAnimationPlayers(animations);

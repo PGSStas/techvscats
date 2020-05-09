@@ -169,7 +169,7 @@ void ButtonHandler::CreateSettingsButtons() {
       tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_, font_id_);
   auto back_to_main_menu_click = [this]() {
     if (window_type_ == WindowType::kPauseMenu) {
-      controller_->EndGame(Exit::kMenu);
+      controller_->EndGame();
     }
     window_type_ = WindowType::kMainMenu;
     main_window_->repaint();
@@ -262,7 +262,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
       tr("НАЧАТЬ УРОВЕНЬ ЗАНОВО"), long_button_size_, main_window_, font_id_);
   auto restart_button_click = [this]() {
     window_type_ = WindowType::kGame;
-    controller_->EndGame(Exit::kLose);
+    controller_->EndGame();
     controller_->StartGame(level_number_);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };

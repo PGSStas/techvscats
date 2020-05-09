@@ -1,6 +1,7 @@
 #ifndef VIEW_TEXT_NOTIFICATION_H_
 #define VIEW_TEXT_NOTIFICATION_H_
 
+#include <algorithm>
 #include <memory>
 #include <QFontDatabase>
 #include <QLabel>
@@ -13,7 +14,8 @@ class TextNotification : public GameObject {
  public:
   TextNotification(const QString& message, Coordinate start_position,
                    QColor color, int creation_time,
-                   Size moving_vector = Size(0, -8), int life_time = 1000);
+                   Size moving_vector = Size(0, -50), int life_time = 1000,
+                   double size_change_coefficient = 1);
   ~TextNotification() override = default;
 
   void Tick(int current_time) override;
@@ -23,13 +25,17 @@ class TextNotification : public GameObject {
 
  private:
   QString message_;
-  Size moving_vector_;
+  Size force_vector_;
   QColor color_;
   int creation_time_;
   int life_time_;
+  double size_change_coefficient_;
 
   bool is_dead_ = false;
+  double font_size = 18;
+
   const double kSlowdownCoefficient = 0.9;
+  const double kMaxTextSize = 40000;
   const int kFontId = 0;
 };
 
