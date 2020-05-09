@@ -16,6 +16,7 @@ MenuButton::MenuButton(const QString& text, const Size& button_size,
   setStyleSheet("background-color: #ffffff;");
   button_size_ = button_size;
   setCursor(Qt::PointingHandCursor);
+  setFocusPolicy(Qt::NoFocus);
 }
 
 MenuButton::MenuButton(const Size& button_size,
