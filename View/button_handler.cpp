@@ -158,7 +158,7 @@ void ButtonHandler::CreateSettingsButtons() {
     language_button_->EnableSecondIcon(!is_language_russian_);
     is_language_russian_ = !is_language_russian_;
 
-    QSettings settings("Giggling Penguin", "Tech vs Cats");
+    QSettings settings(constants::kCompanyName, constants::kApplicationName);
     if (is_language_russian_) {
       settings.setValue("locale", "ru_RU");
     } else {

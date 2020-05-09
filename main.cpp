@@ -8,10 +8,10 @@
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
 
-  QCoreApplication::setOrganizationName("Giggling Penguin");
-  QCoreApplication::setApplicationName("Tech vs Cats");
+  QCoreApplication::setOrganizationName(constants::kCompanyName);
+  QCoreApplication::setApplicationName(constants::kApplicationName);
 
-  QSettings settings("Giggling Penguin", "Tech vs Cats");
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
 
   QString language = settings.value("locale", "en_US").toString();
   QTranslator translator;
@@ -26,8 +26,11 @@ int main(int argc, char* argv[]) {
 
   int return_code = a.exec();
   if (return_code == constants::kApplicationRestartCode) {
-    auto proc = new QProcess();
-    proc->start(QApplication::applicationFilePath());
+    if (!QProcess::startDetached(QApplication::applicationFilePath())) {
+      return_code = 1;
+    } else {
+      return_code = 0;
+    }
   }
   return return_code;
 }
