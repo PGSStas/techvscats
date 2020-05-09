@@ -36,14 +36,22 @@ void View::paintEvent(QPaintEvent*) {
 
   auto window_type = button_handler_->GetWindowType();
   switch (window_type) {
-    case WindowType::kMainMenu:DrawMainMenu(&painter);
+    case WindowType::kMainMenu: {
+      DrawMainMenu(&painter);
       break;
-    case WindowType::kGame:DrawGame(&painter);
+    }
+    case WindowType::kGame: {
+      DrawGame(&painter);
       break;
-    case WindowType::kSettings:DrawSettings(&painter);
+    }
+    case WindowType::kSettings: {
+      DrawSettings(&painter);
       break;
-    case WindowType::kPauseMenu:DrawPauseMenu(&painter);
+    }
+    case WindowType::kPauseMenu: {
+      DrawPauseMenu(&painter);
       break;
+    }
   }
   DrawEmptyZones(&painter);
 }

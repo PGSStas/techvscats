@@ -11,6 +11,7 @@
 #include "GameObject/enemy.h"
 #include "GameObject/particle.h"
 #include "View/text_notification.h"
+#include "Model/music_player.h"
 
 enum class GameStatus {
   kWin = 0,
@@ -68,6 +69,8 @@ class AbstractController {
 
   virtual int GetCurrentRoundNumber() const = 0;
   virtual int GetRoundsCount() const = 0;
+
+  virtual MusicPlayer* GetMusicPlayer() = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_
