@@ -1,31 +1,33 @@
 #include <QApplication>
 
 #include <memory>
+#include <QSettings>
 
 #include "Controller/controller.h"
 
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
-  // Получение текущей системной локали. Чаще всего используется
-  // формат вида "en_US" (сначала код языка по ISO 639, затем код
-  // страны по ISO 3166).
-  QString language = "en_US";
+
+  QCoreApplication::setOrganizationName("Giggling Penguin");
+  QCoreApplication::setApplicationName("Tech vs Cats");
+
+  QSettings settings("Giggling Penguin", "Tech vs Cats");
+
+  QString language = settings.value("locale", "en_US").toString();
   QTranslator translator;
 
-  // Попытка загрузить необходимый ресурс. Всегда следует проверять,
-  // удалась ли загрузка, при необходимости загружая то, что загрузить
-  // точно получится. Вы можете забыть подключить файл ресурсов,
-  // системная локаль может быть очень странной, в общем, может возникнуть
-  // множество различных проблем.
   if (!translator.load(":resources/translations/translation_" + language)) {
     translator.load(":resources/translations/translation_en_US");
     language = "en_US";
   }
-
-  // Установка текущего ресурса (языка) в качестве языка приложения.
   QApplication::installTranslator(&translator);
 
   auto controller = std::make_shared<Controller>();
 
-  return a.exec();
+  int return_code = a.exec();
+  if (return_code == constants::kApplicationRestartCode) {
+    auto proc = new QProcess();
+    proc->start(QApplication::applicationFilePath());
+  }
+  return return_code;
 }

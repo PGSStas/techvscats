@@ -2,9 +2,13 @@
 #define VIEW_BUTTON_HANDLER_H_
 
 #include <QApplication>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMainWindow>
+#include <QProcess>
 #include <QPushButton>
 #include <QString>
+#include <QSettings>
 #include <QTranslator>
 
 #include "Controller/abstract_controller.h"

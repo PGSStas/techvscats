@@ -54,8 +54,10 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
     projectiles_.push_back(std::make_shared<LaserProjectile>(*casted));
   }
   projectiles_.back()->SetParameters(aim,
-      building.GetPosition() + building.GetShootingAnchor(),
-      building.GetProjectileSpeedCoefficient(), building.GetDamage());
+                                     building.GetPosition()
+                                         + building.GetShootingAnchor(),
+                                     building.GetProjectileSpeedCoefficient(),
+                                     building.GetDamage());
 }
 
 void Model::CreateParticles(const std::list<ParticleParameters>& parameters) {
@@ -97,7 +99,7 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   }
   for (auto& animaion : backgrounds_) {
     animaion.Rescale(size_handler.GameToWindowSize(
-        size_handler.GetGameSize() ));
+        size_handler.GetGameSize()));
   }
   interface_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
   Effect::Rescale(size_handler.GameToWindowSize(Effect::GetSize()));
@@ -302,8 +304,19 @@ void Model::LoadDatabase() {
     return;
   }
 
-  QJsonObject json_object =
-      QJsonDocument::fromJson(level_file.readAll()).object();
+  QSettings settings("Giggling Penguin", "Tech vs Cats");
+  QString locale = settings.value("locale", "en_US").toString();
+
+  QFile description_file(":resources/database/description_" + locale + ".json");
+  if (!description_file.open(QFile::ReadOnly)) {
+    qDebug() << "ERROR! Missing description file";
+    return;
+  }
+
+  QJsonObject json_object = QJsonDocument::fromJson(
+      level_file.readAll()).object();
+  QJsonArray description_array = QJsonDocument::fromJson(
+      description_file.readAll()).array();
 
   QJsonArray effects = json_object["effects"].toArray();
   int effects_count = effects.size();
@@ -410,8 +423,9 @@ void Model::LoadDatabase() {
     for (int j = 0; j < upgrade_tree_count; j++) {
       upgrade_tree.push_back(json_upgrade_tree[j].toInt());
     }
-    building.SetInfo(json_building["header"].toString(),
-                     json_building["description"].toString());
+
+    auto info = description_array[i].toObject();
+    building.SetInfo(info["header"].toString(), info["description"].toString());
     upgrades_tree_.push_back(std::move(upgrade_tree));
     id_to_building_.push_back(std::move(building));
     SetParticlesToGameObject(&id_to_building_.back(),

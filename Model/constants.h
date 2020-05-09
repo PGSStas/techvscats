@@ -18,6 +18,8 @@ const double kRefundCoefficient = 0.3;
 
 const double kFontSize = 32;
 const QString kCurrency = "$";
+
+const int kApplicationRestartCode = 123456;
 }  // namespace constants
 
 #endif  // MODEL_CONSTANTS_H_

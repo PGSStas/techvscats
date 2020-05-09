@@ -356,5 +356,8 @@
 
     <file>resources/translations/translation_en_US.qm</file>
     <file>resources/translations/translation_ru_RU.qm</file>
+
+    <file>resources/database/description_ru_RU.json</file>
+    <file>resources/database/description_en_US.json</file>
 </qresource>
 </RCC>
