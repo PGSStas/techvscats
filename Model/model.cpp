@@ -1,7 +1,5 @@
 #include "model.h"
 
-Model::Model() { }
-
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
   InitializeTowerSlots();
@@ -324,7 +322,7 @@ void Model::InitializeTowerSlots() {
   for (Coordinate coordinate : empty_places_for_towers_) {
     auto empty_place = std::make_shared<Building>(id_to_building_[0]);
     empty_place->SetPosition(coordinate);
-    buildings_.push_back(empty_place);
+    buildings_.push_back(std::move(empty_place));
   }
 }
 
@@ -359,10 +357,11 @@ void Model::LoadEffects(const QJsonObject& json_object) {
   Effect::SetEffectVisualizations(effect_visualization);
 }
 
-void Model::SetAnimationToGameObject(
-    GameObject* object, std::vector<int> timings,
-    std::vector<QString> paths) {
+void Model::SetAnimationToGameObject(GameObject* object,
+                                     const std::vector<int>& timings,
+                                     const std::vector<QString>& paths) {
   std::vector<AnimationPlayer> animations;
+  animations.reserve(timings.size());
   for (uint32_t i = 0; i < timings.size(); i++) {
     animations.emplace_back(GetImagesByFramePath(paths[i]), timings[i]);
   }
@@ -370,7 +369,7 @@ void Model::SetAnimationToGameObject(
 }
 
 std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
-    QString animation_last_frames, QString picture_type) const {
+    const QString& animation_last_frames, const QString& picture_type) const {
   QString clear_path = ":resources/images/" + animation_last_frames;
   QStringList splitted_path = clear_path.split("_");
 
@@ -602,43 +601,4 @@ void Model::LoadParticles(const QJsonObject& json_object) {
     int sound_roads_count = json_sound["roads_count"].toInt();
     id_to_particle_sound_.emplace_back(path, sound_roads_count);
   }
-
-  // backgrounds
-  backgrounds_.emplace_back(
-      GetImagesByFramePath("backgrounds/main_background_1"));
-  backgrounds_.emplace_back(
-      GetImagesByFramePath("backgrounds/settings_background_1"));
-  backgrounds_.emplace_back(
-      GetImagesByFramePath("backgrounds/pause_menu_background_1"));
-  backgrounds_.emplace_back(GetImagesByFramePath("error"));
-
-  // Effects
-  std::vector<EffectVisualization> effect_visualization =
-      {{GetImagesByFramePath("icons/slow_1"),
-        GetImagesByFramePath("icons/fast_1")},
-       {GetImagesByFramePath("icons/less_armor_1"),
-        GetImagesByFramePath("icons/more_armor_1")},
-       {GetImagesByFramePath("icons/less_damage_1"),
-        GetImagesByFramePath("icons/more_damage_1")},
-       {GetImagesByFramePath("icons/slow_attack_1"),
-        GetImagesByFramePath("icons/fast_attack_1")},
-       {GetImagesByFramePath("icons/less_range_1"),
-        GetImagesByFramePath("icons/more_range_1")},
-      };
-
-  Effect::SetEffectVisualizations(effect_visualization);
-
-  // Load fonts
-  QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
-  QFontDatabase::addApplicationFont(":resources/fonts/comics.ttf");
-
-  // Empty zone
-  empty_zone_texture_.push_back(
-      QImage(":resources/images/backgrounds/cloud.png"));
-  empty_zone_texture_.push_back(
-      QImage(":resources/images/backgrounds/cloud.png"));
-  empty_zone_texture_.push_back(
-      QImage(":resources/images/backgrounds/cloud.png"));
-  empty_zone_texture_.push_back(
-      QImage(":resources/images/backgrounds/cloud.png"));
 }

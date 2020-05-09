@@ -35,7 +35,7 @@
 
 class Model {
  public:
-  Model();
+  Model() = default;
 
   void LoadDatabase();
 
@@ -80,10 +80,11 @@ class Model {
   void LoadLevel(int level);
   void InitializeTowerSlots();
 
-  void SetAnimationToGameObject(GameObject* object, std::vector<int> timings,
-                                std::vector<QString> paths);
+  void SetAnimationToGameObject(GameObject* object,
+                                const std::vector<int>& timings,
+                                const std::vector<QString>& paths);
   std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(
-      QString path, QString picture_type = ".png") const;
+      const QString& path, const QString& picture_type = ".png") const;
   void SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object);
   void LoadEffects(const QJsonObject& json_object);
   void LoadEnemies(const QJsonObject& json_object);
