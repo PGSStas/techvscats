@@ -64,8 +64,6 @@ class Model {
   const Enemy& GetEnemyById(int id) const;
   const Effect& GetEffectById(int id) const;
   const Building& GetBuildingById(int id) const;
-  const Particle& GetParticleById(int id) const;
-  SoundVector* GetParticleSoundEffectById(int id);
 
   int GetRoundsCount() const;
   int GetPrepareTimeBetweenRounds() const;

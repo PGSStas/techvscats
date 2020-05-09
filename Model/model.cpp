@@ -54,8 +54,10 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
     projectiles_.push_back(std::make_shared<LaserProjectile>(*casted));
   }
   projectiles_.back()->SetParameters(aim,
-      building.GetPosition() + building.GetShootingAnchor(),
-      building.GetProjectileSpeedCoefficient(), building.GetDamage());
+                                     building.GetPosition()
+                                         + building.GetShootingAnchor(),
+                                     building.GetProjectileSpeedCoefficient(),
+                                     building.GetDamage());
 }
 
 void Model::CreateParticles(const std::list<ParticleParameters>& parameters) {
@@ -64,6 +66,10 @@ void Model::CreateParticles(const std::list<ParticleParameters>& parameters) {
     particles_.back().SetIfEmpty(particle_parameters.size,
                                  particle_parameters.position,
                                  particle_parameters.animation_times);
+    int sound_id = particles_.back().GetSoundId();
+    if (sound_id != -1) {
+      id_to_particle_sound_[sound_id].Play();
+    }
   }
 }
 
@@ -97,7 +103,7 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
   }
   for (auto& animaion : backgrounds_) {
     animaion.Rescale(size_handler.GameToWindowSize(
-        size_handler.GetGameSize() ));
+        size_handler.GetGameSize()));
   }
   interface_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
   Effect::Rescale(size_handler.GameToWindowSize(Effect::GetSize()));
@@ -605,12 +611,4 @@ void Model::SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object) {
   }
   p_enemy->GetParticleHandler()->SetEvents({at_creation, at_death, while_alive},
                                            period);
-}
-
-SoundVector* Model::GetParticleSoundEffectById(int id) {
-  return &id_to_particle_sound_[id];
-}
-
-const Particle& Model::GetParticleById(int id) const {
-  return id_to_particle_[id];
 }

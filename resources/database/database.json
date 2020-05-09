@@ -151,8 +151,7 @@
         "timing": 300
       },
       "particles": {
-        "at_creation": 7,
-        "at_death": 3
+        "at_creation": 3
       }
     }
   ],
@@ -661,56 +660,41 @@
         "timing": 830,
         "path": "particles/friework7_12"
       },
-      "sound": 8
-    },
-    {
-      "size": {
-        "width": 0,
-        "height": 0
-      },
-      "animation": {
-        "timing": 630,
-        "path": "particles/smoke6_9"
-      },
       "sound": 7
     }
   ],
   "sounds": [
     {
-      "path": "sounds/particle_sound_0.wav",
+      "path": "sounds/particle_sound_0.mp3",
+      "roads_count": 4
+    },
+    {
+      "path": "sounds/particle_sound_1.mp3",
       "roads_count": 3
     },
     {
-      "path": "sounds/particle_sound_1.wav",
+      "path": "sounds/particle_sound_2.mp3",
       "roads_count": 1
     },
     {
-      "path": "sounds/particle_sound_2.wav",
+      "path": "sounds/particle_sound_3.mp3",
+      "roads_count": 2
+    },
+    {
+      "path": "sounds/particle_sound_4.mp3",
       "roads_count": 1
     },
     {
-      "path": "sounds/particle_sound_3.wav",
+      "path": "sounds/particle_sound_5.mp3",
       "roads_count": 1
     },
     {
-      "path": "sounds/particle_sound_4.wav",
+      "path": "sounds/particle_sound_6.mp3",
       "roads_count": 1
     },
     {
-      "path": "sounds/particle_sound_5.wav",
-      "roads_count": 1
-    },
-    {
-      "path": "sounds/particle_sound_6.wav",
-      "roads_count": 1
-    },
-    {
-      "path": "sounds/particle_sound_7.wav",
-      "roads_count": 1
-    },
-    {
-      "path": "sounds/particle_sound_8.wav",
-      "roads_count": 1
+      "path": "sounds/particle_sound_7.mp3",
+      "roads_count": 4
     }
   ]
 }

@@ -309,13 +309,6 @@ void Controller::TickParticleHandler(ParticleHandler* particle_handler) {
   particle_handler->Tick();
   if (particle_handler->IsReadyToCreateParticle()) {
     model_->CreateParticles(particle_handler->GetParticlesQueue());
-    const auto& particles_queue = particle_handler->GetParticlesQueue();
-    for (const auto& particle : particles_queue) {
-      int sound_id = model_->GetParticleById(particle.particle_id).GetSoundId();
-      if (sound_id != -1) {
-        model_->GetParticleSoundEffectById(sound_id)->Play();
-      }
-    }
     particle_handler->Clear();
   }
 }

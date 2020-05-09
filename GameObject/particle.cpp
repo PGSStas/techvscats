@@ -9,7 +9,7 @@ Particle::Particle(Size size, int repeat_number)
 Particle::Particle(const Particle& other)
     : Particle(other.size_, other.repeat_number_) {
   SetAnimationPlayers(other.animation_players_);
-  SetSoundId(sound_id_);
+  SetSoundId(other.sound_id_);
 }
 
 void Particle::Tick(int current_time) {

@@ -1,7 +1,8 @@
 #ifndef MODEL_SOUND_VECTOR_H_
 #define MODEL_SOUND_VECTOR_H_
 
-#include <QSoundEffect>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 #include <memory>
 #include <vector>
@@ -13,7 +14,8 @@ class SoundVector {
   void Play();
 
  private:
-  std::vector<std::shared_ptr<QSoundEffect>> sounds_;
+  int roads_count_ = 0;
+  std::vector<QMediaPlayer*> sounds_;
   int current_sound_ = 0;
 };
 
