@@ -17,6 +17,7 @@ void ButtonHandler::CreateButtons() {
 
 void ButtonHandler::UpdateButtonsStatus(bool online_status) {
   online_button_->EnableSecondIcon(online_status);
+  restart_button_->setEnabled(!online_status);
 }
 
 void ButtonHandler::RescaleButtons(SizeHandler size_handler) {

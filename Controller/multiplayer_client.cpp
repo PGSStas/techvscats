@@ -23,6 +23,17 @@ void MultiplayerClient::Disconnect() {
   received_messages_.push_back(message);
 }
 
+void MultiplayerClient::Register(QString nick_name) {
+  if (nick_name == "auto") {
+    nick_name = AutoGenerateNickName();
+  }else{
+    nick_name_ = nick_name;
+  }
+
+  web_socket_->sendBinaryMessage(Message().NewConnectionMessage(
+      nick_name_));
+}
+
 void MultiplayerClient::EnterRoom(int level_id) {
   web_socket_->sendBinaryMessage(Message().EnterRoomMessage(level_id));
   is_ready_ = false;
@@ -67,12 +78,44 @@ bool MultiplayerClient::IsReady() const {
 }
 
 void MultiplayerClient::NewClientMessage(const QString& messages) {
+  if (!is_online_) {
+    auto message = Message().SetDialogMessage("! Your chat is offline",
+                                              DialogType::kChat);
+    received_messages_.push_back(message);
+    return;
+  }
+  if (messages[0] == "/") {
+    auto message = Message().SetDialogMessage(messages,
+                                              DialogType::kChat);
+    received_messages_.push_back(message);
+    ProcessCommand(messages);
+    return;
+  }
+  if (nick_name_ == "") {
+    auto message = Message().SetDialogMessage("! Your Name is null",
+                                              DialogType::kChat);
+    received_messages_.push_back(message);
+    return;
+  }
   if (is_online_) {
     web_socket_->sendBinaryMessage(Message().GlobalChatMessage(messages));
     return;
   }
-  auto message = Message().SetDialogMessage("< Your chat is offline",
+}
+
+void MultiplayerClient::ProcessCommand(QString command) {
+  QString command_clear = command.remove(0, 1);
+  QStringList words = command_clear.split(" ");
+  auto message = Message().SetDialogMessage("! command error",
                                             DialogType::kChat);
+  if (words[0] == "register") {
+    if (words.size() == 2) {
+      Register(words[1]);
+      message = Message().SetDialogMessage("< Ok",
+                                           DialogType::kChat);
+    }
+  }
+
   received_messages_.push_back(message);
 }
 
@@ -80,12 +123,17 @@ void MultiplayerClient::OnConnect() {
   connect(web_socket_, &QWebSocket::binaryMessageReceived,
           this, &MultiplayerClient::OnMessageReceived);
   is_online_ = true;
-  nick_name_ = AutoGenerateNickName();
-  web_socket_->sendBinaryMessage(Message().NewConnectionMessage(
-      nick_name_));
+  nick_name_ = "";
   is_online_ = true;
   is_ready_ = true;
-  auto message = Message().SetDialogMessage("Connected", DialogType::kWarning);
+  auto message = Message().SetDialogMessage(
+      "< Connected. Enter /register <NickName>. ",
+      DialogType::kChat);
+
+  received_messages_.push_back(message);
+  message = Message().SetDialogMessage(
+      "< Or enter /register auto",
+      DialogType::kChat);
   received_messages_.push_back(message);
 }
 

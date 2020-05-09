@@ -144,9 +144,13 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
   QString html_style("<style>"
                      "p.global{color: black; margin: 0; padding: 0;}"
                      "p.local{color: green; margin: 0; padding: 0;}"
+                     "p.error{color: red; margin: 0; padding: 0;}"
+                     "p.command{color: orange; margin: 0; padding: 0;}"
                      "</style>");
   QString global_format = "<p class=\"global\">%1</p>";
   QString local_format = "<p class=\"local\">%1</p>";
+  QString error_format = "<p class=\"error\">%1</p>";
+  QString command_format = "<p class=\"command\">%1</p>";
 
   QString text;
   for (int i = 0; i < text_browser_messages_.length(); i++) {
@@ -157,6 +161,10 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
     } else if (line.startsWith("<")) {
       text.append(local_format.arg(line.replace("<",
                                                 "&#60;")));
+    } else if (line.startsWith("!")) {
+      text.append(error_format.arg(line));
+    } else if (line.startsWith("/")) {
+      text.append(command_format.arg(line));
     }
   }
   q_text_browser_->setHtml(html_style + text);
