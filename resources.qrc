@@ -356,12 +356,12 @@
 
     <file>resources/sounds/menu_sound.mp3</file>
     <file>resources/sounds/game_sound.mp3</file>
-    <file>resources/sounds/game_over_sound.wav</file>
-    <file>resources/sounds/game_won_sound.wav</file>
-    <file>resources/sounds/button_click.wav</file>
-    <file>resources/sounds/sale_sound.wav</file>
-    <file>resources/sounds/not_enough_money_sound.wav</file>
-    <file>resources/sounds/new_wave_sound.wav</file>
+    <file>resources/sounds/game_over_sound.mp3</file>
+    <file>resources/sounds/game_won_sound.mp3</file>
+    <file>resources/sounds/button_click.mp3</file>
+    <file>resources/sounds/sale_sound.mp3</file>
+    <file>resources/sounds/not_enough_money_sound.mp3</file>
+    <file>resources/sounds/new_wave_sound.mp3</file>
 
     <file>resources/sounds/particle_sound_0.mp3</file>
     <file>resources/sounds/particle_sound_1.mp3</file>
