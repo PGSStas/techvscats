@@ -10,9 +10,7 @@ SoundVector::SoundVector(const QString& path, int audio_roads_count) {
     sounds_[i]->setPlaylist(playlist);
     sounds_[i]->playlist()->setCurrentIndex(0);
     roads_count_++;
-
   }
-
 }
 
 void SoundVector::Play() {

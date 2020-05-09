@@ -86,4 +86,3 @@ void MusicPlayer::SetSound(QMediaPlayer* player, const QString& path) {
   player->playlist()->setCurrentIndex(0);
 
 }
-
