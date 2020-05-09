@@ -4,7 +4,8 @@ std::mt19937 Controller::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
 Controller::Controller() : model_(std::make_unique<Model>()),
-                           view_(std::make_unique<View>(this)) {}
+                           view_(std::make_unique<View>(this)) {
+}
 
 void Controller::StartGame(int level_id) {
   game_status_ = GameStatus::kPlay;
@@ -17,6 +18,7 @@ void Controller::StartGame(int level_id) {
   SetSpeedCoefficient(Speed::kNormalSpeed);
   view_->DisableMainMenuUi();
   view_->EnableGameUi();
+  music_player_.StartGameMusic();
 }
 
 void Controller::EndGame() {
@@ -25,6 +27,7 @@ void Controller::EndGame() {
   view_->EnableMainMenuUi();
   window_type_ = WindowType::kMainMenu;
   current_game_time_ = 0;
+  music_player_.StartMenuMusic();
 }
 
 void Controller::Tick(int current_time) {
@@ -59,6 +62,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
                                    base->GetGoldPosition(), Qt::green,
                                    current_game_time_});
+      music_player_.PlaySaleSound();
       base->AddGoldAmount(sell_cost);
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
     } else {
@@ -68,16 +72,19 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
                                    base->GetGoldPosition(), Qt::red,
                                    current_game_time_});
+      music_player_.PlaySaleSound();
     }
   } else {
     auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
     model_->AddTextNotification({QObject::tr("Not enough ") +
         constants::kCurrency, position, Qt::blue, current_game_time_});
+    music_player_.PlayNotEnoughMoneySound();
   }
 }
 
 void Controller::GameProcess() {
   if (CanCreateNextWave() && game_status_ == GameStatus::kPlay) {
+    music_player_.PlayNewWaveSound();
     CreateNextWave();
   }
   if (game_status_ != GameStatus::kPlay) {
@@ -110,6 +117,7 @@ bool Controller::CanCreateNextWave() {
                                   constants::kGameHeight / 2}, Qt::red,
                                  view_->GetRealTime(), {0, 0}, life_time,
                                  size_coefficient});
+    music_player_.PlayGameWonSound();
   }
 
   if (!model_->GetEnemies()->empty()
@@ -124,7 +132,7 @@ bool Controller::CanCreateNextWave() {
   }
 
   if (current_game_time_ - last_round_start_time_
-      < model_->GetPrepairTimeBetweenRounds()) {
+      < model_->GetPreparedTimeBetweenRounds()) {
     return false;
   }
 
@@ -214,6 +222,7 @@ void Controller::TickBuildings() {
   // Base
   model_->GetBase()->Tick(current_game_time_);
   if (model_->GetBase()->IsDead() && game_status_ == GameStatus::kPlay) {
+    music_player_.PlayGameOverSound();
     game_status_ = GameStatus::kLose;
     int life_time = 16000;
     double size_coefficient = 1.03;
@@ -438,6 +447,10 @@ GameStatus Controller::GetCurrentStatus() const {
 
 const QImage& Controller::GetEmptyZoneTexture(WindowType type) const {
   return model_->GetEmptyZoneTexture(static_cast<int>(type));
+}
+
+MusicPlayer* Controller::GetMusicPlayer() {
+  return &music_player_;
 }
 
 const AnimationPlayer& Controller::GetInterface() const {
