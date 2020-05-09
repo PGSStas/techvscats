@@ -12,7 +12,6 @@ SoundVector::SoundVector(const QString& path, int audio_roads_count) {
     sounds_[i]->playlist()->setCurrentIndex(0);
     playlists_.push_back(std::move(playlist));
     roads_count_++;
-    playlists_.push_back(std::move(playlist));
   }
 }
 
