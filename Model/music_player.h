@@ -38,6 +38,7 @@ class MusicPlayer {
   std::shared_ptr<QMediaPlayer> sale_sound_;
   std::shared_ptr<QMediaPlayer> not_enough_money_sound_;
   std::shared_ptr<QMediaPlayer> new_wave_;
+  std::vector<std::shared_ptr<QMediaPlaylist>> playlists_;
 };
 
 #endif  // MODEL_MUSIC_PLAYER_H_

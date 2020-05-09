@@ -15,7 +15,8 @@ class SoundVector {
 
  private:
   int roads_count_ = 0;
-  std::vector<QMediaPlayer*> sounds_;
+  std::vector<std::shared_ptr<QMediaPlayer>> sounds_;
+  std::vector<std::shared_ptr<QMediaPlaylist>> playlists_;
   int current_sound_ = 0;
 };
 

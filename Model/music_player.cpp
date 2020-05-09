@@ -78,10 +78,11 @@ void MusicPlayer::PlayNotEnoughMoneySound() {
 }
 
 void MusicPlayer::SetSound(QMediaPlayer* player, const QString& path) {
-  auto playlist = new QMediaPlaylist;
+  auto playlist = std::make_shared<QMediaPlaylist>();
   playlist->addMedia(QUrl(path));
   playlist->setCurrentIndex(0);
 
-  player->setPlaylist(playlist);
+  player->setPlaylist(playlist.get());
   player->playlist()->setCurrentIndex(0);
+  playlists_.push_back(playlist);
 }
