@@ -39,7 +39,7 @@ struct GameClient {
 // The server is responsible for forwarding messages between users.
 // It also supports global chats and rooms.
 class Server : public QObject {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   explicit Server(uint32_t port);

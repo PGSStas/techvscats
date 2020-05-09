@@ -15,7 +15,7 @@
 // The multiplayer client is responsible for the connection between the game
 // and the server.
 class MultiplayerClient : public QObject {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   ~MultiplayerClient() override;

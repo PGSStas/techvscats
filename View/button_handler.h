@@ -16,7 +16,7 @@ class ButtonHandler : QObject {
   ~ButtonHandler() override = default;
 
   void CreateButtons();
-  void UpdateButtonsStatus(bool online_status,bool register_status);
+  void UpdateButtonsStatus(bool online_status, bool register_status);
   void RescaleButtons(SizeHandler size_handler);
 
   void SetMainMenuUiVisible(bool visible);

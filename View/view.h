@@ -21,7 +21,7 @@
 #include "tower_menu.h"
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -76,7 +76,7 @@ class View : public QMainWindow {
   void timerEvent(QTimerEvent* event) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
-  void keyPressEvent(QKeyEvent* event) override ;
+  void keyPressEvent(QKeyEvent* event) override;
 
   void DrawEmptyZones(QPainter* painter);
   void DrawMainMenu(QPainter* painter);

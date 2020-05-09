@@ -518,14 +518,12 @@ void Controller::ProcessControllerCommand(const Message& message) {
     case ControllerCommandType::kGoldChange: {
       if (WindowType::kGame == window_type_) {
         model_->GetBase()->AddGoldAmount(message.GetMessage().toInt());
-
       }
       break;
     }
     case ControllerCommandType::kHealthGrow: {
       if (WindowType::kGame == window_type_) {
         model_->GetBase()->DecreaseHealth(-10000);
-
       }
       break;
     }

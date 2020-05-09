@@ -2,7 +2,7 @@
 #define VIEW_GLOBAL_CHAT_H_
 
 #include <QStringList>
-#include <QTextEdit>
+#include <QLineEdit>
 #include <QTextBrowser>
 #include <QMainWindow>
 #include <QScrollBar>
@@ -13,8 +13,9 @@
 #include "Model/coordinate.h"
 #include "size_handler.h"
 
-class GlobalChat : QTextEdit {
-   Q_OBJECT
+class GlobalChat : QLineEdit {
+  Q_OBJECT
+
  public:
   explicit GlobalChat(QMainWindow*);
   void RescaleChat(const SizeHandler& size_handler);

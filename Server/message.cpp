@@ -11,13 +11,11 @@ QByteArray Message::NewConnectionMessage(const QString& nick_name) {
 QByteArray Message::EnterRoomMessage(int level_id) {
   return CodeToBinary(Message(
       MessageType::kEnterRoom, "", level_id));
-
 }
 
 QByteArray Message::RoundCompletedMessage(int base_current_health) {
   return CodeToBinary(Message(
       MessageType::kRoundCompletedByPlayer, "", base_current_health));
-
 }
 
 QByteArray Message::LeaveRoomMessage() {

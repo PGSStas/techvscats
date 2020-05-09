@@ -142,9 +142,7 @@ void MultiplayerClient::ProcessCommand(QString command) {
                                     ControllerCommandType::kHealthGrow));
     message = Message().SetDialogMessage("<❤_INFINITY HEALTH_❤",
                                          DialogType::kChat);
-
   }
-
   received_message_.push_back(message);
 }
 

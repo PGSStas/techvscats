@@ -1,13 +1,12 @@
 #include "global_chat.h"
 
-GlobalChat::GlobalChat(QMainWindow* window) : QTextEdit(window) {
+GlobalChat::GlobalChat(QMainWindow* window) : QLineEdit(window) {
   QString family = QFontDatabase::applicationFontFamilies(kFontId).at(0);
   QFont font(family);
   font.setFixedPitch(true);
 
   q_text_browser_ = new QTextBrowser(window);
   q_text_browser_->setFont(font);
-
   setFont(font);
 
   send_button = new MenuButton(
@@ -46,22 +45,26 @@ void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
   Coordinate text_edit_position =
       size_handler.GameToWindowCoordinate(
           kBottomLeftPosition
-              - Size(-kTextEditSize.width * (1 - how_high_brick_percent_ / 100.0),
-                     kTextEditSize.height));
+              - Size(
+                  -kTextEditSize.width *
+                      (1 - how_high_brick_percent_ / 100.0),
+                  kTextEditSize.height));
   Size text_edit_size = size_handler.GameToWindowSize(kTextEditSize);
   setGeometry(text_edit_position.x, text_edit_position.y,
               text_edit_size.width * how_high_brick_percent_ / 100.0,
               text_edit_size.height);
 
   send_button->SetGeometry(
-      kBottomLeftPosition + Size(kTextEditSize.width, -kTextEditSize.height),
+      kBottomLeftPosition +
+          Size(kTextEditSize.width, -kTextEditSize.height),
       size_handler);
 
   Coordinate text_browser_position =
       size_handler.GameToWindowCoordinate(
           {kBottomLeftPosition.x, kBottomLeftPosition.y
               - kTextEditSize.height * 10
-              + kTextEditSize.height * 9 * (1 - how_high_brick_percent_ / 100.0)});
+              + kTextEditSize.height * 9
+                  * (1 - how_high_brick_percent_ / 100.0)});
   Size text_browser_size = size_handler.GameToWindowSize(
       {kTextEditSize.width + kTextEditSize.height,
        kTextEditSize.height * 9 * how_high_brick_percent_ / 100});
@@ -77,8 +80,10 @@ void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
   q_text_browser_->setFont(font_);
 
   brick_button->SetGeometry(
-      kBottomLeftPosition + Size(kTextEditSize.width, -kTextEditSize.height -
-          kTextEditSize.height * 9 / 100 * how_high_brick_percent_), size_handler);
+      kBottomLeftPosition +
+          Size(kTextEditSize.width, -kTextEditSize.height
+              - kTextEditSize.height * 9 / 100 * how_high_brick_percent_),
+      size_handler);
 }
 
 void GlobalChat::Tick(const SizeHandler& size_handler, int delta_time) {
@@ -172,7 +177,7 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
 }
 
 void GlobalChat::SendMessage() {
-  QString message = toPlainText();
+  QString message = text();
   clear();
   if (message == "") {
     return;
@@ -182,10 +187,10 @@ void GlobalChat::SendMessage() {
 }
 
 void GlobalChat::keyPressEvent(QKeyEvent* event) {
-  QKeyEvent* key = static_cast<QKeyEvent*>(event);
+  auto* key = static_cast<QKeyEvent*>(event);
   if (key->text() == "\r") {
     SendMessage();
   } else {
-    QTextEdit::keyPressEvent(event);
+    QLineEdit::keyPressEvent(event);
   }
 }
