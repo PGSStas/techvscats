@@ -132,7 +132,7 @@ bool Controller::CanCreateNextWave() {
   }
 
   if (current_game_time_ - last_round_start_time_
-      < model_->GetPrepareTimeBetweenRounds()) {
+      < model_->GetPreparedTimeBetweenRounds()) {
     return false;
   }
 

@@ -66,7 +66,7 @@ class Model {
   const Building& GetBuildingById(int id) const;
 
   int GetRoundsCount() const;
-  int GetPrepareTimeBetweenRounds() const;
+  int GetPreparedTimeBetweenRounds() const;
   int GetCurrentRoundNumber() const;
 
   const AnimationPlayer& GetBackGround(int back_ground_id) const;
@@ -101,7 +101,7 @@ class Model {
   std::shared_ptr<Base> base_;
 
   std::vector<Coordinate> empty_places_for_towers_;
-  int prepair_time_between_rounds_ = 0;
+  int prepared_time_between_rounds_ = 0;
   int rounds_count_ = 0;
 
   // Database of GameObject's instances, that is used to create GameObjects.

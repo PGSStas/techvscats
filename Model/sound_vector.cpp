@@ -5,12 +5,12 @@ SoundVector::SoundVector(const QString& path, int audio_roads_count) {
     auto media_player = std::make_shared<QMediaPlayer>();
     sounds_.push_back(std::move(media_player));
     auto playlist = std::make_shared<QMediaPlaylist>();
-    playlists_.push_back(std::move(playlist));
     playlist->addMedia(QUrl("qrc:resources/" + path));
     playlist->setCurrentIndex(0);
     sounds_[i]->setVolume(30);
     sounds_[i]->setPlaylist(playlist.get());
     sounds_[i]->playlist()->setCurrentIndex(0);
+    playlists_.push_back(std::move(playlist));
     roads_count_++;
   }
 }
