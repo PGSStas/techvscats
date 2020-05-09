@@ -26,7 +26,7 @@ void MultiplayerClient::Disconnect() {
 void MultiplayerClient::Register(QString nick_name) {
   if (nick_name == "auto") {
     nick_name = AutoGenerateNickName();
-  }else{
+  } else {
     nick_name_ = nick_name;
   }
 
@@ -78,12 +78,6 @@ bool MultiplayerClient::IsReady() const {
 }
 
 void MultiplayerClient::NewClientMessage(const QString& messages) {
-  if (!is_online_) {
-    auto message = Message().SetDialogMessage("! Your chat is offline",
-                                              DialogType::kChat);
-    received_messages_.push_back(message);
-    return;
-  }
   if (messages[0] == "/") {
     auto message = Message().SetDialogMessage(messages,
                                               DialogType::kChat);
@@ -91,6 +85,13 @@ void MultiplayerClient::NewClientMessage(const QString& messages) {
     ProcessCommand(messages);
     return;
   }
+  if (!is_online_) {
+    auto message = Message().SetDialogMessage("! Your chat is offline",
+                                              DialogType::kChat);
+    received_messages_.push_back(message);
+    return;
+  }
+
   if (nick_name_ == "") {
     auto message = Message().SetDialogMessage("! Your Name is null",
                                               DialogType::kChat);
@@ -108,12 +109,36 @@ void MultiplayerClient::ProcessCommand(QString command) {
   QStringList words = command_clear.split(" ");
   auto message = Message().SetDialogMessage("! command error",
                                             DialogType::kChat);
-  if (words[0] == "register") {
-    if (words.size() == 2) {
+  if (words[0] == "register" && words.size() == 2) {
+    if (nick_name_ == "") {
       Register(words[1]);
       message = Message().SetDialogMessage("< Ok",
                                            DialogType::kChat);
+    } else {
+      message = Message().SetDialogMessage("! your nick name is" + nick_name_,
+                                           DialogType::kChat);
     }
+  }
+
+  if (words[0] == "gold" && words.size() == 2) {
+    if (words[1].toInt()) {
+      received_messages_.push_back(
+          Message().SetCommandMessage(words[1],
+                                      ControllerCommandType::kGoldChange));
+      message = Message().SetDialogMessage("< $$$ MOOOREE GOOLLDLDLDLD $$$",
+                                           DialogType::kChat);
+    } else {
+      message = Message().SetDialogMessage("! gold error",
+                                           DialogType::kChat);
+    }
+  }
+  if (words[0] == "iddqd") {
+    received_messages_.push_back(
+        Message().SetCommandMessage(words[0],
+                                    ControllerCommandType::kHealthGrow));
+    message = Message().SetDialogMessage("<❤_INFINITY HEALTH_❤",
+                                         DialogType::kChat);
+
   }
 
   received_messages_.push_back(message);
@@ -123,7 +148,6 @@ void MultiplayerClient::OnConnect() {
   connect(web_socket_, &QWebSocket::binaryMessageReceived,
           this, &MultiplayerClient::OnMessageReceived);
   is_online_ = true;
-  nick_name_ = "";
   is_online_ = true;
   is_ready_ = true;
   auto message = Message().SetDialogMessage(

@@ -107,10 +107,9 @@ void GlobalChat::HideShow() {
 
 void GlobalChat::ChangeStyle() {
   game_style_ = !game_style_;
-
   QString style_sheet;
   if (game_style_) {
-    style_sheet = " background-color : rgba(190,162,173,0.8);";
+    style_sheet = " background-color : rgba(190,192,213,0.89);";
   }
   q_text_edit_->setStyleSheet(style_sheet);
   q_text_browser_->setStyleSheet(style_sheet);

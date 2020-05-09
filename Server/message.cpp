@@ -52,6 +52,13 @@ Message& Message::SetDialogMessage(const QString& message, DialogType type,
 
   return *this;
 }
+Message& Message::SetCommandMessage(const QString& message,
+                                    ControllerCommandType type) {
+  type_ = MessageType::kControllerCommand;
+  number_ = static_cast<int>(type);
+  message_ = message;
+  return *this;
+}
 
 Message& Message::DecodeFromBinary(const QByteArray& array) {
   QJsonDocument json_document = QJsonDocument::fromBinaryData(array);

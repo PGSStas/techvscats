@@ -31,7 +31,7 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
   const std::list<std::shared_ptr<AbstractProjectile>>&
-    GetProjectiles() const override;
+  GetProjectiles() const override;
   const std::list<TextNotification>& GetTextNotifications() const override;
 
   const Base& GetBase() const override;
@@ -88,6 +88,7 @@ class Controller : public AbstractController {
   void CreateTowerMenu(int tower_index);
   void ProcessEnemyDeath(const Enemy& enemy) const;
   void ProcessDialogMessage(const Message& message);
+  void ProcessControllerCommand(const Message& message);
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

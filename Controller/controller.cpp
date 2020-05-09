@@ -167,6 +167,10 @@ void Controller::TickClient() {
           ProcessDialogMessage(message);
           break;
         }
+        case MessageType::kControllerCommand: {
+          ProcessControllerCommand(message);
+          break;
+        }
         default: {
           qDebug() << "error";
           break;
@@ -505,6 +509,25 @@ void Controller::ProcessDialogMessage(const Message& message) {
     }
     case DialogType::kChat: {
       view_->AddGlobalChatMessage(message.GetMessage().split("\n"));
+      break;
+    }
+  }
+}
+
+void Controller::ProcessControllerCommand(const Message& message) {
+  switch (static_cast<ControllerCommandType>(message.GetNumber())) {
+    case ControllerCommandType::kGoldChange: {
+      if (WindowType::kGame == window_type_) {
+        model_->GetBase()->AddGoldAmount(message.GetMessage().toInt());
+
+      }
+      break;
+    }
+    case ControllerCommandType::kHealthGrow: {
+      if (WindowType::kGame == window_type_) {
+        model_->GetBase()->DecreaseHealth(-10000);
+
+      }
       break;
     }
   }

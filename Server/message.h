@@ -12,6 +12,11 @@ enum class DialogType {
   kWarning
 };
 
+enum class ControllerCommandType {
+  kGoldChange,
+  kHealthGrow,
+};
+
 enum class MessageType {
   // To server
   kNewConnection = 0,
@@ -21,7 +26,8 @@ enum class MessageType {
   kGlobalChat = 4,
   // To client
   kStartRound = 5,
-  kDialog = 6
+  kDialog = 6,
+  kControllerCommand
 };
 
 // The main class of data transfer between the server and the client.
@@ -42,6 +48,9 @@ class Message {
 
   Message& SetDialogMessage(const QString& message, DialogType type,
                             const QString& nick_name = "");
+
+  Message& SetCommandMessage(const QString& message,
+                             ControllerCommandType type);
   Message& DecodeFromBinary(const QByteArray& array);
   QByteArray CodeToBinary() const;
   MessageType GetType() const;
