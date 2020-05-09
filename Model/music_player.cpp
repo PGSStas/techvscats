@@ -33,8 +33,6 @@ void MusicPlayer::SetVolume(int volume) {
   } else {
     main_player_->play();
   }
-  // Volume in QMediaPlayer is ranging from 0 to 100,
-  // and in QSoundEffect from 0 to 1.0
   main_player_->setVolume(volume);
   game_over_sound_->setVolume(volume);
   button_sound_->setVolume(volume);
@@ -84,5 +82,5 @@ void MusicPlayer::SetSound(QMediaPlayer* player, const QString& path) {
 
   player->setPlaylist(playlist.get());
   player->playlist()->setCurrentIndex(0);
-  playlists_.push_back(playlist);
+  playlists_.push_back(std::move(playlist));
 }
