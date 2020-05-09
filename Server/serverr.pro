@@ -1,9 +1,9 @@
-QT       += core websockets
-QT       -= gui
+QT += core websockets
+QT -= gui
 
 TARGET = echoserver
-CONFIG   += console
-CONFIG   -= app_bundle
+CONFIG += console
+CONFIG -= app_bundle
 
 TEMPLATE = app
 
@@ -16,5 +16,3 @@ HEADERS += \
     server.h \
     message.h \
 
-target.path = $$[QT_INSTALL_EXAMPLES]/websockets/echoserver
-INSTALLS += target

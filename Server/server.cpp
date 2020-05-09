@@ -1,15 +1,10 @@
 #include "server.h"
-#include "QtWebSockets/qwebsocketserver.h"
-#include "QtWebSockets/qwebsocket.h"
-
-QT_USE_NAMESPACE
 
 bool GameClient::operator==(const GameClient& other) const {
   return other.socket == socket;
 }
 
-Server::Server(quint16 port)
-    : web_socket_server_(new QWebSocketServer(
+Server::Server(uint32_t port) : web_socket_server_(new QWebSocketServer(
     QString("TechVsCats Server"),
     QWebSocketServer::NonSecureMode, this)) {
   if (web_socket_server_->listen(QHostAddress::Any, port)) {
@@ -75,8 +70,8 @@ void Server::ProcessNewConnectionMessage(const Message& message,
                                          GameClient* owner) {
   owner->nick_name = message.GetMessage();
   owner->socket->sendBinaryMessage(
-      Message().DialogMessage(global_chat_.join("\n"),
-                              DialogType::kChat));
+      Message::DialogMessage(global_chat_.join("\n"),
+                             DialogType::kChat));
   qDebug() << "new name" << owner->nick_name;
 }
 
@@ -84,13 +79,13 @@ void Server::ProcessRoomEnterMessage(const Message& message,
                                      GameClient* owner) {
   for (auto& room : rooms_) {
     if (room.level_id == message.GetNumber() && room.is_in_active_search
-        && room.wait_time > 1000) {
-      room.wait_time += 8000;
+        && room.wait_time > 300) {
+      room.wait_time += kLifeRoomTimeForOneNewPlayer;
       room.players_count++;
       owner->room = &room;
       owner->socket->sendBinaryMessage(
-          Message().DialogMessage(room.room_chat_.join("\n"),
-                                  DialogType::kChat));
+          Message::DialogMessage(room.room_chat_.join("\n"),
+                                 DialogType::kChat));
       qDebug() << "connected_to_room";
       return;
     }
@@ -102,11 +97,11 @@ void Server::ProcessRoomEnterMessage(const Message& message,
 
 void Server::ProcessRoundCompletedByPlayer(const Message& message,
                                            GameClient* owner) {
-  SendMessageToRoom(Message().DialogMessage(
+  SendMessageToRoom(Message::DialogMessage(
       "finished the round with " + QString::number(message.GetNumber()) + "HP",
       DialogType::kWarning, owner->nick_name), *owner, true);
-  owner->room->players_in_process--;
-  if (owner->room->players_in_process == 0) {
+  owner->room->players_in_round--;
+  if (owner->room->players_in_round == 0) {
     owner->room->wait_time = 2000;
   }
   qDebug() << "I have finished round";
@@ -127,19 +122,19 @@ void Server::ProcessGlobalChatMessage(const Message& message,
   for (auto& client : clients_) {
     if (!is_room || client.room == owner->room) {
       client.socket->sendBinaryMessage(
-          Message().DialogMessage(message.GetMessage(),
-                                  DialogType::kChat,
-                                  owner->nick_name));
+          Message::DialogMessage(message.GetMessage(),
+                                 DialogType::kChat,
+                                 owner->nick_name));
     }
   }
 }
 
 void Server::StartRoom(Room* room) {
   room->is_in_active_search = false;
-  room->players_in_process = room->players_count;
+  room->players_in_round = room->players_count;
   for (auto& client : clients_) {
     if (client.room == room) {
-      client.socket->sendBinaryMessage(Message().StartRoundMessage());
+      client.socket->sendBinaryMessage(Message::StartRoundMessage());
       qDebug() << "StartRoom";
     }
   }
@@ -156,9 +151,9 @@ void Server::SendMessageToRoom(const QByteArray& array, const GameClient& owner,
 
 void Server::RoomLeave(const GameClient& client) {
   client.room->players_count--;
-  client.room->players_in_process--;
-  SendMessageToRoom(Message().DialogMessage(
-      " leave the game!",
+  client.room->players_in_round--;
+  SendMessageToRoom(Message::DialogMessage(
+      " left the game!",
       DialogType::kWarning, client.nick_name), client,
                     true);
   rooms_.remove_if([](const Room& room) {
@@ -207,7 +202,7 @@ void Server::timerEvent(QTimerEvent*) {
   current_time_ += delta_time;
   for (auto& room : rooms_) {
     room.wait_time -= delta_time;
-    if (room.wait_time <= 100 && room.players_in_process == 0) {
+    if (room.wait_time <= 100 && room.players_in_round == 0) {
       StartRoom(&room);
     }
   }

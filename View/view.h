@@ -76,6 +76,7 @@ class View : public QMainWindow {
   void timerEvent(QTimerEvent* event) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
+  void keyPressEvent(QKeyEvent* event) override ;
 
   void DrawEmptyZones(QPainter* painter);
   void DrawMainMenu(QPainter* painter);

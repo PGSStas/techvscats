@@ -1,10 +1,10 @@
 #ifndef CONTROLLER_MULTIPLAYER_CLIENT_H_
 #define CONTROLLER_MULTIPLAYER_CLIENT_H_
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QCommandLineParser>
-#include <QtCore/QCommandLineOption>
-#include <QtWebSockets/QWebSocket>
+#include <QCoreApplication>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
+#include <QWebSocket>
 
 #include <chrono>
 #include <list>
@@ -30,13 +30,14 @@ class MultiplayerClient : public QObject {
   void LeaveRoom();
 
   // Receive
-  bool IsReceivedMessagesEmpty() const;
+  bool IsReceivedMessageEmpty() const;
   const std::list<Message>& GetReceivedMessages() const;
-  void ReceivedMessagesClear();
+  void ClearReceivedMessage();
 
-  void SetIsReady(bool is_ready);
+  bool IsRegistered() const;
+  void SetPermissionToStartRound(bool permission);
   bool IsOnline() const;
-  bool IsReady() const;
+  bool HasPermissionToStartRound() const;
 
   void NewClientMessage(const QString& messages);
   void ProcessCommand(QString command);
@@ -48,13 +49,13 @@ class MultiplayerClient : public QObject {
 
  private:
   QString nick_name_ = "";
-  QWebSocket* web_socket_;
-  //  const QString address = "ws://localhost:1234";
-  const QString address = "ws://49.12.75.135:1234";
+  QWebSocket* server_web_socket_;
+  const QString address = "ws://localhost:1234";
+  // const QString address = "ws://49.12.75.135:1234";
   bool is_online_ = false;
-  bool is_ready_ = true;
-  bool is_send_ = true;
-  std::list<Message> received_messages_;
+  bool has_permission_to_start_round = true;
+  bool is_end_round_message_sent_ = true;
+  std::list<Message> received_message_;
   static std::mt19937 random_generator_;
 
  private:

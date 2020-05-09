@@ -33,7 +33,7 @@ void Controller::EndGame() {
   if (client_.IsOnline()) {
     client_.LeaveRoom();
     ProcessDialogMessage(
-        Message().SetDialogMessage("< You leave the room.",
+        Message().SetDialogMessage("< You left the room.",
                                    DialogType::kChat));
   }
   current_game_time_ = 0;
@@ -119,13 +119,11 @@ bool Controller::CanCreateNextWave() {
     return false;
   }
 
-  if (client_.IsOnline()) {
-    if (!client_.IsReady()) {
-      if (current_round_number != 0) {
-        client_.RoundCompleted(model_->GetBase()->GetCurrentHealth());
-      }
-      return false;
+  if (client_.IsOnline() && !client_.HasPermissionToStartRound()) {
+    if (current_round_number != 0) {
+      client_.RoundCompleted(model_->GetBase()->GetCurrentHealth());
     }
+    return false;
   }
   if (!is_prepairing_to_spawn_) {
     last_round_start_time_ = current_game_time_;
@@ -135,12 +133,12 @@ bool Controller::CanCreateNextWave() {
       < model_->GetPrepairTimeBetweenRounds()) {
     return false;
   }
-  if (is_prepairing_to_spawn_ == true) {
+  if (is_prepairing_to_spawn_) {
     last_round_start_time_ = current_game_time_;
     is_prepairing_to_spawn_ = false;
   }
   if (client_.IsOnline()) {
-    client_.SetIsReady(false);
+    client_.SetPermissionToStartRound(false);
   }
   return true;
 }
@@ -155,30 +153,31 @@ void Controller::CreateNextWave() {
 }
 
 void Controller::TickClient() {
-  if (!client_.IsReceivedMessagesEmpty()) {
-    const auto& messages = client_.GetReceivedMessages();
-    for (auto& message : messages) {
-      switch (message.GetType()) {
-        case MessageType::kStartRound: {
-          client_.SetIsReady(true);
-          break;
-        }
-        case MessageType::kDialog: {
-          ProcessDialogMessage(message);
-          break;
-        }
-        case MessageType::kControllerCommand: {
-          ProcessControllerCommand(message);
-          break;
-        }
-        default: {
-          qDebug() << "error";
-          break;
-        }
+  if (client_.IsReceivedMessageEmpty()) {
+    return;
+  }
+  const auto& messages = client_.GetReceivedMessages();
+  for (auto& message : messages) {
+    switch (message.GetType()) {
+      case MessageType::kStartRound: {
+        client_.SetPermissionToStartRound(true);
+        break;
+      }
+      case MessageType::kDialog: {
+        ProcessDialogMessage(message);
+        break;
+      }
+      case MessageType::kControllerCommand: {
+        ProcessControllerCommand(message);
+        break;
+      }
+      default: {
+        qDebug() << "error";
+        break;
       }
     }
-    client_.ReceivedMessagesClear();
   }
+  client_.ClearReceivedMessage();
 }
 
 void Controller::TickEndGame() {

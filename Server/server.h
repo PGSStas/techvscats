@@ -1,25 +1,27 @@
 #ifndef SERVER_SERVER_H_
 #define SERVER_SERVER_H_
 
-#include <QtCore/QObject>
+#include <QObject>
 #include <QElapsedTimer>
 #include <QTimerEvent>
+#include <QWebSocketServer>
+#include <QWebSocket>
 
 #include <list>
 
 #include "message.h"
 
-QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
-QT_FORWARD_DECLARE_CLASS(QWebSocket)
-
 // Room to hold players in one game
+// The game begins with automatic selection of enemies.
+// Room lives kLifeRoomTimeForOneNewPlayer*number of
+// players count and after starts
 struct Room {
   Room(int start_time, int level_id)
       : start_time(start_time), level_id(level_id) {}
   int start_time;
   int level_id;
   int players_count = 1;
-  int players_in_process = 0;
+  int players_in_round = 0;
   int wait_time = 8000;
   bool is_in_active_search = true;
   QStringList room_chat_;
@@ -37,10 +39,10 @@ struct GameClient {
 // The server is responsible for forwarding messages between users.
 // It also supports global chats and rooms.
 class Server : public QObject {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
-  explicit Server(quint16 port);
+  explicit Server(uint32_t port);
   ~Server();
 
  private:
@@ -74,6 +76,7 @@ class Server : public QObject {
   int current_time_;
 
   const int kMaxChatSize = 9;
+  const int kLifeRoomTimeForOneNewPlayer = 8000;
 };
 
 #endif  // SERVER_SERVER_H_

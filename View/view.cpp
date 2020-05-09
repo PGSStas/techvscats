@@ -213,6 +213,15 @@ void View::mousePressEvent(QMouseEvent* event) {
         Coordinate(event->x(), event->y())), true);
   }
 }
+void View::keyPressEvent(QKeyEvent* event) {
+  if (event->key() == Qt::Key_Space) {
+    if(game_speed_coefficient_==0) {
+      controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
+    }else{
+      controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
+    }
+  }
+}
 
 void View::resizeEvent(QResizeEvent*) {
   size_handler_.ChangeSystem(this->width(), this->height());
@@ -287,13 +296,14 @@ void View::timerEvent(QTimerEvent* event) {
     }
     // Global ChatTick
     global_chat_.Tick(size_handler_, delta_time_);
-    if (!global_chat_.IsSendMessagesEmpty()) {
+    if (!global_chat_.IsMessagesQueueEmpty()) {
       controller_->GetClient()->NewClientMessage(
           global_chat_.GetMessageToSend());
-      global_chat_.PopMessageToSend();
+      global_chat_.PopMessageQueue();
     }
 
-    button_handler_.UpdateButtonsStatus(controller_->GetClient()->IsOnline());
+    button_handler_.UpdateButtonsStatus(controller_->GetClient()->IsOnline(),
+                                        controller_->GetClient()->IsRegistered());
     repaint();
   }
 }

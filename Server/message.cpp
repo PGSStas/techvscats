@@ -1,43 +1,54 @@
 #include "message.h"
 
+Message::Message(MessageType type, const QString& message, int number)
+    : type_(type), message_(message), number_(number) {}
+
 QByteArray Message::NewConnectionMessage(const QString& nick_name) {
-  message_ = nick_name;
-  type_ = MessageType::kNewConnection;
-  return CodeToBinary();
+  return CodeToBinary(Message(
+      MessageType::kNewConnection, nick_name, 0));
 }
 
 QByteArray Message::EnterRoomMessage(int level_id) {
-  number_ = level_id;
-  type_ = MessageType::kEnterRoom;
-  return CodeToBinary();
+  return CodeToBinary(Message(
+      MessageType::kEnterRoom, "", level_id));
+
 }
 
 QByteArray Message::RoundCompletedMessage(int base_current_health) {
-  number_ = base_current_health;
-  type_ = MessageType::kRoundCompletedByPlayer;
-  return CodeToBinary();
+  return CodeToBinary(Message(
+      MessageType::kRoundCompletedByPlayer, "", base_current_health));
+
 }
 
 QByteArray Message::LeaveRoomMessage() {
-  type_ = MessageType::kLeaveRoom;
-  return CodeToBinary();
+  return CodeToBinary(Message(
+      MessageType::kLeaveRoom, "", 0));
 }
 
 QByteArray Message::StartRoundMessage() {
-  type_ = MessageType::kStartRound;
-  return CodeToBinary();
+  return CodeToBinary(Message(
+      MessageType::kStartRound, "", 0));
 }
 
 QByteArray Message::DialogMessage(const QString& message, DialogType type,
                                   const QString& nick_name) {
-  SetDialogMessage(message, type, nick_name);
-  return CodeToBinary();
+  return CodeToBinary(
+      Message().SetDialogMessage(message, type, nick_name));
+}
+
+QByteArray Message::CodeToBinary(const Message& message) {
+  QJsonDocument json_document;
+  QJsonObject json_object;
+  json_object["type"] = static_cast<int>(message.type_);
+  json_object["message"] = message.message_;
+  json_object["number"] = message.number_;
+  json_document.setObject(json_object);
+  return json_document.toBinaryData();
 }
 
 QByteArray Message::GlobalChatMessage(const QString& messages) {
-  type_ = MessageType::kGlobalChat;
-  message_ = messages;
-  return CodeToBinary();
+  return CodeToBinary(
+      Message(MessageType::kGlobalChat, messages, 0));
 }
 
 Message& Message::SetDialogMessage(const QString& message, DialogType type,
@@ -45,7 +56,7 @@ Message& Message::SetDialogMessage(const QString& message, DialogType type,
   type_ = MessageType::kDialog;
   number_ = static_cast<int>(type);
   message_ = "";
-  if (nick_name != "") {
+  if (!nick_name.isEmpty()) {
     message_ = "> " + nick_name + " : ";
   }
   message_ += message;
@@ -67,16 +78,6 @@ Message& Message::DecodeFromBinary(const QByteArray& array) {
   message_ = object["message"].toString();
   number_ = object["number"].toInt();
   return *this;
-}
-
-QByteArray Message::CodeToBinary() const {
-  QJsonDocument json_document;
-  QJsonObject json_object;
-  json_object["type"] = static_cast<int>(type_);
-  json_object["message"] = message_;
-  json_object["number"] = number_;
-  json_document.setObject(json_object);
-  return json_document.toBinaryData();
 }
 
 MessageType Message::GetType() const {

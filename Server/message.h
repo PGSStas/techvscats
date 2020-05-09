@@ -34,17 +34,21 @@ enum class MessageType {
 // The server and client communicate in the language of messages
 class Message {
  public:
+  Message() = default;
+  Message(MessageType type, const QString& message, int number);
   // To server
-  QByteArray NewConnectionMessage(const QString& nick_name);
-  QByteArray EnterRoomMessage(int level_id);
-  QByteArray RoundCompletedMessage(int current_health);
-  QByteArray LeaveRoomMessage();
-  QByteArray GlobalChatMessage(const QString& messages);
+  static QByteArray NewConnectionMessage(const QString& nick_name);
+  static QByteArray EnterRoomMessage(int level_id);
+  static QByteArray RoundCompletedMessage(int current_health);
+  static QByteArray LeaveRoomMessage();
+  static QByteArray GlobalChatMessage(const QString& messages);
 
   // To client
-  QByteArray StartRoundMessage();
-  QByteArray DialogMessage(const QString& message, DialogType type,
-                           const QString& nick_name = "");
+  static QByteArray StartRoundMessage();
+  static QByteArray DialogMessage(const QString& message, DialogType type,
+                                  const QString& nick_name = "");
+
+  static QByteArray CodeToBinary(const Message& message);
 
   Message& SetDialogMessage(const QString& message, DialogType type,
                             const QString& nick_name = "");
@@ -52,7 +56,6 @@ class Message {
   Message& SetCommandMessage(const QString& message,
                              ControllerCommandType type);
   Message& DecodeFromBinary(const QByteArray& array);
-  QByteArray CodeToBinary() const;
   MessageType GetType() const;
   QString GetMessage() const;
   int GetNumber() const;

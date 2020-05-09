@@ -13,7 +13,8 @@
 #include "Model/coordinate.h"
 #include "size_handler.h"
 
-class GlobalChat {
+class GlobalChat : QTextEdit {
+   Q_OBJECT
  public:
   explicit GlobalChat(QMainWindow*);
   void RescaleChat(const SizeHandler& size_handler);
@@ -21,24 +22,23 @@ class GlobalChat {
   void HideShow();
   void ChangeStyle();
 
-  bool IsSendMessagesEmpty() const;
+  bool IsMessagesQueueEmpty() const;
   const QString& GetMessageToSend() const;
-  void PopMessageToSend();
+  void PopMessageQueue();
 
   void Clear();
   void ReceiveNewMessages(const QStringList& messages);
 
  private:
-  bool game_style_ = true;
-  int up_percent_ = 100;
-  bool is_go_up_ = true;
+  bool is_game_style_using_ = true;
+  int how_high_brick_percent_ = 100;
+  bool is_brick_going_up_ = true;
   QStringList text_browser_messages_;
   QStringList send_messages_;
 
   QTextBrowser* q_text_browser_;
-  QTextEdit* q_text_edit_;
   MenuButton* send_button;
-  MenuButton* close_open_button;
+  MenuButton* brick_button;
 
   const int kMaxChatSize = 9;
   const Coordinate kBottomLeftPosition = {20, 1080};
@@ -48,6 +48,7 @@ class GlobalChat {
   const int kCloseSpeed = 60;
 
  private:
+  void keyPressEvent(QKeyEvent* event) override;
   void SendMessage();
 };
 

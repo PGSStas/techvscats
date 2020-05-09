@@ -15,9 +15,11 @@ void ButtonHandler::CreateButtons() {
   CreatePauseMenuButtons();
 }
 
-void ButtonHandler::UpdateButtonsStatus(bool online_status) {
+void ButtonHandler::UpdateButtonsStatus(bool online_status,
+                                        bool register_status) {
   online_button_->EnableSecondIcon(online_status);
   restart_button_->setEnabled(!online_status);
+  start_game_button_->setEnabled(register_status||!online_status);
 }
 
 void ButtonHandler::RescaleButtons(SizeHandler size_handler) {
