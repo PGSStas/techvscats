@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QPushButton>
 #include <QString>
+#include <QSplashScreen>
 #include <QTimer>
 #include <QTimerEvent>
 
@@ -26,6 +27,7 @@ class View : public QMainWindow {
   explicit View(AbstractController* controller);
   ~View() override = default;
 
+  void SecondConstructorPart();
   void EnableGameUi();
   void DisableGameUi();
   void EnableMainMenuUi();
@@ -51,7 +53,7 @@ class View : public QMainWindow {
 
   // Game window
   QElapsedTimer time_between_ticks_;
-  ButtonHandler button_handler_;
+  std::shared_ptr<ButtonHandler> button_handler_;
   TowerMenu tower_menu_;
 
   double game_speed_coefficient_ = 1;
@@ -64,6 +66,9 @@ class View : public QMainWindow {
   const Coordinate kRoundPosition = {1758, 1001};
   const Size kRoundSize = {120, 60};
 
+  QImage logo_ = QImage(":resources/images/backgrounds/logo.png");
+  bool is_model_loaded_ = false;
+
  private:
   // Events
   void paintEvent(QPaintEvent*) override;
@@ -71,6 +76,8 @@ class View : public QMainWindow {
   void timerEvent(QTimerEvent* event) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
+
+  void Resize();
 
   void DrawEmptyZones(QPainter* painter);
   void DrawMainMenu(QPainter* painter);

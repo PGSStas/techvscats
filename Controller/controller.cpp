@@ -3,8 +3,14 @@
 std::mt19937 Controller::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
-Controller::Controller() : model_(std::make_unique<Model>()),
-                           view_(std::make_unique<View>(this)) {
+Controller::Controller() {
+  view_ = std::make_unique<View>(this);
+  model_ = std::make_unique<Model>();
+}
+
+void Controller::SecondConstructorPart() {
+  model_->LoadDatabase();
+  view_->SecondConstructorPart();
 }
 
 void Controller::StartGame(int level_id) {
