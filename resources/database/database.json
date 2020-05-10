@@ -31,12 +31,12 @@
       "max_health": 500,
       "priority": 1,
       "size": {
-        "width": 100,
-        "height": 100
+        "width": 150,
+        "height": 150
       },
       "animation": {
-        "path": "enemies/washmachine_7",
-        "timing": 550
+        "path": "enemies/fridge_8",
+        "timing": 650
       },
       "particles": {
         "at_death": 0

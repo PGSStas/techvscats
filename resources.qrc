@@ -1,6 +1,7 @@
 <RCC>
 <qresource>
     <file>resources/levels/level_1.json</file>
+    <file>resources/levels/level_2.json</file>
     <file>resources/database/database.json</file>
 
     <file>resources/images/error.png</file>
@@ -10,6 +11,11 @@
     <file>resources/images/enemies/toster_2.png</file>
     <file>resources/images/enemies/toster_3.png</file>
     <file>resources/images/enemies/toster_4.png</file>
+
+    <file>resources/images/enemies/router_1.png</file>
+    <file>resources/images/enemies/router_2.png</file>
+    <file>resources/images/enemies/router_3.png</file>
+    <file>resources/images/enemies/router_4.png</file>
 
     <file>resources/images/enemies/mouse_1.png</file>
     <file>resources/images/enemies/mouse_2.png</file>
@@ -23,6 +29,15 @@
     <file>resources/images/enemies/washmachine_5.png</file>
     <file>resources/images/enemies/washmachine_6.png</file>
     <file>resources/images/enemies/washmachine_7.png</file>
+
+    <file>resources/images/enemies/fridge_1.png</file>
+    <file>resources/images/enemies/fridge_2.png</file>
+    <file>resources/images/enemies/fridge_3.png</file>
+    <file>resources/images/enemies/fridge_4.png</file>
+    <file>resources/images/enemies/fridge_5.png</file>
+    <file>resources/images/enemies/fridge_6.png</file>
+    <file>resources/images/enemies/fridge_7.png</file>
+    <file>resources/images/enemies/fridge_8.png</file>
 
     <file>resources/images/enemies/vaccleaner_1.png</file>
     <file>resources/images/enemies/vaccleaner_2.png</file>
@@ -166,6 +181,7 @@
     <file>resources/images/icons/less_range_1.png</file>
 
     <file>resources/images/backgrounds/map_level_1_1.png</file>
+    <file>resources/images/backgrounds/map_level_2_1.png</file>
     <file>resources/images/backgrounds/main_background_1.png</file>
     <file>resources/images/backgrounds/settings_background_1.png</file>
     <file>resources/images/backgrounds/pause_menu_background_1.png</file>
@@ -354,5 +370,6 @@
 
     <file>resources/images/towers/empty_1.png</file>
     <file>resources/images/backgrounds/texture_level_1.png</file>
+    <file>resources/images/backgrounds/texture_level_2.png</file>
 </qresource>
 </RCC>

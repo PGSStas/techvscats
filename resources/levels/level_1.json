@@ -212,7 +212,7 @@
         "spawn_period": 500,
         "enemy_id": 1,
         "time_of_next_spawn": 100,
-        "group_size": 4,
+        "group_size": 1,
         "road_to_spawn": 1
       },
       {
