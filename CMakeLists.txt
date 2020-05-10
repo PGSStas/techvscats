@@ -14,6 +14,7 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -Wextra ")
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
 
 add_executable(techvscats
         main.cpp
@@ -34,18 +35,21 @@ add_executable(techvscats
         GameObject/particle.cpp
         Model/coordinate.cpp
         Model/model.cpp
+        Model/music_player.cpp
         Model/road.cpp
         Model/size.cpp
-        resources.qrc
+        Model/sound_vector.cpp
+        database.qrc music.qrc images.qrc
         View/animation_player.cpp
         View/animation_player.cpp
         View/button_handler.cpp
+        View/info_field.cpp
         View/menu_button.cpp
         View/size_handler.cpp
         View/text_notification.cpp
         View/tower_menu.cpp
-        View/tower_menu_option.cpp
         View/view.cpp)
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)
+target_link_libraries(techvscats Qt5::Multimedia)

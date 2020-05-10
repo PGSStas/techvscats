@@ -53,7 +53,9 @@ void Model::CreateProjectile(const std::shared_ptr<Enemy>& aim,
       casted != nullptr) {
     projectiles_.push_back(std::make_shared<LaserProjectile>(*casted));
   }
-  projectiles_.back()->SetParameters(aim, building.GetPosition(),
+  projectiles_.back()->SetParameters(aim,
+                                     building.GetPosition()
+                                         + building.GetShootingAnchor(),
                                      building.GetProjectileSpeedCoefficient(),
                                      building.GetDamage());
 }
@@ -64,6 +66,10 @@ void Model::CreateParticles(const std::list<ParticleParameters>& parameters) {
     particles_.back().SetIfEmpty(particle_parameters.size,
                                  particle_parameters.position,
                                  particle_parameters.animation_times);
+    int sound_id = particles_.back().GetSoundId();
+    if (sound_id != -1) {
+      id_to_particle_sound_[sound_id].Play();
+    }
   }
 }
 
@@ -96,7 +102,8 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
     base_->Rescale(size_handler.GameToWindowSize(base_->GetSize()));
   }
   for (auto& animaion : backgrounds_) {
-    animaion.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
+    animaion.Rescale(size_handler.GameToWindowSize(
+        size_handler.GetGameSize()));
   }
   interface_.Rescale(size_handler.GameToWindowSize(size_handler.GetGameSize()));
   Effect::Rescale(size_handler.GameToWindowSize(Effect::GetSize()));
@@ -176,8 +183,8 @@ int Model::GetRoundsCount() const {
   return rounds_count_;
 }
 
-int Model::GetPrepairTimeBetweenRounds() const {
-  return prepair_time_between_rounds_;
+int Model::GetPreparedTimeBetweenRounds() const {
+  return prepared_time_between_rounds_;
 }
 
 int Model::GetCurrentRoundNumber() const {
@@ -194,8 +201,8 @@ void Model::LoadLevel(int level) {
   QJsonObject json_object =
       QJsonDocument::fromJson(level_file.readAll()).object();
 
-  prepair_time_between_rounds_ =
-      json_object["prepair_time_between_rounds_"].toInt();
+  prepared_time_between_rounds_ =
+      json_object["prepared_time_between_rounds_"].toInt();
 
   // Reading information about the base.
   QJsonObject json_base = json_object["base"].toObject();
@@ -277,6 +284,9 @@ void Model::LoadLevel(int level) {
   backgrounds_[3] = AnimationPlayer(
       GetImagesByFramePath("backgrounds/map_level_" +
           QString::number(level) + "_1"));
+
+  empty_zone_texture_[3] = QImage(":resources/images/backgrounds/texture_level_"
+                                      + QString::number(level) + ".png");
 }
 
 const AnimationPlayer& Model::GetBackGround(int background_id) const {
@@ -285,6 +295,10 @@ const AnimationPlayer& Model::GetBackGround(int background_id) const {
 
 const AnimationPlayer& Model::GetInterface() const {
   return interface_;
+}
+
+const QImage& Model::GetEmptyZoneTexture(int index) const {
+  return empty_zone_texture_[index];
 }
 
 void Model::LoadDatabase() {
@@ -329,7 +343,8 @@ void Model::LoadDatabase() {
                      enemy["size"].toObject()["height"].toInt());
     id_to_enemy_.emplace_back(enemy["speed"].toInt(), enemy["damage"].toInt(),
                               enemy["armor"].toInt(), enemy["reward"].toInt(),
-                              enemy["max_health"].toInt(), size, aura);
+                              enemy["max_health"].toInt(),
+                              size, enemy["priority"].toInt(), aura);
     SetAnimationToGameObject(
         &id_to_enemy_.back(),
         {enemy["animation"].toObject()["timing"].toInt()},
@@ -375,10 +390,14 @@ void Model::LoadDatabase() {
     Building building(i, json_building["settle_cost"].toInt(), aura);
     if (json_building.contains("projectile")) {
       auto json_projectile = json_building["projectile"].toObject();
+      Size anchor = Size(
+          json_projectile["shooting_anchor"].toObject()["x"].toInt(),
+          json_projectile["shooting_anchor"].toObject()["y"].toInt());
       building.SetProjectile(json_projectile["projectile_id"].toInt(),
                              json_projectile["attack_damage"].toDouble(),
                              json_projectile["attack_range"].toInt(),
-                             json_projectile["max_aims"].toInt());
+                             json_projectile["max_aims"].toInt(),
+                             anchor);
     }
     auto json_timings = json_building["action_time"].toArray();
     auto json_paths = json_building["animation_path"].toArray();
@@ -397,6 +416,8 @@ void Model::LoadDatabase() {
     for (int j = 0; j < upgrade_tree_count; j++) {
       upgrade_tree.push_back(json_upgrade_tree[j].toInt());
     }
+    building.SetInfo(json_building["header"].toString(),
+                     json_building["description"].toString());
     upgrades_tree_.push_back(std::move(upgrade_tree));
     id_to_building_.push_back(std::move(building));
     SetParticlesToGameObject(&id_to_building_.back(),
@@ -468,12 +489,30 @@ void Model::LoadDatabase() {
     if (json_particle.contains("repeat_number")) {
       repeat_number = json_particle["repeat_number"].toInt();
     }
+    int sound_id = -1;
+    if (json_particle.contains("sound")) {
+      sound_id = json_particle["sound"].toInt();
+    }
     id_to_particle_.emplace_back(size, repeat_number);
+    id_to_particle_.back().SetSoundId(sound_id);
     auto json_animation = json_particle["animation"].toObject();
     SetAnimationToGameObject(
         &id_to_particle_.back(),
         {json_animation["timing"].toInt()},
         {json_animation["path"].toString()});
+  }
+
+  // Loading particle sounds
+  QJsonArray json_sounds = json_object["sounds"].toArray();
+  int sounds_count = json_sounds.count();
+  id_to_particle_sound_.clear();
+  id_to_particle_sound_.reserve(sounds_count);
+  QJsonObject json_sound;
+  for (int i = 0; i < sounds_count; i++) {
+    json_sound = json_sounds[i].toObject();
+    QString path = json_sound["path"].toString();
+    int sound_roads_count = json_sound["roads_count"].toInt();
+    id_to_particle_sound_.emplace_back(path, sound_roads_count);
   }
 
   // backgrounds
@@ -504,6 +543,16 @@ void Model::LoadDatabase() {
   // Load fonts
   QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
   QFontDatabase::addApplicationFont(":resources/fonts/comics.ttf");
+
+  // Empty zone
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/cloud.png"));
 }
 
 void Model::InitializeTowerSlots() {
@@ -519,7 +568,7 @@ void Model::SetAnimationToGameObject(
     GameObject* object, std::vector<int> timmings,
     std::vector<QString> paths) {
   std::vector<AnimationPlayer> animations;
-  for (uint i = 0; i < timmings.size(); i++) {
+  for (uint32_t i = 0; i < timmings.size(); i++) {
     animations.emplace_back(GetImagesByFramePath(paths[i]), timmings[i]);
   }
   object->SetAnimationPlayers(animations);

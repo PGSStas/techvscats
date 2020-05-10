@@ -38,5 +38,3 @@ bool AbstractProjectile::IsInAffectedArea(const Enemy& enemy) {
   return position_.GetVectorTo(enemy.GetPosition()).GetLength()
       <= constants::kEpsilon;
 }
-
-

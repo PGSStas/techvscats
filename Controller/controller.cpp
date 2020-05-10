@@ -1,33 +1,38 @@
 #include "controller.h"
 
+std::mt19937 Controller::random_generator_ = std::mt19937(
+    std::chrono::system_clock::now().time_since_epoch().count());
+
 Controller::Controller() : model_(std::make_unique<Model>()),
-                           view_(std::make_unique<View>(this)),
-                           game_mode_(WindowType::kMainMenu) {}
+                           view_(std::make_unique<View>(this)) {
+}
 
 void Controller::StartGame(int level_id) {
+  game_status_ = GameStatus::kPlay;
   current_game_time_ = 0;
-  game_mode_ = WindowType::kGame;
-  last_round_start_time_ = current_game_time_;
+  last_time_end_particle_created = 0;
+  window_type_ = WindowType::kGame;
+  last_round_start_time_ = 0;
   model_->SetGameLevel(level_id);
 
   SetSpeedCoefficient(Speed::kNormalSpeed);
   view_->DisableMainMenuUi();
   view_->EnableGameUi();
-  view_->UpdateRounds(model_->GetCurrentRoundNumber(),
-                      model_->GetRoundsCount());
+  music_player_.StartGameMusic();
 }
 
-void Controller::EndGame(Exit) {
+void Controller::EndGame() {
   model_->ClearGameModel();
   view_->DisableGameUi();
   view_->EnableMainMenuUi();
-  game_mode_ = WindowType::kMainMenu;
+  window_type_ = WindowType::kMainMenu;
   current_game_time_ = 0;
+  music_player_.StartMenuMusic();
 }
 
 void Controller::Tick(int current_time) {
   current_game_time_ = current_time;
-  switch (game_mode_) {
+  switch (window_type_) {
     case WindowType::kGame: {
       GameProcess();
       break;
@@ -46,11 +51,45 @@ void Controller::SetSpeedCoefficient(Speed speed) {
   view_->ChangeGameSpeed(speed);
 }
 
+void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
+  int settle_cost = model_->GetBuildingById(replacing_id).GetCost();
+  auto base = model_->GetBase();
+  if (base->GetGold() >= settle_cost) {
+    if (replacing_id == 0) {
+      int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
+          * constants::kRefundCoefficient;
+
+      model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
+                                   base->GetGoldPosition(), Qt::green,
+                                   current_game_time_});
+      music_player_.PlaySaleSound();
+      base->AddGoldAmount(sell_cost);
+      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+    } else {
+      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
+      base->SubtractGoldAmount(settle_cost);
+
+      model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
+                                   base->GetGoldPosition(), Qt::red,
+                                   current_game_time_});
+      music_player_.PlaySaleSound();
+    }
+  } else {
+    auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
+    model_->AddTextNotification({QObject::tr("Not enough ") +
+        constants::kCurrency, position, Qt::blue, current_game_time_});
+    music_player_.PlayNotEnoughMoneySound();
+  }
+}
+
 void Controller::GameProcess() {
-  if (CanCreateNextWave()) {
+  if (CanCreateNextWave() && game_status_ == GameStatus::kPlay) {
+    music_player_.PlayNewWaveSound();
     CreateNextWave();
   }
-
+  if (game_status_ != GameStatus::kPlay) {
+    TickEndGame();
+  }
   TickSpawners();
   TickEnemies();
   TickBuildings();
@@ -66,6 +105,21 @@ void Controller::MenuProcess() {}
 bool Controller::CanCreateNextWave() {
   // Check if Wave should be created
   int current_round_number = model_->GetCurrentRoundNumber();
+
+  if (current_round_number == model_->GetRoundsCount() &&
+      model_->GetEnemies()->empty() && model_->GetSpawners()->empty()
+      && game_status_ == GameStatus::kPlay) {
+    game_status_ = GameStatus::kWin;
+    int life_time = 16000;
+    double size_coefficient = 1.03;
+    model_->AddTextNotification({"Level Complete",
+                                 {constants::kGameWidth / 2,
+                                  constants::kGameHeight / 2}, Qt::red,
+                                 view_->GetRealTime(), {0, 0}, life_time,
+                                 size_coefficient});
+    music_player_.PlayGameWonSound();
+  }
+
   if (!model_->GetEnemies()->empty()
       || current_round_number == model_->GetRoundsCount()
       || !model_->GetSpawners()->empty()) {
@@ -78,7 +132,7 @@ bool Controller::CanCreateNextWave() {
   }
 
   if (current_game_time_ - last_round_start_time_
-      < model_->GetPrepairTimeBetweenRounds()) {
+      < model_->GetPreparedTimeBetweenRounds()) {
     return false;
   }
 
@@ -94,8 +148,29 @@ void Controller::CreateNextWave() {
     model_->AddSpawner(enemy_group);
   }
   model_->IncreaseCurrentRoundNumber();
-  view_->UpdateRounds(model_->GetCurrentRoundNumber(),
-                      model_->GetRoundsCount());
+}
+
+void Controller::TickEndGame() {
+  if (last_time_end_particle_created + kParticlesPeriod < current_game_time_) {
+    last_time_end_particle_created = current_game_time_;
+    ParticleParameters particle(
+        (game_status_ == GameStatus::kLose) ? kLooseParticleId : kWinParticleId,
+        {-1, -1},
+        Coordinate(0, 0) + Size(
+            random_generator_() % static_cast<int>(constants::kGameWidth),
+            random_generator_()
+                % static_cast<int>(constants::kGameHeight)));
+    model_->CreateParticles({particle});
+    if (random_generator_() % 1000 < 100) {
+      const auto& buildings = model_->GetBuildings();
+      for (uint i = 0; i < buildings.size(); i++) {
+        if (buildings[i]->GetId() != 0) {
+          model_->CreateBuildingAtIndex(i, 0);
+          return;
+        }
+      }
+    }
+  }
 }
 
 void Controller::TickSpawners() {
@@ -143,8 +218,20 @@ void Controller::TickBuildings() {
     }
   }
 
+
   // Base
   model_->GetBase()->Tick(current_game_time_);
+  if (model_->GetBase()->IsDead() && game_status_ == GameStatus::kPlay) {
+    music_player_.PlayGameOverSound();
+    game_status_ = GameStatus::kLose;
+    int life_time = 16000;
+    double size_coefficient = 1.03;
+    model_->AddTextNotification({"GameOver:(",
+                                 {constants::kGameWidth / 2,
+                                  constants::kGameHeight / 2}, Qt::red,
+                                 view_->GetRealTime(), {0, 0}, life_time,
+                                 size_coefficient});
+  }
 }
 
 void Controller::TickProjectiles() {
@@ -193,7 +280,7 @@ void Controller::TickTextNotifications() {
     return text_notification.IsDead();
   });
   for (auto& notification : *text_notifications) {
-    notification.Tick(current_game_time_);
+    notification.Tick(view_->GetRealTime());
   }
 }
 
@@ -270,62 +357,15 @@ void Controller::AddEnemyToModel(const Enemy& enemy) const {
   model_->AddEnemyFromInstance(enemy);
 }
 
-void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
-  int settle_cost = model_->GetBuildingById(replacing_id).GetCost();
-  auto base = model_->GetBase();
-  if (base->GetGold() >= settle_cost) {
-    if (replacing_id == 0) {
-      int sell_cost = model_->GetBuildings()[index_in_buildings]->GetTotalCost()
-          * constants::kRefundCoefficient;
-
-      Coordinate notification = base->GetGoldPosition() +
-          base->GetGoldSize()
-              / std::max(QString::number(sell_cost).length(), 2);
-      model_->AddTextNotification({"+" + QString::number(sell_cost) + " "
-                                       + constants::kCurrency,
-                                   notification, Qt::green,
-                                   current_game_time_});
-      base->AddGoldAmount(sell_cost);
-      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
-    } else {
-      model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
-      base->SubtractGoldAmount(settle_cost);
-
-      Coordinate notification = base->GetGoldPosition() +
-          base->GetGoldSize()
-              / std::max(QString::number(settle_cost).length(), 2);
-      model_->AddTextNotification({"-" + QString::number(settle_cost) + " "
-                                       + constants::kCurrency,
-                                   notification, Qt::red,
-                                   current_game_time_});
-    }
-  } else {
-    auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
-    model_->AddTextNotification({QObject::tr("Not enough ") +
-    constants::kCurrency, position, Qt::blue, current_game_time_});
-  }
-}
-
 void Controller::CreateTowerMenu(int tower_index) {
-  std::vector<std::shared_ptr<TowerMenuOption>> options;
-  const auto& buildings = model_->GetBuildings();
-  const auto& building = buildings[tower_index];
-  const auto& upgrade_tree = model_->GetUpgradesTree();
-  int building_id = buildings[tower_index]->GetId();
-  // Tower building & evolve & delete options (will affect the type of tower)
-  for (const auto& to_change_id : upgrade_tree[building_id]) {
-    options.push_back(std::make_shared<TowerMenuOption>(
-        model_->GetBuildingById(to_change_id),
-        [this, tower_index, to_change_id]() {
-          SetBuilding(tower_index, to_change_id);
-        }));
-  }
-  auto menu = std::make_shared<TowerMenu>(
-      current_game_time_, *building, options);
-  view_->ShowTowerMenu(menu);
+  const auto& building = model_->GetBuildings()[tower_index];
+  const auto& possible_upgrades = model_->GetUpgradesTree()[building->GetId()];
+  view_->ReplaceTowerMenu(building->GetPosition(), tower_index,
+                          possible_upgrades, building->GetId(),
+                          building->GetTotalCost());
 }
 
-void Controller::MousePress(Coordinate position) {
+void Controller::MouseEvent(Coordinate position, bool is_press) {
   // Check if some tower was pressed
   const auto& buildings = model_->GetBuildings();
   for (size_t i = 0; i < buildings.size(); i++) {
@@ -333,41 +373,28 @@ void Controller::MousePress(Coordinate position) {
     if (!building->IsInside(position)) {
       continue;
     }
-    // Check if that's the same building on which menu was already open
-    // (which means now we should close it)
-    if (view_->IsTowerMenuEnabled()
-        && view_->GetTowerMenu()->GetTower().GetPosition()
-            == building->GetPosition()) {
+    if (view_->IsTowerMenuEnabled()) {
       view_->DisableTowerMenu();
       return;
     }
-    CreateTowerMenu(i);
+    if (!is_press) {
+      CreateTowerMenu(i);
+    }
     return;
   }
 
   if (!view_->IsTowerMenuEnabled()) {
     return;
-  }
-
-  // TODO(elizabethfeden): qt buttons.
-  auto pressed = view_->GetTowerMenu()->GetButtonInside(position);
-  if (pressed != nullptr) {
-    pressed->MakeAction();
   }
   view_->DisableTowerMenu();
 }
 
-void Controller::MouseMove(Coordinate position) {
-  if (!view_->IsTowerMenuEnabled()) {
-    return;
-  }
-
-  auto button = view_->GetTowerMenu()->GetButtonInside(position);
-  view_->GetTowerMenu()->Hover(button);
-}
-
 void Controller::RescaleObjects(const SizeHandler& size_handler) {
   model_->RescaleDatabase(size_handler);
+}
+
+const Building& Controller::GetBuildingById(int instance_id) const {
+  return model_->GetBuildingById(instance_id);
 }
 
 const std::list<Particle>& Controller::GetParticles() const {
@@ -405,12 +432,25 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   model_->AddTextNotification({QString::number(reward) + " "
                                    + constants::kCurrency,
                                enemy.GetPosition(), Qt::yellow,
-                               current_game_time_});
+                               view_->GetRealTime()});
+
   model_->GetBase()->AddGoldAmount(reward);
 }
 
 const AnimationPlayer& Controller::GetBackground(WindowType type) const {
   return model_->GetBackGround(static_cast<int>(type));
+}
+
+GameStatus Controller::GetCurrentStatus() const {
+  return game_status_;
+}
+
+const QImage& Controller::GetEmptyZoneTexture(WindowType type) const {
+  return model_->GetEmptyZoneTexture(static_cast<int>(type));
+}
+
+MusicPlayer* Controller::GetMusicPlayer() {
+  return &music_player_;
 }
 
 const AnimationPlayer& Controller::GetInterface() const {

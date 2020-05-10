@@ -59,6 +59,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   start_game_button_ = new MenuButton(
       tr("НАЧАТЬ ИГРУ"), long_button_size_, main_window_, font_id_);
   auto start_game_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
     controller_->StartGame(level_number_);
     SetSpeedButtonsState(Speed::kNormalSpeed);
@@ -68,6 +69,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   settings_button_ = new MenuButton(
       tr("НАСТРОЙКИ"), long_button_size_, main_window_, font_id_);
   auto settings_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kSettings;
     main_window_->repaint();
   };
@@ -89,6 +91,7 @@ void ButtonHandler::CreateMainMenuButtons() {
       ":resources/buttons_resources/inc_level_button.png",
       ":resources/buttons_resources/inc_level_button_active.png");
   auto inc_level_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     if (level_number_ < 3) {
       level_number_++;
     }
@@ -102,6 +105,7 @@ void ButtonHandler::CreateMainMenuButtons() {
       ":resources/buttons_resources/dec_level_button.png",
       ":resources/buttons_resources/dec_level_button_active.png");
   auto dec_level_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     if (level_number_ > 1) {
       level_number_--;
     }
@@ -137,8 +141,9 @@ void ButtonHandler::CreateSettingsButtons() {
       ":resources/buttons_resources/language_button_rus.png",
       ":resources/buttons_resources/language_button_rus_active.png");
   auto language_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     // changing language
-    language_button_->EnableSecondIcon(!is_language_russian_);
+    language_button_->EnableSecondIcon(is_language_russian_);
     is_language_russian_ = !is_language_russian_;
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
@@ -152,8 +157,10 @@ void ButtonHandler::CreateSettingsButtons() {
       ":resources/buttons_resources/sound_button_off.png",
       ":resources/buttons_resources/sound_button_off_active.png");
   auto sound_button_click = [this]() {
-    // changing sound
-    sound_button_->EnableSecondIcon(!is_sound_on_);
+    controller_->GetMusicPlayer()->PlayButtonSound();
+    controller_->GetMusicPlayer()->SetVolume(
+        100 * static_cast<int>(!is_sound_on_));
+    sound_button_->EnableSecondIcon(is_sound_on_);
     is_sound_on_ = !is_sound_on_;
   };
   connect(sound_button_, &QPushButton::clicked, sound_button_click);
@@ -161,6 +168,7 @@ void ButtonHandler::CreateSettingsButtons() {
   reset_game_button_ = new MenuButton(
       tr("СБРОСИТЬ ПРОГРЕСС"), long_button_size_, main_window_, font_id_);
   auto reset_game_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     // reseting game, will be updated when saving is done
   };
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);
@@ -168,8 +176,9 @@ void ButtonHandler::CreateSettingsButtons() {
   to_main_menu_button_ = new MenuButton(
       tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_, font_id_);
   auto back_to_main_menu_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     if (window_type_ == WindowType::kPauseMenu) {
-      controller_->EndGame(Exit::kMenu);
+      controller_->EndGame();
     }
     window_type_ = WindowType::kMainMenu;
     main_window_->repaint();
@@ -201,6 +210,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/pause_button.png",
       ":resources/buttons_resources/pause_button_active.png");
   auto pause_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kPauseMenu;
     controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
   };
@@ -212,6 +222,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/zero_speed_button.png",
       ":resources/buttons_resources/zero_speed_button_active.png");
   auto zero_speed_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
     SetSpeedButtonsState(Speed::kZeroSpeed);
   };
@@ -223,6 +234,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/normal_speed_button.png",
       ":resources/buttons_resources/normal_speed_button_active.png");
   auto normal_speed_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
@@ -237,6 +249,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/double_speed_button.png",
       ":resources/buttons_resources/double_speed_button_active.png");
   auto double_speed_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     controller_->SetSpeedCoefficient(Speed::kDoubleSpeed);
     SetSpeedButtonsState(Speed::kDoubleSpeed);
   };
@@ -261,8 +274,9 @@ void ButtonHandler::CreatePauseMenuButtons() {
   restart_button_ = new MenuButton(
       tr("НАЧАТЬ УРОВЕНЬ ЗАНОВО"), long_button_size_, main_window_, font_id_);
   auto restart_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
-    controller_->EndGame(Exit::kLose);
+    controller_->EndGame();
     controller_->StartGame(level_number_);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
@@ -271,6 +285,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   continue_button_ = new MenuButton(
       tr("ПРОДОЛЖИТЬ"), long_button_size_, main_window_, font_id_);
   auto continue_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
     controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
     SetSpeedButtonsState(Speed::kNormalSpeed);

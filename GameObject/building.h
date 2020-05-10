@@ -1,6 +1,7 @@
 #ifndef GAMEOBJECT_BUILDING_H_
 #define GAMEOBJECT_BUILDING_H_
 
+#include <algorithm>
 #include <list>
 #include <memory>
 #include <vector>
@@ -28,9 +29,10 @@ class Building : public GameObject {
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
 
   void SetProjectile(int projectile_id, double attack_damage, int attack_range,
-                     int max_aims);
+                     int max_aims, Size shooting_anchor);
   void SetReadyToCreateProjectileToFalse();
   void SetTotalCost(int total_cost);
+  void SetInfo(const QString& header, const QString& description);
 
   int GetId() const;
   int GetAttackRange() const;
@@ -39,10 +41,15 @@ class Building : public GameObject {
   int GetCost() const;
   int GetTotalCost() const;
 
+  const QString& GetHeader() const;
+  const QString& GetDescription() const;
+  uint32_t GetMaxAims() const;
   double GetProjectileSpeedCoefficient() const;
   Effect* GetAppliedEffect();
   const AuricField& GetAuricField() const;
   const std::list<std::shared_ptr<Enemy>>& GetAims() const;
+  Size GetShootingAnchor() const;
+
   bool IsInside(Coordinate point) const;
   bool IsReadyToCreateProjectiles() const;
   bool IsInAttackRange(Coordinate coordinate) const;
@@ -61,11 +68,15 @@ class Building : public GameObject {
 
   int projectile_id_ = 0;
   int attack_range_ = 0;
-  uint max_aims_ = 1;
+  uint32_t max_aims_ = 1;
   double attack_damage_ = 0;
+  Size shooting_anchor_ = {0, 0};
   bool is_ready_to_create_projectiles_ = false;
   bool is_ready_to_shoot_ = false;
   std::list<std::shared_ptr<Enemy>> aims_;
+
+  QString header_;
+  QString description_;
 };
 
 #endif  // GAMEOBJECT_BUILDING_H_

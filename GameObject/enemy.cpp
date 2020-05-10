@@ -4,15 +4,16 @@ std::mt19937 Enemy::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
 Enemy::Enemy(double speed, double damage, double armor, int reward,
-             double max_health, Size size, AuricField auric_field)
+             double max_health, Size size, int priority, AuricField auric_field)
     : MovingObject(size, speed), damage_(damage), armor_(armor),
       reward_(reward), max_health_(max_health), current_health_(max_health_),
-      auric_field_(auric_field), node_number_(0) {
+      priority_(priority), auric_field_(auric_field), node_number_(0) {
 }
 
 Enemy::Enemy(const Enemy& other)
     : Enemy(other.speed_, other.damage_, other.armor_,
-            other.reward_, other.max_health_, other.size_, other.auric_field_) {
+            other.reward_, other.max_health_, other.size_, other.priority_,
+            other.auric_field_) {
   SetAnimationPlayers(other.animation_players_);
   particle_handler_.SetParticlePacks(other.particle_handler_);
   auric_field_.SetCarrierCoordinate(&position_);
@@ -133,4 +134,8 @@ Coordinate Enemy::ShiftCoordinate(Coordinate coordinate) const {
   coordinate.y += static_cast<int32_t>(random_generator_()) % kMoveShift
       - kMoveShift / 2;
   return coordinate;
+}
+
+int Enemy::GetPriority() const {
+  return priority_;
 }

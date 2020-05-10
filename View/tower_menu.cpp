@@ -1,43 +1,190 @@
 #include "tower_menu.h"
 
-#include <utility>
-
-TowerMenu::TowerMenu(int creation_time, const Building& tower,
-                     std::vector<std::shared_ptr<TowerMenuOption>> options)
-    : options_(std::move(options)), tower_(tower),
-      creation_time_(creation_time) {
-  container_length_ = options_[0]->GetMaxSize() * options_.size() +
-      kIndentBetweenButtons * (options_.size() - 1);
+void TowerMenu::ButtonTapped(int button_index) {
+  if (active_button_index_ == static_cast<int>(button_index)) {
+    id_to_replace_ = true;
+    Close();
+    return;
+  }
+  if (active_button_index_ != -1) {
+    buttons_[active_button_index_]->EnableSecondIcon(false);
+  }
+  active_button_index_ = button_index;
+  buttons_[active_button_index_]->EnableSecondIcon(true);
 }
 
-void TowerMenu::Hover(const std::shared_ptr<TowerMenuOption>& option) {
-  hovered_option_ = option;
+TowerMenu::TowerMenu(QMainWindow* window) {
+  std::vector<ButtonImagePath> button_images;
+  button_images.emplace_back(
+      ":resources/buttons_resources/empty_button.png",
+      ":resources/buttons_resources/empty_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/default_tower_button.png",
+      ":resources/buttons_resources/default_tower_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/laser_button.png",
+      ":resources/buttons_resources/laser_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/bomb_button.png",
+      ":resources/buttons_resources/bomb_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/support_button.png",
+      ":resources/buttons_resources/support_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/upgrade_button.png",
+      ":resources/buttons_resources/upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/second_upgrade_button.png",
+      ":resources/buttons_resources/second_upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/upgrade_button.png",
+      ":resources/buttons_resources/upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/second_upgrade_button.png",
+      ":resources/buttons_resources/second_upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/upgrade_button.png",
+      ":resources/buttons_resources/upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/second_upgrade_button.png",
+      ":resources/buttons_resources/second_upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/upgrade_button.png",
+      ":resources/buttons_resources/upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/second_upgrade_button.png",
+      ":resources/buttons_resources/second_upgrade_button_h.png");
+
+  ButtonImagePath confirm(
+      ":resources/buttons_resources/accept.png",
+      ":resources/buttons_resources/accept_h.png");
+
+  for (auto& button_image : button_images) {
+    buttons_.push_back(
+        new MenuButton(Size(kSizeOfButton), window,
+                       button_image.main_path, button_image.active_path));
+    buttons_.back()->SetSecondIconPath(
+        confirm.main_path, confirm.active_path);
+    buttons_.back()->hide();
+    int index = buttons_.size() - 1;
+    auto button_click = [this, index]() {
+      ButtonTapped(index);
+    };
+    QObject::connect(buttons_.back(), &QPushButton::clicked,
+                     button_click);
+  }
 }
 
-void TowerMenu::Draw(QPainter* painter,
-                     const SizeHandler& size_handler, int current_time) const {
-  painter->save();
-  Coordinate center = size_handler.GameToWindowCoordinate(
-      tower_.GetPosition());
-  center.y += size_handler.GameToWindowLength(tower_.GetSize().height / 3);
-  Size radius;
-  if (hovered_option_ == nullptr) {
-    radius = size_handler.GameToWindowSize(
-        Size(tower_.GetAttackRange(), tower_.GetAttackRange()));
-    tower_.GetAuricField().Draw(painter, size_handler);
+void TowerMenu::Recreate(Coordinate position, int owner_building_index,
+                         const std::vector<int>& possible_buildings_id,
+                         int owner_id, const SizeHandler& size_handler,
+                         int total_cost) {
+  if (is_hidden_) {
+    return;
+  }
+  for (auto& id : possible_buildings_id_) {
+    buttons_[id]->EnableSecondIcon(false);
+    buttons_[id]->hide();
+  }
+  possible_buildings_id_ = possible_buildings_id;
+  for (auto& id : possible_buildings_id_) {
+    buttons_[id]->SetGeometry(position - kSizeOfButton / 2, size_handler);
+    buttons_[id]->show();
+  }
+  owner_id_ = owner_id;
+  owner_building_index_ = owner_building_index;
+  position_ = position;
+  current_force_ = kThrowForce;
+  active_button_index_ = -1;
+  slow_disable = false;
+  id_to_replace_ = false;
+  total_cost_ = total_cost;
+}
+
+void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
+  info_field_.SetPosition(position_, button_constants::kShortButtonSize,
+                          button_constants::kShift);
+  if (active_button_index_ != -1) {
+    info_field_.SetVisible(true);
+  }
+  for (auto& button : buttons_) {
+    button->UpdateIcon();
+  }
+  if (current_force_ < 1 || possible_buildings_id_.empty()) {
+    return;
+  }
+  if (current_force_ > 70) {
+    for (auto& button : buttons_) {
+      button->SetIsEnter(false);
+    }
+  }
+  info_field_.SetVisible(false);
+  if (slow_disable) {
+    delta_time *= -1;
+  }
+  int buttons_count = possible_buildings_id_.size();
+  double delta_degree;
+  if (info_field_.IsOnBottom()) {
+    delta_degree = 180.0 / (buttons_count + 1);
   } else {
-    const auto& replacing_tower = hovered_option_->GetReplacingTower();
-    int attack_range = replacing_tower.GetAttackRange();
-    radius = size_handler.GameToWindowSize(Size(attack_range, attack_range));
-    replacing_tower.GetAuricField().Draw(
-        painter, size_handler, tower_.GetPosition());
+    delta_degree = -180.0 / (buttons_count + 1);
   }
 
-  painter->save();
-  QRadialGradient gradient(
-      center.x, center.y * 1 / constants::kSemiMinorCoefficient, radius.width);
+  double move_degree = -90 + delta_degree;
+  Size move_vector;
+  current_force_ *= kSlowdownCoefficient;
+  for (auto& id : possible_buildings_id_) {
+    double radian = move_degree * std::acos(-1) / 180;
+    move_degree += delta_degree;
+    move_vector = Size(sin(radian), -cos(radian));
+    move_vector *= current_force_ * delta_time / constants::kTimeScale;
+    if (slow_disable) {
+      auto first_vector =
+          (buttons_[id]->GetPosition() + move_vector).GetVectorTo(
+              position_ - kSizeOfButton / 2);
+      auto second_vector = buttons_[id]->GetPosition().GetVectorTo(
+          position_ - kSizeOfButton / 2);
+      if (first_vector.GetLength() > second_vector.GetLength()
+          || current_force_ < 1) {
+        Disable();
+        return;
+      }
+    }
+    buttons_[id]->SetGeometry(
+        buttons_[id]->GetPosition() += move_vector, size_handler);
+  }
+}
 
-  QColor gradient_color(Qt::yellow);
+void TowerMenu::RescaleButtons(const SizeHandler& size_handler) {
+  for (auto& button : buttons_) {
+    button->SetGeometry(button->GetPosition(), size_handler);
+  }
+}
+
+void TowerMenu::SetIsWantToReplaceToFalse() {
+  id_to_replace_ = false;
+}
+
+void TowerMenu::DrawTowersAuraAndRange(QPainter* painter,
+                                       const SizeHandler& size_handler,
+                                       const Building& instance) {
+  if (is_hidden_) {
+    return;
+  }
+  painter->save();
+  Coordinate position = position_;
+  position.y += instance.GetSize().height / 3;
+  Coordinate center = size_handler.GameToWindowCoordinate(position);
+  Size radius;
+  int attack_range = instance.GetAttackRange();
+  radius = size_handler.GameToWindowSize(Size(attack_range, attack_range));
+  instance.GetAuricField().Draw(
+      painter, size_handler, position);
+
+  QRadialGradient gradient(
+      center.x, center.y / constants::kSemiMinorCoefficient, radius.width);
+
+  QColor gradient_color(Qt::darkRed);
   gradient_color.setAlpha(60);
   gradient.setColorAt(0, Qt::transparent);
   gradient.setColorAt(0.80, Qt::transparent);
@@ -47,42 +194,80 @@ void TowerMenu::Draw(QPainter* painter,
   painter->setBrush(gradient);
   painter->scale(1, constants::kSemiMinorCoefficient);
   painter->drawEllipse(QPointF(
-      center.x, center.y * 1 / constants::kSemiMinorCoefficient),
+      center.x, center.y / constants::kSemiMinorCoefficient),
                        radius.width, radius.height);
-  painter->restore();
 
-  int time_delta = std::min(current_time - creation_time_, kAnimationDuration);
-  int button_size = (time_delta * 1.0 / kAnimationDuration) *
-      options_[0]->GetMaxSize();
-  Size window_button_size = size_handler.GameToWindowSize(
-      Size(button_size, button_size));
-  for (size_t i = 0; i < options_.size(); i++) {
-    options_[i]->Draw(painter, size_handler.GameToWindowCoordinate(
-        CalculateCoordinate(i, button_size)), window_button_size);
-  }
   painter->restore();
 }
 
-std::shared_ptr<TowerMenuOption> TowerMenu::GetButtonInside(
-    Coordinate position) const {
-  for (size_t i = 0; i < options_.size(); i++) {
-    if (options_[i]->IsPressed(CalculateCoordinate(
-        i, options_[i]->GetMaxSize()), position)) {
-      return options_[i];
-    }
+void TowerMenu::DrawInfoField(QPainter* painter,
+                              const SizeHandler& size_handler,
+                              const Building& instance) {
+  if (is_hidden_) {
+    return;
   }
-  return nullptr;
+  painter->save();
+
+  painter->setPen(QPen(Qt::white, 3));
+  for (uint32_t i = 1; i < possible_buildings_id_.size(); i++) {
+    Coordinate button_position_1 =
+        buttons_[possible_buildings_id_[i - 1]]->GetPosition();
+    button_position_1 += kSizeOfButton / 2;
+    button_position_1 = size_handler.GameToWindowCoordinate(button_position_1);
+    Coordinate button_position_2 =
+        buttons_[possible_buildings_id_[i]]->GetPosition();
+    button_position_2 += kSizeOfButton / 2;
+    button_position_2 = size_handler.GameToWindowCoordinate(button_position_2);
+    painter->drawLine(button_position_1.x, button_position_1.y,
+                      button_position_2.x, button_position_2.y);
+  }
+
+  painter->restore();
+  info_field_.SetInfo(instance, total_cost_);
+  info_field_.Draw(painter, size_handler);
 }
 
-const Building& TowerMenu::GetTower() const {
-  return tower_;
+void TowerMenu::Hide(bool is_hidden) {
+  if (is_hidden == is_hidden_) {
+    return;
+  }
+  is_hidden_ = is_hidden;
+  for (int index : possible_buildings_id_) {
+    buttons_[index]->setHidden(is_hidden);
+  }
 }
 
-Coordinate TowerMenu::CalculateCoordinate(int i, int size) const {
-  int x = tower_.GetPosition().x - container_length_ / 2 + i *
-      options_[i]->GetMaxSize() + i * kIndentBetweenButtons +
-      (options_[i]->GetMaxSize() - size) / 2;
-  int y = tower_.GetPosition().y + tower_.GetSize().height / 2
-      + kIndentFromTower + (options_[i]->GetMaxSize() - size) / 2;
-  return Coordinate(x, y);
+void TowerMenu::Close() {
+  slow_disable = true;
+  current_force_ = kThrowForce * 1.3;
+  return;
 }
+
+int TowerMenu::GetTownerIndex() const {
+  return owner_building_index_;
+}
+
+int TowerMenu::GetSellectedTowerId() const {
+  if (active_button_index_ == -1) {
+    return owner_id_;
+  }
+  return active_button_index_;
+}
+
+bool TowerMenu::IsEnable() const {
+  return !possible_buildings_id_.empty();
+}
+
+bool TowerMenu::IsWantToReplace() const {
+  return id_to_replace_;
+}
+
+void TowerMenu::Disable() {
+  slow_disable = false;
+  for (auto& id : possible_buildings_id_) {
+    buttons_[id]->EnableSecondIcon(false);
+    buttons_[id]->hide();
+  }
+  possible_buildings_id_.clear();
+}
+

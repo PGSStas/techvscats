@@ -15,7 +15,7 @@ class Enemy : public MovingObject {
  public:
   Enemy(double speed, double damage,
         double armor, int reward, double max_health, Size size = {60, 60},
-        AuricField auric_field = AuricField(-1, -1));
+        int priority = 1, AuricField auric_field = AuricField(-1, -1));
   Enemy(const Enemy& other);
   ~Enemy() override = default;
 
@@ -29,6 +29,7 @@ class Enemy : public MovingObject {
   const AuricField& GetAuricField() const;
   Effect* GetAppliedEffect();
   double GetDamage() const;
+  int GetPriority() const;
   Coordinate GetPredictPosition(double predict_power = 1) const;
   void ReceiveDamage(double damage);
   int ComputeReward() const;
@@ -39,6 +40,11 @@ class Enemy : public MovingObject {
   int reward_;
   double max_health_;
   double current_health_;
+
+  // if priority_ is zero, towers will shoot the enemy out of turn.
+  // the greater the priority, the lesser amount of attention the enemy gets.
+  // for now priority is in [0; 4].
+  int priority_;
 
   AuricField auric_field_;
   Effect applied_effect_ = Effect(EffectTarget::kEnemy);
