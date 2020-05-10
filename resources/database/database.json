@@ -151,7 +151,7 @@
         "timing": 300
       },
       "particles": {
-        "at_death": 3
+        "at_creation": 3
       }
     }
   ],
@@ -582,7 +582,8 @@
       "animation": {
         "timing": 400,
         "path": "particles/kaboom0_8"
-      }
+      },
+      "sound": 0
     },
     {
       "size": {
@@ -592,7 +593,8 @@
       "animation": {
         "timing": 650,
         "path": "particles/kaboom1_8"
-      }
+      },
+      "sound": 1
     },
     {
       "size": {
@@ -603,7 +605,8 @@
       "animation": {
         "timing": 750,
         "path": "particles/on_fire2_5"
-      }
+      },
+      "sound": 2
     },
     {
       "size": {
@@ -613,7 +616,8 @@
       "animation": {
         "timing": 300,
         "path": "particles/scar3_6"
-      }
+      },
+      "sound": 3
     },
     {
       "size": {
@@ -633,7 +637,8 @@
       "animation": {
         "timing": 200,
         "path": "particles/poof5_3"
-      }
+      },
+      "sound": 5
     },
     {
       "size": {
@@ -643,7 +648,8 @@
       "animation": {
         "timing": 630,
         "path": "particles/smoke6_9"
-      }
+      },
+    "sound": 6
     },
     {
       "size": {
@@ -653,7 +659,42 @@
       "animation": {
         "timing": 830,
         "path": "particles/friework7_12"
-      }
+      },
+      "sound": 7
+    }
+  ],
+  "sounds": [
+    {
+      "path": "sounds/particle_sound_0.mp3",
+      "roads_count": 4
+    },
+    {
+      "path": "sounds/particle_sound_1.mp3",
+      "roads_count": 3
+    },
+    {
+      "path": "sounds/particle_sound_2.mp3",
+      "roads_count": 1
+    },
+    {
+      "path": "sounds/particle_sound_3.mp3",
+      "roads_count": 2
+    },
+    {
+      "path": "sounds/particle_sound_4.mp3",
+      "roads_count": 1
+    },
+    {
+      "path": "sounds/particle_sound_5.mp3",
+      "roads_count": 1
+    },
+    {
+      "path": "sounds/particle_sound_6.mp3",
+      "roads_count": 1
+    },
+    {
+      "path": "sounds/particle_sound_7.mp3",
+      "roads_count": 4
     }
   ]
 }

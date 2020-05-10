@@ -52,6 +52,7 @@ class ButtonHandler : public QObject {
   QMainWindow* main_window_;
   WindowType window_type_;
   AbstractController* controller_;
+  MusicPlayer* music_player_;
 
   // main_menu
   MenuButton* start_game_button_;

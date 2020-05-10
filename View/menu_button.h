@@ -39,6 +39,7 @@ class MenuButton : public QPushButton {
                          const QString& active_icon_path);
   Coordinate GetPosition() const;
   void EnableSecondIcon(bool is_second_icon_enabled);
+  void SetSecondIcon();
 
  private:
   // changing hover color and back

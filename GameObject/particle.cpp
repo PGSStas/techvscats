@@ -9,6 +9,7 @@ Particle::Particle(Size size, int repeat_number)
 Particle::Particle(const Particle& other)
     : Particle(other.size_, other.repeat_number_) {
   SetAnimationPlayers(other.animation_players_);
+  SetSoundId(other.sound_id_);
 }
 
 void Particle::Tick(int current_time) {
@@ -47,4 +48,12 @@ void Particle::SetIfEmpty(Size size, Coordinate position,
 
 bool Particle::IsDead() const {
   return is_dead_;
+}
+
+void Particle::SetSoundId(int id) {
+  sound_id_ = id;
+}
+
+int Particle::GetSoundId() const {
+  return sound_id_;
 }

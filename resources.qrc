@@ -359,5 +359,23 @@
 
     <file>resources/database/description_ru_RU.json</file>
     <file>resources/database/description_en_US.json</file>
+
+    <file>resources/sounds/menu_sound.mp3</file>
+    <file>resources/sounds/game_sound.mp3</file>
+    <file>resources/sounds/game_over_sound.mp3</file>
+    <file>resources/sounds/game_won_sound.mp3</file>
+    <file>resources/sounds/button_click.mp3</file>
+    <file>resources/sounds/sale_sound.mp3</file>
+    <file>resources/sounds/not_enough_money_sound.mp3</file>
+    <file>resources/sounds/new_wave_sound.mp3</file>
+
+    <file>resources/sounds/particle_sound_0.mp3</file>
+    <file>resources/sounds/particle_sound_1.mp3</file>
+    <file>resources/sounds/particle_sound_2.mp3</file>
+    <file>resources/sounds/particle_sound_3.mp3</file>
+    <file>resources/sounds/particle_sound_4.mp3</file>
+    <file>resources/sounds/particle_sound_5.mp3</file>
+    <file>resources/sounds/particle_sound_6.mp3</file>
+    <file>resources/sounds/particle_sound_7.mp3</file>
 </qresource>
 </RCC>

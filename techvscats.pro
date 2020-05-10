@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -31,8 +31,10 @@ SOURCES += \
         GameObject/particle.cpp \
         Model/coordinate.cpp \
         Model/model.cpp \
+        Model/music_player.cpp \
         Model/road.cpp \
         Model/size.cpp \
+        Model/sound_vector.cpp \
         View/animation_player.cpp \
         View/button_handler.cpp \
         View/info_field.cpp \
@@ -63,8 +65,10 @@ HEADERS += \
         Model/coordinate.h \
         Model/enemy_group.h \
         Model/model.h \
+        Model/music_player.h \
         Model/road.h \
         Model/size.h \
+        Model/sound_vector.h \
         View/animation_player.h \
         View/button_handler.h \
         View/info_field.h \
