@@ -365,7 +365,7 @@ void Model::SetAnimationToGameObject(GameObject* object,
   for (uint32_t i = 0; i < timings.size(); i++) {
     animations.emplace_back(GetImagesByFramePath(paths[i]), timings[i]);
   }
-  object->SetAnimationPlayers(animations);
+  object->SetAnimationPlayers(std::move(animations));
 }
 
 std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
