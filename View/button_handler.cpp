@@ -128,7 +128,7 @@ void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  QSettings settings("Giggling Penguin", "Tech vs Cats");
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
 
   QString locale = settings.value("locale", "en_US").toString();
   if (locale == "en_US") {
