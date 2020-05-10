@@ -31,6 +31,7 @@ MenuButton::MenuButton(const Size& button_size,
   setCursor(Qt::PointingHandCursor);
   setMouseTracking(true);
   setStyleSheet("background: transparent;");
+  setFocusPolicy(Qt::NoFocus);
 }
 
 void MenuButton::UpdateIcon() {

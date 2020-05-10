@@ -65,7 +65,6 @@ void ButtonHandler::CreateMainMenuButtons() {
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
-  start_game_button_->setFocusPolicy(Qt::NoFocus);
 
   settings_button_ = new MenuButton(
       tr("НАСТРОЙКИ"), long_button_size_, main_window_, font_id_);
@@ -75,20 +74,17 @@ void ButtonHandler::CreateMainMenuButtons() {
     main_window_->repaint();
   };
   connect(settings_button_, &QPushButton::clicked, settings_button_click);
-  settings_button_->setFocusPolicy(Qt::NoFocus);
 
   exit_button_ = new MenuButton(
       tr("ВЫЙТИ ИЗ ИГРЫ"), long_button_size_, main_window_, font_id_);
   connect(
       exit_button_, &QPushButton::clicked, main_window_, &QMainWindow::close);
-  exit_button_->setFocusPolicy(Qt::NoFocus);
 
   Size choose_level_number_size =
       Size(long_button_size_.width - short_button_size_.width * 2 - shift_ * 2,
            long_button_size_.height);
   choose_level_number_ = new MenuButton(
       tr("УРОВЕНЬ 1"), choose_level_number_size, main_window_, font_id_);
-  choose_level_number_->setFocusPolicy(Qt::NoFocus);
 
   inc_level_button_ = new MenuButton(
       short_button_size_, main_window_,
@@ -103,7 +99,6 @@ void ButtonHandler::CreateMainMenuButtons() {
         tr("УРОВЕНЬ ") + QString::number(level_number_));
   };
   connect(inc_level_button_, &QPushButton::clicked, inc_level_button_click);
-  inc_level_button_->setFocusPolicy(Qt::NoFocus);
 
   dec_level_button_ = new MenuButton(
       short_button_size_, main_window_,
@@ -118,7 +113,6 @@ void ButtonHandler::CreateMainMenuButtons() {
         tr("УРОВЕНЬ ") + QString::number(level_number_));
   };
   connect(dec_level_button_, &QPushButton::clicked, dec_level_button_click);
-  dec_level_button_->setFocusPolicy(Qt::NoFocus);
 }
 
 void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
@@ -153,7 +147,6 @@ void ButtonHandler::CreateSettingsButtons() {
     is_language_russian_ = !is_language_russian_;
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
-  language_button_->setFocusPolicy(Qt::NoFocus);
 
   sound_button_ = new MenuButton(
       short_button_size_,
@@ -171,7 +164,6 @@ void ButtonHandler::CreateSettingsButtons() {
     is_sound_on_ = !is_sound_on_;
   };
   connect(sound_button_, &QPushButton::clicked, sound_button_click);
-  sound_button_->setFocusPolicy(Qt::NoFocus);
 
   reset_game_button_ = new MenuButton(
       tr("СБРОСИТЬ ПРОГРЕСС"), long_button_size_, main_window_, font_id_);
@@ -180,7 +172,6 @@ void ButtonHandler::CreateSettingsButtons() {
     // reseting game, will be updated when saving is done
   };
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);
-  reset_game_button_->setFocusPolicy(Qt::NoFocus);
 
   to_main_menu_button_ = new MenuButton(
       tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_, font_id_);
@@ -193,7 +184,6 @@ void ButtonHandler::CreateSettingsButtons() {
     main_window_->repaint();
   };
   connect(to_main_menu_button_, &QPushButton::clicked, back_to_main_menu_click);
-  to_main_menu_button_->setFocusPolicy(Qt::NoFocus);
 }
 
 void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
@@ -225,7 +215,6 @@ void ButtonHandler::CreateGameButtons() {
     controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
   };
   connect(pause_button_, &QPushButton::clicked, pause_button_click);
-  pause_button_->setFocusPolicy(Qt::NoFocus);
 
   zero_speed_button_ = new MenuButton(
       short_button_size_,
@@ -238,7 +227,6 @@ void ButtonHandler::CreateGameButtons() {
     SetSpeedButtonsState(Speed::kZeroSpeed);
   };
   connect(zero_speed_button_, &QPushButton::clicked, zero_speed_button_click);
-  zero_speed_button_->setFocusPolicy(Qt::NoFocus);
 
   normal_speed_button_ = new MenuButton(
       short_button_size_,
@@ -254,7 +242,6 @@ void ButtonHandler::CreateGameButtons() {
           &QPushButton::clicked,
           normal_speed_button_click);
   normal_speed_button_->setDisabled(true);
-  normal_speed_button_->setFocusPolicy(Qt::NoFocus);
 
   double_speed_button_ = new MenuButton(
       short_button_size_,
@@ -269,7 +256,6 @@ void ButtonHandler::CreateGameButtons() {
   connect(double_speed_button_,
           &QPushButton::clicked,
           double_speed_button_click);
-  double_speed_button_->setFocusPolicy(Qt::NoFocus);
 }
 
 void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
@@ -295,7 +281,6 @@ void ButtonHandler::CreatePauseMenuButtons() {
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(restart_button_, &QPushButton::clicked, restart_button_click);
-  restart_button_->setFocusPolicy(Qt::NoFocus);
 
   continue_button_ = new MenuButton(
       tr("ПРОДОЛЖИТЬ"), long_button_size_, main_window_, font_id_);
@@ -306,7 +291,6 @@ void ButtonHandler::CreatePauseMenuButtons() {
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(continue_button_, &QPushButton::clicked, continue_button_click);
-  continue_button_->setFocusPolicy(Qt::NoFocus);
 }
 
 void ButtonHandler::RescalePauseMenuButtons(SizeHandler size_handler) {
