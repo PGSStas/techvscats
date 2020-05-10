@@ -42,13 +42,12 @@ GlobalChat::GlobalChat(QMainWindow* window) : QLineEdit(window) {
 }
 
 void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
-  Coordinate text_edit_position =
-      size_handler.GameToWindowCoordinate(
-          kBottomLeftPosition
-              - Size(
-                  -kTextEditSize.width *
-                      (1 - how_high_brick_percent_ / 100.0),
-                  kTextEditSize.height));
+  Size remove_edit_size =
+      Size(-kTextEditSize.width * (1 - how_high_brick_percent_ / 100.0),
+           kTextEditSize.height);
+  Coordinate text_edit_position = size_handler.GameToWindowCoordinate(
+      kBottomLeftPosition - remove_edit_size);
+
   Size text_edit_size = size_handler.GameToWindowSize(kTextEditSize);
   setGeometry(text_edit_position.x, text_edit_position.y,
               text_edit_size.width * how_high_brick_percent_ / 100.0,

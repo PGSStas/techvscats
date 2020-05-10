@@ -89,6 +89,7 @@ class Server : public QObject {
 
   const int kMaxChatSize = 9;
   const int kLifeRoomTimeForOneNewPlayer = 8000;
+  const int kRoomSmallPrepareTime= 300;
 };
 
 #endif  // SERVER_SERVER_H_

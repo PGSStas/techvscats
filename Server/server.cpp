@@ -79,8 +79,11 @@ void Server::ProcessRoomEnterMessage(const Message& message,
                                      GameClient* owner) {
   for (auto& room : rooms_) {
     if (room.level_id == message.GetNumber() && room.is_in_active_search
-        && room.wait_time > 300) {
-      room.wait_time += kLifeRoomTimeForOneNewPlayer;
+        && room.wait_time > kRoomSmallPrepareTime) {
+      int additional_time = kLifeRoomTimeForOneNewPlayer;
+      additional_time =
+          std::max(0, additional_time - 1000 * room.players_count);
+      room.wait_time += additional_time;
       room.players_count++;
       owner->room = &room;
       owner->socket->sendBinaryMessage(

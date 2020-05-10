@@ -19,14 +19,14 @@ enum class ControllerCommandType {
 
 enum class MessageType {
   // To server
-  kNewConnection = 0,
-  kEnterRoom = 1,
-  kRoundCompletedByPlayer = 2,
-  kLeaveRoom = 3,
-  kGlobalChat = 4,
+  kNewConnection,
+  kEnterRoom,
+  kRoundCompletedByPlayer,
+  kLeaveRoom,
+  kGlobalChat,
   // To client
-  kStartRound = 5,
-  kDialog = 6,
+  kStartRound,
+  kDialog,
   kControllerCommand
 };
 

@@ -5,7 +5,7 @@ cmake-build-release/
 cpplint.py
 /cpplint.py
 techvscats.pro.user
-Server/serverr.pro.user
-Server/serverr.pro.autosave
-build-serverr-Desktop_Qt_5_13_0_MinGW_32_bit-Debug/
-build-serverr-Desktop_Qt_5_13_0_MinGW_32_bit-Release/
+Server/server.pro.user
+Server/server.pro.autosave
+build-server-Desktop_Qt_5_13_0_MinGW_32_bit-Debug/
+build-server-Desktop_Qt_5_13_0_MinGW_32_bit-Release/
