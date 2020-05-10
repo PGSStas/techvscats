@@ -31,7 +31,7 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<Enemy>>& GetEnemies() const override;
   const std::vector<std::shared_ptr<Building>>& GetBuildings() const override;
   const std::list<std::shared_ptr<AbstractProjectile>>&
-    GetProjectiles() const override;
+  GetProjectiles() const override;
   const std::list<TextNotification>& GetTextNotifications() const override;
 
   const Base& GetBase() const override;
@@ -46,8 +46,11 @@ class Controller : public AbstractController {
   int GetCurrentRoundNumber() const override;
   int GetRoundsCount() const override;
 
+  MusicPlayer* GetMusicPlayer() override;
+
  private:
   std::unique_ptr<Model> model_;
+  MusicPlayer music_player_;
   std::unique_ptr<View> view_;
 
   GameStatus game_status_ = GameStatus::kPlay;
