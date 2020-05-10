@@ -22,11 +22,11 @@ TowerMenu::TowerMenu(QMainWindow* window) {
       ":resources/buttons_resources/default_tower_button.png",
       ":resources/buttons_resources/default_tower_button_h.png");
   button_images.emplace_back(
-      ":resources/buttons_resources/laser_button.png",
-      ":resources/buttons_resources/laser_button_h.png");
-  button_images.emplace_back(
       ":resources/buttons_resources/bomb_button.png",
       ":resources/buttons_resources/bomb_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/laser_button.png",
+      ":resources/buttons_resources/laser_button_h.png");
   button_images.emplace_back(
       ":resources/buttons_resources/support_button.png",
       ":resources/buttons_resources/support_button_h.png");
