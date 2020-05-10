@@ -7,7 +7,10 @@ View::View(AbstractController* controller)
       tower_menu_(this) {
   setMinimumSize(1280, 720);
   setMouseTracking(true);
-  showFullScreen();
+  setWindowIcon(QIcon(":resources/images/icon.png"));
+  setWindowTitle("Tech vs Cats");
+  //showFullScreen();
+  show();
 
   view_timer_.start();
   time_between_ticks_.start();
