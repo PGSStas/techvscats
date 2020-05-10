@@ -5,7 +5,7 @@
   },
   {
     "header": "Fire tower T.1",
-    "description": "Prototype of the shooting tower. When fires, it releases a napalm clot that deals damage to a single target."
+    "description": "Prototype of the shooting tower. When shooting, it produces a napalm clot that damages one target."
   },
   {
     "header": "Laser tower Т.1",
@@ -17,11 +17,11 @@
   },
   {
     "header": "Support tower T.1",
-    "description": "\"Some people think that asking for help is a sign of weakness. This is stupidity and stubbornness. No matter how strong you are, allies make you stronger\" © catptain Shepard"
+    "description": "\"Some people think asking for help is a sign of weakness. That's just being stupid and stubborn. No matter how strong you are, allies make you stronger.\" © catptain Shepard"
   },
   {
     "header": "Fire tower T.2",
-    "description": "The more fire, the more destruction!"
+    "description": "More fire! More destruction!"
   },
   {
     "header": "Laser tower Т.2",
@@ -33,7 +33,7 @@
   },
   {
     "header": "Support tower T.2",
-    "description": "There are never many boxes. Especially THIS kind of boxes."
+    "description": "Boxes are never too much. Especially SUCH kind of boxes."
   },
   {
     "header": "Fire tower T.3",
@@ -41,14 +41,14 @@
   },
   {
     "header": "Laser tower Т.3",
-    "description": "Add some refractive lenses. Paint a couple of walls. And look. A new way to decompose them into pieces."
+    "description": "Add some refractive lenses, repaint a couple of walls and look: a new way to take them apart!"
   },
   {
     "header": "Bombuch Т.3",
-    "description": "Once the muzzle was filled with 2 cartridges. What did you think? Yes, the old tower exploded. But now the new tower does not have this drawback. Right?"
+    "description": "Once, two patrons fell into the barrel of a weapon. And what did you think? Yes, the old tower exploded. But with the new one everything is fine now, right?"
   },
   {
     "header": "Support tower T.3",
-    "description": "Send rays of good to everyone around us ;)"
+    "description": "Send rays of goodness to everyone around us ;)"
   }
 ]

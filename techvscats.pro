@@ -1,7 +1,7 @@
-QT       += core gui multimedia
+QT += core gui multimedia
 
 android {
-QT       += androidextras
+QT += androidextras
 }
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
