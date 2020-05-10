@@ -24,13 +24,58 @@ int main(int argc, char* argv[]) {
 
   auto controller = std::make_shared<Controller>();
 
-  int return_code = a.exec();
-  if (return_code == constants::kApplicationRestartCode) {
-    if (!QProcess::startDetached(QApplication::applicationFilePath())) {
-      return_code = 1;
-    } else {
-      return_code = 0;
-    }
+  int return_code = QApplication::exec();
+  if (return_code != constants::kApplicationRestartCode) {
+    return return_code;
   }
-  return return_code;
+
+#ifdef Q_OS_ANDROID
+  // Code after won't work for SDK >= 28/29
+  qDebug() << QtAndroid::androidSdkVersion();
+
+  auto activity = QtAndroid::androidActivity();
+  auto packageManager = activity.callObjectMethod(
+      "getPackageManager",
+      "()Landroid/content/pm/PackageManager;");
+
+  auto activityIntent = packageManager.callObjectMethod(
+      "getLaunchIntentForPackage",
+      "(Ljava/lang/String;)Landroid/content/Intent;",
+      activity.callObjectMethod("getPackageName",
+                                "()Ljava/lang/String;").object());
+
+  auto pendingIntent = QAndroidJniObject::callStaticObjectMethod(
+      "android/app/PendingIntent",
+      "getActivity",
+      "(Landroid/content/Context;ILandroid/content/Intent;I)"
+      "Landroid/app/PendingIntent;",
+      activity.object(),
+      jint(0),
+      activityIntent.object(),
+      QAndroidJniObject::getStaticField<jint>("android/content/Intent",
+                                              "FLAG_ACTIVITY_CLEAR_TOP"));
+
+  auto alarmManager = activity.callObjectMethod(
+      "getSystemService",
+      "(Ljava/lang/String;)Ljava/lang/Object;",
+      QAndroidJniObject::getStaticObjectField(
+          "android/content/Context",
+          "ALARM_SERVICE",
+          "Ljava/lang/String;").object());
+
+  alarmManager.callMethod<void>(
+      "setExact",
+      "(IJLandroid/app/PendingIntent;)V",
+      QAndroidJniObject::getStaticField<jint>(
+          "android/app/AlarmManager", "RTC"),
+      jlong(QDateTime::currentMSecsSinceEpoch() + 1), pendingIntent.object());
+
+  return 0;
+#else
+  if (!QProcess::startDetached(QApplication::applicationFilePath())) {
+    std::cerr << "Starting a new process failed!" << std::endl;
+    return 1;
+  }
+  return 0;
+#endif
 }
