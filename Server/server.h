@@ -64,9 +64,10 @@ class Server : public QObject {
 
   // Room methods
   void StartRoom(Room* room);
-  void SendMessageToRoom(const QByteArray& array, const GameClient& owner,
+  void SendMessageToRoom(const Message& message, const Room& room);
+  void SendMessageToRoom(const Message& message, const GameClient& owner,
                          bool self_message = false);
-  void SendMessageToRoom(const QByteArray& array, const Room& room);
+  void SendMessageToClient(const Message& message, const GameClient& owner);
   void RoomLeave(const GameClient& client);
   void RoomTimer(Room* room);
 
@@ -89,7 +90,7 @@ class Server : public QObject {
 
   const int kMaxChatSize = 9;
   const int kLifeRoomTimeForOneNewPlayer = 8000;
-  const int kRoomSmallPrepareTime= 300;
+  const int kRoomSmallPrepareTime = 300;
 };
 
 #endif  // SERVER_SERVER_H_

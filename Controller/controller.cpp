@@ -29,9 +29,6 @@ void Controller::EndGame() {
   window_type_ = WindowType::kMainMenu;
   if (client_.IsOnline()) {
     client_.LeaveRoom();
-    ProcessDialogMessage(
-        Message().SetDialogMessage("! You left the room.",
-                                   DialogType::kChat));
   }
   current_game_time_ = 0;
 }
@@ -159,12 +156,8 @@ void Controller::TickClient() {
   const auto& messages = client_.GetReceivedMessages();
   for (auto& message : messages) {
     switch (message.GetType()) {
-      case MessageType::kStartRound: {
-        client_.SetPermissionToStartRound(true);
-        break;
-      }
       case MessageType::kDialog: {
-        ProcessDialogMessage(message);
+        ProcessControllerMessage(message);
         break;
       }
       case MessageType::kControllerCommand: {
@@ -498,11 +491,11 @@ MultiplayerClient* Controller::GetClient() {
   return &client_;
 }
 
-void Controller::ProcessDialogMessage(const Message& message) {
-  switch (static_cast<DialogType>(message.GetNumber())) {
+void Controller::ProcessControllerMessage(const Message& message) {
+  switch (message.GetDialogType()) {
     case DialogType::kWarning: {
       model_->AddTextNotification(
-          {message.GetMessage(),
+          {message.GetArgument(0),
            {constants::kGameWidth / 2,
             constants::kGameHeight / 5},
            Qt::darkCyan, view_->GetRealTime(),
@@ -511,17 +504,17 @@ void Controller::ProcessDialogMessage(const Message& message) {
       break;
     }
     case DialogType::kChat: {
-      view_->AddGlobalChatMessage(message.GetMessage().split("\n"));
+      view_->AddGlobalChatMessage(message.GetArgument(0).split("\n"));
       break;
     }
   }
 }
 
 void Controller::ProcessControllerCommand(const Message& message) {
-  switch (static_cast<ControllerCommandType>(message.GetNumber())) {
+  switch (message.GetControllerCommandType()) {
     case ControllerCommandType::kGoldChange: {
       if (WindowType::kGame == window_type_) {
-        model_->GetBase()->AddGoldAmount(message.GetMessage().toInt());
+        model_->GetBase()->AddGoldAmount(message.GetArgument(0).toInt());
       }
       break;
     }

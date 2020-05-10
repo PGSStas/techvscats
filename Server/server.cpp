@@ -13,8 +13,8 @@ Server::Server(uint32_t port) : web_socket_server_(new QWebSocketServer(
             this, &Server::OnNewConnection);
     connect(web_socket_server_, &QWebSocketServer::closed,
             this, &Server::closed);
-    timer_.start();
     timer_id_ = startTimer(20);
+    timer_.start();
   }
 }
 
@@ -68,17 +68,16 @@ void Server::ProcessReceivedMessage(const Message& message,
 
 void Server::ProcessNewConnectionMessage(const Message& message,
                                          GameClient* owner) {
-  owner->nick_name = message.GetMessage();
-  owner->socket->sendBinaryMessage(
-      Message::DialogMessage(global_chat_.join("\n"),
-                             DialogType::kChat));
-  qDebug() << "new name" << owner->nick_name;
+  owner->nick_name = message.GetArgument(0);
+  SendMessageToClient(Message(MessageType::kChatUpdate,
+                              {global_chat_.join("\n")}), *owner);
 }
 
 void Server::ProcessRoomEnterMessage(const Message& message,
                                      GameClient* owner) {
+  int room_number = message.GetArgument(0).toInt();
   for (auto& room : rooms_) {
-    if (room.level_id == message.GetNumber() && room.is_in_active_search
+    if (room.level_id == room_number && room.is_in_active_search
         && room.wait_time > kRoomSmallPrepareTime) {
       int additional_time = kLifeRoomTimeForOneNewPlayer;
       additional_time =
@@ -86,48 +85,43 @@ void Server::ProcessRoomEnterMessage(const Message& message,
       room.wait_time += additional_time;
       room.players_count++;
       owner->room = &room;
-      owner->socket->sendBinaryMessage(
-          Message::DialogMessage(room.room_chat_.join("\n"),
-                                 DialogType::kChat));
+      SendMessageToClient(Message(MessageType::kChatUpdate,
+                                  {room.room_chat_.join("\n")}), *owner);
 
-      SendMessageToRoom(Message::DialogMessage(
-          "! " + owner->nick_name + " joined the room",
-          DialogType::kChat), *owner, true);
+      SendMessageToRoom(Message(MessageType::kNickNameJoinedTheRoom,
+                                {owner->nick_name}), *owner);
       return;
     }
   }
-  rooms_.emplace_back(timer_.elapsed(), message.GetNumber());
+  rooms_.emplace_back(timer_.elapsed(), room_number);
   owner->room = &rooms_.back();
   owner->room->timer_id_ = startTimer(1000);
-  SendMessageToRoom(Message::DialogMessage(
-      "! you created new room. Wait for players.",
-      DialogType::kChat), *owner, true);
+  SendMessageToRoom(Message(MessageType::kYouCreatedRoom), *owner, true);
 }
 
 void Server::ProcessRoundCompletedByPlayer(const Message& message,
                                            GameClient* owner) {
-
-  switch (static_cast<GameProcess>( message.GetNumber())) {
+  GameProcess game_process = static_cast<GameProcess>
+  (message.GetArgument(1).toInt());
+  switch (game_process) {
     case GameProcess::kLoose: {
       owner->room->players_loose_++;
-      SendMessageToRoom(Message::DialogMessage(
-          "! " + owner->nick_name + " _DEAD_ ",
-          DialogType::kChat), *owner, true);
+      SendMessageToRoom(Message(MessageType::kNickNameDead, {owner->nick_name}),
+                        *owner,
+                        true);
       break;
     }
     case GameProcess::kWin: {
       owner->room->players_win_++;
-      SendMessageToRoom(Message::DialogMessage(
-          "< " + owner->nick_name + " WIN THE GAME Wow! With" +
-              QString::number(message.GetMessage().toInt()) + "HP",
-          DialogType::kChat), *owner, true);
+      SendMessageToRoom(Message(MessageType::kNickNameWinWithHp, {
+          owner->nick_name,
+          QString::number(message.GetArgument(0).toInt())}), *owner, true);
       break;
     }
     default: {
-      SendMessageToRoom(Message::DialogMessage(
-          "! " + owner->nick_name + " finished the round with " +
-              QString::number(message.GetMessage().toInt()) + "HP",
-          DialogType::kChat), *owner, true);
+      SendMessageToRoom(Message(MessageType::kNickNameFinishRoundWithHp, {
+          owner->nick_name,
+          QString::number(message.GetArgument(0).toInt())}), *owner, true);
       break;
     }
   }
@@ -146,16 +140,14 @@ void Server::ProcessGlobalChatMessage(const Message& message,
     is_room = true;
     chat = &owner->room->room_chat_;
   }
-  *chat += "> " + owner->nick_name + " : " + message.GetMessage();
+  *chat += "> " + owner->nick_name + " : " + message.GetArgument(0);
   while (chat->size() > kMaxChatSize) {
     chat->removeAt(0);
   }
   for (auto& client : clients_) {
     if (!is_room || client.room == owner->room) {
-      client.socket->sendBinaryMessage(
-          Message::DialogMessage(message.GetMessage(),
-                                 DialogType::kChat,
-                                 owner->nick_name));
+      SendMessageToClient(Message(MessageType::kChatUpdate,
+                                  {chat->back()}), client);
     }
   }
 }
@@ -164,29 +156,30 @@ void Server::StartRoom(Room* room) {
   room->is_in_active_search = false;
   room->players_in_round =
       room->players_count - room->players_win_ - room->players_loose_;
+  SendMessageToRoom(Message(MessageType::kStartRound), *room);
+}
+
+void Server::SendMessageToRoom(const Message& message, const Room& room) {
   for (auto& client : clients_) {
-    if (client.room == room) {
-      client.socket->sendBinaryMessage(Message::StartRoundMessage());
-      qDebug() << "StartRoom";
+    if (client.room == &room) {
+      client.socket->sendBinaryMessage(Message::CodeToBinary(message));
     }
   }
 }
 
-void Server::SendMessageToRoom(const QByteArray& array, const GameClient& owner,
+void Server::SendMessageToRoom(const Message& message,
+                               const GameClient& owner,
                                bool self_message) {
   for (auto& client : clients_) {
     if (client.room == owner.room && (self_message || !(client == owner))) {
-      client.socket->sendBinaryMessage(array);
+      client.socket->sendBinaryMessage(Message::CodeToBinary(message));
     }
   }
 }
 
-void Server::SendMessageToRoom(const QByteArray& array, const Room& room) {
-  for (auto& client : clients_) {
-    if (client.room == &room) {
-      client.socket->sendBinaryMessage(array);
-    }
-  }
+void Server::SendMessageToClient(const Message& message,
+                                 const GameClient& owner) {
+  owner.socket->sendBinaryMessage(Message::CodeToBinary(message));
 }
 
 void Server::RoomLeave(const GameClient& client) {
@@ -205,9 +198,8 @@ void Server::RoomLeave(const GameClient& client) {
       break;
     }
   }
-  SendMessageToRoom(Message::DialogMessage(
-      "< " + client.nick_name + " left the game!",
-      DialogType::kChat), client,
+  SendMessageToRoom(Message(MessageType::kNickNameLeft,
+                            {client.nick_name}), client,
                     true);
   rooms_.remove_if([this](const Room& room) {
     if (room.players_count == 0) {
@@ -220,15 +212,15 @@ void Server::RoomLeave(const GameClient& client) {
 
 void Server::RoomTimer(Room* room) {
   if (room->is_in_active_search) {
-    SendMessageToRoom(Message::DialogMessage(
-        "< Room starts in " + QString::number(room->wait_time / 1000)
-            + " seconds.", DialogType::kChat), *room);
+    SendMessageToRoom(Message(MessageType::kRoomStartsIn,
+                              {QString::number(room->wait_time / 1000)}),
+                      *room);
     return;
   }
   if (room->wait_time > 0) {
-    SendMessageToRoom(Message::DialogMessage(
-        "< Round starts in " + QString::number(room->wait_time / 1000)
-            + " seconds.", DialogType::kChat), *room);
+    SendMessageToRoom(Message(MessageType::kRoundStartsIn,
+                              {QString::number(room->wait_time / 1000)}),
+                      *room);
     return;
   }
 }
@@ -275,8 +267,7 @@ void Server::timerEvent(QTimerEvent* event) {
     for (auto& room : rooms_) {
       room.wait_time -= delta_time;
       if (room.players_loose_ + room.players_win_ == room.players_count) {
-        SendMessageToRoom(Message::DialogMessage(
-            "< Game End.", DialogType::kChat), room);
+        SendMessageToRoom(Message(MessageType::kGameEnd),room);
         for (auto& client: clients_) {
           RoomLeave(client);
           client.room = nullptr;

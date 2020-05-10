@@ -87,7 +87,7 @@ class Controller : public AbstractController {
 
   void CreateTowerMenu(int tower_index);
   void ProcessEnemyDeath(const Enemy& enemy) const;
-  void ProcessDialogMessage(const Message& message);
+  void ProcessControllerMessage(const Message& message);
   void ProcessControllerCommand(const Message& message);
 };
 

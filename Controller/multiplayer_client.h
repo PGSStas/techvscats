@@ -42,6 +42,7 @@ class MultiplayerClient : public QObject {
   void NewClientMessage(const QString& messages);
   void ProcessCommand(QString command);
 
+  void CreateControllerMessage(const Message& message);
  private slots:  // NOLINT
   void OnConnect();
   void OnMessageReceived(const QByteArray& array);
