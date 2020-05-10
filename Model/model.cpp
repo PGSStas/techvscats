@@ -385,11 +385,12 @@ std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
 }
 
 void Model::SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object) {
-  int at_creation = -1;
   int at_death = -1;
   if (object.contains("at_death")) {
     at_death = object["at_death"].toInt();
   }
+
+  int at_creation = -1;
   if (object.contains("at_creation")) {
     at_creation = object["at_creation"].toInt();
   }
