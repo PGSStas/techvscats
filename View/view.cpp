@@ -302,8 +302,9 @@ void View::timerEvent(QTimerEvent* event) {
       global_chat_.PopMessageQueue();
     }
 
-    button_handler_.UpdateButtonsStatus(controller_->GetClient()->IsOnline(),
-                                        controller_->GetClient()->IsRegistered());
+    button_handler_.UpdateButtonsStatus(
+        controller_->GetClient()->IsOnline(),
+        controller_->GetClient()->IsRegistered());
     repaint();
   }
 }

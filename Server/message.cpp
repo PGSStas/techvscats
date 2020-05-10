@@ -13,9 +13,11 @@ QByteArray Message::EnterRoomMessage(int level_id) {
       MessageType::kEnterRoom, "", level_id));
 }
 
-QByteArray Message::RoundCompletedMessage(int base_current_health) {
+QByteArray Message::RoundCompletedMessage(int base_current_health,
+                                          int casted_game_process_) {
   return CodeToBinary(Message(
-      MessageType::kRoundCompletedByPlayer, "", base_current_health));
+      MessageType::kRoundCompletedByPlayer,
+      QString::number(base_current_health), casted_game_process_));
 }
 
 QByteArray Message::LeaveRoomMessage() {

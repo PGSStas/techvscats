@@ -39,7 +39,8 @@ class Message {
   // To server
   static QByteArray NewConnectionMessage(const QString& nick_name);
   static QByteArray EnterRoomMessage(int level_id);
-  static QByteArray RoundCompletedMessage(int current_health);
+  static QByteArray RoundCompletedMessage(int current_health,
+                                          int casted_game_process);
   static QByteArray LeaveRoomMessage();
   static QByteArray GlobalChatMessage(const QString& messages);
 

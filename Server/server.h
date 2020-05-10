@@ -11,6 +11,11 @@
 
 #include "message.h"
 
+enum class GameProcess {
+  kWin,
+  kLoose,
+  kPlay
+};
 // Room to hold players in one game
 // The game begins with automatic selection of enemies.
 // Room lives kLifeRoomTimeForOneNewPlayer*number of
@@ -20,11 +25,14 @@ struct Room {
       : start_time(start_time), level_id(level_id) {}
   int start_time;
   int level_id;
-  int players_count = 1;
-  int players_in_round = 0;
   int wait_time = 8000;
+  int timer_id_;
   bool is_in_active_search = true;
   QStringList room_chat_;
+  int players_count = 1;
+  int players_in_round = 0;
+  int players_loose_ = 0;
+  int players_win_ = 0;
 };
 
 struct GameClient {
@@ -34,12 +42,13 @@ struct GameClient {
   QWebSocket* socket = nullptr;
   QString nick_name;
   Room* room = nullptr;
+  GameProcess game_process = GameProcess::kPlay;
 };
 
 // The server is responsible for forwarding messages between users.
 // It also supports global chats and rooms.
 class Server : public QObject {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit Server(uint32_t port);
@@ -52,11 +61,14 @@ class Server : public QObject {
   void ProcessRoomEnterMessage(const Message& message, GameClient* owner);
   void ProcessRoundCompletedByPlayer(const Message& message, GameClient*);
   void ProcessGlobalChatMessage(const Message& message, GameClient*);
+
   // Room methods
   void StartRoom(Room* room);
   void SendMessageToRoom(const QByteArray& array, const GameClient& owner,
                          bool self_message = false);
+  void SendMessageToRoom(const QByteArray& array, const Room& room);
   void RoomLeave(const GameClient& client);
+  void RoomTimer(Room* room);
 
  signals:  // NOLINT
   void closed();
@@ -73,7 +85,7 @@ class Server : public QObject {
   std::list<GameClient> clients_;
   std::list<Room> rooms_;
   QElapsedTimer timer_;
-  int current_time_;
+  int timer_id_;
 
   const int kMaxChatSize = 9;
   const int kLifeRoomTimeForOneNewPlayer = 8000;

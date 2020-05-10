@@ -19,9 +19,6 @@ void Controller::StartGame(int level_id) {
   view_->EnableGameUi();
   if (client_.IsOnline()) {
     client_.EnterRoom(level_id);
-    ProcessDialogMessage(
-        Message().SetDialogMessage("< You joined the room.",
-                                   DialogType::kChat));
   }
 }
 
@@ -33,7 +30,7 @@ void Controller::EndGame() {
   if (client_.IsOnline()) {
     client_.LeaveRoom();
     ProcessDialogMessage(
-        Message().SetDialogMessage("< You left the room.",
+        Message().SetDialogMessage("! You left the room.",
                                    DialogType::kChat));
   }
   current_game_time_ = 0;
@@ -81,7 +78,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
 }
 
 void Controller::GameProcess() {
-  if (CanCreateNextWave() && game_status_ == GameStatus::kPlay) {
+  if (game_status_ == GameStatus::kPlay && CanCreateNextWave()) {
     CreateNextWave();
   }
   if (game_status_ != GameStatus::kPlay) {
@@ -104,6 +101,8 @@ bool Controller::CanCreateNextWave() {
       model_->GetEnemies()->empty() && model_->GetSpawners()->empty()
       && game_status_ == GameStatus::kPlay) {
     game_status_ = GameStatus::kWin;
+    client_.RoundCompleted(model_->GetBase()->GetCurrentHealth(),
+                           static_cast<int>( GameStatus::kWin));
     int life_time = 16000;
     double size_coefficient = 1.03;
     model_->AddTextNotification({"Level Complete",
@@ -121,7 +120,8 @@ bool Controller::CanCreateNextWave() {
 
   if (client_.IsOnline() && !client_.HasPermissionToStartRound()) {
     if (current_round_number != 0) {
-      client_.RoundCompleted(model_->GetBase()->GetCurrentHealth());
+      client_.RoundCompleted(model_->GetBase()->GetCurrentHealth(),
+                             static_cast<int>( GameStatus::kPlay));
     }
     return false;
   }
@@ -253,6 +253,9 @@ void Controller::TickBuildings() {
   model_->GetBase()->Tick(current_game_time_);
   if (model_->GetBase()->IsDead() && game_status_ == GameStatus::kPlay) {
     game_status_ = GameStatus::kLose;
+
+    client_.RoundCompleted(model_->GetBase()->GetCurrentHealth(),
+                           static_cast<int>( GameStatus::kLose));
     int life_time = 16000;
     double size_coefficient = 1.03;
     model_->AddTextNotification({"GameOver:(",
@@ -260,6 +263,7 @@ void Controller::TickBuildings() {
                                   constants::kGameHeight / 2}, Qt::red,
                                  view_->GetRealTime(), {0, 0}, life_time,
                                  size_coefficient});
+
   }
 }
 
@@ -500,9 +504,9 @@ void Controller::ProcessDialogMessage(const Message& message) {
       model_->AddTextNotification(
           {message.GetMessage(),
            {constants::kGameWidth / 2,
-            constants::kGameHeight / 1.1},
+            constants::kGameHeight / 5},
            Qt::darkCyan, view_->GetRealTime(),
-           {0, -40}, 3000, 1,
+           {0, +40}, 3000, 1,
            50, true});
       break;
     }

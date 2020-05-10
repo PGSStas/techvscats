@@ -14,7 +14,7 @@ Server::Server(uint32_t port) : web_socket_server_(new QWebSocketServer(
     connect(web_socket_server_, &QWebSocketServer::closed,
             this, &Server::closed);
     timer_.start();
-    startTimer(20);
+    timer_id_ = startTimer(20);
   }
 }
 
@@ -86,23 +86,51 @@ void Server::ProcessRoomEnterMessage(const Message& message,
       owner->socket->sendBinaryMessage(
           Message::DialogMessage(room.room_chat_.join("\n"),
                                  DialogType::kChat));
-      qDebug() << "connected_to_room";
+
+      SendMessageToRoom(Message::DialogMessage(
+          "! " + owner->nick_name + " joined the room",
+          DialogType::kChat), *owner, true);
       return;
     }
   }
   rooms_.emplace_back(timer_.elapsed(), message.GetNumber());
   owner->room = &rooms_.back();
-  qDebug() << "new_room";
+  owner->room->timer_id_ = startTimer(1000);
+  SendMessageToRoom(Message::DialogMessage(
+      "! you created new room. Wait for players.",
+      DialogType::kChat), *owner, true);
 }
 
 void Server::ProcessRoundCompletedByPlayer(const Message& message,
                                            GameClient* owner) {
-  SendMessageToRoom(Message::DialogMessage(
-      "finished the round with " + QString::number(message.GetNumber()) + "HP",
-      DialogType::kWarning, owner->nick_name), *owner, true);
+
+  switch (static_cast<GameProcess>( message.GetNumber())) {
+    case GameProcess::kLoose: {
+      owner->room->players_loose_++;
+      SendMessageToRoom(Message::DialogMessage(
+          "! " + owner->nick_name + " _DEAD_ ",
+          DialogType::kChat), *owner, true);
+      break;
+    }
+    case GameProcess::kWin: {
+      owner->room->players_win_++;
+      SendMessageToRoom(Message::DialogMessage(
+          "< " + owner->nick_name + " WIN THE GAME Wow! With" +
+              QString::number(message.GetMessage().toInt()) + "HP",
+          DialogType::kChat), *owner, true);
+      break;
+    }
+    default: {
+      SendMessageToRoom(Message::DialogMessage(
+          "! " + owner->nick_name + " finished the round with " +
+              QString::number(message.GetMessage().toInt()) + "HP",
+          DialogType::kChat), *owner, true);
+      break;
+    }
+  }
   owner->room->players_in_round--;
   if (owner->room->players_in_round == 0) {
-    owner->room->wait_time = 2000;
+    owner->room->wait_time = 3000;
   }
   qDebug() << "I have finished round";
 }
@@ -131,7 +159,8 @@ void Server::ProcessGlobalChatMessage(const Message& message,
 
 void Server::StartRoom(Room* room) {
   room->is_in_active_search = false;
-  room->players_in_round = room->players_count;
+  room->players_in_round =
+      room->players_count - room->players_win_ - room->players_loose_;
   for (auto& client : clients_) {
     if (client.room == room) {
       client.socket->sendBinaryMessage(Message::StartRoundMessage());
@@ -149,17 +178,56 @@ void Server::SendMessageToRoom(const QByteArray& array, const GameClient& owner,
   }
 }
 
+void Server::SendMessageToRoom(const QByteArray& array, const Room& room) {
+  for (auto& client : clients_) {
+    if (client.room == &room) {
+      client.socket->sendBinaryMessage(array);
+    }
+  }
+}
+
 void Server::RoomLeave(const GameClient& client) {
   client.room->players_count--;
-  client.room->players_in_round--;
+  switch (client.game_process) {
+    case GameProcess::kPlay: {
+      client.room->players_in_round--;
+      break;
+    }
+    case GameProcess::kLoose: {
+      client.room->players_loose_--;
+      break;
+    }
+    case GameProcess::kWin: {
+      client.room->players_win_--;
+      break;
+    }
+  }
   SendMessageToRoom(Message::DialogMessage(
-      " left the game!",
-      DialogType::kWarning, client.nick_name), client,
+      "< " + client.nick_name + " left the game!",
+      DialogType::kChat), client,
                     true);
-  rooms_.remove_if([](const Room& room) {
-    if (room.players_count == 0) { qDebug() << "room close"; }
+  rooms_.remove_if([this](const Room& room) {
+    if (room.players_count == 0) {
+      qDebug() << "room close";
+      killTimer(room.timer_id_);
+    }
     return room.players_count == 0;
   });
+}
+
+void Server::RoomTimer(Room* room) {
+  if (room->is_in_active_search) {
+    SendMessageToRoom(Message::DialogMessage(
+        "< Room starts in " + QString::number(room->wait_time / 1000)
+            + " seconds.", DialogType::kChat), *room);
+    return;
+  }
+  if (room->wait_time > 0) {
+    SendMessageToRoom(Message::DialogMessage(
+        "< Round starts in " + QString::number(room->wait_time / 1000)
+            + " seconds.", DialogType::kChat), *room);
+    return;
+  }
 }
 
 void Server::OnNewConnection() {
@@ -194,16 +262,31 @@ void Server::OnDisconnect() {
   client_socket->deleteLater();
 }
 
-void Server::timerEvent(QTimerEvent*) {
+void Server::timerEvent(QTimerEvent* event) {
   if (clients_.empty()) {
     return;
   }
-  int delta_time = timer_.elapsed() - current_time_;
-  current_time_ += delta_time;
+  if (event->timerId() == timer_id_) {
+    int delta_time = timer_.elapsed();
+    timer_.start();
+    for (auto& room : rooms_) {
+      room.wait_time -= delta_time;
+      if (room.players_loose_ + room.players_win_ == room.players_count) {
+        SendMessageToRoom(Message::DialogMessage(
+            "< Game End.", DialogType::kChat), room);
+        for (auto& client: clients_) {
+          RoomLeave(client);
+          client.room = nullptr;
+        }
+      } else if (room.wait_time <= 100 && room.players_in_round == 0) {
+        StartRoom(&room);
+      }
+    }
+  }
   for (auto& room : rooms_) {
-    room.wait_time -= delta_time;
-    if (room.wait_time <= 100 && room.players_in_round == 0) {
-      StartRoom(&room);
+    if (event->timerId() == room.timer_id_) {
+      RoomTimer(&room);
+      break;
     }
   }
 }

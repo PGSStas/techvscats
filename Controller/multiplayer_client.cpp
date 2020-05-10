@@ -25,13 +25,14 @@ void MultiplayerClient::Disconnect() {
 
 void MultiplayerClient::Register(QString nick_name) {
   if (nick_name == "auto") {
-    nick_name = AutoGenerateNickName();
+    nick_name_ = AutoGenerateNickName();
   } else {
     nick_name_ = nick_name;
   }
-
-  server_web_socket_->sendBinaryMessage(Message::NewConnectionMessage(
-      nick_name_));
+  if (is_online_) {
+    server_web_socket_->sendBinaryMessage(Message::NewConnectionMessage(
+        nick_name_));
+  }
 }
 
 void MultiplayerClient::EnterRoom(int level_id) {
@@ -39,10 +40,10 @@ void MultiplayerClient::EnterRoom(int level_id) {
   has_permission_to_start_round = false;
 }
 
-void MultiplayerClient::RoundCompleted(int base_current_health) {
+void MultiplayerClient::RoundCompleted(int base_current_health, int casted_game_process) {
   if (!is_end_round_message_sent_) {
     server_web_socket_->sendBinaryMessage(Message::RoundCompletedMessage(
-        base_current_health));
+        base_current_health,casted_game_process));
     is_end_round_message_sent_ = true;
   }
 }
@@ -167,6 +168,10 @@ void MultiplayerClient::OnConnect() {
         DialogType::kChat);
     received_message_.push_back(message);
   } else {
+    message = Message().SetDialogMessage(
+        "< Your name is " + nick_name_,
+        DialogType::kChat);
+    received_message_.push_back(message);
     Register(nick_name_);
   }
 }
