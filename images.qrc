@@ -1,6 +1,7 @@
 <RCC>
     <qresource>
         <file>resources/images/error.png</file>
+        <file>resources/images/icon.png</file>
 
         <file>resources/images/enemies/toster_1.png</file>
         <file>resources/images/enemies/toster_2.png</file>
@@ -27,6 +28,20 @@
         <file>resources/images/enemies/vaccleaner_5.png</file>
         <file>resources/images/enemies/vaccleaner_6.png</file>
         <file>resources/images/enemies/vaccleaner_7.png</file>
+
+        <file>resources/images/enemies/router_1.png</file>
+        <file>resources/images/enemies/router_2.png</file>
+        <file>resources/images/enemies/router_3.png</file>
+        <file>resources/images/enemies/router_4.png</file>
+
+        <file>resources/images/enemies/fridge_1.png</file>
+        <file>resources/images/enemies/fridge_2.png</file>
+        <file>resources/images/enemies/fridge_3.png</file>
+        <file>resources/images/enemies/fridge_4.png</file>
+        <file>resources/images/enemies/fridge_5.png</file>
+        <file>resources/images/enemies/fridge_6.png</file>
+        <file>resources/images/enemies/fridge_7.png</file>
+        <file>resources/images/enemies/fridge_8.png</file>
 
         <file>resources/buttons_resources/dec_level_button.png</file>
         <file>resources/buttons_resources/dec_level_button_active.png</file>
@@ -160,6 +175,7 @@
         <file>resources/images/icons/less_range_1.png</file>
 
         <file>resources/images/backgrounds/map_level_1_1.png</file>
+        <file>resources/images/backgrounds/map_level_2_1.png</file>
         <file>resources/images/backgrounds/main_background_1.png</file>
         <file>resources/images/backgrounds/settings_background_1.png</file>
         <file>resources/images/backgrounds/pause_menu_background_1.png</file>
@@ -348,5 +364,6 @@
 
         <file>resources/images/towers/empty_1.png</file>
         <file>resources/images/backgrounds/texture_level_1.png</file>
+        <file>resources/images/backgrounds/texture_level_2.png</file>
     </qresource>
 </RCC>
