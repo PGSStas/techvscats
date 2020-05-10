@@ -1,9 +1,13 @@
-#include <QApplication>
-
 #include <memory>
+#include <QApplication>
 #include <QSettings>
 
 #include "Controller/controller.h"
+
+#ifdef Q_OS_ANDROID
+#include <QtAndroidExtras>
+#include <QDateTime>
+#endif
 
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
@@ -68,7 +72,7 @@ int main(int argc, char* argv[]) {
       "(IJLandroid/app/PendingIntent;)V",
       QAndroidJniObject::getStaticField<jint>(
           "android/app/AlarmManager", "RTC"),
-      jlong(QDateTime::currentMSecsSinceEpoch() + 1), pendingIntent.object());
+      jlong(QDateTime::currentMSecsSinceEpoch() + 100), pendingIntent.object());
 
   return 0;
 #else
