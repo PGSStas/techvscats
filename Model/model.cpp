@@ -605,7 +605,7 @@ void Model::LoadParticles(const QJsonObject& json_object) {
 }
 
 Model::~Model() {
-  for (auto sound : id_to_particle_sound_) {
+  for (auto& sound : id_to_particle_sound_) {
     sound.Stop();
   }
 }

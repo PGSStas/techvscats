@@ -24,7 +24,7 @@ void SoundVector::Play() {
 }
 
 void SoundVector::Stop() {
-  for (auto sound : sounds_) {
+  for (auto& sound : sounds_) {
     sound->stop();
   }
 }
