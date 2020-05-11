@@ -50,9 +50,8 @@ void Server::ProcessReceivedMessage(const Message& message,
     case MessageType::kLeaveRoom: {
       RoomLeave(*message_owner);
       message_owner->room = nullptr;
-      message_owner->socket->sendBinaryMessage(
-          Message().DialogMessage(global_chat_.join("\n"),
-                                  DialogType::kChat));
+      SendMessageToClient(Message(MessageType::kChatUpdate,
+                                  {global_chat_.join("\n")}), *message_owner);
       break;
     }
     case MessageType::kGlobalChat: {
@@ -267,7 +266,7 @@ void Server::timerEvent(QTimerEvent* event) {
     for (auto& room : rooms_) {
       room.wait_time -= delta_time;
       if (room.players_loose_ + room.players_win_ == room.players_count) {
-        SendMessageToRoom(Message(MessageType::kGameEnd),room);
+        SendMessageToRoom(Message(MessageType::kGameEnd), room);
         for (auto& client: clients_) {
           RoomLeave(client);
           client.room = nullptr;

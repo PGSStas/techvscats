@@ -24,6 +24,7 @@ class MultiplayerClient : public QObject {
   void Disconnect();
 
   // Send
+  void SendMessageToServer(const Message& message);
   void Register(QString nick_name);
   void EnterRoom(int level_id);
   void RoundCompleted(int base_current_health, int completed_game_process);

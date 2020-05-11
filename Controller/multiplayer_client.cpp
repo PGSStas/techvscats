@@ -22,6 +22,10 @@ void MultiplayerClient::Disconnect() {
   CreateControllerMessage(Message(MessageType::kDisconnect));
 }
 
+void MultiplayerClient::SendMessageToServer(const Message& message) {
+  server_web_socket_->sendBinaryMessage(Message::CodeToBinary(message));
+}
+
 void MultiplayerClient::Register(QString nick_name) {
   if (nick_name == "auto") {
     nick_name_ = AutoGenerateNickName();
@@ -29,28 +33,31 @@ void MultiplayerClient::Register(QString nick_name) {
     nick_name_ = nick_name;
   }
   if (is_online_) {
-    server_web_socket_->sendBinaryMessage(Message::NewConnectionMessage(
-        nick_name_));
+    SendMessageToServer(Message(MessageType::kNewConnection, {nick_name_}));
   }
 }
 
 void MultiplayerClient::EnterRoom(int level_id) {
-  server_web_socket_->sendBinaryMessage(Message::EnterRoomMessage(level_id));
+  SendMessageToServer(Message(
+      MessageType::kEnterRoom, {QString::number(level_id)}));
   has_permission_to_start_round = false;
 }
 
 void MultiplayerClient::RoundCompleted(int base_current_health,
                                        int casted_game_process) {
   if (!is_end_round_message_sent_) {
-    server_web_socket_->sendBinaryMessage(Message::RoundCompletedMessage(
-        base_current_health, casted_game_process));
+    SendMessageToServer(Message(
+        MessageType::kRoundCompletedByPlayer, {
+            QString::number(base_current_health),
+            QString::number(casted_game_process)}));
+
     is_end_round_message_sent_ = true;
   }
 }
 
 void MultiplayerClient::LeaveRoom() {
   CreateControllerMessage(MessageType::kLeaveRoom);
-  server_web_socket_->sendBinaryMessage(Message().LeaveRoomMessage());
+  SendMessageToServer( MessageType::kLeaveRoom);
 }
 
 bool MultiplayerClient::IsReceivedMessageEmpty() const {
@@ -99,7 +106,7 @@ void MultiplayerClient::NewClientMessage(const QString& messages) {
     return;
   }
   if (is_online_) {
-    server_web_socket_->sendBinaryMessage(Message::GlobalChatMessage(messages));
+    SendMessageToServer(Message(MessageType::kGlobalChat, {messages}));
     return;
   }
 }

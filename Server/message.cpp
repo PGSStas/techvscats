@@ -5,36 +5,6 @@ Message::Message(MessageType type, QStringList list)
   arguments_number_ = arguments_.size();
 }
 
-QByteArray Message::NewConnectionMessage(const QString& nick_name) {
-  return CodeToBinary(Message(
-      MessageType::kNewConnection, {nick_name}));
-}
-
-QByteArray Message::EnterRoomMessage(int level_id) {
-  return CodeToBinary(Message(
-      MessageType::kEnterRoom, {QString::number(level_id)}));
-}
-
-QByteArray Message::RoundCompletedMessage(int base_current_health,
-                                          int casted_game_process_) {
-  return CodeToBinary(Message(
-      MessageType::kRoundCompletedByPlayer,
-      {
-          QString::number(base_current_health),
-          QString::number(casted_game_process_)
-      }));
-}
-
-QByteArray Message::LeaveRoomMessage() {
-  return CodeToBinary(Message(MessageType::kLeaveRoom));
-}
-
-QByteArray Message::DialogMessage(const QString& message, DialogType type,
-                                  const QString& nick_name) {
-  return CodeToBinary(
-      Message().SetControllerMessage(message, type, nick_name));
-}
-
 QByteArray Message::CodeToBinary(const Message& message) {
   QJsonDocument json_document;
   QJsonObject json_object;
@@ -45,11 +15,6 @@ QByteArray Message::CodeToBinary(const Message& message) {
   }
   json_document.setObject(json_object);
   return json_document.toBinaryData();
-}
-
-QByteArray Message::GlobalChatMessage(const QString& messages) {
-  return CodeToBinary(
-      Message(MessageType::kGlobalChat, {messages}));
 }
 
 Message& Message::SetControllerMessage(const QString& message, DialogType type,

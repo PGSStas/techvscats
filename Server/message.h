@@ -20,20 +20,20 @@ enum class ControllerCommandType {
 enum class MessageType {
   // To server
   kNewConnection,
-  kEnterRoom,
-  kRoundCompletedByPlayer,
+  kEnterRoom,  // % lvl_id
+  kRoundCompletedByPlayer, // % base_current_health % casted game_process
   kLeaveRoom,
-  kGlobalChat,
+  kGlobalChat, // % message
+
   // To client
   kStartRound,
   kChatUpdate,
-  kNickNameJoinedTheRoom, // % nickname
+  kNickNameJoinedTheRoom,  // % nickname
   kNickNameWinWithHp, // % nickname % hp
   kNickNameFinishRoundWithHp, // % nickname % hp
   kNickNameLeft, // % nickname
   kRoomStartsIn, // % time
   kRoundStartsIn, // % time
-  kDialog,
   kControllerCommand,
   kNickNameDead, // % nickname
 
@@ -53,8 +53,8 @@ enum class MessageType {
   kYouCreatedRoom,
   kGameEnd,
   kServerClosed,
-  kOk
-
+  kOk,
+  kDialog
 };
 
 enum class DialogTypeArg {
@@ -66,24 +66,10 @@ class Message {
  public:
   Message() = default;
   Message(MessageType type, QStringList arguments = {});
-  // To server
-  static QByteArray NewConnectionMessage(const QString& nick_name);
-  static QByteArray EnterRoomMessage(int level_id);
-  static QByteArray RoundCompletedMessage(int current_health,
-                                          int casted_game_process);
-  static QByteArray LeaveRoomMessage();
-  static QByteArray GlobalChatMessage(const QString& messages);
-
-  // To client
-  static QByteArray StartRoundMessage();
-  static QByteArray DialogMessage(const QString& message, DialogType type,
-                                  const QString& nick_name = "");
 
   static QByteArray CodeToBinary(const Message& message);
-
   Message& SetControllerMessage(const QString& message, DialogType type,
                                 const QString& nick_name = "");
-
   Message& SetCommandMessage(const QString& message,
                              ControllerCommandType type);
   Message& DecodeFromBinary(const QByteArray& array);
