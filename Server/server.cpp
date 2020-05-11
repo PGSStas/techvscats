@@ -265,19 +265,19 @@ void Server::timerEvent(QTimerEvent* event) {
     timer_.start();
     for (auto& room : rooms_) {
       room.wait_time -= delta_time;
+      if (room.is_game_end) {
+        continue;
+      }
       if (room.players_loose_ + room.players_win_ == room.players_count) {
         SendMessageToRoom(Message(MessageType::kGameEnd), room);
-        for (auto& client: clients_) {
-          RoomLeave(client);
-          client.room = nullptr;
-        }
+        room.is_game_end = true;
       } else if (room.wait_time <= 100 && room.players_in_round == 0) {
         StartRoom(&room);
       }
     }
   }
   for (auto& room : rooms_) {
-    if (event->timerId() == room.timer_id_) {
+    if (event->timerId() == room.timer_id_ && !room.is_game_end) {
       RoomTimer(&room);
       break;
     }

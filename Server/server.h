@@ -28,6 +28,7 @@ struct Room {
   int wait_time = 8000;
   int timer_id_;
   bool is_in_active_search = true;
+  bool is_game_end = false;
   QStringList room_chat_;
   int players_count = 1;
   int players_in_round = 0;
