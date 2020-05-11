@@ -15,24 +15,26 @@
 // The multiplayer client is responsible for the connection between the game
 // and the server.
 class MultiplayerClient : public QObject {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
+  MultiplayerClient();
   ~MultiplayerClient() override;
 
+  void SetData(QString path);
   void Connect();
   void Disconnect();
 
   // Send
-  void SendMessageToServer(const Message& message);
-  void Register(QString nick_name);
+  void SendMessageToServer(const Message& message) const;
+  void Register(const QString& nick_name);
   void EnterRoom(int level_id);
   void RoundCompleted(int base_current_health, int completed_game_process);
   void LeaveRoom();
 
   // Receive
   bool IsReceivedMessageEmpty() const;
-  const std::list<Message>& GetReceivedMessages() const;
+  const std::list<Message>& GetReceivedMessage() const;
   void ClearReceivedMessage();
 
   bool IsRegistered() const;
@@ -43,7 +45,7 @@ class MultiplayerClient : public QObject {
   void NewClientMessage(const QString& messages);
   void ProcessCommand(QString command);
 
-  void CreateControllerMessage(const Message& message);
+  void CreateVisibleMessage(const Message& message);
  private slots:  // NOLINT
   void OnConnect();
   void OnMessageReceived(const QByteArray& array);
@@ -51,7 +53,7 @@ class MultiplayerClient : public QObject {
 
  private:
   QString nick_name_ = "";
-  QWebSocket* server_web_socket_;
+  QWebSocket* server_web_socket_{};
   const QString address = "ws://localhost:1234";
   // const QString address = "ws://49.12.75.135:1234";
   bool is_online_ = false;
@@ -60,6 +62,7 @@ class MultiplayerClient : public QObject {
   std::list<Message> received_message_;
   static std::mt19937 random_generator_;
 
+  std::vector<VisibleMessage> data_base_;
  private:
   QString AutoGenerateNickName() const;
   const QStringList first_name = {"Greedy", "Bloody", "Big", "Mega", "Optimus"};

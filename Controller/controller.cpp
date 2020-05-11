@@ -10,6 +10,7 @@ Controller::Controller() {
 
 void Controller::SecondConstructorPart() {
   model_->LoadDatabase();
+  client_.SetData("rus_lalala") ;
   view_->SecondConstructorPart();
 }
 
@@ -112,7 +113,7 @@ bool Controller::CanCreateNextWave() {
       && game_status_ == GameStatus::kPlay) {
     game_status_ = GameStatus::kWin;
     client_.RoundCompleted(model_->GetBase()->GetCurrentHealth(),
-                           static_cast<int>( GameStatus::kWin));
+                           static_cast<int>(GameStatus::kWin));
     int life_time = 16000;
     double size_coefficient = 1.03;
     model_->AddTextNotification({"Level Complete",
@@ -132,7 +133,7 @@ bool Controller::CanCreateNextWave() {
   if (client_.IsOnline() && !client_.HasPermissionToStartRound()) {
     if (current_round_number != 0) {
       client_.RoundCompleted(model_->GetBase()->GetCurrentHealth(),
-                             static_cast<int>( GameStatus::kPlay));
+                             static_cast<int>(GameStatus::kPlay));
     }
     return false;
   }
@@ -167,10 +168,10 @@ void Controller::TickClient() {
   if (client_.IsReceivedMessageEmpty()) {
     return;
   }
-  const auto& messages = client_.GetReceivedMessages();
+  const auto& messages = client_.GetReceivedMessage();
   for (auto& message : messages) {
     switch (message.GetType()) {
-      case MessageType::kControllerMessage: {
+      case MessageType::kVisibleMessage: {
         ProcessControllerMessage(message);
         break;
       }
@@ -255,7 +256,6 @@ void Controller::TickBuildings() {
     }
   }
 
-
   // Base
   model_->GetBase()->Tick(current_game_time_);
   if (model_->GetBase()->IsDead() && game_status_ == GameStatus::kPlay) {
@@ -263,7 +263,7 @@ void Controller::TickBuildings() {
     game_status_ = GameStatus::kLose;
 
     client_.RoundCompleted(model_->GetBase()->GetCurrentHealth(),
-                           static_cast<int>( GameStatus::kLose));
+                           static_cast<int>(GameStatus::kLose));
     int life_time = 16000;
     double size_coefficient = 1.03;
     model_->AddTextNotification({"GameOver:(",
@@ -271,7 +271,6 @@ void Controller::TickBuildings() {
                                   constants::kGameHeight / 2}, Qt::red,
                                  view_->GetRealTime(), {0, 0}, life_time,
                                  size_coefficient});
-
   }
 }
 
@@ -516,7 +515,7 @@ MultiplayerClient* Controller::GetClient() {
 
 void Controller::ProcessControllerMessage(const Message& message) {
   switch (message.GetDialogType()) {
-    case DialogType::kWarning: {
+    case VisibleType::kWarning: {
       model_->AddTextNotification(
           {message.GetArgument(0),
            {constants::kGameWidth / 2,
@@ -526,7 +525,7 @@ void Controller::ProcessControllerMessage(const Message& message) {
            50, true});
       break;
     }
-    case DialogType::kChat: {
+    case VisibleType::kChat: {
       view_->AddGlobalChatMessage(message.GetArgument(0).split("\n"));
       break;
     }
@@ -534,16 +533,16 @@ void Controller::ProcessControllerMessage(const Message& message) {
 }
 
 void Controller::ProcessControllerCommand(const Message& message) {
-  switch (message.GetControllerCommandType()) {
-    case ControllerCommandType::kGoldChange: {
+  switch (message.GetCommandType()) {
+    case CommandType::kGoldChange: {
       if (WindowType::kGame == window_type_) {
         model_->GetBase()->AddGoldAmount(message.GetArgument(0).toInt());
       }
       break;
     }
-    case ControllerCommandType::kHealthGrow: {
+    case CommandType::kHealthGrow: {
       if (WindowType::kGame == window_type_) {
-        model_->GetBase()->DecreaseHealth(-10000);
+        model_->GetBase()->SetImmortal();
       }
       break;
     }

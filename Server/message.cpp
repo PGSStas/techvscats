@@ -17,11 +17,12 @@ QByteArray Message::CodeToBinary(const Message& message) {
   return json_document.toBinaryData();
 }
 
-Message& Message::SetControllerMessage(const QString& message, DialogType type,
-                                       const QString& nick_name) {
-  message_type_ = MessageType::kControllerMessage;
+Message& Message::SetVisibleMessage(const QString& message, VisibleType type,
+                                    const QString& nick_name) {
+  message_type_ = MessageType::kVisibleMessage;
   dialog_type_ = type;
   arguments_ = QStringList({""});
+  arguments_number_ = 1;
   if (!nick_name.isEmpty()) {
     arguments_[0] = "> " + nick_name + " : ";
   }
@@ -30,10 +31,11 @@ Message& Message::SetControllerMessage(const QString& message, DialogType type,
   return *this;
 }
 Message& Message::SetCommandMessage(const QString& message,
-                                    ControllerCommandType type) {
+                                    CommandType type) {
   message_type_ = MessageType::kControllerCommand;
-  controller_command_type_ = type;
+  command_type_ = type;
   arguments_ = QStringList({""});
+  arguments_number_ = 1;
   arguments_[0] = message;
   return *this;
 }
@@ -60,10 +62,14 @@ QString Message::GetArgument(int arg_num) const {
   return arguments_[arg_num];
 }
 
-ControllerCommandType Message::GetControllerCommandType() const {
-  return controller_command_type_;
+const QStringList& Message::GetArguments() const {
+  return arguments_;
 }
 
-DialogType Message::GetDialogType() const {
+CommandType Message::GetCommandType() const {
+  return command_type_;
+}
+
+VisibleType Message::GetDialogType() const {
   return dialog_type_;
 }

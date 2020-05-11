@@ -7,26 +7,23 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-enum class DialogType {
+enum class VisibleType {
   kChat,
   kWarning
 };
 
-enum class ControllerCommandType {
+struct VisibleMessage {
+  QString message;
+  VisibleType type;
+};
+
+enum class CommandType {
   kGoldChange,
   kHealthGrow,
 };
 
 enum class MessageType {
-  // To server
-  kEnterRoom,  // % lvl_id
-  kGlobalChat, // % message
-  kLeaveRoom,
-  kNewConnection,
-  kRoundCompletedByPlayer, // % base_current_health % casted game_process
-
   // To client
-  kControllerCommand,
   kChatUpdate,
   kNickNameDead, // % nickname
   kNickNameJoinedTheRoom,  // % nickname
@@ -40,7 +37,6 @@ enum class MessageType {
   // To translate
   kConnect,
   kChatOffline,
-  kControllerMessage,
   kGoldError,
   kDisconnect,
   kErrorCommand,
@@ -49,12 +45,26 @@ enum class MessageType {
   kHintRegistration1,
   kHintRegistration2,
   kInfinityHealth,
-  kPlayerMessage, // %message
   kMoreGold,
   kOk,
   kServerClosed,
   kYourNickNameIs, // %nick_name
   kYouCreatedRoom,
+
+  // To client and server
+  kLeaveRoom,
+
+  // To server
+  kEnterRoom,  // % lvl_id
+  kGlobalChat, // % message
+  kNewConnection,
+  kRoundCompletedByPlayer, // % base_current_health % casted game_process
+
+
+  // To controller
+  kControllerCommand,
+  kVisibleMessage
+
 };
 
 enum class DialogTypeArg {
@@ -68,20 +78,21 @@ class Message {
   Message(MessageType type, QStringList arguments = {});
 
   static QByteArray CodeToBinary(const Message& message);
-  Message& SetControllerMessage(const QString& message, DialogType type,
-                                const QString& nick_name = "");
+  Message& SetVisibleMessage(const QString& message, VisibleType type,
+                             const QString& nick_name = "");
   Message& SetCommandMessage(const QString& message,
-                             ControllerCommandType type);
+                             CommandType type);
   Message& DecodeFromBinary(const QByteArray& array);
   MessageType GetType() const;
   QString GetArgument(int arg_num) const;
-  ControllerCommandType GetControllerCommandType() const;
-  DialogType GetDialogType() const;
+  const QStringList& GetArguments() const;
+  CommandType GetCommandType() const;
+  VisibleType GetDialogType() const;
 
  private:
   MessageType message_type_;
-  DialogType dialog_type_;
-  ControllerCommandType controller_command_type_;
+  VisibleType dialog_type_;
+  CommandType command_type_;
   QStringList arguments_;
   int arguments_number_ = 0;
 
