@@ -306,6 +306,10 @@ void View::timerEvent(QTimerEvent* event) {
         controller_->GetClient()->IsOnline(),
         controller_->GetClient()->IsRegistered());
     repaint();
+    if(window_type_!=button_handler_.GetWindowType()){
+      window_type_ = button_handler_.GetWindowType();
+      controller_->ClearTextNotifications();
+    }
   }
 }
 

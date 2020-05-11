@@ -57,7 +57,7 @@ void MultiplayerClient::RoundCompleted(int base_current_health,
 
 void MultiplayerClient::LeaveRoom() {
   CreateControllerMessage(MessageType::kLeaveRoom);
-  SendMessageToServer( MessageType::kLeaveRoom);
+  SendMessageToServer(MessageType::kLeaveRoom);
 }
 
 bool MultiplayerClient::IsReceivedMessageEmpty() const {
@@ -247,9 +247,11 @@ void MultiplayerClient::CreateControllerMessage(const Message& message) {
     }
     case MessageType::kStartRound: {
       SetPermissionToStartRound(true);
+      message_to_send.SetControllerMessage(
+          "< Round starts!! ",
+          DialogType::kChat);
       break;
     }
-    default: qDebug() << "error message from server";
   }
   received_message_.push_back(message_to_send);
 }

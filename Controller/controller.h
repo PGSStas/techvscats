@@ -33,6 +33,7 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<AbstractProjectile>>&
   GetProjectiles() const override;
   const std::list<TextNotification>& GetTextNotifications() const override;
+  void ClearTextNotifications() override;
 
   const Base& GetBase() const override;
   int GetCurrentTime() const override;

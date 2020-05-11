@@ -55,6 +55,7 @@ class AbstractController {
   virtual const std::vector<std::shared_ptr<Building>>&
   GetBuildings() const = 0;
   virtual const std::list<TextNotification>& GetTextNotifications() const = 0;
+  virtual void ClearTextNotifications() = 0;
 
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
