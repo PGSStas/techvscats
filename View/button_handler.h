@@ -1,15 +1,23 @@
 #ifndef VIEW_BUTTON_HANDLER_H_
 #define VIEW_BUTTON_HANDLER_H_
 
+#include <QApplication>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMainWindow>
+#include <QProcess>
 #include <QPushButton>
 #include <QString>
+#include <QSettings>
+#include <QTranslator>
 
 #include "Controller/abstract_controller.h"
 #include "menu_button.h"
 #include "size_handler.h"
 
-class ButtonHandler : QObject {
+class ButtonHandler : public QObject {
+  Q_OBJECT
+
  public:
   ButtonHandler(QMainWindow* main_window, AbstractController* controller,
                 int font_id);

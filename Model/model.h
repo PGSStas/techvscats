@@ -10,6 +10,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
+#include <QSettings>
 #include <QString>
 #include <QSoundEffect>
 #include <QFile>

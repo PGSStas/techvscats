@@ -3,5 +3,10 @@
     <file>resources/levels/level_1.json</file>
     <file>resources/database/database.json</file>
     <file>resources/fonts/gui_font.ttf</file>
+
+    <file>resources/database/description_ru_RU.json</file>
+    <file>resources/database/description_en_US.json</file>
+    <file>resources/translations/translation_en_US.qm</file>
+    <file>resources/translations/translation_ru_RU.qm</file>
 </qresource>
 </RCC>

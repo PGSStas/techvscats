@@ -132,19 +132,44 @@ void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  language_button_ = new MenuButton(
-      short_button_size_,
-      main_window_,
-      ":resources/buttons_resources/language_button_eng.png",
-      ":resources/buttons_resources/language_button_eng_active.png");
-  language_button_->SetSecondIconPath(
-      ":resources/buttons_resources/language_button_rus.png",
-      ":resources/buttons_resources/language_button_rus_active.png");
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+
+  QString locale = settings.value("locale", "en_US").toString();
+  if (locale == "en_US") {
+    is_language_russian_ = false;
+    language_button_ = new MenuButton(
+        short_button_size_,
+        main_window_,
+        ":resources/buttons_resources/language_button_eng.png",
+        ":resources/buttons_resources/language_button_eng_active.png");
+    language_button_->SetSecondIconPath(
+        ":resources/buttons_resources/language_button_rus.png",
+        ":resources/buttons_resources/language_button_rus_active.png");
+  } else {
+    is_language_russian_ = true;
+    language_button_ = new MenuButton(
+        short_button_size_,
+        main_window_,
+        ":resources/buttons_resources/language_button_rus.png",
+        ":resources/buttons_resources/language_button_rus_active.png");
+    language_button_->SetSecondIconPath(
+        ":resources/buttons_resources/language_button_eng.png",
+        ":resources/buttons_resources/language_button_eng_active.png");
+  }
+
   auto language_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     // changing language
     language_button_->EnableSecondIcon(is_language_russian_);
     is_language_russian_ = !is_language_russian_;
+
+    QSettings settings(constants::kCompanyName, constants::kApplicationName);
+    if (is_language_russian_) {
+      settings.setValue("locale", "ru_RU");
+    } else {
+      settings.setValue("locale", "en_US");
+    }
+    qApp->exit(constants::kApplicationRestartCode);
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
 

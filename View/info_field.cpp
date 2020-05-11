@@ -9,17 +9,18 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->setBrush(QBrush(qRgb(53, 53, 53)));
 
   auto font = painter->font();
-  font.setPixelSize(size_handler.GameToWindowLength(constants::kFontSize));
   font.setFamily(QFontDatabase::applicationFontFamilies(0).at(0));
+  font.setPixelSize(size_handler.GameToWindowLength(
+      constants::kFontSize * 0.7));
+  QFontMetrics metrics(font);
+  font.setPixelSize(size_handler.GameToWindowLength(constants::kFontSize));
   painter->setFont(font);
 
-  QFontMetrics metrics(font);
-
-  double text_height = metrics.boundingRect(0, 0, kSize.width - 2 * kMargin,
-                                            kSize.height - 2 * kMargin,
-                                            Qt::TextWordWrap, info_).height();
+  auto info_size = size_handler.GameToWindowLength(kSize.width - 2 * kMargin);
+  double text_height = size_handler.WindowToGameLength(metrics.boundingRect(
+      0, 0, info_size, 0, Qt::TextWordWrap, info_).height() + 2 * kMargin);
   double final_text_height = std::min(kSize.height, text_height +
-      (1 - kRelativeTextSize.height) * kSize.height) + 2 * kMargin;
+      (1 - kRelativeTextSize.height) * kSize.height);
 
   Coordinate point = size_handler.GameToWindowCoordinate(position_);
   Size size = size_handler.GameToWindowSize({kSize.width, final_text_height});
@@ -43,7 +44,7 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
                                                    kRelativeHeaderSize.height});
   size = size_handler.GameToWindowSize(
       {kSize.width * kRelativeTextSize.width - 2 * kMargin,
-       kSize.height * kRelativeTextSize.height - 2 * kMargin});
+       text_height - 2 * kMargin});
   painter->drawText(point.x, point.y,
                     size.width, size.height, Qt::TextWordWrap, info_);
 
