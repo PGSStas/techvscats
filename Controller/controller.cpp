@@ -29,6 +29,7 @@ void Controller::StartGame(int level_id) {
     client_.EnterRoom(level_id);
   }
   music_player_.StartGameMusic();
+  music_player_.PlayNewWaveSound();
 }
 
 void Controller::EndGame() {

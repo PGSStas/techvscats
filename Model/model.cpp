@@ -603,3 +603,9 @@ void Model::LoadParticles(const QJsonObject& json_object) {
     id_to_particle_sound_.emplace_back(path, sound_roads_count);
   }
 }
+
+Model::~Model() {
+  for (auto& sound : id_to_particle_sound_) {
+    sound.Stop();
+  }
+}
