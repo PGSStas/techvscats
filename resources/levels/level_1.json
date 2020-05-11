@@ -281,14 +281,14 @@
       {
         "spawn_period": 2500,
         "enemy_id": 3,
-        "time_of_next_spawn": 86500,
+        "time_of_next_spawn": 86300,
         "group_size": 4,
         "road_to_spawn": 0
       },
       {
         "spawn_period": 2500,
         "enemy_id": 3,
-        "time_of_next_spawn": 85500,
+        "time_of_next_spawn": 85700,
         "group_size": 4,
         "road_to_spawn": 0
       }
@@ -398,23 +398,66 @@
         "spawn_period": 15000,
         "enemy_id": 6,
         "time_of_next_spawn": 9000,
-        "group_size": 4,
+        "group_size": 3,
         "road_to_spawn": 0
       },
       {
         "spawn_period": 5000,
         "enemy_id": 1,
-        "time_of_next_spawn": 14000,
+        "time_of_next_spawn": 30000,
         "group_size": 12,
         "road_to_spawn": 2
       },
       {
-        "spawn_period": 5000,
-        "enemy_id": 1,
-        "time_of_next_spawn": 14000,
-        "group_size": 12,
+        "spawn_period": 2000,
+        "enemy_id": 3,
+        "time_of_next_spawn": 70000,
+        "group_size": 18,
         "road_to_spawn": 2
+      },
+      {
+        "spawn_period": 1000,
+        "enemy_id": 3,
+        "time_of_next_spawn": 72000,
+        "group_size": 9,
+        "road_to_spawn": 1
+      },
+      {
+        "spawn_period": 1000,
+        "enemy_id": 3,
+        "time_of_next_spawn": 74000,
+        "group_size": 9,
+        "road_to_spawn": 0
+      },
+      {
+        "spawn_period": 15000,
+        "enemy_id": 1,
+        "time_of_next_spawn": 85500,
+        "group_size": 4,
+        "road_to_spawn": 0
+      },
+      {
+        "spawn_period": 15000,
+        "enemy_id": 1,
+        "time_of_next_spawn": 86000,
+        "group_size": 4,
+        "road_to_spawn": 0
+      },
+      {
+        "spawn_period": 15000,
+        "enemy_id": 1,
+        "time_of_next_spawn": 86500,
+        "group_size": 4,
+        "road_to_spawn": 0
+      },
+      {
+        "spawn_period": 15000,
+        "enemy_id": 6,
+        "time_of_next_spawn": 86000,
+        "group_size": 4,
+        "road_to_spawn": 0
       }
+
     ]
   ],
   "empty_towers": [

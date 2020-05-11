@@ -1,7 +1,7 @@
 {
   "enemies": [
     {
-      "speed": 6,
+      "speed": 9,
       "damage": 6,
       "armor": 0,
       "reward": 3,
@@ -20,7 +20,7 @@
       }
     },
     {
-      "speed": 4,
+      "speed": 6,
       "damage": 9,
       "armor": 20,
       "reward": 6,
@@ -43,7 +43,7 @@
       }
     },
     {
-      "speed": 4,
+      "speed": 6,
       "damage": 9,
       "armor": 20,
       "reward": 6,
@@ -66,7 +66,7 @@
       }
     },
     {
-      "speed": 8,
+      "speed": 12,
       "damage": 2,
       "armor": -5,
       "reward": 1,
@@ -85,7 +85,7 @@
       }
     },
     {
-      "speed": 10,
+      "speed": 15,
       "damage": 3,
       "armor": 5,
       "reward": 4,
@@ -108,7 +108,7 @@
       }
     },
     {
-      "speed": 3,
+      "speed": 5,
       "damage": 30,
       "armor": 50,
       "reward": 60,
@@ -127,7 +127,7 @@
       }
     },
     {
-      "speed": 4,
+      "speed": 6,
       "damage": 8,
       "armor": 50,
       "reward": 12,
@@ -146,7 +146,7 @@
       }
     },
     {
-      "speed": 3,
+      "speed": 5,
       "damage": 10,
       "armor": 60,
       "reward": 12,
@@ -165,7 +165,7 @@
       }
     },
     {
-      "speed": 4,
+      "speed": 6,
       "damage": 8,
       "armor": 50,
       "reward": 12,
@@ -188,7 +188,7 @@
       }
     },
     {
-      "speed": 4,
+      "speed": 6,
       "damage": 8,
       "armor": 50,
       "reward": 12,
@@ -211,7 +211,7 @@
       }
     },
     {
-      "speed": 4,
+      "speed": 6,
       "damage": 8,
       "armor": 50,
       "reward": 12,
@@ -357,8 +357,8 @@
       ],
       "action_time": [
         500,
-        2250,
-        2250
+        2750,
+        2750
       ],
       "upgrade_tree": [
         6,
@@ -369,10 +369,10 @@
       }
     },
     {
-      "settle_cost": 135,
+      "settle_cost": 150,
       "projectile": {
         "projectile_id": 2,
-        "attack_damage": 4,
+        "attack_damage": 2.5,
         "attack_range": 300,
         "max_aims": 1,
         "shooting_anchor": {
@@ -471,8 +471,8 @@
       ],
       "action_time": [
         500,
-        2000,
-        2000
+        2200,
+        2200
       ],
       "upgrade_tree": [
         10,
@@ -488,10 +488,10 @@
         "towers/laser_lv2_pre_4",
         "towers/laser_lv2_post_4"
       ],
-      "settle_cost": 100,
+      "settle_cost": 120,
       "projectile": {
         "projectile_id": 2,
-        "attack_damage": 3.8,
+        "attack_damage": 2.3,
         "attack_range": 400,
         "max_aims": 2,
         "shooting_anchor": {
@@ -595,10 +595,10 @@
       }
     },
     {
-      "settle_cost": 170,
+      "settle_cost": 150,
       "projectile": {
         "projectile_id": 2,
-        "attack_damage": 3.6,
+        "attack_damage": 2.1,
         "attack_range": 300,
         "max_aims": 3,
         "shooting_anchor": {

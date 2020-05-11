@@ -29,7 +29,7 @@ void Building::Tick(int current_time) {
     case Action::kWait: {
       if (is_ready_to_shoot_) {
         action_ = Action::kBeforeFire;
-        wait_time_ = 0;
+        wait_time_ = delta_time_  ;
       }
       break;
     }
