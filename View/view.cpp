@@ -347,3 +347,7 @@ void View::DrawBars(QPainter* painter) {
                                                    building->GetSize());
   }
 }
+
+std::shared_ptr<ButtonHandler> View::GetButtonHandler() const {
+  return button_handler_;
+}

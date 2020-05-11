@@ -2,6 +2,7 @@
 #define VIEW_BUTTON_HANDLER_H_
 
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QString>
 
@@ -25,6 +26,12 @@ class ButtonHandler : QObject {
 
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
+
+  void SetLevelNumber(int level);
+  void SetSoundOn(bool sound_on);
+  void SetLanguage(int language_id);
+  void SetMaxLevel(int max_level);
+  int GetLevel() const;
 
  private:
   // creating main menu
@@ -82,6 +89,8 @@ class ButtonHandler : QObject {
 
   // left to check icons
   bool is_language_russian_ = true;
+
+  int max_level_ = 2;
 };
 
 #endif  // VIEW_BUTTON_HANDLER_H_
