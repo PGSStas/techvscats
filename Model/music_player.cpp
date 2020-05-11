@@ -84,3 +84,13 @@ void MusicPlayer::SetSound(QMediaPlayer* player, const QString& path) {
   player->playlist()->setCurrentIndex(0);
   playlists_.push_back(std::move(playlist));
 }
+
+MusicPlayer::~MusicPlayer() {
+  main_player_->stop();
+  button_sound_->stop();
+  game_over_sound_->stop();
+  game_won_sound_->stop();
+  sale_sound_->stop();
+  not_enough_money_sound_->stop();
+  new_wave_->stop();
+}

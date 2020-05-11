@@ -39,7 +39,7 @@ add_executable(techvscats
         Model/road.cpp
         Model/size.cpp
         Model/sound_vector.cpp
-        resources.qrc
+        database.qrc music.qrc images.qrc
         View/animation_player.cpp
         View/animation_player.cpp
         View/button_handler.cpp

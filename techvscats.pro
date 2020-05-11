@@ -14,7 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 
-RESOURCES += resources.qrc
+RESOURCES += database.qrc music.qrc images.qrc
 
 SOURCES += \
         main.cpp \

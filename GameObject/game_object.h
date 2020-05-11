@@ -23,8 +23,7 @@ class GameObject {
                     const SizeHandler& size_handler) const = 0;
 
   const QImage& GetSprite() const;
-  void SetAnimationPlayers(
-      const std::vector<AnimationPlayer>& animation_players);
+  void SetAnimationPlayers(std::vector<AnimationPlayer> animation_players);
   void Rescale(Size to_size);
 
   void SetPosition(Coordinate position);

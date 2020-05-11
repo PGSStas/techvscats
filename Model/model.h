@@ -36,7 +36,9 @@
 
 class Model {
  public:
-  Model();
+  Model() = default;
+  ~Model();
+  void LoadDatabase();
 
   void SetGameLevel(int level);
   void AddSpawner(const EnemyGroup& enemy_group);
@@ -77,14 +79,20 @@ class Model {
 
  private:
   void LoadLevel(int level);
-  void LoadDatabase();
   void InitializeTowerSlots();
-  void SetAnimationToGameObject(
-      GameObject* object, std::vector<int> timmings,
-      std::vector<QString> paths);
+
+  void SetAnimationToGameObject(GameObject* object,
+                                const std::vector<int>& timings,
+                                const std::vector<QString>& paths);
   std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(
-      QString path, QString picture_type = ".png") const;
+      const QString& path, const QString& picture_type = ".png") const;
   void SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object);
+  void LoadEffects(const QJsonObject& json_object);
+  void LoadEnemies(const QJsonObject& json_object);
+  void LoadBackground(const QJsonObject& json_object);
+  void LoadBuildings(const QJsonObject& json_object);
+  void LoadProjectiles(const QJsonObject& json_object);
+  void LoadParticles(const QJsonObject& json_object);
 
   // Database which is updated by Controller all time
   std::list<Spawner> spawners_;
@@ -115,7 +123,6 @@ class Model {
   std::vector<SoundVector> id_to_particle_sound_;
 
   // Images
-
   std::vector<QImage> empty_zone_texture_;
   std::vector<AnimationPlayer> backgrounds_;
   AnimationPlayer interface_;
