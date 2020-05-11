@@ -33,6 +33,7 @@ Message& Message::SetCommandMessage(const QString& message,
                                     ControllerCommandType type) {
   message_type_ = MessageType::kControllerCommand;
   controller_command_type_ = type;
+  arguments_ = QStringList({""});
   arguments_[0] = message;
   return *this;
 }
