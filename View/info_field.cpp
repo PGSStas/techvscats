@@ -10,7 +10,8 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
 
   auto font = painter->font();
   font.setFamily(QFontDatabase::applicationFontFamilies(0).at(0));
-  font.setPixelSize(size_handler.GameToWindowLength(constants::kFontSize * 0.7));
+  font.setPixelSize(size_handler.GameToWindowLength(
+      constants::kFontSize * 0.7));
   QFontMetrics metrics(font);
   font.setPixelSize(size_handler.GameToWindowLength(constants::kFontSize));
   painter->setFont(font);
