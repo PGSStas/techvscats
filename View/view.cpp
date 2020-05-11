@@ -1,49 +1,75 @@
 #include "view.h"
 
 View::View(AbstractController* controller)
-    : controller_(controller), size_handler_(),
-      button_handler_(ButtonHandler(this, controller, 0)),
-      global_chat_(this),
+    : controller_(controller),
+      size_handler_(),
       tower_menu_(this) {
   setMinimumSize(960, 540);
   setMouseTracking(true);
   show();
-  // showFullScreen();
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
-  button_handler_.SetGameUiVisible(false);
-  button_handler_.SetPauseMenuUiVisible(false);
-  button_handler_.SetSettingsUiVisible(false);
-  button_handler_.SetMainMenuUiVisible(true);
+}
+
+void View::SecondConstructorPart() {
+  button_handler_ = std::make_shared<ButtonHandler>(this, controller_, 0);
+  global_chat_ = std::make_shared<GlobalChat>(this);
+  button_handler_->SetGameUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(false);
+  button_handler_->SetSettingsUiVisible(false);
+  button_handler_->SetMainMenuUiVisible(false);
+  is_model_loaded_ = true;
+  Resize();
 }
 
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
-  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-  painter.drawImage(
-      origin.x, origin.y, controller_->GetBackground(
-          button_handler_.GetWindowType()).GetCurrentFrame());
+  if (!is_model_loaded_) {
+    Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+    painter.drawImage(origin.x, origin.y, logo_.scaled(width(), height()));
+    return;
+  }
 
-  auto window_type = button_handler_.GetWindowType();
+  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+  painter.drawImage(origin.x, origin.y, controller_->GetBackground(
+      button_handler_->GetWindowType()).GetCurrentFrame());
+
+  auto window_type = button_handler_->GetWindowType();
   switch (window_type) {
-    case WindowType::kMainMenu:DrawMainMenu(&painter);
+    case WindowType::kMainMenu: {
+      DrawMainMenu(&painter);
       break;
-    case WindowType::kGame:DrawGame(&painter);
+    }
+    case WindowType::kGame: {
+      DrawGame(&painter);
       break;
-    case WindowType::kSettings:DrawSettings(&painter);
+    }
+    case WindowType::kSettings: {
+      DrawSettings(&painter);
       break;
-    case WindowType::kPauseMenu:DrawPauseMenu(&painter);
+    }
+    case WindowType::kPauseMenu: {
+      DrawPauseMenu(&painter);
       break;
+    }
   }
   DrawTextNotification(&painter);
   DrawEmptyZones(&painter);
 }
 
+void View::Resize() {
+  size_handler_.ChangeSystem(this->width(), this->height());
+  button_handler_->RescaleButtons(size_handler_);
+  tower_menu_.RescaleButtons(size_handler_);
+  global_chat_->RescaleChat(size_handler_);
+  controller_->RescaleObjects(size_handler_);
+}
+
 void View::DrawEmptyZones(QPainter* painter) {
   painter->save();
   const QImage& image = controller_->GetEmptyZoneTexture(
-      button_handler_.GetWindowType());
+      button_handler_->GetWindowType());
   Size horizontal_zone =
       Size(width(), size_handler_.GameToWindowCoordinate({0, 0}).y);
   painter->fillRect(0, 0, horizontal_zone.width, horizontal_zone.height, image);
@@ -62,9 +88,9 @@ void View::DrawEmptyZones(QPainter* painter) {
 }
 
 void View::DrawMainMenu(QPainter*) {
-  button_handler_.SetSettingsUiVisible(false);
-  button_handler_.SetPauseMenuUiVisible(false);
-  button_handler_.SetMainMenuUiVisible(true);
+  button_handler_->SetSettingsUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(false);
+  button_handler_->SetMainMenuUiVisible(true);
 }
 
 void View::DrawGame(QPainter* painter) {
@@ -79,19 +105,19 @@ void View::DrawGame(QPainter* painter) {
   DrawAdditionalInfo(painter);
   DrawEndgameMessage(painter);
 
-  button_handler_.SetMainMenuUiVisible(false);
-  button_handler_.SetPauseMenuUiVisible(false);
-  button_handler_.SetGameUiVisible(true);
+  button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(false);
+  button_handler_->SetGameUiVisible(true);
 }
 
 void View::DrawSettings(QPainter*) {
-  button_handler_.SetMainMenuUiVisible(false);
-  button_handler_.SetSettingsUiVisible(true);
+  button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetSettingsUiVisible(true);
 }
 
 void View::DrawPauseMenu(QPainter*) {
-  button_handler_.SetGameUiVisible(false);
-  button_handler_.SetPauseMenuUiVisible(true);
+  button_handler_->SetGameUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(true);
   tower_menu_.Hide(true);
 }
 
@@ -201,14 +227,20 @@ void View::DisableTowerMenu() {
 }
 
 void View::mouseReleaseEvent(QMouseEvent* event) {
-  if (button_handler_.GetWindowType() == WindowType::kGame) {
+  if (!is_model_loaded_) {
+    return;
+  }
+  if (button_handler_->GetWindowType() == WindowType::kGame) {
     controller_->MouseEvent(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())), false);
   }
 }
 
 void View::mousePressEvent(QMouseEvent* event) {
-  if (button_handler_.GetWindowType() == WindowType::kGame) {
+  if (!is_model_loaded_) {
+    return;
+  }
+  if (button_handler_->GetWindowType() == WindowType::kGame) {
     controller_->MouseEvent(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())), true);
   }
@@ -224,33 +256,32 @@ void View::keyPressEvent(QKeyEvent* event) {
 }
 
 void View::resizeEvent(QResizeEvent*) {
-  size_handler_.ChangeSystem(this->width(), this->height());
-  button_handler_.RescaleButtons(size_handler_);
-  tower_menu_.RescaleButtons(size_handler_);
-  global_chat_.RescaleChat(size_handler_);
-  controller_->RescaleObjects(size_handler_);
+  if (!is_model_loaded_) {
+    return;
+  }
+  Resize();
 }
 
 void View::EnableGameUi() {
   controller_->RescaleObjects(size_handler_);
-  global_chat_.ChangeStyle();
+  global_chat_->ChangeStyle();
   if (controller_->GetClient()->IsOnline()) {
-    global_chat_.Clear();
+    global_chat_->Clear();
   }
   DisableTowerMenu();
-  button_handler_.SetGameUiVisible(true);
+  button_handler_->SetGameUiVisible(true);
 }
 
 void View::DisableGameUi() {
-  button_handler_.SetGameUiVisible(false);
+  button_handler_->SetGameUiVisible(false);
 }
 
 void View::EnableMainMenuUi() {
-  global_chat_.ChangeStyle();
+  button_handler_->SetMainMenuUiVisible(true);
+  global_chat_->ChangeStyle();
   if (controller_->GetClient()->IsOnline()) {
-    global_chat_.Clear();
+    global_chat_->Clear();
   }
-  button_handler_.SetMainMenuUiVisible(true);
 }
 
 void View::DrawAdditionalInfo(QPainter* painter) {
@@ -273,15 +304,20 @@ void View::DrawAdditionalInfo(QPainter* painter) {
 }
 
 void View::DisableMainMenuUi() {
-  button_handler_.SetMainMenuUiVisible(false);
+  button_handler_->SetMainMenuUiVisible(false);
 }
 
 void View::AddGlobalChatMessage(const QStringList& message) {
-  global_chat_.ReceiveNewMessages(message);
+  global_chat_->ReceiveNewMessages(message);
 }
 
 void View::timerEvent(QTimerEvent* event) {
   if (event->timerId() == controller_timer_id_) {
+    if (!is_model_loaded_) {
+      repaint();
+      controller_->SecondConstructorPart();
+      return;
+    }
     int delta_time_ = time_between_ticks_.elapsed();
     time_between_ticks_.restart();
     controller_->Tick(controller_->GetCurrentTime()
@@ -295,19 +331,19 @@ void View::timerEvent(QTimerEvent* event) {
       tower_menu_.SetIsWantToReplaceToFalse();
     }
     // Global ChatTick
-    global_chat_.Tick(size_handler_, delta_time_);
-    if (!global_chat_.IsMessagesQueueEmpty()) {
+    global_chat_->Tick(size_handler_, delta_time_);
+    if (!global_chat_->IsMessagesQueueEmpty()) {
       controller_->GetClient()->NewClientMessage(
-          global_chat_.GetMessageToSend());
-      global_chat_.PopMessageQueue();
+          global_chat_->GetMessageToSend());
+      global_chat_->PopMessageQueue();
     }
 
-    button_handler_.UpdateButtonsStatus(
+    button_handler_->UpdateButtonsStatus(
         controller_->GetClient()->IsOnline(),
         controller_->GetClient()->IsRegistered());
     repaint();
-    if(window_type_!=button_handler_.GetWindowType()){
-      window_type_ = button_handler_.GetWindowType();
+    if(window_type_!=button_handler_->GetWindowType()){
+      window_type_ = button_handler_->GetWindowType();
       controller_->ClearTextNotifications();
     }
   }

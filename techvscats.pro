@@ -1,4 +1,4 @@
-QT       += core gui websockets
+QT       += core gui websockets multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,7 +10,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 
-RESOURCES += resources.qrc
+RESOURCES += database.qrc music.qrc images.qrc
 
 SOURCES += \
         main.cpp \
@@ -32,8 +32,10 @@ SOURCES += \
         GameObject/particle.cpp \
         Model/coordinate.cpp \
         Model/model.cpp \
+        Model/music_player.cpp \
         Model/road.cpp \
         Model/size.cpp \
+        Model/sound_vector.cpp \
         Server/message.cpp \
         View/animation_player.cpp \
         View/button_handler.cpp \
@@ -67,9 +69,11 @@ HEADERS += \
         Model/coordinate.h \
         Model/enemy_group.h \
         Model/model.h \
+        Model/music_player.h \
         Model/road.h \
         Model/size.h \
         Server/message.h \
+        Model/sound_vector.h \
         View/animation_player.h \
         View/button_handler.h \
         View/global_chat.h \

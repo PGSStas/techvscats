@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QString>
+#include <QSoundEffect>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -28,12 +29,15 @@
 #include "GameObject/particle.h"
 #include "enemy_group.h"
 #include "road.h"
+#include "sound_vector.h"
 #include "View/text_notification.h"
 #include "View/tower_menu.h"
 
 class Model {
  public:
-  Model();
+  Model() = default;
+
+  void LoadDatabase();
 
   void SetGameLevel(int level);
   void AddSpawner(const EnemyGroup& enemy_group);
@@ -64,7 +68,7 @@ class Model {
   const Building& GetBuildingById(int id) const;
 
   int GetRoundsCount() const;
-  int GetPrepairTimeBetweenRounds() const;
+  int GetPreparedTimeBetweenRounds() const;
   int GetCurrentRoundNumber() const;
 
   const AnimationPlayer& GetBackGround(int back_ground_id) const;
@@ -74,14 +78,20 @@ class Model {
 
  private:
   void LoadLevel(int level);
-  void LoadDatabase();
   void InitializeTowerSlots();
-  void SetAnimationToGameObject(
-      GameObject* object, std::vector<int> timmings,
-      std::vector<QString> paths);
+
+  void SetAnimationToGameObject(GameObject* object,
+                                const std::vector<int>& timings,
+                                const std::vector<QString>& paths);
   std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(
-      QString path, QString picture_type = ".png") const;
+      const QString& path, const QString& picture_type = ".png") const;
   void SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object);
+  void LoadEffects(const QJsonObject& json_object);
+  void LoadEnemies(const QJsonObject& json_object);
+  void LoadBackground(const QJsonObject& json_object);
+  void LoadBuildings(const QJsonObject& json_object);
+  void LoadProjectiles(const QJsonObject& json_object);
+  void LoadParticles(const QJsonObject& json_object);
 
   // Database which is updated by Controller all time
   std::list<Spawner> spawners_;
@@ -99,7 +109,7 @@ class Model {
   std::shared_ptr<Base> base_;
 
   std::vector<Coordinate> empty_places_for_towers_;
-  int prepair_time_between_rounds_ = 0;
+  int prepared_time_between_rounds_ = 0;
   int rounds_count_ = 0;
 
   // Database of GameObject's instances, that is used to create GameObjects.
@@ -109,9 +119,9 @@ class Model {
   std::vector<std::vector<int>> upgrades_tree_;
   std::vector<Effect> id_to_effect_;
   std::vector<Particle> id_to_particle_;
+  std::vector<SoundVector> id_to_particle_sound_;
 
   // Images
-
   std::vector<QImage> empty_zone_texture_;
   std::vector<AnimationPlayer> backgrounds_;
   AnimationPlayer interface_;

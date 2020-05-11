@@ -15,6 +15,7 @@ set(CMAKE_PREFIX_PATH "D:/QT/5.14.1/mingw73_64/lib/cmake")  # Windows
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5WebSockets REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
 
 add_executable(techvscats
         main.cpp
@@ -36,10 +37,12 @@ add_executable(techvscats
         GameObject/particle.cpp
         Model/coordinate.cpp
         Model/model.cpp
+        Model/music_player.cpp
         Model/road.cpp
         Model/size.cpp
-        resources.qrc
         Server/message.cpp
+        Model/sound_vector.cpp
+        database.qrc music.qrc images.qrc
         View/animation_player.cpp
         View/animation_player.cpp
         View/button_handler.cpp
@@ -58,6 +61,7 @@ add_executable(server
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)
+target_link_libraries(techvscats Qt5::Multimedia)
 target_link_libraries(techvscats Qt5::WebSockets)
 
 target_link_libraries(server Qt5::Core)

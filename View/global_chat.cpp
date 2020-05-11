@@ -33,12 +33,14 @@ GlobalChat::GlobalChat(QMainWindow* window) : QLineEdit(window) {
   auto close_open_button_click = [this]() {
     HideShow();
   };
-
   QObject::connect(brick_button,
                    &QPushButton::clicked,
                    close_open_button_click);
-
   ChangeStyle();
+  show();
+  brick_button->show();
+  send_button->show();
+  q_text_browser_->show();
 }
 
 void GlobalChat::RescaleChat(const SizeHandler& size_handler) {

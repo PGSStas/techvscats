@@ -16,6 +16,8 @@ MenuButton::MenuButton(const QString& text, const Size& button_size,
   setStyleSheet("background-color: #ffffff;");
   button_size_ = button_size;
   setCursor(Qt::PointingHandCursor);
+  setFocusPolicy(Qt::NoFocus);
+  show();
 }
 
 MenuButton::MenuButton(const Size& button_size,
@@ -30,6 +32,7 @@ MenuButton::MenuButton(const Size& button_size,
   setCursor(Qt::PointingHandCursor);
   setMouseTracking(true);
   setStyleSheet("background: transparent;");
+  setFocusPolicy(Qt::NoFocus);
 }
 
 void MenuButton::UpdateIcon() {
@@ -44,7 +47,7 @@ void MenuButton::SetIsEnter(bool enter) {
   have_entered_event_ = enter;
 }
 
-void MenuButton:: SetGeometry(
+void MenuButton::SetGeometry(
     Coordinate game_coordinate, SizeHandler size_handler) {
   position_ = game_coordinate;
   auto window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);
@@ -97,7 +100,11 @@ void MenuButton::SetSecondIconPath(const QString& main_icon_path,
 }
 
 void MenuButton::EnableSecondIcon(bool is_second_icon_enabled) {
+  if (is_second_icon_enabled_ == is_second_icon_enabled) {
+    return;
+  }
   is_second_icon_enabled_ = is_second_icon_enabled;
+  setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
 }
 
 Coordinate MenuButton::GetPosition() const {

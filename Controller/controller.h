@@ -17,6 +17,8 @@ class Controller : public AbstractController {
   Controller();
   ~Controller() override = default;
 
+  void SecondConstructorPart() override;
+
   void StartGame(int level) override;
   void EndGame() override;
   void Tick(int current_time) override;
@@ -48,9 +50,12 @@ class Controller : public AbstractController {
   int GetRoundsCount() const override;
   MultiplayerClient* GetClient() override;
 
+  MusicPlayer* GetMusicPlayer() override;
+
  private:
-  std::unique_ptr<Model> model_;
   std::unique_ptr<View> view_;
+  std::unique_ptr<Model> model_;
+  MusicPlayer music_player_;
   MultiplayerClient client_;
 
   GameStatus game_status_ = GameStatus::kPlay;
@@ -65,6 +70,8 @@ class Controller : public AbstractController {
   int last_time_end_particle_created = 0;
 
   static std::mt19937 random_generator_;
+
+  bool is_model_loaded_ = false;
 
  private:
   void GameProcess();
