@@ -25,6 +25,7 @@ void Controller::StartGame(int level_id) {
   view_->DisableMainMenuUi();
   view_->EnableGameUi();
   music_player_.StartGameMusic();
+  music_player_.PlayNewWaveSound();
 }
 
 void Controller::EndGame() {
@@ -90,7 +91,6 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
 
 void Controller::GameProcess() {
   if (CanCreateNextWave() && game_status_ == GameStatus::kPlay) {
-    music_player_.PlayNewWaveSound();
     CreateNextWave();
   }
   if (game_status_ != GameStatus::kPlay) {
