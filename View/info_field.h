@@ -21,11 +21,14 @@ class InfoField {
                       double text_height) const;
   void DrawSellInfo(QPainter* painter, const SizeHandler& size_handler,
                     double text_height) const;
+  void DrawImage(QPainter* painter, const SizeHandler& size_handler,
+                 double field_size) const;
 
   void SetInfo(const Building& building, int total_cost);
   void SetPosition(Coordinate position, Size button_size, double shift);
   void SetVisible(bool is_hide);
-
+  void SetImage(const QImage& image);
+  void RemoveImage();
   bool IsOnBottom() const;
 
  private:
@@ -41,11 +44,15 @@ class InfoField {
   int cost_ = 0;
   QString attack_speed_;
 
+  bool is_have_image_ = false;
+  QImage image_;
+
   const double kMargin = 10;
   const Size kSize = {500, 400};
   const Size kRelativeHeaderSize = {1, 0.2};
   const Size kRelativeTextSize = {1, 0.5};
   const Size kRelativeStatisticsSize = {1.0, 0.2 / 3};
+  const Size kImagePadSize = {150, 250};
 };
 
 #endif  // VIEW_INFO_FIELD_H_
