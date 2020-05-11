@@ -308,7 +308,7 @@ void Model::LoadDatabase() {
     return;
   }
 
-  QSettings settings("Giggling Penguin", "Tech vs Cats");
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
   QString locale = settings.value("locale", "en_US").toString();
 
   QFile description_file(":resources/database/description_" + locale + ".json");
