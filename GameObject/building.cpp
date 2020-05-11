@@ -42,7 +42,7 @@ void Building::Tick(int current_time) {
       if (wait_time_ > action_timings_[static_cast<int>(Action::kBeforeFire)]) {
         is_ready_to_create_projectiles_ = true;
         action_ = Action::kAfterFire;
-        wait_time_ = 0;
+        wait_time_ -=action_timings_[static_cast<int>(Action::kBeforeFire)];
       }
       break;
     }
