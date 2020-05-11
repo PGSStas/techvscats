@@ -5,6 +5,7 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <QWebSocket>
+#include <QFile>
 
 #include <chrono>
 #include <list>
@@ -21,7 +22,7 @@ class MultiplayerClient : public QObject {
   MultiplayerClient();
   ~MultiplayerClient() override;
 
-  void SetData(QString path);
+  void LoadDatabase(const QString& path);
   void Connect();
   void Disconnect();
 

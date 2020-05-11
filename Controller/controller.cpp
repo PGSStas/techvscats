@@ -10,7 +10,7 @@ Controller::Controller() {
 
 void Controller::SecondConstructorPart() {
   model_->LoadDatabase();
-  client_.SetData("rus_lalala") ;
+  client_.LoadDatabase(":resources/database/server_ru_RU.json") ;
   view_->SecondConstructorPart();
 }
 

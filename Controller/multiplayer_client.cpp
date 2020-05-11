@@ -214,37 +214,22 @@ QString MultiplayerClient::AutoGenerateNickName() const {
       + sur_name[random_generator_() % sur_name.size()];
 }
 
-void MultiplayerClient::SetData(QString path) {
+void MultiplayerClient::LoadDatabase(const QString& path) {
+  QFile description_file(path);
+  if (!description_file.open(QFile::ReadOnly)) {
+    qDebug() << "ERROR! Missing description file";
+    return;
+  }
+  QJsonArray description_array = QJsonDocument::fromJson(
+      description_file.readAll()).array();
   int enum_size = 40;
   data_base_.resize(enum_size);
-  data_base_[0] = {"%1", VisibleType::kChat};
-  data_base_[1] = {"! %1 _DEAD_", VisibleType::kChat};
-  data_base_[2] = {"! Player %1 joined the room.", VisibleType::kChat};
-  data_base_[3] =
-      {"! Player %1 finish the room with %2 HP.", VisibleType::kChat};
-  data_base_[4] = {"< %1 left game... ", VisibleType::kChat};
-  data_base_[5] = {"< %1 WIN THE GAME Wow! With %2 HP.", VisibleType::kChat};
-  data_base_[6] = {"< Room starts in %1 seconds.", VisibleType::kChat};
-  data_base_[7] = {"< Round starts in %1 seconds.", VisibleType::kChat};
-  data_base_[8] = {"< Round starts!! ", VisibleType::kChat};
-  data_base_[9] = {"< Connected", VisibleType::kChat};
-  data_base_[10] = {"! Your chat is offline", VisibleType::kChat};
-  data_base_[11] = {"! gold error", VisibleType::kChat};
-
-  data_base_[12] = {"< Disconnect", VisibleType::kChat};
-  data_base_[13] = {"! command error", VisibleType::kChat};
-  data_base_[14] = {"< Game End", VisibleType::kChat};
-  data_base_[15] = {"! Your Name is null", VisibleType::kChat};
-  data_base_[15] = {"< Enter /register <NickName>.", VisibleType::kChat};
-  data_base_[16] = {"< Or enter /autoregister", VisibleType::kChat};
-
-  data_base_[18] = {"< ❤_INFINITY HEALTH_❤", VisibleType::kChat};
-  data_base_[19] = {"< $$$ MOOOREE GOOLLDLDLDLD $$$", VisibleType::kChat};
-  data_base_[20] = {"< Ok.", VisibleType::kChat};
-  data_base_[21] = {"< Server closed", VisibleType::kChat};
-  data_base_[22] = {"< Your nick name is : %1", VisibleType::kChat};
-  data_base_[23] = {"! You created the room.", VisibleType::kChat};
-  data_base_[24] = {"! You left the room.", VisibleType::kChat};
-
+  for (int i = 0; i < description_array.count(); i++) {
+    auto info = description_array[i].toObject();
+    data_base_[i] = {
+        info["message"].toString(),
+        static_cast<VisibleType>( info["type"].toInt())
+    };
+  }
 }
 
