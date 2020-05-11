@@ -18,6 +18,7 @@ enum MainMusic {
 class MusicPlayer {
  public:
   MusicPlayer();
+  ~MusicPlayer();
   void SetVolume(int volume);
 
   void StartMenuMusic();

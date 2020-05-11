@@ -12,6 +12,7 @@ class SoundVector {
  public:
   explicit SoundVector(const QString& path, int audio_roads_count);
   void Play();
+  void Stop();
 
  private:
   int roads_count_ = 0;

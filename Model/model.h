@@ -36,7 +36,7 @@
 class Model {
  public:
   Model() = default;
-
+  ~Model();
   void LoadDatabase();
 
   void SetGameLevel(int level);
