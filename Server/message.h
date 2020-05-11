@@ -19,42 +19,42 @@ enum class ControllerCommandType {
 
 enum class MessageType {
   // To server
-  kNewConnection,
   kEnterRoom,  // % lvl_id
-  kRoundCompletedByPlayer, // % base_current_health % casted game_process
-  kLeaveRoom,
   kGlobalChat, // % message
+  kLeaveRoom,
+  kNewConnection,
+  kRoundCompletedByPlayer, // % base_current_health % casted game_process
 
   // To client
-  kStartRound,
+  kControllerCommand,
   kChatUpdate,
+  kNickNameDead, // % nickname
   kNickNameJoinedTheRoom,  // % nickname
-  kNickNameWinWithHp, // % nickname % hp
   kNickNameFinishRoundWithHp, // % nickname % hp
   kNickNameLeft, // % nickname
+  kNickNameWinWithHp, // % nickname % hp
   kRoomStartsIn, // % time
   kRoundStartsIn, // % time
-  kControllerCommand,
-  kNickNameDead, // % nickname
+  kStartRound,
 
   // To translate
   kConnect,
-  kDisconnect,
-  kPlayerMessage, // %message
   kChatOffline,
-  kNameNullMessage,
-  kErrorCommand,
-  kYourNickNameIs, // %nick_name
-  kMoreGold,
+  kControllerMessage,
   kGoldError,
-  kInfinityHealth,
+  kDisconnect,
+  kErrorCommand,
+  kGameEnd,
+  kNameNullMessage,
   kHintRegistration1,
   kHintRegistration2,
-  kYouCreatedRoom,
-  kGameEnd,
-  kServerClosed,
+  kInfinityHealth,
+  kPlayerMessage, // %message
+  kMoreGold,
   kOk,
-  kDialog
+  kServerClosed,
+  kYourNickNameIs, // %nick_name
+  kYouCreatedRoom,
 };
 
 enum class DialogTypeArg {

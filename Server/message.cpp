@@ -19,7 +19,7 @@ QByteArray Message::CodeToBinary(const Message& message) {
 
 Message& Message::SetControllerMessage(const QString& message, DialogType type,
                                        const QString& nick_name) {
-  message_type_ = MessageType::kDialog;
+  message_type_ = MessageType::kControllerMessage;
   dialog_type_ = type;
   arguments_ = QStringList({""});
   if (!nick_name.isEmpty()) {

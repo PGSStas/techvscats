@@ -122,6 +122,15 @@ void MultiplayerClient::CreateControllerMessage(const Message& message) {
       message_to_send.SetControllerMessage("< Disconnect", DialogType::kChat);
       break;
     }
+    case MessageType::kErrorCommand: {
+      message_to_send.SetControllerMessage("! command error",
+                                           DialogType::kChat);
+      break;
+    }
+    case MessageType::kGameEnd: {
+      message_to_send.SetControllerMessage("< Game End.", DialogType::kChat);
+      break;
+    }
     case MessageType::kLeaveRoom: {
       message_to_send.SetControllerMessage("! You left the room.",
                                            DialogType::kChat);
@@ -139,11 +148,6 @@ void MultiplayerClient::CreateControllerMessage(const Message& message) {
     }
     case MessageType::kNameNullMessage: {
       message_to_send.SetControllerMessage("! Your Name is null",
-                                           DialogType::kChat);
-      break;
-    }
-    case MessageType::kErrorCommand: {
-      message_to_send.SetControllerMessage("! command error",
                                            DialogType::kChat);
       break;
     }
@@ -226,10 +230,6 @@ void MultiplayerClient::CreateControllerMessage(const Message& message) {
           "< " + message.GetArgument(0) + " WIN THE GAME Wow! With " +
               message.GetArgument(1) + "HP.",
           DialogType::kChat);
-      break;
-    }
-    case MessageType::kGameEnd: {
-      message_to_send.SetControllerMessage("< Game End.", DialogType::kChat);
       break;
     }
     case MessageType::kNickNameFinishRoundWithHp: {

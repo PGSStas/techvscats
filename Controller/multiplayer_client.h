@@ -55,8 +55,8 @@ class MultiplayerClient : public QObject {
   const QString address = "ws://localhost:1234";
   // const QString address = "ws://49.12.75.135:1234";
   bool is_online_ = false;
-  bool has_permission_to_start_round = true;
   bool is_end_round_message_sent_ = true;
+  bool has_permission_to_start_round = true;
   std::list<Message> received_message_;
   static std::mt19937 random_generator_;
 

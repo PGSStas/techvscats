@@ -156,7 +156,7 @@ void Controller::TickClient() {
   const auto& messages = client_.GetReceivedMessages();
   for (auto& message : messages) {
     switch (message.GetType()) {
-      case MessageType::kDialog: {
+      case MessageType::kControllerMessage: {
         ProcessControllerMessage(message);
         break;
       }
