@@ -385,6 +385,36 @@
         "group_size": 1,
         "road_to_spawn": 1
       }
+    ],
+    [
+      {
+        "spawn_period": 5000,
+        "enemy_id": 4,
+        "time_of_next_spawn": 3000,
+        "group_size": 8,
+        "road_to_spawn": 1
+      },
+      {
+        "spawn_period": 15000,
+        "enemy_id": 6,
+        "time_of_next_spawn": 9000,
+        "group_size": 4,
+        "road_to_spawn": 0
+      },
+      {
+        "spawn_period": 5000,
+        "enemy_id": 1,
+        "time_of_next_spawn": 14000,
+        "group_size": 12,
+        "road_to_spawn": 2
+      },
+      {
+        "spawn_period": 5000,
+        "enemy_id": 1,
+        "time_of_next_spawn": 14000,
+        "group_size": 12,
+        "road_to_spawn": 2
+      }
     ]
   ],
   "empty_towers": [
