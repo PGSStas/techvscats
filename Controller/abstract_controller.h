@@ -5,6 +5,8 @@
 #include <memory>
 #include <vector>
 
+#include <QSettings>
+
 #include "GameObject/abstract_projectile.h"
 #include "GameObject/base.h"
 #include "GameObject/building.h"
@@ -46,9 +48,7 @@ class AbstractController {
   virtual void SetSpeedCoefficient(Speed speed) = 0;
   virtual void SetBuilding(int index_in_buildings, int replacing_id) = 0;
 
-  virtual void ResetProgress() = 0;
-  virtual void SetSaveSoundOn(bool sound_on) = 0;
-  // tbd: language
+  virtual std::shared_ptr<QSettings> GetSettings() const = 0;
 
   virtual void MouseEvent(Coordinate position, bool is_press) = 0;
   virtual void RescaleObjects(const SizeHandler& size_handler) = 0;

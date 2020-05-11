@@ -134,9 +134,8 @@ void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  QSettings settings(constants::kCompanyName, constants::kApplicationName);
-
-  QString locale = settings.value("locale", "en_US").toString();
+  auto settings = controller_->GetSettings();
+  QString locale = settings->value("locale", "en_US").toString();
   if (locale == "en_US") {
     is_language_russian_ = false;
     language_button_ = new MenuButton(
@@ -159,23 +158,21 @@ void ButtonHandler::CreateSettingsButtons() {
         ":resources/buttons_resources/language_button_eng_active.png");
   }
 
-  auto language_button_click = [this]() {
+  auto language_button_click = [this, settings]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    auto response = QMessageBox::warning(main_window_, tr("Внимание!"),
-        tr("Чтобы язык приложения изменился, его необходимо перезапустить."),
-        QMessageBox::Ok, QMessageBox::Escape);
-    if (response == QMessageBox::Escape) {
+    auto response = QMessageBox::question(main_window_, tr("Внимание!"),
+        tr("Чтобы язык приложения изменился, его необходимо перезапустить."
+           " Все равно продолжить?"));
+    if (response != QMessageBox::Yes) {
       return;
     }
-    // changing language
     language_button_->EnableSecondIcon(is_language_russian_);
     is_language_russian_ = !is_language_russian_;
 
-    QSettings settings(constants::kCompanyName, constants::kApplicationName);
     if (is_language_russian_) {
-      settings.setValue("locale", "ru_RU");
+      settings->setValue("locale", "ru_RU");
     } else {
-      settings.setValue("locale", "en_US");
+      settings->setValue("locale", "en_US");
     }
     qApp->exit(constants::kApplicationRestartCode);
   };
@@ -189,22 +186,22 @@ void ButtonHandler::CreateSettingsButtons() {
   sound_button_->SetSecondIconPath(
       ":resources/buttons_resources/sound_button_off.png",
       ":resources/buttons_resources/sound_button_off_active.png");
-  auto sound_button_click = [this]() {
+  auto sound_button_click = [this, settings]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     SetSoundOn(!is_sound_on_);
-    controller_->SetSaveSoundOn(is_sound_on_);
+    settings->setValue("sound_on", is_sound_on_);
   };
   connect(sound_button_, &QPushButton::clicked, sound_button_click);
 
   reset_game_button_ = new MenuButton(
       tr("СБРОСИТЬ ПРОГРЕСС"), long_button_size_, main_window_, font_id_);
-  auto reset_game_click = [this]() {
+  auto reset_game_click = [this, settings]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     auto response = QMessageBox::question(main_window_, tr("Внимание!"),
         tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
     if (response == QMessageBox::Yes) {
-      SetLevelNumber(1);
-      controller_->ResetProgress();
+      SetMaxLevel(1);
+      settings->setValue("level", 0);
     }
   };
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);
@@ -342,10 +339,10 @@ void ButtonHandler::SetSpeedButtonsState(Speed speed) {
 }
 
 void ButtonHandler::SetLevelNumber(int level) {
-  if (level >= 0 && level <= max_level_) {
+  if (level >= 0 && level <= current_max_level_) {
     level_number_ = level;
   }
-  inc_level_button_->setEnabled(level_number_ != max_level_);
+  inc_level_button_->setEnabled(level_number_ != current_max_level_);
   dec_level_button_->setEnabled(level_number_ != 1);
   choose_level_number_->setText(tr("УРОВЕНЬ ") +
     QString::number(level_number_));
@@ -358,13 +355,9 @@ void ButtonHandler::SetSoundOn(bool sound_on) {
       100 * static_cast<int>(is_sound_on_));
 }
 
-void ButtonHandler::SetLanguage(int language_id) {
-  language_button_->EnableSecondIcon(language_id != 0);
-}
-
 void ButtonHandler::SetMaxLevel(int max_level) {
-  max_level_ = max_level;
-  level_number_ = std::min(level_number_, max_level_);
+  current_max_level_ = std::min(max_level, kMaxLevel_);
+  SetLevelNumber(std::min(level_number_ + 1, current_max_level_));
 }
 
 int ButtonHandler::GetLevel() const {

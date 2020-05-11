@@ -36,13 +36,7 @@
 
 class Model {
  public:
-  struct SaveData {
-    int level;
-    bool sound_on;
-    int language_id;
-  };
-
-  Model();
+  Model() = default;
   ~Model();
   void LoadDatabase();
 
@@ -82,11 +76,6 @@ class Model {
   const AnimationPlayer& GetInterface() const;
 
   const QImage& GetEmptyZoneTexture(int index) const;
-
-  void LoadSave();
-  void WriteSave() const;
-  const SaveData& GetSaveData() const;
-  void SetSaveData(const SaveData& data);
 
  private:
   void LoadLevel(int level);
@@ -137,8 +126,6 @@ class Model {
   std::vector<QImage> empty_zone_texture_;
   std::vector<AnimationPlayer> backgrounds_;
   AnimationPlayer interface_;
-
-  SaveData save_data_;
 };
 
 #endif  // MODEL_MODEL_H_

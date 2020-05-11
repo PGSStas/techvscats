@@ -6,16 +6,19 @@ std::mt19937 Controller::random_generator_ = std::mt19937(
 Controller::Controller() {
   view_ = std::make_unique<View>(this);
   model_ = std::make_unique<Model>();
+  settings_ = std::make_shared<QSettings>(
+      constants::kCompanyName, constants::kApplicationName);
 }
 
 void Controller::SecondConstructorPart() {
   model_->LoadDatabase();
   view_->SecondConstructorPart();
-  auto save_data = model_->GetSaveData();
-  view_->GetButtonHandler()->SetMaxLevel(save_data.level + 1);
-  view_->GetButtonHandler()->SetLevelNumber(save_data.level + 1);
-  view_->GetButtonHandler()->SetSoundOn(save_data.sound_on);
-  view_->GetButtonHandler()->SetLanguage(save_data.language_id);
+  view_->GetButtonHandler()->SetMaxLevel(
+      settings_->value("level", 0).toInt() + 1);
+  view_->GetButtonHandler()->SetLevelNumber(
+      settings_->value("level", 0).toInt() + 1);
+  view_->GetButtonHandler()->SetSoundOn(
+      settings_->value("sound_on", true).toBool());
 }
 
 void Controller::StartGame(int level_id) {
@@ -40,12 +43,6 @@ void Controller::EndGame() {
   window_type_ = WindowType::kMainMenu;
   current_game_time_ = 0;
   music_player_.StartMenuMusic();
-}
-
-void Controller::ResetProgress() {
-  auto save_data = model_->GetSaveData();
-  save_data.level = 0;
-  model_->SetSaveData(save_data);
 }
 
 void Controller::Tick(int current_time) {
@@ -135,11 +132,10 @@ bool Controller::CanCreateNextWave() {
                                  view_->GetRealTime(), {0, 0}, life_time,
                                  size_coefficient});
     music_player_.PlayGameWonSound();
-    auto save_data = model_->GetSaveData();
-    save_data.level = std::max(save_data.level,
+    int level = std::max(settings_->value("level", 0).toInt(),
         view_->GetButtonHandler()->GetLevel());
-    model_->SetSaveData(save_data);
-    view_->GetButtonHandler()->SetMaxLevel(save_data.level + 1);
+    settings_->setValue("level", level);
+    view_->GetButtonHandler()->SetMaxLevel(level + 1);
   }
 
   if (!model_->GetEnemies()->empty()
@@ -487,8 +483,6 @@ int Controller::GetRoundsCount() const {
   return model_->GetRoundsCount();
 }
 
-void Controller::SetSaveSoundOn(bool sound_on) {
-  auto save_data = model_->GetSaveData();
-  save_data.sound_on = sound_on;
-  model_->SetSaveData(save_data);
+std::shared_ptr<QSettings> Controller::GetSettings() const {
+  return settings_;
 }

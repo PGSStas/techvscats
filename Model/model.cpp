@@ -1,9 +1,5 @@
 #include "model.h"
 
-Model::Model() {
-  LoadSave();
-}
-
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
   InitializeTowerSlots();
@@ -625,43 +621,4 @@ Model::~Model() {
   for (auto& sound : id_to_particle_sound_) {
     sound.Stop();
   }
-  WriteSave();
-}
-
-void Model::LoadSave() {
-  QFile save_file("save.sav");
-  if (!save_file.open(QFile::ReadWrite)) {
-    qDebug() << "Error";
-    return;
-  }
-  QTextStream fin(&save_file);
-  // the save has never been created
-  if (fin.atEnd()) {
-    save_data_.level = 0;
-    save_data_.sound_on = true;
-    save_data_.language_id = 0;
-  } else {
-    int sound; // fin can't read bool
-    fin >> save_data_.level >> sound >> save_data_.language_id;
-    save_data_.sound_on = sound;
-  }
-}
-
-void Model::WriteSave() const {
-  QFile save_file("save.sav");
-  if (!save_file.open(QFile::WriteOnly)) {
-    qDebug() << "Error";
-    return;
-  }
-  QTextStream fout(&save_file);
-  fout << save_data_.level << "\n" << save_data_.sound_on << "\n" <<
-       save_data_.language_id;
-}
-
-const Model::SaveData& Model::GetSaveData() const {
-  return save_data_;
-}
-
-void Model::SetSaveData(const SaveData& data) {
-  save_data_ = data;
 }
