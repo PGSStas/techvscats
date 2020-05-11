@@ -130,20 +130,35 @@ void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
           - Size(short_button_size_.height, 0), size_handler);
   settings_button_->SetGeometry(first_button_coordinate_ + shift * 2,
                                 size_handler);
-  exit_button_->SetGeometry(first_button_coordinate_ + shift * 3,
-                            size_handler);
+  exit_button_->SetGeometry(first_button_coordinate_ + shift * 3, size_handler);
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  language_button_ = new MenuButton(
-      short_button_size_,
-      main_window_,
-      ":resources/buttons_resources/language_button_eng.png",
-      ":resources/buttons_resources/language_button_eng_active.png");
-  language_button_->SetSecondIconPath(
-      ":resources/buttons_resources/language_button_rus.png",
-      ":resources/buttons_resources/language_button_rus_active.png");
-  language_button_->EnableSecondIcon(true);
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+
+  QString locale = settings.value("locale", "en_US").toString();
+  if (locale == "en_US") {
+    is_language_russian_ = false;
+    language_button_ = new MenuButton(
+        short_button_size_,
+        main_window_,
+        ":resources/buttons_resources/language_button_eng.png",
+        ":resources/buttons_resources/language_button_eng_active.png");
+    language_button_->SetSecondIconPath(
+        ":resources/buttons_resources/language_button_rus.png",
+        ":resources/buttons_resources/language_button_rus_active.png");
+  } else {
+    is_language_russian_ = true;
+    language_button_ = new MenuButton(
+        short_button_size_,
+        main_window_,
+        ":resources/buttons_resources/language_button_rus.png",
+        ":resources/buttons_resources/language_button_rus_active.png");
+    language_button_->SetSecondIconPath(
+        ":resources/buttons_resources/language_button_eng.png",
+        ":resources/buttons_resources/language_button_eng_active.png");
+  }
+
   auto language_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     auto response = QMessageBox::warning(main_window_, tr("Внимание!"),
@@ -155,6 +170,14 @@ void ButtonHandler::CreateSettingsButtons() {
     // changing language
     language_button_->EnableSecondIcon(is_language_russian_);
     is_language_russian_ = !is_language_russian_;
+
+    QSettings settings(constants::kCompanyName, constants::kApplicationName);
+    if (is_language_russian_) {
+      settings.setValue("locale", "ru_RU");
+    } else {
+      settings.setValue("locale", "en_US");
+    }
+    qApp->exit(constants::kApplicationRestartCode);
   };
   connect(language_button_, &QPushButton::clicked, language_button_click);
 
@@ -196,9 +219,7 @@ void ButtonHandler::CreateSettingsButtons() {
     window_type_ = WindowType::kMainMenu;
     main_window_->repaint();
   };
-  connect(to_main_menu_button_,
-          &QPushButton::clicked,
-          back_to_main_menu_click);
+  connect(to_main_menu_button_, &QPushButton::clicked, back_to_main_menu_click);
 }
 
 void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
@@ -311,8 +332,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
 void ButtonHandler::RescalePauseMenuButtons(SizeHandler size_handler) {
   Size shift = Size({0, long_button_size_.height + shift_});
   continue_button_->SetGeometry(first_button_coordinate_, size_handler);
-  restart_button_->SetGeometry(first_button_coordinate_ + shift,
-                               size_handler);
+  restart_button_->SetGeometry(first_button_coordinate_ + shift, size_handler);
 }
 
 void ButtonHandler::SetSpeedButtonsState(Speed speed) {

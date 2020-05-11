@@ -42,10 +42,10 @@ class InfoField {
   QString attack_speed_;
 
   const double kMargin = 10;
-  const Size kSize = {500, 300};
+  const Size kSize = {500, 400};
   const Size kRelativeHeaderSize = {1, 0.2};
   const Size kRelativeTextSize = {1, 0.5};
-  const Size kRelativeStatisticsSize = {1.0, 0.1};
+  const Size kRelativeStatisticsSize = {1.0, 0.2 / 3};
 };
 
 #endif  // VIEW_INFO_FIELD_H_

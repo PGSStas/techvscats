@@ -462,6 +462,18 @@ void Model::LoadBackground(const QJsonObject&) {
 }
 
 void Model::LoadBuildings(const QJsonObject& json_object) {
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+  QString locale = settings.value("locale", "en_US").toString();
+
+  QFile description_file(":resources/database/description_" + locale + ".json");
+  if (!description_file.open(QFile::ReadOnly)) {
+    qDebug() << "ERROR! Missing description file";
+    return;
+  }
+
+  QJsonArray description_array = QJsonDocument::fromJson(
+      description_file.readAll()).array();
+
   QJsonArray json_buildings = json_object["buildings"].toArray();
   int buildings_count = json_buildings.count();
   id_to_building_.clear();
@@ -507,8 +519,9 @@ void Model::LoadBuildings(const QJsonObject& json_object) {
     for (int j = 0; j < upgrade_tree_count; j++) {
       upgrade_tree.push_back(json_upgrade_tree[j].toInt());
     }
-    building.SetInfo(json_building["header"].toString(),
-                     json_building["description"].toString());
+
+    auto info = description_array[i].toObject();
+    building.SetInfo(info["header"].toString(), info["description"].toString());
     upgrades_tree_.push_back(std::move(upgrade_tree));
     id_to_building_.push_back(std::move(building));
     SetParticlesToGameObject(&id_to_building_.back(),
