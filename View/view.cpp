@@ -318,8 +318,10 @@ void View::DrawBars(QPainter* painter) {
 
   const auto& buildings_list = controller_->GetBuildings();
   for (const auto& building : buildings_list) {
-    building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
-                                                   building->GetPosition(),
-                                                   building->GetSize());
+    if (building->GetId() != 0) {
+      building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                     building->GetPosition(),
+                                                     building->GetSize());
+    }
   }
 }

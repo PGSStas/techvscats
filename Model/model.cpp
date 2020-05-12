@@ -353,11 +353,6 @@ void Model::LoadDatabase() {
                              enemy["particles"].toObject());
   }
 
-  SetAnimationToGameObject(&id_to_enemy_[0], {400}, {"enemies/toster_3"});
-  SetAnimationToGameObject(&id_to_enemy_[1], {550}, {"enemies/toster_3"});
-  SetAnimationToGameObject(&id_to_enemy_[3], {600}, {"enemies/mouse_3"});
-  SetAnimationToGameObject(&id_to_enemy_[4], {800}, {"enemies/mouse_3"});
-
   // backgrounds
   backgrounds_.emplace_back(
       GetImagesByFramePath("backgrounds/main_background_1"));
