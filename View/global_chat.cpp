@@ -156,8 +156,8 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
   QString command_format = "<p class=\"command\">%1</p>";
 
   QString text;
-  for (int i = 0; i < text_browser_messages_.length(); i++) {
-    QString line = text_browser_messages_[i];
+  for (auto& message: text_browser_messages_) {
+    QString line = message;
     if (line.startsWith(">")) {
       text.append(global_format.arg(line.replace(">",
                                                  "&#62;")));
@@ -166,7 +166,7 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
                                                 "&#60;")));
     } else if (line.startsWith("!")) {
       text.append(error_format.arg(line));
-    } else if (line.startsWith("/")) {
+    } else {
       text.append(command_format.arg(line));
     }
   }
@@ -184,13 +184,11 @@ void GlobalChat::SendMessage() {
   }
   message = message.split(" ", QString::SkipEmptyParts).join(" ");
   send_messages_.push_back(message);
-  message = ">" + message;
-  ReceiveNewMessages(message.split(" "));
 }
 
 void GlobalChat::keyPressEvent(QKeyEvent* event) {
   auto* key = static_cast<QKeyEvent*>(event);
-  if (key->text() == "\r" || key->text() == "\n") {
+  if (key->text() == "\r") {
     SendMessage();
   } else {
     QLineEdit::keyPressEvent(event);

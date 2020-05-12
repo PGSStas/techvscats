@@ -60,7 +60,7 @@ class Controller : public AbstractController {
 
   GameStatus game_status_ = GameStatus::kPlay;
   WindowType window_type_ = WindowType::kMainMenu;
-  bool is_prepairing_to_spawn_ = false;
+  bool is_preparing_to_spawn_ = false;
   int current_game_time_ = 0;
   int last_round_start_time_ = 0;
 

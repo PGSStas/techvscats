@@ -56,6 +56,8 @@ enum class MessageType {
   kToLongMessage,
   kServerIsUnavailable,
 
+  kLast, //  To get size of enum
+
   // To server
   kEnterRoom,  // % lvl_id
   kGlobalChat,  // % message
@@ -65,14 +67,14 @@ enum class MessageType {
   // To controller
   kControllerCommand,
   kVisibleMessage
-};
+  };
 
 // The main class of data transfer between the server and the client.
 // The server and client communicate in the language of messages
 class Message {
  public:
   Message() = default;
-  Message(MessageType type, QStringList arguments = {});  // NOLINT
+  explicit Message(MessageType type, QStringList arguments = {});
 
   static QByteArray CodeToBinary(const Message& message);
   Message& SetVisibleMessage(const QString& message, VisibleType type,

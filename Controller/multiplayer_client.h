@@ -60,26 +60,26 @@ class MultiplayerClient : public QObject {
  private:
   QString nick_name_ = "";
   QWebSocket* server_web_socket_{};
-  // const QString address = "ws://localhost:1234";
-  const QString address = "ws://49.12.75.135:1234";
-  const int kMaxMessageSize = 30;
+  // const QString address_ = "ws://localhost:1234";
+  const QString address_ = "ws://49.12.75.135:1234";
+  const int kMaxMessageSize_ = 30;
   bool is_online_ = false;
   bool is_end_round_message_sent_ = true;
-  bool has_permission_to_start_round = true;
+  bool has_permission_to_start_round_ = true;
   std::list<Message> received_message_;
   static std::mt19937 random_generator_;
 
   int wait_time_;
   int current_time_;
   bool is_trying_to_connect_ = false;
-  const int kWaitTime = 3000;
+  const int kWaitTime_ = 3000;
 
-  std::vector<VisibleMessage> data_base_;
+  std::vector<VisibleMessage> database_;
 
  private:
   QString AutoGenerateNickName() const;
-  const QStringList first_name = {"Greedy", "Bloody", "Big", "Mega", "Optimus"};
-  const QStringList sur_name = {"finger", "cup", "flex", "cringe", "sage"};
+  const QStringList first_name_ = {"Greedy", "Bloody", "Big", "Mega", "Optimus"};
+  const QStringList surname_ = {"finger", "cup", "flex", "cringe", "sage"};
 };
 
 #endif  // CONTROLLER_MULTIPLAYER_CLIENT_H_

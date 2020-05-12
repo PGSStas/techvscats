@@ -96,7 +96,7 @@ void Server::ProcessRoomEnterMessage(const Message& message,
   rooms_.emplace_back(timer_.elapsed(), room_number);
   owner->room = &rooms_.back();
   owner->room->timer_id_ = startTimer(1000);
-  SendMessageToRoom(MessageType::kYouCreatedRoom, *owner, true);
+  SendMessageToRoom(Message(MessageType::kYouCreatedRoom), *owner, true);
 }
 
 void Server::ProcessRoundCompletedByPlayer(const Message& message,
@@ -156,7 +156,7 @@ void Server::StartRoom(Room* room) {
   room->is_in_active_search = false;
   room->players_in_round =
       room->players_count - room->players_win_ - room->players_loose_;
-  SendMessageToRoom(MessageType::kStartRound, *room);
+  SendMessageToRoom(Message(MessageType::kStartRound), *room);
 }
 
 void Server::SendMessageToRoom(const Message& message, const Room& room) {

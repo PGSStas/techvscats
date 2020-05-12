@@ -27,9 +27,9 @@ Message& Message::SetVisibleMessage(const QString& message, VisibleType type,
     arguments_[0] = "> " + nick_name + " : ";
   }
   arguments_[0] += message;
-
   return *this;
 }
+
 Message& Message::SetCommandMessage(const QString& message,
                                     CommandType type) {
   message_type_ = MessageType::kControllerCommand;

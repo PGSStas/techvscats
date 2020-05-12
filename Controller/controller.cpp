@@ -138,17 +138,17 @@ bool Controller::CanCreateNextWave() {
     }
     return false;
   }
-  if (!is_prepairing_to_spawn_) {
+  if (!is_preparing_to_spawn_) {
     last_round_start_time_ = current_game_time_;
-    is_prepairing_to_spawn_ = true;
+    is_preparing_to_spawn_ = true;
   }
   if (current_game_time_ - last_round_start_time_
       < model_->GetPreparedTimeBetweenRounds()) {
     return false;
   }
-  if (is_prepairing_to_spawn_) {
+  if (is_preparing_to_spawn_) {
     last_round_start_time_ = current_game_time_;
-    is_prepairing_to_spawn_ = false;
+    is_preparing_to_spawn_ = false;
   }
   if (client_.IsOnline()) {
     client_.ChangePermissionToStartRound(false);

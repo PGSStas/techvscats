@@ -41,7 +41,7 @@ class GlobalChat : public QLineEdit {
   MenuButton* send_button;
   MenuButton* brick_button;
 
-  const int kMaxChatSize = 9;
+  const int kMaxChatSize = 30;
   const int kFontId = 0;
   const int kCloseSpeed = 60;
   const Size kTextEditSize = {700, 60};
