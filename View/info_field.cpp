@@ -9,17 +9,18 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->setBrush(QBrush(qRgb(53, 53, 53)));
 
   auto font = painter->font();
-  font.setPixelSize(size_handler.GameToWindowLength(constants::kFontSize));
   font.setFamily(QFontDatabase::applicationFontFamilies(0).at(0));
+  font.setPixelSize(size_handler.GameToWindowLength(
+      constants::kFontSize * 0.7));
+  QFontMetrics metrics(font);
+  font.setPixelSize(size_handler.GameToWindowLength(constants::kFontSize));
   painter->setFont(font);
 
-  QFontMetrics metrics(font);
-
-  double text_height = metrics.boundingRect(0, 0, kSize.width - 2 * kMargin,
-                                            kSize.height - 2 * kMargin,
-                                            Qt::TextWordWrap, info_).height();
+  auto info_size = size_handler.GameToWindowLength(kSize.width - 2 * kMargin);
+  double text_height = size_handler.WindowToGameLength(metrics.boundingRect(
+      0, 0, info_size, 0, Qt::TextWordWrap, info_).height() + 2 * kMargin);
   double final_text_height = std::min(kSize.height, text_height +
-      (1 - kRelativeTextSize.height) * kSize.height) + 2 * kMargin;
+      (1 - kRelativeTextSize.height) * kSize.height);
 
   Coordinate point = size_handler.GameToWindowCoordinate(position_);
   Size size = size_handler.GameToWindowSize({kSize.width, final_text_height});
@@ -43,7 +44,7 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
                                                    kRelativeHeaderSize.height});
   size = size_handler.GameToWindowSize(
       {kSize.width * kRelativeTextSize.width - 2 * kMargin,
-       kSize.height * kRelativeTextSize.height - 2 * kMargin});
+       text_height - 2 * kMargin});
   painter->drawText(point.x, point.y,
                     size.width, size.height, Qt::TextWordWrap, info_);
 
@@ -51,6 +52,10 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     DrawSellInfo(painter, size_handler, text_height);
   } else {
     DrawStatistics(painter, size_handler, text_height);
+  }
+
+  if (has_image_) {
+    DrawImage(painter, size_handler, final_text_height);
   }
 
   painter->restore();
@@ -108,6 +113,30 @@ void InfoField::DrawSellInfo(QPainter* painter,
   painter->restore();
 }
 
+void InfoField::DrawImage(QPainter* painter, const SizeHandler& size_handler,
+                          double field_size) const {
+  painter->save();
+  painter->setPen(QPen(QBrush(qRgb(103, 103, 103)), 3));
+  painter->setBrush(QBrush(qRgb(53, 53, 53)));
+
+  Coordinate game_point = {position_.x - 40 - kImagePadSize.width,
+                           position_.y + field_size / 2 -
+                               kImagePadSize.height / 2};
+
+  if (game_point.x < 10) {
+    game_point.x = position_.x + 40 + kSize.width;
+  }
+
+  Coordinate point = size_handler.GameToWindowCoordinate(game_point);
+  Size size = size_handler.GameToWindowSize(kImagePadSize);
+
+  painter->drawRect(point.x, point.y, size.width, size.height);
+
+  // TODO(watislaf): Draw image here.
+
+  painter->restore();
+}
+
 void InfoField::SetInfo(const Building& building, int total_cost) {
   header_ = building.GetHeader();
   info_ = building.GetDescription();
@@ -150,3 +179,13 @@ void InfoField::SetVisible(bool is_hide) {
 bool InfoField::IsOnBottom() const {
   return is_on_bottom_;
 }
+
+void InfoField::SetImage(QImage image) {
+  has_image_ = true;
+  image_ = std::move(image);
+}
+
+void InfoField::RemoveImage() {
+  has_image_ = false;
+}
+

@@ -1,4 +1,8 @@
-QT       += core gui websockets multimedia
+QT += core gui websockets multimedia
+
+android {
+QT += androidextras
+}
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -83,3 +87,7 @@ HEADERS += \
         View/text_notification.h \
         View/tower_menu.h \
         View/view.h \
+
+TRANSLATIONS += \
+    resources/translations/translation_en_US.ts \
+    resources/translations/translation_ru_RU.ts \
