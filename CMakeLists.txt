@@ -9,7 +9,7 @@ set(CMAKE_AUTOUIC ON) # Enable Qt UI compiler
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -Wextra ")
 
-set(CMAKE_PREFIX_PATH "~/Qt/5.13.2/gcc_64/lib/cmake")  # Linux
+# set(CMAKE_PREFIX_PATH "~/Qt/5.13.2/gcc_64/lib/cmake")  # Linux
 set(CMAKE_PREFIX_PATH "D:/QT/5.14.1/mingw73_64/lib/cmake")  # Windows
 
 find_package(Qt5Core REQUIRED)
@@ -17,7 +17,8 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5WebSockets REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
 
-add_executable(techvscats
+
+set(SOURCES
         main.cpp
         Controller/controller.cpp
         Controller/multiplayer_client.cpp
@@ -58,6 +59,10 @@ add_executable(server
         Server/main.cpp
         Server/message.cpp
         Server/server.cpp)
+
+
+qt5_add_big_resources(SOURCES database.qrc music.qrc images.qrc)
+add_executable(techvscats ${SOURCES})
 
 target_link_libraries(techvscats Qt5::Core)
 target_link_libraries(techvscats Qt5::Widgets)

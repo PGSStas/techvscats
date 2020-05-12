@@ -6,15 +6,16 @@ QT += androidextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+DEFINES += QT_DEPRECATED_WARNINGS
+
 TARGET = techvscats
 TEMPLATE = app
-
-DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 
 RESOURCES += database.qrc music.qrc images.qrc
+CONFIG += resources_big
 
 SOURCES += \
         main.cpp \
