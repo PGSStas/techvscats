@@ -177,19 +177,20 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
 }
 
 void GlobalChat::SendMessage() {
-  QString message = "> " + text();
+  QString message = text();
   clear();
   if (message == "") {
     return;
   }
   message = message.split(" ", QString::SkipEmptyParts).join(" ");
-  ReceiveNewMessages(message.split(" "));
   send_messages_.push_back(message);
+  message = ">" + message;
+  ReceiveNewMessages(message.split(" "));
 }
 
 void GlobalChat::keyPressEvent(QKeyEvent* event) {
   auto* key = static_cast<QKeyEvent*>(event);
-  if (key->text() == "\r") {
+  if (key->text() == "\r" || key->text() == "\n") {
     SendMessage();
   } else {
     QLineEdit::keyPressEvent(event);
