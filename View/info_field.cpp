@@ -1,5 +1,7 @@
 #include "info_field.h"
 
+#include <utility>
+
 void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   if (is_hidden_) {
     return;
@@ -54,7 +56,7 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     DrawStatistics(painter, size_handler, text_height);
   }
 
-  if (is_have_image_) {
+  if (has_image_) {
     DrawImage(painter, size_handler, final_text_height);
   }
 
@@ -132,7 +134,7 @@ void InfoField::DrawImage(QPainter* painter, const SizeHandler& size_handler,
 
   painter->drawRect(point.x, point.y, size.width, size.height);
 
-  // Here might be imagedraw, watislaf
+  // TODO(watislaf): Draw image here.
 
   painter->restore();
 }
@@ -180,12 +182,12 @@ bool InfoField::IsOnBottom() const {
   return is_on_bottom_;
 }
 
-void InfoField::SetImage(const QImage& image) {
-  is_have_image_ = true;
-  image_ = image;
+void InfoField::SetImage(QImage image) {
+  has_image_ = true;
+  image_ = std::move(image);
 }
 
 void InfoField::RemoveImage() {
-  is_have_image_ = false;
+  has_image_ = false;
 }
 

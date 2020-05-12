@@ -27,7 +27,7 @@ class InfoField {
   void SetInfo(const Building& building, int total_cost);
   void SetPosition(Coordinate position, Size button_size, double shift);
   void SetVisible(bool is_hide);
-  void SetImage(const QImage& image);
+  void SetImage(QImage image);
   void RemoveImage();
   bool IsOnBottom() const;
 
@@ -44,7 +44,7 @@ class InfoField {
   int cost_ = 0;
   QString attack_speed_;
 
-  bool is_have_image_ = false;
+  bool has_image_ = false;
   QImage image_;
 
   const double kMargin = 10;
