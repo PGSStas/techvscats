@@ -29,8 +29,7 @@ int main(int argc, char* argv[]) {
   // Translates buttons in QDialog
   QTranslator qtBaseTranslator;
   if (qtBaseTranslator.load("qtbase_" + language,
-                            QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-  {
+      QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
     QApplication::installTranslator(&qtBaseTranslator);
   }
 
