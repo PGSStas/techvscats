@@ -6,19 +6,19 @@ std::mt19937 Controller::random_generator_ = std::mt19937(
 Controller::Controller() {
   view_ = std::make_unique<View>(this);
   model_ = std::make_unique<Model>();
-  settings_ = std::make_shared<QSettings>(
-      constants::kCompanyName, constants::kApplicationName);
 }
 
 void Controller::SecondConstructorPart() {
   model_->LoadDatabase();
   view_->SecondConstructorPart();
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+
   view_->GetButtonHandler()->SetMaxLevel(
-      settings_->value("level", 0).toInt() + 1);
+      settings.value("level", 0).toInt() + 1);
   view_->GetButtonHandler()->SetLevelNumber(
-      settings_->value("level", 0).toInt() + 1);
+      settings.value("level", 0).toInt() + 1);
   view_->GetButtonHandler()->SetSoundOn(
-      settings_->value("sound_on", true).toBool());
+      settings.value("sound_on", true).toBool());
 }
 
 void Controller::StartGame(int level_id) {
@@ -132,9 +132,10 @@ bool Controller::CanCreateNextWave() {
                                  view_->GetRealTime(), {0, 0}, life_time,
                                  size_coefficient});
     music_player_.PlayGameWonSound();
-    int level = std::max(settings_->value("level", 0).toInt(),
-        view_->GetButtonHandler()->GetLevel());
-    settings_->setValue("level", level);
+    QSettings settings(constants::kCompanyName, constants::kApplicationName);
+    int level = std::max(settings.value("level", 0).toInt(),
+                         view_->GetButtonHandler()->GetLevel());
+    settings.setValue("level", level);
     view_->GetButtonHandler()->SetMaxLevel(level + 1);
   }
 
@@ -481,8 +482,4 @@ int Controller::GetCurrentRoundNumber() const {
 
 int Controller::GetRoundsCount() const {
   return model_->GetRoundsCount();
-}
-
-std::shared_ptr<QSettings> Controller::GetSettings() const {
-  return settings_;
 }

@@ -25,8 +25,6 @@ class Controller : public AbstractController {
   void SetSpeedCoefficient(Speed speed) override;
   void SetBuilding(int index_in_buildings, int replacing_id) override;
 
-  std::shared_ptr<QSettings> GetSettings() const override;
-
   void MouseEvent(Coordinate position, bool is_press) override;
   void RescaleObjects(const SizeHandler& size_handler) override;
 
@@ -67,8 +65,6 @@ class Controller : public AbstractController {
   const int kLooseParticleId = 1;
   const int kParticlesPeriod = 100;
   int last_time_end_particle_created = 0;
-
-  std::shared_ptr<QSettings> settings_;
 
   static std::mt19937 random_generator_;
 

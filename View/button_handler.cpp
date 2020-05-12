@@ -134,8 +134,8 @@ void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  auto settings = controller_->GetSettings();
-  QString locale = settings->value("locale", "en_US").toString();
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+  QString locale = settings.value("locale", "en_US").toString();
   if (locale == "en_US") {
     is_language_russian_ = false;
     language_button_ = new MenuButton(
@@ -158,7 +158,8 @@ void ButtonHandler::CreateSettingsButtons() {
         ":resources/buttons_resources/language_button_eng_active.png");
   }
 
-  auto language_button_click = [this, settings]() {
+  auto language_button_click = [this]() {
+    QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
     auto response = QMessageBox::question(main_window_, tr("Внимание!"),
         tr("Чтобы язык приложения изменился, его необходимо перезапустить."
@@ -170,9 +171,9 @@ void ButtonHandler::CreateSettingsButtons() {
     is_language_russian_ = !is_language_russian_;
 
     if (is_language_russian_) {
-      settings->setValue("locale", "ru_RU");
+      settings.setValue("locale", "ru_RU");
     } else {
-      settings->setValue("locale", "en_US");
+      settings.setValue("locale", "en_US");
     }
     qApp->exit(constants::kApplicationRestartCode);
   };
@@ -186,22 +187,24 @@ void ButtonHandler::CreateSettingsButtons() {
   sound_button_->SetSecondIconPath(
       ":resources/buttons_resources/sound_button_off.png",
       ":resources/buttons_resources/sound_button_off_active.png");
-  auto sound_button_click = [this, settings]() {
+  auto sound_button_click = [this]() {
+    QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
     SetSoundOn(!is_sound_on_);
-    settings->setValue("sound_on", is_sound_on_);
+    settings.setValue("sound_on", is_sound_on_);
   };
   connect(sound_button_, &QPushButton::clicked, sound_button_click);
 
   reset_game_button_ = new MenuButton(
       tr("СБРОСИТЬ ПРОГРЕСС"), long_button_size_, main_window_, font_id_);
-  auto reset_game_click = [this, settings]() {
+  auto reset_game_click = [this]() {
+    QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
     auto response = QMessageBox::question(main_window_, tr("Внимание!"),
         tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
     if (response == QMessageBox::Yes) {
       SetMaxLevel(1);
-      settings->setValue("level", 0);
+      settings.setValue("level", 0);
     }
   };
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);

@@ -48,8 +48,6 @@ class AbstractController {
   virtual void SetSpeedCoefficient(Speed speed) = 0;
   virtual void SetBuilding(int index_in_buildings, int replacing_id) = 0;
 
-  virtual std::shared_ptr<QSettings> GetSettings() const = 0;
-
   virtual void MouseEvent(Coordinate position, bool is_press) = 0;
   virtual void RescaleObjects(const SizeHandler& size_handler) = 0;
 
