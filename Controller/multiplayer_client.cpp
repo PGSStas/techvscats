@@ -228,7 +228,7 @@ void MultiplayerClient::LoadDatabase(const QString& path) {
     auto info = description_array[i].toObject();
     data_base_[i] = {
         info["message"].toString(),
-        static_cast<VisibleType>( info["type"].toInt())
+        static_cast<VisibleType>(info["type"].toInt())
     };
   }
 }

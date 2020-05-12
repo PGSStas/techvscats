@@ -76,7 +76,7 @@ void Base::DrawUI(QPainter* painter, const SizeHandler& size_handler) const {
 }
 
 void Base::DecreaseHealth(double damage) {
-  if(!is_immortal_) {
+  if (!is_immortal_) {
     current_health_ -= std::min(damage, current_health_);
   }
   Coordinate rand_position = position_;

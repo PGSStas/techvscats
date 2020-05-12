@@ -9,6 +9,7 @@
 
 #include <chrono>
 #include <list>
+#include <vector>
 #include <random>
 
 #include "Server/message.h"
@@ -16,7 +17,7 @@
 // The multiplayer client is responsible for the connection between the game
 // and the server.
 class MultiplayerClient : public QObject {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   MultiplayerClient();
@@ -64,6 +65,7 @@ class MultiplayerClient : public QObject {
   static std::mt19937 random_generator_;
 
   std::vector<VisibleMessage> data_base_;
+
  private:
   QString AutoGenerateNickName() const;
   const QStringList first_name = {"Greedy", "Bloody", "Big", "Mega", "Optimus"};

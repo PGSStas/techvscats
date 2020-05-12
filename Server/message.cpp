@@ -55,7 +55,7 @@ MessageType Message::GetType() const {
 }
 
 QString Message::GetArgument(int arg_num) const {
-  if(arg_num>=arguments_number_){
+  if (arg_num >= arguments_number_) {
     return "";
   }
   return arguments_[arg_num];

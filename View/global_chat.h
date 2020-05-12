@@ -50,7 +50,7 @@ class GlobalChat : public QLineEdit {
 
   void SendMessage();
 
- private slots:
+ private slots:  // NOLINT
   void keyPressEvent(QKeyEvent* event) override;
 };
 

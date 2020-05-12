@@ -7,6 +7,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include <utility>
+
 enum class VisibleType {
   kChat,
   kWarning
@@ -25,13 +27,13 @@ enum class CommandType {
 enum class MessageType {
   // To client
   kChatUpdate,
-  kNickNameDead, // % nickname
+  kNickNameDead,  // % nickname
   kNickNameJoinedTheRoom,  // % nickname
-  kNickNameFinishRoundWithHp, // % nickname % hp
-  kNickNameLeft, // % nickname
-  kNickNameWinWithHp, // % nickname % hp
-  kRoomStartsIn, // % time
-  kRoundStartsIn, // % time
+  kNickNameFinishRoundWithHp,  // % nickname % hp
+  kNickNameLeft,  // % nickname
+  kNickNameWinWithHp,  // % nickname % hp
+  kRoomStartsIn,  // % time
+  kRoundStartsIn,  // % time
   kStartRound,
 
   // To translate
@@ -48,7 +50,7 @@ enum class MessageType {
   kMoreGold,
   kOk,
   kServerClosed,
-  kYourNickNameIs, // %nick_name
+  kYourNickNameIs,  // %nick_name
   kYouCreatedRoom,
 
   // To client and server
@@ -56,26 +58,21 @@ enum class MessageType {
 
   // To server
   kEnterRoom,  // % lvl_id
-  kGlobalChat, // % message
+  kGlobalChat,  // % message
   kNewConnection,
-  kRoundCompletedByPlayer, // % base_current_health % casted game_process
-
+  kRoundCompletedByPlayer,  // % base_current_health % casted game_process
 
   // To controller
   kControllerCommand,
   kVisibleMessage
-
 };
 
-enum class DialogTypeArg {
-
-};
 // The main class of data transfer between the server and the client.
 // The server and client communicate in the language of messages
 class Message {
  public:
   Message() = default;
-  Message(MessageType type, QStringList arguments = {});
+  Message(MessageType type, QStringList arguments = {});  // NOLINT
 
   static QByteArray CodeToBinary(const Message& message);
   Message& SetVisibleMessage(const QString& message, VisibleType type,
@@ -95,7 +92,6 @@ class Message {
   CommandType command_type_;
   QStringList arguments_;
   int arguments_number_ = 0;
-
 };
 
 #endif  // SERVER_MESSAGE_H_
