@@ -9,7 +9,23 @@ MultiplayerClient::~MultiplayerClient() {
   Disconnect();
 }
 
+void MultiplayerClient::Tick(int current_time) {
+  if (current_time_ == 0) {
+    current_time_ = current_time;
+    return;
+  }
+  wait_time_ -= current_time - current_time_;
+  if (wait_time_ < 0 && is_trying_to_connect_) {
+    is_trying_to_connect_ = false;
+    CreateVisibleMessage(MessageType::kServerIsUnavailable);
+  }
+  current_time_ = current_time;
+
+}
+
 void MultiplayerClient::Connect() {
+  is_trying_to_connect_ = true;
+  wait_time_ = kWaitTime;
   server_web_socket_ = new QWebSocket();
   connect(server_web_socket_, &QWebSocket::connected,
           this, &MultiplayerClient::OnConnect);
@@ -19,8 +35,10 @@ void MultiplayerClient::Connect() {
 }
 
 void MultiplayerClient::Disconnect() {
+  is_normal_close_ = true;
   server_web_socket_->close();
   server_web_socket_->deleteLater();
+  is_trying_to_connect_ = false;
   CreateVisibleMessage(MessageType::kDisconnect);
 }
 
@@ -62,7 +80,7 @@ bool MultiplayerClient::IsReceivedMessageEmpty() const {
   return received_message_.empty();
 }
 
-const std::list<Message>& MultiplayerClient::GetReceivedMessage() const {
+const std::list <Message>& MultiplayerClient::GetReceivedMessage() const {
   return received_message_;
 }
 
@@ -89,6 +107,10 @@ bool MultiplayerClient::HasPermissionToStartRound() const {
 }
 
 void MultiplayerClient::NewClientMessage(const QString& message) {
+  if (message.size() > kMaxMessageSize) {
+    CreateVisibleMessage(MessageType::kToLongMessage);
+    return;
+  }
   if (message[0] == "/") {
     CreateVisibleMessage(Message(MessageType::kChatUpdate, {message}));
     ProcessCommand(message);
@@ -184,6 +206,8 @@ void MultiplayerClient::OnConnect() {
           this, &MultiplayerClient::OnMessageReceived);
   is_online_ = true;
   is_online_ = true;
+  is_normal_close_ = false;
+  is_trying_to_connect_ = false;
   has_permission_to_start_round = true;
   CreateVisibleMessage(MessageType::kConnect);
 
@@ -204,7 +228,10 @@ void MultiplayerClient::OnMessageReceived(const QByteArray& array) {
 }
 
 void MultiplayerClient::onClose() {
-  CreateVisibleMessage(MessageType::kServerClosed);
+  if (!is_normal_close_) {
+    CreateVisibleMessage(MessageType::kServerClosed);
+  }
+  is_normal_close_ = false;
   has_permission_to_start_round = true;
   is_online_ = false;
 }
@@ -232,4 +259,3 @@ void MultiplayerClient::LoadDatabase(const QString& path) {
     };
   }
 }
-

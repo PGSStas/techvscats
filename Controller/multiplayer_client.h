@@ -23,6 +23,7 @@ class MultiplayerClient : public QObject {
   MultiplayerClient();
   ~MultiplayerClient() override;
 
+  void Tick(int delta_time);
   void LoadDatabase(const QString& path);
   void Connect();
   void Disconnect();
@@ -48,6 +49,7 @@ class MultiplayerClient : public QObject {
   void ProcessCommand(QString command);
 
   void CreateVisibleMessage(const Message& message);
+
  private slots:  // NOLINT
   void OnConnect();
   void OnMessageReceived(const QByteArray& array);
@@ -56,13 +58,20 @@ class MultiplayerClient : public QObject {
  private:
   QString nick_name_ = "";
   QWebSocket* server_web_socket_{};
-  //const QString address = "ws://localhost:1234";
-  const QString address = "ws://49.12.75.135:1234";
+  const QString address = "ws://localhost:1234";
+  // const QString address = "ws://49.12.75.135:1234";
+  const int kMaxMessageSize = 30;
   bool is_online_ = false;
+  bool is_normal_close_ = true;
   bool is_end_round_message_sent_ = true;
   bool has_permission_to_start_round = true;
   std::list<Message> received_message_;
   static std::mt19937 random_generator_;
+
+  int wait_time_;
+  int current_time_;
+  bool is_trying_to_connect_ = false;
+  const int kWaitTime = 3000;
 
   std::vector<VisibleMessage> data_base_;
 

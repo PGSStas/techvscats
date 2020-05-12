@@ -166,6 +166,7 @@ void Controller::CreateNextWave() {
 }
 
 void Controller::TickClient() {
+  client_.Tick(current_game_time_);
   if (client_.IsReceivedMessageEmpty()) {
     return;
   }
@@ -520,9 +521,9 @@ void Controller::ProcessMessage(const Message& message) {
       model_->AddTextNotification(
           {message.GetArgument(0),
            {constants::kGameWidth / 2,
-            constants::kGameHeight / 5},
-           Qt::darkCyan, view_->GetRealTime(),
-           {0, +40}, 3000, 1,
+            constants::kGameHeight / 7},
+           Qt::darkMagenta, view_->GetRealTime(),
+           {0, -40}, 3000, 1,
            50, true});
       break;
     }

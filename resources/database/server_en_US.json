@@ -98,5 +98,13 @@
   {
     "message": "! You left the room.",
     "type": 0
+  },
+  {
+    "message": "! Message is too long.",
+    "type": 0
+  },
+  {
+    "message": "SERVER IS UNAVAILABLE.",
+    "type": 1
   }
 ]

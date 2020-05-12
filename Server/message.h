@@ -52,9 +52,9 @@ enum class MessageType {
   kServerClosed,
   kYourNickNameIs,  // %nick_name
   kYouCreatedRoom,
-
-  // To client and server
   kLeaveRoom,
+  kToLongMessage,
+  kServerIsUnavailable,
 
   // To server
   kEnterRoom,  // % lvl_id
