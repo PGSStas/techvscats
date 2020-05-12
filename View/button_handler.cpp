@@ -19,7 +19,11 @@ void ButtonHandler::RescaleButtons(SizeHandler size_handler) {
   RescaleMainMenuButtons(size_handler);
   RescaleSettingsButtons(size_handler);
   RescaleGameButtons(size_handler);
-  RescalePauseMenuButtons(size_handler);
+  if (window_type_ == WindowType::kTitles) {
+    RescaleTitleButtons(size_handler);
+  } else {
+    RescalePauseMenuButtons(size_handler);
+  }
 }
 
 void ButtonHandler::SetMainMenuUiVisible(bool visible) {
@@ -36,6 +40,7 @@ void ButtonHandler::SetSettingsUiVisible(bool visible) {
   sound_button_->setVisible(visible);
   reset_game_button_->setVisible(visible);
   to_main_menu_button_->setVisible(visible);
+  titles_button_->setVisible(visible);
 }
 
 void ButtonHandler::SetGameUiVisible(bool visible) {
@@ -49,6 +54,15 @@ void ButtonHandler::SetPauseMenuUiVisible(bool visible) {
   continue_button_->setVisible(visible);
   restart_button_->setVisible(visible);
   to_main_menu_button_->setVisible(visible);
+}
+
+void ButtonHandler::SetTitlesVisible(bool visible, SizeHandler size_handler) {
+  to_main_menu_button_->setVisible(visible);
+  if (visible) {
+    RescaleTitleButtons(size_handler);
+  } else {
+    RescaleSettingsButtons(size_handler);
+  }
 }
 
 WindowType ButtonHandler::GetWindowType() const {
@@ -198,6 +212,15 @@ void ButtonHandler::CreateSettingsButtons() {
   };
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);
 
+  titles_button_ = new MenuButton(
+      tr("ТИТРЫ"), long_button_size_, main_window_, font_id_);
+  auto titles_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
+    window_type_ = WindowType::kTitles;
+    controller_->CreateTitles();
+  };
+  connect(titles_button_, &QPushButton::clicked, titles_click);
+
   to_main_menu_button_ = new MenuButton(
       tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_, font_id_);
   auto back_to_main_menu_click = [this]() {
@@ -205,8 +228,10 @@ void ButtonHandler::CreateSettingsButtons() {
     if (window_type_ == WindowType::kPauseMenu) {
       controller_->EndGame();
     }
+    if (window_type_ == WindowType::kTitles) {
+      controller_->EndTitles();
+    }
     window_type_ = WindowType::kMainMenu;
-    main_window_->repaint();
   };
   connect(to_main_menu_button_, &QPushButton::clicked, back_to_main_menu_click);
 }
@@ -224,7 +249,9 @@ void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
 
   reset_game_button_->SetGeometry(first_button_coordinate_ + shift,
                                   size_handler);
-  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 2,
+  titles_button_->SetGeometry(first_button_coordinate_ + shift * 2,
+                                                  size_handler);
+  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 3,
                                     size_handler);
 }
 
@@ -328,4 +355,10 @@ void ButtonHandler::SetSpeedButtonsState(Speed speed) {
   zero_speed_button_->setDisabled(speed == Speed::kZeroSpeed);
   normal_speed_button_->setDisabled(speed == Speed::kNormalSpeed);
   double_speed_button_->setDisabled(speed == Speed::kDoubleSpeed);
+}
+
+void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
+  to_main_menu_button_->SetGeometry({10, 10},
+                                    size_handler);
+  to_main_menu_button_->show();
 }

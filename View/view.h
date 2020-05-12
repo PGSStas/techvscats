@@ -44,6 +44,9 @@ class View : public QMainWindow {
 
   int GetRealTime() const;
 
+  void StartTitles();
+  void EndTitles();
+
  private:
   AbstractController* controller_;
   SizeHandler size_handler_;
@@ -83,6 +86,7 @@ class View : public QMainWindow {
   void DrawMainMenu(QPainter* painter);
   void DrawGame(QPainter* painter);
   void DrawSettings(QPainter* painter);
+  void DrawTitles(QPainter* painter);
   void DrawPauseMenu(QPainter* painter);
   void DrawEndgameMessage(QPainter* painter);
 

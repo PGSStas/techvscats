@@ -30,6 +30,7 @@ class ButtonHandler : public QObject {
   void SetSettingsUiVisible(bool visible);
   void SetGameUiVisible(bool visible);
   void SetPauseMenuUiVisible(bool visible);
+  void SetTitlesVisible(bool visible, SizeHandler size_handler);
 
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
@@ -47,6 +48,7 @@ class ButtonHandler : public QObject {
   // creating pause menu
   void CreatePauseMenuButtons();
   void RescalePauseMenuButtons(SizeHandler size_handler);
+  void RescaleTitleButtons(SizeHandler size_handler);
 
  private:
   QMainWindow* main_window_;
@@ -72,6 +74,7 @@ class ButtonHandler : public QObject {
   MenuButton* language_button_;
   MenuButton* sound_button_;
   MenuButton* reset_game_button_;
+  MenuButton* titles_button_;
   MenuButton* to_main_menu_button_;
 
   // pause menu button

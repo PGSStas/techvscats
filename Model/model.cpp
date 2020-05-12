@@ -276,11 +276,11 @@ void Model::LoadLevel(int level) {
   }
 
   // Map
-  backgrounds_[3] = AnimationPlayer(
+  backgrounds_[4] = AnimationPlayer(
       GetImagesByFramePath("backgrounds/map_level_" +
           QString::number(level) + "_1"));
 
-  empty_zone_texture_[3] = QImage(":resources/images/backgrounds/texture_level_"
+  empty_zone_texture_[4] = QImage(":resources/images/backgrounds/texture_level_"
                                       + QString::number(level) + ".png");
 }
 
@@ -442,6 +442,8 @@ void Model::LoadBackground(const QJsonObject&) {
   backgrounds_.emplace_back(GetImagesByFramePath(
       "backgrounds/settings_background_1"));
   backgrounds_.emplace_back(GetImagesByFramePath(
+      "backgrounds/titles_background_1"));
+  backgrounds_.emplace_back(GetImagesByFramePath(
       "backgrounds/pause_menu_background_1"));
   backgrounds_.emplace_back(GetImagesByFramePath("error"));
   // interface
@@ -451,6 +453,8 @@ void Model::LoadBackground(const QJsonObject&) {
       QImage(":resources/images/backgrounds/cloud.png"));
   empty_zone_texture_.push_back(
       QImage(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.push_back(
+      QImage(":resources/images/backgrounds/titles_background_1.png"));
   empty_zone_texture_.push_back(
       QImage(":resources/images/backgrounds/cloud.png"));
   empty_zone_texture_.push_back(

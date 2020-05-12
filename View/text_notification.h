@@ -23,6 +23,8 @@ class TextNotification : public GameObject {
 
   bool IsDead() const;
 
+  void SetFontSize(int new_size);
+
  private:
   QString message_;
   Size force_vector_;

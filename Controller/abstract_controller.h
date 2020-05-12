@@ -26,10 +26,11 @@ enum class Speed {
 };
 
 enum class WindowType {
-  kMainMenu = 0,
-  kSettings = 1,
-  kPauseMenu = 2,
-  kGame = 3
+  kMainMenu,
+  kSettings,
+  kTitles,
+  kPauseMenu,
+  kGame,
 };
 
 // AbstractController is needed to avoid the problem with looping include
@@ -69,6 +70,9 @@ class AbstractController {
 
   virtual int GetCurrentRoundNumber() const = 0;
   virtual int GetRoundsCount() const = 0;
+
+  virtual void CreateTitles() = 0;
+  virtual void EndTitles() = 0;
 
   virtual MusicPlayer* GetMusicPlayer() = 0;
 };

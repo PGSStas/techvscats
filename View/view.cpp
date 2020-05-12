@@ -49,6 +49,10 @@ void View::paintEvent(QPaintEvent*) {
       DrawSettings(&painter);
       break;
     }
+    case WindowType::kTitles: {
+      DrawTitles(&painter);
+      break;
+    }
     case WindowType::kPauseMenu: {
       DrawPauseMenu(&painter);
       break;
@@ -346,5 +350,24 @@ void View::DrawBars(QPainter* painter) {
     building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
                                                    building->GetPosition(),
                                                    building->GetSize());
+  }
+}
+
+void View::StartTitles() {
+  button_handler_->SetSettingsUiVisible(false);
+  button_handler_->SetTitlesVisible(true, size_handler_);
+  repaint();
+}
+
+void View::EndTitles() {
+  button_handler_->SetTitlesVisible(false, size_handler_);
+  button_handler_->SetMainMenuUiVisible(true);
+  repaint();
+}
+
+void View::DrawTitles(QPainter* painter) {
+  const auto& text_notifications = controller_->GetTextNotifications();
+  for (auto& notification : text_notifications) {
+    notification.Draw(painter, size_handler_);
   }
 }

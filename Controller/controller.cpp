@@ -48,6 +48,10 @@ void Controller::Tick(int current_time) {
       MenuProcess();
       break;
     }
+    case WindowType::kTitles: {
+      TickTextNotifications();
+      break;
+    }
     default: {
       break;
     }
@@ -469,4 +473,22 @@ int Controller::GetCurrentRoundNumber() const {
 
 int Controller::GetRoundsCount() const {
   return model_->GetRoundsCount();
+}
+
+void Controller::CreateTitles() {
+  window_type_ = WindowType::kTitles;
+  view_->StartTitles();
+  // tbd: норм текст в титрах
+  QString titles = QObject::tr("Tech vs Cats\nGiggling Penguin\n"
+                               "watislaf\nuustrica\nPGSStas\nlfeden");
+  Coordinate start = {constants::kGameWidth / 2, constants::kGameHeight};
+  TextNotification notification(titles, start, Qt::white, current_game_time_,
+      {0, -50}, 10000);
+  notification.SetFontSize(40);
+  model_->AddTextNotification(notification);
+}
+
+void Controller::EndTitles() {
+  window_type_ = WindowType::kMainMenu;
+  view_->EndTitles();
 }

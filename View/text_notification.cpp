@@ -46,3 +46,7 @@ void TextNotification::Draw(QPainter* painter,
 bool TextNotification::IsDead() const {
   return is_dead_;
 }
+
+void TextNotification::SetFontSize(int new_size) {
+  font_size = new_size;
+}
