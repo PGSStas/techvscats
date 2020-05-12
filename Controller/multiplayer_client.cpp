@@ -57,7 +57,6 @@ void MultiplayerClient::Connect() {
 }
 
 void MultiplayerClient::Disconnect() {
-  is_normal_close_ = true;
   server_web_socket_->close();
   server_web_socket_->deleteLater();
   is_trying_to_connect_ = false;
@@ -228,7 +227,6 @@ void MultiplayerClient::OnConnect() {
           this, &MultiplayerClient::OnMessageReceived);
   is_online_ = true;
   is_online_ = true;
-  is_normal_close_ = false;
   is_trying_to_connect_ = false;
   has_permission_to_start_round = true;
   CreateVisibleMessage(MessageType::kConnect);
@@ -250,10 +248,6 @@ void MultiplayerClient::OnMessageReceived(const QByteArray& array) {
 }
 
 void MultiplayerClient::onClose() {
-  if (!is_normal_close_) {
-    CreateVisibleMessage(MessageType::kServerClosed);
-  }
-  is_normal_close_ = false;
   has_permission_to_start_round = true;
   is_online_ = false;
 }
