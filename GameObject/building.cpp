@@ -1,6 +1,3 @@
-#include <QDebug>
-#include <utility>
-
 #include "building.h"
 
 Building::Building(int id, int settle_cost, const AuricField& aura, Size size)
@@ -63,6 +60,16 @@ void Building::Tick(int current_time) {
 
 void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   if (action_ == Action::kAfterFire || id_ == 0) {
+    return;
+  }
+  bool need_change_ = aims_.empty();
+  for (const auto& enemy : aims_) {
+    if (!IsInAttackRange(enemy->GetPosition()) || enemy->IsDead()) {
+      need_change_ = true;
+      break;
+    }
+  }
+  if(!need_change_){
     return;
   }
   aims_.clear();
