@@ -6,6 +6,7 @@
 #include <QImage>
 #include <QPainter>
 #include <QString>
+#include <utility>
 
 #include "animation_player.h"
 #include "size_handler.h"
