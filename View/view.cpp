@@ -3,10 +3,10 @@
 View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(),
-      button_handler_(ButtonHandler(this, controller, 0)),
       tower_menu_(this) {
-  setMinimumSize(1280, 720);
+  setMinimumSize(960, 540);
   setMouseTracking(true);
+  show();
   setWindowIcon(QIcon(":resources/images/icon.png"));
   setWindowTitle("Tech vs Cats");
   //showFullScreen();
@@ -15,20 +15,31 @@ View::View(AbstractController* controller)
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
-  button_handler_.SetGameUiVisible(false);
-  button_handler_.SetPauseMenuUiVisible(false);
-  button_handler_.SetSettingsUiVisible(false);
-  button_handler_.SetMainMenuUiVisible(true);
+}
+
+void View::SecondConstructorPart() {
+  button_handler_ = std::make_shared<ButtonHandler>(this, controller_, 0);
+  button_handler_->SetGameUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(false);
+  button_handler_->SetSettingsUiVisible(false);
+  button_handler_->SetMainMenuUiVisible(false);
+  is_model_loaded_ = true;
+  Resize();
 }
 
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
-  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-  painter.drawImage(
-      origin.x, origin.y, controller_->GetBackground(
-          button_handler_.GetWindowType()).GetCurrentFrame());
+  if (!is_model_loaded_) {
+    Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+    painter.drawImage(origin.x, origin.y, logo_.scaled(width(), height()));
+    return;
+  }
 
-  auto window_type = button_handler_.GetWindowType();
+  Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
+  painter.drawImage(origin.x, origin.y, controller_->GetBackground(
+      button_handler_->GetWindowType()).GetCurrentFrame());
+
+  auto window_type = button_handler_->GetWindowType();
   switch (window_type) {
     case WindowType::kMainMenu: {
       DrawMainMenu(&painter);
@@ -50,10 +61,17 @@ void View::paintEvent(QPaintEvent*) {
   DrawEmptyZones(&painter);
 }
 
+void View::Resize() {
+  size_handler_.ChangeSystem(this->width(), this->height());
+  button_handler_->RescaleButtons(size_handler_);
+  tower_menu_.RescaleButtons(size_handler_);
+  controller_->RescaleObjects(size_handler_);
+}
+
 void View::DrawEmptyZones(QPainter* painter) {
   painter->save();
   const QImage& image = controller_->GetEmptyZoneTexture(
-      button_handler_.GetWindowType());
+      button_handler_->GetWindowType());
   Size horizontal_zone =
       Size(width(), size_handler_.GameToWindowCoordinate({0, 0}).y);
   painter->fillRect(0, 0, horizontal_zone.width, horizontal_zone.height, image);
@@ -72,9 +90,9 @@ void View::DrawEmptyZones(QPainter* painter) {
 }
 
 void View::DrawMainMenu(QPainter*) {
-  button_handler_.SetSettingsUiVisible(false);
-  button_handler_.SetPauseMenuUiVisible(false);
-  button_handler_.SetMainMenuUiVisible(true);
+  button_handler_->SetSettingsUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(false);
+  button_handler_->SetMainMenuUiVisible(true);
 }
 
 void View::DrawGame(QPainter* painter) {
@@ -89,19 +107,19 @@ void View::DrawGame(QPainter* painter) {
   DrawAdditionalInfo(painter);
   DrawEndgameMessage(painter);
 
-  button_handler_.SetMainMenuUiVisible(false);
-  button_handler_.SetPauseMenuUiVisible(false);
-  button_handler_.SetGameUiVisible(true);
+  button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(false);
+  button_handler_->SetGameUiVisible(true);
 }
 
 void View::DrawSettings(QPainter*) {
-  button_handler_.SetMainMenuUiVisible(false);
-  button_handler_.SetSettingsUiVisible(true);
+  button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetSettingsUiVisible(true);
 }
 
 void View::DrawPauseMenu(QPainter*) {
-  button_handler_.SetGameUiVisible(false);
-  button_handler_.SetPauseMenuUiVisible(true);
+  button_handler_->SetGameUiVisible(false);
+  button_handler_->SetPauseMenuUiVisible(true);
   tower_menu_.Hide(true);
 }
 
@@ -210,38 +228,44 @@ void View::DisableTowerMenu() {
 }
 
 void View::mouseReleaseEvent(QMouseEvent* event) {
-  if (button_handler_.GetWindowType() == WindowType::kGame) {
+  if (!is_model_loaded_) {
+    return;
+  }
+  if (button_handler_->GetWindowType() == WindowType::kGame) {
     controller_->MouseEvent(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())), false);
   }
 }
 
 void View::mousePressEvent(QMouseEvent* event) {
-  if (button_handler_.GetWindowType() == WindowType::kGame) {
+  if (!is_model_loaded_) {
+    return;
+  }
+  if (button_handler_->GetWindowType() == WindowType::kGame) {
     controller_->MouseEvent(size_handler_.WindowToGameCoordinate(
         Coordinate(event->x(), event->y())), true);
   }
 }
 
 void View::resizeEvent(QResizeEvent*) {
-  size_handler_.ChangeSystem(this->width(), this->height());
-  button_handler_.RescaleButtons(size_handler_);
-  tower_menu_.RescaleButtons(size_handler_);
-  controller_->RescaleObjects(size_handler_);
+  if (!is_model_loaded_) {
+    return;
+  }
+  Resize();
 }
 
 void View::EnableGameUi() {
   controller_->RescaleObjects(size_handler_);
   DisableTowerMenu();
-  button_handler_.SetGameUiVisible(true);
+  button_handler_->SetGameUiVisible(true);
 }
 
 void View::DisableGameUi() {
-  button_handler_.SetGameUiVisible(false);
+  button_handler_->SetGameUiVisible(false);
 }
 
 void View::EnableMainMenuUi() {
-  button_handler_.SetMainMenuUiVisible(true);
+  button_handler_->SetMainMenuUiVisible(true);
 }
 
 void View::DrawAdditionalInfo(QPainter* painter) {
@@ -269,11 +293,16 @@ void View::DrawAdditionalInfo(QPainter* painter) {
 }
 
 void View::DisableMainMenuUi() {
-  button_handler_.SetMainMenuUiVisible(false);
+  button_handler_->SetMainMenuUiVisible(false);
 }
 
 void View::timerEvent(QTimerEvent* event) {
   if (event->timerId() == controller_timer_id_) {
+    if (!is_model_loaded_) {
+      repaint();
+      controller_->SecondConstructorPart();
+      return;
+    }
     int delta_time_ = time_between_ticks_.elapsed();
     time_between_ticks_.restart();
     controller_->Tick(controller_->GetCurrentTime()

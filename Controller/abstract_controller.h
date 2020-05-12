@@ -38,6 +38,8 @@ class AbstractController {
  public:
   virtual ~AbstractController() = default;
 
+  virtual void SecondConstructorPart() = 0;
+
   virtual void StartGame(int level) = 0;
   virtual void Tick(int current_time) = 0;
   virtual void EndGame() = 0;
@@ -67,6 +69,7 @@ class AbstractController {
 
   virtual int GetCurrentRoundNumber() const = 0;
   virtual int GetRoundsCount() const = 0;
+  virtual void SetGameVolume(int volume) = 0;
 
   virtual MusicPlayer* GetMusicPlayer() = 0;
 };

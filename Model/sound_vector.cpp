@@ -22,3 +22,15 @@ void SoundVector::Play() {
   sounds_[current_sound_++]->play();
   current_sound_ %= roads_count_;
 }
+
+void SoundVector::Stop() {
+  for (auto& sound : sounds_) {
+    sound->stop();
+  }
+}
+
+void SoundVector::SetVolume(int volume) {
+  for (auto& sound : sounds_) {
+    sound->setVolume(volume);
+  }
+}

@@ -18,6 +18,11 @@ const double kRefundCoefficient = 0.8;
 
 const double kFontSize = 32;
 const QString kCurrency = "$";
+
+const int kApplicationRestartCode = 123456;
+
+const QString kCompanyName = "Giggling Penguin";
+const QString kApplicationName = "Tech vs Cats";
 }  // namespace constants
 
 #endif  // MODEL_CONSTANTS_H_

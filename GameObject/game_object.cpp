@@ -22,7 +22,7 @@ const QImage& GameObject::GetSprite() const {
 }
 
 void GameObject::SetAnimationPlayers(
-    const std::vector<AnimationPlayer>& animation_players) {
+    std::vector<AnimationPlayer> animation_players) {
   animation_players_ = animation_players;
   action_timings_.clear();
   for (const auto& animation_player : animation_players_) {
