@@ -622,3 +622,9 @@ Model::~Model() {
     sound.Stop();
   }
 }
+
+void Model::SetParticlesVolume(int volume) {
+  for (auto& sound : id_to_particle_sound_) {
+    sound.SetVolume(volume);
+  }
+}

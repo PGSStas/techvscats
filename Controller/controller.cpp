@@ -470,3 +470,8 @@ int Controller::GetCurrentRoundNumber() const {
 int Controller::GetRoundsCount() const {
   return model_->GetRoundsCount();
 }
+
+void Controller::SetGameVolume(int volume) {
+  music_player_.SetVolume(volume);
+  model_->SetParticlesVolume(volume);
+}
