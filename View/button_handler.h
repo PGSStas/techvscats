@@ -12,6 +12,8 @@
 #include <QSettings>
 #include <QTranslator>
 
+#include <algorithm>
+
 #include "Controller/abstract_controller.h"
 #include "menu_button.h"
 #include "size_handler.h"
