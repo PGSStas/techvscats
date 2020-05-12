@@ -177,12 +177,13 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
 }
 
 void GlobalChat::SendMessage() {
-  QString message = text();
+  QString message = "> " + text();
   clear();
   if (message == "") {
     return;
   }
   message = message.split(" ", QString::SkipEmptyParts).join(" ");
+  ReceiveNewMessages(message.split(" "));
   send_messages_.push_back(message);
 }
 

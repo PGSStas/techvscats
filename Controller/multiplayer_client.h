@@ -60,8 +60,8 @@ class MultiplayerClient : public QObject {
  private:
   QString nick_name_ = "";
   QWebSocket* server_web_socket_{};
-  const QString address = "ws://localhost:1234";
-  // const QString address = "ws://49.12.75.135:1234";
+  // const QString address = "ws://localhost:1234";
+  const QString address = "ws://49.12.75.135:1234";
   const int kMaxMessageSize = 30;
   bool is_online_ = false;
   bool is_end_round_message_sent_ = true;
