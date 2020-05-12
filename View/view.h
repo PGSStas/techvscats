@@ -33,6 +33,7 @@ class View : public QMainWindow {
   void DisableGameUi();
   void EnableMainMenuUi();
   void DisableMainMenuUi();
+  void ChangeChat();
 
   void AddGlobalChatMessage(const QStringList& message);
 

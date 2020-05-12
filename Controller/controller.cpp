@@ -151,7 +151,7 @@ bool Controller::CanCreateNextWave() {
     is_prepairing_to_spawn_ = false;
   }
   if (client_.IsOnline()) {
-    client_.SetPermissionToStartRound(false);
+    client_.ChangePermissionToStartRound(false);
   }
   return true;
 }
@@ -173,11 +173,11 @@ void Controller::TickClient() {
   for (auto& message : messages) {
     switch (message.GetType()) {
       case MessageType::kVisibleMessage: {
-        ProcessControllerMessage(message);
+        ProcessMessage(message);
         break;
       }
       case MessageType::kControllerCommand: {
-        ProcessControllerCommand(message);
+        ProcessCommand(message);
         break;
       }
       default: {
@@ -514,7 +514,7 @@ MultiplayerClient* Controller::GetClient() {
   return &client_;
 }
 
-void Controller::ProcessControllerMessage(const Message& message) {
+void Controller::ProcessMessage(const Message& message) {
   switch (message.GetDialogType()) {
     case VisibleType::kWarning: {
       model_->AddTextNotification(
@@ -533,7 +533,7 @@ void Controller::ProcessControllerMessage(const Message& message) {
   }
 }
 
-void Controller::ProcessControllerCommand(const Message& message) {
+void Controller::ProcessCommand(const Message& message) {
   switch (message.GetCommandType()) {
     case CommandType::kGoldChange: {
       if (WindowType::kGame == window_type_) {

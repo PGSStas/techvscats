@@ -34,9 +34,8 @@ Message& Message::SetCommandMessage(const QString& message,
                                     CommandType type) {
   message_type_ = MessageType::kControllerCommand;
   command_type_ = type;
-  arguments_ = QStringList({""});
+  arguments_ = QStringList({message});
   arguments_number_ = 1;
-  arguments_[0] = message;
   return *this;
 }
 
@@ -56,7 +55,7 @@ MessageType Message::GetType() const {
 }
 
 QString Message::GetArgument(int arg_num) const {
-  if(arg_num>arguments_number_){
+  if(arg_num>=arguments_number_){
     return "";
   }
   return arguments_[arg_num];

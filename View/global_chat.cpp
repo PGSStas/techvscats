@@ -8,7 +8,6 @@ GlobalChat::GlobalChat(QMainWindow* window) : QLineEdit(window) {
   q_text_browser_ = new QTextBrowser(window);
   q_text_browser_->setFont(font);
   setFont(font);
-
   send_button = new MenuButton(
       Size(kTextEditSize.height, kTextEditSize.height), window,
       ":resources/buttons_resources/inc_level_button.png",

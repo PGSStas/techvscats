@@ -104,7 +104,11 @@ void MenuButton::EnableSecondIcon(bool is_second_icon_enabled) {
     return;
   }
   is_second_icon_enabled_ = is_second_icon_enabled;
-  setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
+  if (have_entered_event_) {
+    setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
+  } else {
+    setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);
+  }
 }
 
 Coordinate MenuButton::GetPosition() const {

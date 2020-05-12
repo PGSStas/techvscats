@@ -39,7 +39,7 @@ class MultiplayerClient : public QObject {
   void ClearReceivedMessage();
 
   bool IsRegistered() const;
-  void SetPermissionToStartRound(bool permission);
+  void ChangePermissionToStartRound(bool permission);
   bool IsOnline() const;
   bool HasPermissionToStartRound() const;
 
@@ -55,8 +55,8 @@ class MultiplayerClient : public QObject {
  private:
   QString nick_name_ = "";
   QWebSocket* server_web_socket_{};
-  const QString address = "ws://localhost:1234";
-  // const QString address = "ws://49.12.75.135:1234";
+  //const QString address = "ws://localhost:1234";
+  const QString address = "ws://49.12.75.135:1234";
   bool is_online_ = false;
   bool is_end_round_message_sent_ = true;
   bool has_permission_to_start_round = true;

@@ -74,7 +74,7 @@ bool MultiplayerClient::IsRegistered() const {
   return !nick_name_.isEmpty();
 }
 
-void MultiplayerClient::SetPermissionToStartRound(bool permission) {
+void MultiplayerClient::ChangePermissionToStartRound(bool permission) {
   if (!has_permission_to_start_round && permission) {
     is_end_round_message_sent_ = false;
   }
@@ -171,7 +171,7 @@ void MultiplayerClient::CreateVisibleMessage(const Message& message) {
 
   switch (message.GetType()) {
     case MessageType::kStartRound: {
-      SetPermissionToStartRound(true);
+      ChangePermissionToStartRound(true);
       break;
     }
     default:break;

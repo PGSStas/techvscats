@@ -89,7 +89,7 @@ class Server : public QObject {
   QElapsedTimer timer_;
   int timer_id_;
 
-  const int kMaxChatSize = 9;
+  const int kMaxChatSize = 15;
   const int kLifeRoomTimeForOneNewPlayer = 8000;
   const int kRoomSmallPrepareTime = 300;
 };

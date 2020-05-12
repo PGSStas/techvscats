@@ -264,10 +264,7 @@ void View::resizeEvent(QResizeEvent*) {
 
 void View::EnableGameUi() {
   controller_->RescaleObjects(size_handler_);
-  global_chat_->ChangeStyle();
-  if (controller_->GetClient()->IsOnline()) {
-    global_chat_->Clear();
-  }
+  ChangeChat();
   DisableTowerMenu();
   button_handler_->SetGameUiVisible(true);
 }
@@ -278,10 +275,7 @@ void View::DisableGameUi() {
 
 void View::EnableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(true);
-  global_chat_->ChangeStyle();
-  if (controller_->GetClient()->IsOnline()) {
-    global_chat_->Clear();
-  }
+  ChangeChat();
 }
 
 void View::DrawAdditionalInfo(QPainter* painter) {
@@ -306,6 +300,14 @@ void View::DrawAdditionalInfo(QPainter* painter) {
 void View::DisableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(false);
 }
+
+void View::ChangeChat() {
+  global_chat_->ChangeStyle();
+  if (controller_->GetClient()->IsOnline()) {
+    global_chat_->Clear();
+  }
+}
+
 
 void View::AddGlobalChatMessage(const QStringList& message) {
   global_chat_->ReceiveNewMessages(message);
