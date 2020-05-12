@@ -173,6 +173,10 @@ void View::DrawTowersAuraAndRange(QPainter* painter) {
 
 void View::DrawEnemies(QPainter* painter) {
   auto enemies_list = controller_->GetEnemies();
+  enemies_list.sort([&](const std::shared_ptr<Enemy>& a,
+                        const std::shared_ptr<Enemy>& b) {
+    return a->GetPosition().y < b->GetPosition().y;
+  });
   for (const auto& enemy : enemies_list) {
     enemy->Draw(painter, size_handler_);
   }
