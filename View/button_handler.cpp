@@ -339,12 +339,12 @@ void ButtonHandler::SetSpeedButtonsState(Speed speed) {
 }
 
 void ButtonHandler::SetLevelNumber(int level) {
-  if (level >= 0 && level <= current_max_level_) {
+  if (level >= 1 && level <= current_max_level_) {
     level_number_ = level;
   }
   inc_level_button_->setEnabled(level_number_ != current_max_level_);
   dec_level_button_->setEnabled(level_number_ != 1);
-  choose_level_number_->setText(tr("УРОВЕНЬ ") +
+  choose_level_number_->setText(tr("УРОВЕНЬ") + " " +
     QString::number(level_number_));
 }
 

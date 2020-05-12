@@ -1,6 +1,7 @@
 #include <memory>
 #include <QApplication>
 #include <QSettings>
+#include <QtCore/QLibraryInfo>
 
 #include "Controller/controller.h"
 
@@ -19,12 +20,19 @@ int main(int argc, char* argv[]) {
 
   QString language = settings.value("locale", "en_US").toString();
   QTranslator translator;
-
   if (!translator.load(":resources/translations/translation_" + language)) {
     translator.load(":resources/translations/translation_en_US");
     language = "en_US";
   }
   QApplication::installTranslator(&translator);
+
+  // Translates buttons in QDialog
+  QTranslator qtBaseTranslator;
+  if (qtBaseTranslator.load("qtbase_" + language,
+                            QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+  {
+    QApplication::installTranslator(&qtBaseTranslator);
+  }
 
   auto controller = std::make_shared<Controller>();
 
