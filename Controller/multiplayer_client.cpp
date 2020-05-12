@@ -20,7 +20,29 @@ void MultiplayerClient::Tick(int current_time) {
     CreateVisibleMessage(MessageType::kServerIsUnavailable);
   }
   current_time_ = current_time;
+}
 
+void MultiplayerClient::LoadDatabase() {
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+  QString locale = settings.value("locale", "en_US").toString();
+
+  QFile description_file(":resources/database/server_" + locale + ".json");
+
+  if (!description_file.open(QFile::ReadOnly)) {
+    qDebug() << "ERROR! Missing description file";
+    return;
+  }
+  QJsonArray description_array = QJsonDocument::fromJson(
+      description_file.readAll()).array();
+  int enum_size = 40;
+  data_base_.resize(enum_size);
+  for (int i = 0; i < description_array.count(); i++) {
+    auto info = description_array[i].toObject();
+    data_base_[i] = {
+        info["message"].toString(),
+        static_cast<VisibleType>(info["type"].toInt())
+    };
+  }
 }
 
 void MultiplayerClient::Connect() {
@@ -80,7 +102,7 @@ bool MultiplayerClient::IsReceivedMessageEmpty() const {
   return received_message_.empty();
 }
 
-const std::list <Message>& MultiplayerClient::GetReceivedMessage() const {
+const std::list<Message>& MultiplayerClient::GetReceivedMessage() const {
   return received_message_;
 }
 
@@ -98,10 +120,10 @@ void MultiplayerClient::ChangePermissionToStartRound(bool permission) {
   }
   has_permission_to_start_round = permission;
 }
-
 bool MultiplayerClient::IsOnline() const {
   return is_online_;
 }
+
 bool MultiplayerClient::HasPermissionToStartRound() const {
   return has_permission_to_start_round;
 }
@@ -239,23 +261,4 @@ void MultiplayerClient::onClose() {
 QString MultiplayerClient::AutoGenerateNickName() const {
   return first_name[random_generator_() % first_name.size()] + "_"
       + sur_name[random_generator_() % sur_name.size()];
-}
-
-void MultiplayerClient::LoadDatabase(const QString& path) {
-  QFile description_file(path);
-  if (!description_file.open(QFile::ReadOnly)) {
-    qDebug() << "ERROR! Missing description file";
-    return;
-  }
-  QJsonArray description_array = QJsonDocument::fromJson(
-      description_file.readAll()).array();
-  int enum_size = 40;
-  data_base_.resize(enum_size);
-  for (int i = 0; i < description_array.count(); i++) {
-    auto info = description_array[i].toObject();
-    data_base_[i] = {
-        info["message"].toString(),
-        static_cast<VisibleType>(info["type"].toInt())
-    };
-  }
 }

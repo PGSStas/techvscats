@@ -4,8 +4,9 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
-#include <QWebSocket>
 #include <QFile>
+#include <QSettings>
+#include <QWebSocket>
 
 #include <chrono>
 #include <list>
@@ -13,6 +14,7 @@
 #include <random>
 
 #include "Server/message.h"
+#include "Model/constants.h"
 
 // The multiplayer client is responsible for the connection between the game
 // and the server.
@@ -24,7 +26,7 @@ class MultiplayerClient : public QObject {
   ~MultiplayerClient() override;
 
   void Tick(int delta_time);
-  void LoadDatabase(const QString& path);
+  void LoadDatabase();
   void Connect();
   void Disconnect();
 
