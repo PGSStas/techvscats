@@ -71,6 +71,7 @@ class AbstractController {
 
   virtual int GetCurrentRoundNumber() const = 0;
   virtual int GetRoundsCount() const = 0;
+  virtual void SetGameVolume(int volume) = 0;
 
   virtual MusicPlayer* GetMusicPlayer() = 0;
   virtual MultiplayerClient* GetClient()  = 0;

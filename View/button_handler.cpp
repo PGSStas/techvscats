@@ -214,8 +214,7 @@ void ButtonHandler::CreateSettingsButtons() {
       ":resources/buttons_resources/sound_button_off_active.png");
   auto sound_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    controller_->GetMusicPlayer()->SetVolume(
-        100 * static_cast<int>(!is_sound_on_));
+    controller_->SetGameVolume(100 * static_cast<int>(!is_sound_on_));
     sound_button_->EnableSecondIcon(is_sound_on_);
     is_sound_on_ = !is_sound_on_;
   };
