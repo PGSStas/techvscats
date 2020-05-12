@@ -54,6 +54,10 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     DrawStatistics(painter, size_handler, text_height);
   }
 
+  if (has_image_) {
+    DrawImage(painter, size_handler, final_text_height);
+  }
+
   painter->restore();
 }
 
@@ -109,6 +113,30 @@ void InfoField::DrawSellInfo(QPainter* painter,
   painter->restore();
 }
 
+void InfoField::DrawImage(QPainter* painter, const SizeHandler& size_handler,
+                          double field_size) const {
+  painter->save();
+  painter->setPen(QPen(QBrush(qRgb(103, 103, 103)), 3));
+  painter->setBrush(QBrush(qRgb(53, 53, 53)));
+
+  Coordinate game_point = {position_.x - 40 - kImagePadSize.width,
+                           position_.y + field_size / 2 -
+                               kImagePadSize.height / 2};
+
+  if (game_point.x < 10) {
+    game_point.x = position_.x + 40 + kSize.width;
+  }
+
+  Coordinate point = size_handler.GameToWindowCoordinate(game_point);
+  Size size = size_handler.GameToWindowSize(kImagePadSize);
+
+  painter->drawRect(point.x, point.y, size.width, size.height);
+
+  // TODO(watislaf): Draw image here.
+
+  painter->restore();
+}
+
 void InfoField::SetInfo(const Building& building, int total_cost) {
   header_ = building.GetHeader();
   info_ = building.GetDescription();
@@ -151,3 +179,13 @@ void InfoField::SetVisible(bool is_hide) {
 bool InfoField::IsOnBottom() const {
   return is_on_bottom_;
 }
+
+void InfoField::SetImage(QImage image) {
+  has_image_ = true;
+  image_ = std::move(image);
+}
+
+void InfoField::RemoveImage() {
+  has_image_ = false;
+}
+
