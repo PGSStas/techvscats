@@ -28,3 +28,9 @@ void SoundVector::Stop() {
     sound->stop();
   }
 }
+
+void SoundVector::SetVolume(int volume) {
+  for (auto& sound : sounds_) {
+    sound->setVolume(volume);
+  }
+}

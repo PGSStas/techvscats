@@ -47,6 +47,7 @@ class Controller : public AbstractController {
 
   int GetCurrentRoundNumber() const override;
   int GetRoundsCount() const override;
+  void SetGameVolume(int volume) override;
 
   MusicPlayer* GetMusicPlayer() override;
 
