@@ -24,8 +24,8 @@
   "roads": [
     [
       {
-        "x": 145,
-        "y": 0
+        "x": 68,
+        "y": -50
       },
       {
         "x": 500,
@@ -82,8 +82,8 @@
     ],
     [
       {
-        "x": 0,
-        "y": 935
+        "x": -50,
+        "y": 937
       },
       {
         "x": 480,
@@ -137,7 +137,7 @@
     [
       {
         "x": 1750,
-        "y": 1080
+        "y": 1180
       },
       {
         "x": 1750,
@@ -633,35 +633,35 @@
         "spawn_period": 4000,
         "enemy_id": 1,
         "time_of_next_spawn": 7400,
-        "group_size": 7,
+        "group_size": 5,
         "road_to_spawn": 1
       },
       {
         "spawn_period": 4000,
         "enemy_id": 1,
         "time_of_next_spawn": 7800,
-        "group_size": 7,
+        "group_size": 5,
         "road_to_spawn": 1
       },
       {
         "spawn_period": 4000,
         "enemy_id": 1,
         "time_of_next_spawn": 8200,
-        "group_size": 7,
+        "group_size": 5,
         "road_to_spawn": 1
       },
       {
         "spawn_period": 4000,
         "enemy_id": 1,
         "time_of_next_spawn": 8600,
-        "group_size": 7,
+        "group_size": 5,
         "road_to_spawn": 2
       },
       {
         "spawn_period": 4000,
         "enemy_id": 1,
         "time_of_next_spawn": 9000,
-        "group_size": 7,
+        "group_size": 5,
         "road_to_spawn": 2
       },
       {
@@ -723,123 +723,46 @@
     ],
     [
       {
-        "spawn_period": 20000,
+        "spawn_period": 50000,
         "enemy_id": 6,
         "time_of_next_spawn": 1000,
         "group_size": 4,
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 20000,
+        "spawn_period": 50000,
         "enemy_id": 6,
         "time_of_next_spawn": 1000,
         "group_size": 4,
         "road_to_spawn": 1
       },
       {
-        "spawn_period": 20000,
-        "enemy_id": 6,
-        "time_of_next_spawn": 1000,
-        "group_size": 4,
-        "road_to_spawn": 2
-      },
-      {
-        "spawn_period": 7000,
+        "spawn_period": 25000,
         "enemy_id": 5,
         "time_of_next_spawn": 5000,
-        "group_size": 4,
+        "group_size": 8,
         "road_to_spawn": 2
       },
       {
-        "spawn_period": 7000,
+        "spawn_period": 25000,
         "enemy_id": 7,
         "time_of_next_spawn": 8500,
         "group_size": 2,
         "road_to_spawn": 2
       },
       {
-        "spawn_period": 7000,
+        "spawn_period": 25000,
         "enemy_id": 5,
         "time_of_next_spawn": 5000,
         "group_size": 8,
         "road_to_spawn": 2
       },
       {
-        "spawn_period": 7000,
+        "spawn_period": 25000,
         "enemy_id": 7,
         "time_of_next_spawn": 8500,
         "group_size": 4,
         "road_to_spawn": 2
-      },
-      {
-        "spawn_period": 7000,
-        "enemy_id": 5,
-        "time_of_next_spawn": 5000,
-        "group_size": 8,
-        "road_to_spawn": 2
-      },
-      {
-        "spawn_period": 7000,
-        "enemy_id": 7,
-        "time_of_next_spawn": 8500,
-        "group_size": 4,
-        "road_to_spawn": 2
-      },
-      {
-        "spawn_period": 6000,
-        "enemy_id": 1,
-        "time_of_next_spawn": 55000,
-        "group_size": 5,
-        "road_to_spawn": 0
-      },
-      {
-        "spawn_period": 6000,
-        "enemy_id": 1,
-        "time_of_next_spawn": 55700,
-        "group_size": 5,
-        "road_to_spawn": 0
-      },
-      {
-        "spawn_period": 6000,
-        "enemy_id": 1,
-        "time_of_next_spawn": 56400,
-        "group_size": 5,
-        "road_to_spawn": 0
-      },
-      {
-        "spawn_period": 6000,
-        "enemy_id": 1,
-        "time_of_next_spawn": 55000,
-        "group_size": 5,
-        "road_to_spawn": 1
-      },
-      {
-        "spawn_period": 6000,
-        "enemy_id": 1,
-        "time_of_next_spawn": 55700,
-        "group_size": 5,
-        "road_to_spawn": 1
-      },
-      {
-        "spawn_period": 6000,
-        "enemy_id": 1,
-        "time_of_next_spawn": 56400,
-        "group_size": 5,
-        "road_to_spawn": 1
-      },
-      {
-        "spawn_period": 12000,
-        "enemy_id": 1,
-        "time_of_next_spawn": 61000,
-        "group_size": 5,
-        "road_to_spawn": 1
-      },
-      {
-        "spawn_period": 12000,
-        "enemy_id": 1,
-        "time_of_next_spawn": 61000,
-        "group_size": 5,
-        "road_to_spawn": 0
       }
     ]
   ],

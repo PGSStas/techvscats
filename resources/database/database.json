@@ -609,10 +609,10 @@
     },
     {
       "effect_target": 0,
-      "speed_coefficient": -0.3,
-      "armor_coefficient": 0.3,
-      "damage_coefficient": -0.25,
-      "attack_rate_coefficient": 0,
+      "speed_coefficient": 0,
+      "armor_coefficient": 0.15,
+      "damage_coefficient": 0.20,
+      "attack_rate_coefficient": 0.15,
       "range_coefficient": -0.12
     },
     {

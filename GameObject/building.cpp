@@ -62,7 +62,7 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   if (action_ == Action::kAfterFire || id_ == 0) {
     return;
   }
-  bool need_change_ = aims_.empty();
+  bool need_change_ = aims_.size() < max_aims_;
   for (const auto& enemy : aims_) {
     if (!IsInAttackRange(enemy->GetPosition()) || enemy->IsDead()) {
       need_change_ = true;
