@@ -42,9 +42,11 @@ class View : public QMainWindow {
   void ChangeGameSpeed(Speed speed);
 
   const SizeHandler& GetSizeHandler() const;
-  std::shared_ptr<ButtonHandler> GetButtonHandler() const;
 
   int GetRealTime() const;
+
+  int GetChosenLevel() const;
+  void SetChosenLevel(int level);
 
  private:
   AbstractController* controller_;

@@ -37,10 +37,8 @@ class ButtonHandler : public QObject {
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
 
-  void SetLevelNumber(int level);
-  void SetSoundOn(bool sound_on);
-  void SetMaxLevel(int max_level);
-  int GetLevel() const;
+  void SetCurrentLevel(int level);
+  int GetCurrentLevel() const;
 
  private:
   // creating main menu
@@ -55,6 +53,8 @@ class ButtonHandler : public QObject {
   // creating pause menu
   void CreatePauseMenuButtons();
   void RescalePauseMenuButtons(SizeHandler size_handler);
+
+  void SetSoundOn(bool sound_on);
 
  private:
   QMainWindow* main_window_;
@@ -99,7 +99,6 @@ class ButtonHandler : public QObject {
   // left to check icons
   bool is_language_russian_ = true;
 
-  int current_max_level_ = 2;
   const int kMaxLevel_ = 2;
 };
 

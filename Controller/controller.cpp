@@ -11,14 +11,6 @@ Controller::Controller() {
 void Controller::SecondConstructorPart() {
   model_->LoadDatabase();
   view_->SecondConstructorPart();
-  QSettings settings(constants::kCompanyName, constants::kApplicationName);
-
-  view_->GetButtonHandler()->SetMaxLevel(
-      settings.value("level", 0).toInt() + 1);
-  view_->GetButtonHandler()->SetLevelNumber(
-      settings.value("level", 0).toInt() + 1);
-  view_->GetButtonHandler()->SetSoundOn(
-      settings.value("sound_on", true).toBool());
 }
 
 void Controller::StartGame(int level_id) {
@@ -133,10 +125,10 @@ bool Controller::CanCreateNextWave() {
                                  size_coefficient});
     music_player_.PlayGameWonSound();
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
-    int level = std::max(settings.value("level", 0).toInt(),
-                         view_->GetButtonHandler()->GetLevel());
-    settings.setValue("level", level);
-    view_->GetButtonHandler()->SetMaxLevel(level + 1);
+    int level = std::max(settings.value("levels_passed", 0).toInt(),
+                         view_->GetChosenLevel());
+    settings.setValue("levels_passed", level);
+    view_->SetChosenLevel(level);
   }
 
   if (!model_->GetEnemies()->empty()

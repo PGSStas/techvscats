@@ -5,8 +5,10 @@ ButtonHandler::ButtonHandler(QMainWindow* main_window,
     : QObject(main_window), main_window_(main_window), controller_(controller),
       font_id_(font_id) {
   CreateButtons();
-  SetLevelNumber(1);
-  SetMaxLevel(1);
+  QSettings settings = QSettings(constants::kCompanyName,
+      constants::kApplicationName);
+  SetCurrentLevel(settings.value("levels_passed", 0).toInt() + 1);
+  SetSoundOn(settings.value("sound_on", true).toBool());
   window_type_ = WindowType::kMainMenu;
 }
 
@@ -79,15 +81,8 @@ void ButtonHandler::CreateMainMenuButtons() {
 
   exit_button_ = new MenuButton(
       tr("ВЫЙТИ ИЗ ИГРЫ"), long_button_size_, main_window_, font_id_);
-  auto exit_button_click = [this]() {
-    auto response = QMessageBox::question(main_window_, tr("Это ошибка..."),
-                                          tr("Вы точно-точно уходите?"));
-    if (response == QMessageBox::Yes) {
-      main_window_->close();
-    }
-  };
   connect(
-      exit_button_, &QPushButton::clicked, main_window_, exit_button_click);
+      exit_button_, &QPushButton::clicked, main_window_, &QMainWindow::close);
 
   Size choose_level_number_size =
       Size(long_button_size_.width - short_button_size_.width * 2 - shift_ * 2,
@@ -102,7 +97,7 @@ void ButtonHandler::CreateMainMenuButtons() {
       ":resources/buttons_resources/inc_level_button_active.png");
   auto inc_level_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    SetLevelNumber(level_number_ + 1);
+    SetCurrentLevel(level_number_ + 1);
   };
   connect(inc_level_button_, &QPushButton::clicked, inc_level_button_click);
 
@@ -112,7 +107,7 @@ void ButtonHandler::CreateMainMenuButtons() {
       ":resources/buttons_resources/dec_level_button_active.png");
   auto dec_level_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    SetLevelNumber(level_number_ - 1);
+    SetCurrentLevel(level_number_ - 1);
   };
   connect(dec_level_button_, &QPushButton::clicked, dec_level_button_click);
 }
@@ -203,8 +198,8 @@ void ButtonHandler::CreateSettingsButtons() {
     auto response = QMessageBox::question(main_window_, tr("Внимание!"),
         tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
     if (response == QMessageBox::Yes) {
-      SetMaxLevel(1);
-      settings.setValue("level", 0);
+      settings.setValue("levels_passed", 0);
+      SetCurrentLevel(1);
     }
   };
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);
@@ -341,11 +336,13 @@ void ButtonHandler::SetSpeedButtonsState(Speed speed) {
   double_speed_button_->setDisabled(speed == Speed::kDoubleSpeed);
 }
 
-void ButtonHandler::SetLevelNumber(int level) {
-  if (level >= 1 && level <= current_max_level_) {
+void ButtonHandler::SetCurrentLevel(int level) {
+  int current_max_level = QSettings(constants::kCompanyName,
+      constants::kApplicationName).value("levels_passed", 0).toInt() + 1;
+  if (level >= 1 && level <= current_max_level) {
     level_number_ = level;
   }
-  inc_level_button_->setEnabled(level_number_ != current_max_level_);
+  inc_level_button_->setEnabled(level_number_ != current_max_level);
   dec_level_button_->setEnabled(level_number_ != 1);
   choose_level_number_->setText(tr("УРОВЕНЬ") + " " +
     QString::number(level_number_));
@@ -358,11 +355,6 @@ void ButtonHandler::SetSoundOn(bool sound_on) {
       100 * static_cast<int>(is_sound_on_));
 }
 
-void ButtonHandler::SetMaxLevel(int max_level) {
-  current_max_level_ = std::min(max_level, kMaxLevel_);
-  SetLevelNumber(std::min(level_number_ + 1, current_max_level_));
-}
-
-int ButtonHandler::GetLevel() const {
+int ButtonHandler::GetCurrentLevel() const {
   return level_number_;
 }

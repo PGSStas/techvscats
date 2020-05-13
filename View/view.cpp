@@ -349,6 +349,10 @@ void View::DrawBars(QPainter* painter) {
   }
 }
 
-std::shared_ptr<ButtonHandler> View::GetButtonHandler() const {
-  return button_handler_;
+int View::GetChosenLevel() const {
+  return button_handler_->GetCurrentLevel();
+}
+
+void View::SetChosenLevel(int level) {
+  button_handler_->SetCurrentLevel(level);
 }
