@@ -22,7 +22,6 @@ apply plugin: 'com.google.firebase.appdistribution'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
 }
 
 android {
@@ -44,7 +43,7 @@ android {
     buildToolsVersion '28.0.3'
 
     firebaseAppDistribution {
-        releaseNotesFile="android.txt"
+        releaseNotesFile="release_notes.txt"
         testers="vladkozulin@mail.ru"
     }
 
