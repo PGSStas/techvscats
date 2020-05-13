@@ -633,7 +633,7 @@ std::vector<QString> Model::GetTitles() const {
   titles.open(QIODevice::ReadOnly);
   QTextStream fin(&titles);
   fin.setCodec("UTF-8");
-  while(!fin.atEnd()) {
+  while (!fin.atEnd()) {
     result.push_back(fin.readLine());
   }
   return result;

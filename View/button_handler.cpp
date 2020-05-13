@@ -17,7 +17,7 @@ void ButtonHandler::CreateButtons() {
 }
 
 void ButtonHandler::RescaleButtons() {
-  switch(window_type_) {
+  switch (window_type_) {
     case WindowType::kMainMenu: {
       RescaleMainMenuButtons(*size_handler_);
       break;
