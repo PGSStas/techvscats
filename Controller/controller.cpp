@@ -482,13 +482,13 @@ void Controller::CreateTitles() {
   QString titles = QObject::tr("Tech vs Cats\nGiggling Penguin\n"
                                "watislaf\nuustrica\nPGSStas\nlfeden");
   auto title = titles.split('\n');
-  double j = title.size();
+  double j = 1;
   for (const auto& line : title) {
     Coordinate start = {constants::kGameWidth / 2,
-                        constants::kGameHeight - 60 * j};
+                        constants::kGameHeight + 60 * j};
     TextNotification notification(line, start, Qt::white, current_game_time_,
-                                  {0, -10}, 10000, 1, false);
-    j--;
+                                  {0, -10}, 13000, 1, false);
+    j++;
     notification.SetFontSize(40);
     model_->AddTextNotification(notification);
   }
