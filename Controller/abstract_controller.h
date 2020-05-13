@@ -5,6 +5,8 @@
 #include <memory>
 #include <vector>
 
+#include <QSettings>
+
 #include "GameObject/abstract_projectile.h"
 #include "GameObject/base.h"
 #include "GameObject/building.h"

@@ -1,6 +1,7 @@
 <RCC>
 <qresource>
     <file>resources/levels/level_1.json</file>
+    <file>resources/levels/level_2.json</file>
     <file>resources/database/database.json</file>
     <file>resources/fonts/gui_font.ttf</file>
 

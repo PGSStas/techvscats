@@ -348,3 +348,11 @@ void View::DrawBars(QPainter* painter) {
                                                    building->GetSize());
   }
 }
+
+int View::GetChosenLevel() const {
+  return button_handler_->GetCurrentLevel();
+}
+
+void View::SetChosenLevel(int level) {
+  button_handler_->SetCurrentLevel(level);
+}

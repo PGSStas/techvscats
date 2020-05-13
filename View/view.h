@@ -37,12 +37,16 @@ class View : public QMainWindow {
                         const std::vector<int>& possible_buildings_id,
                         int carrier_id_, int total_cost);
   void DisableTowerMenu();
-
-  void ChangeGameSpeed(Speed speed);
-  const SizeHandler& GetSizeHandler() const;
   bool IsTowerMenuEnabled() const;
 
+  void ChangeGameSpeed(Speed speed);
+
+  const SizeHandler& GetSizeHandler() const;
+
   int GetRealTime() const;
+
+  int GetChosenLevel() const;
+  void SetChosenLevel(int level);
 
  private:
   AbstractController* controller_;

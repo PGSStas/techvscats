@@ -5,11 +5,14 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QProcess>
 #include <QPushButton>
 #include <QString>
 #include <QSettings>
 #include <QTranslator>
+
+#include <algorithm>
 
 #include "Controller/abstract_controller.h"
 #include "menu_button.h"
@@ -34,6 +37,9 @@ class ButtonHandler : public QObject {
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
 
+  void SetCurrentLevel(int level);
+  int GetCurrentLevel() const;
+
  private:
   // creating main menu
   void CreateMainMenuButtons();
@@ -47,6 +53,8 @@ class ButtonHandler : public QObject {
   // creating pause menu
   void CreatePauseMenuButtons();
   void RescalePauseMenuButtons(SizeHandler size_handler);
+
+  void SetSoundOn(bool sound_on);
 
  private:
   QMainWindow* main_window_;
@@ -90,6 +98,8 @@ class ButtonHandler : public QObject {
 
   // left to check icons
   bool is_language_russian_ = true;
+
+  const int kMaxLevel_ = 2;
 };
 
 #endif  // VIEW_BUTTON_HANDLER_H_
