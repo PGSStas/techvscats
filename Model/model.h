@@ -76,6 +76,7 @@ class Model {
   const AnimationPlayer& GetInterface() const;
 
   const QImage& GetEmptyZoneTexture(int index) const;
+  std::vector<QString> GetTitles() const;
 
  private:
   void LoadLevel(int level);

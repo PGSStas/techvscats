@@ -5,12 +5,12 @@ TextNotification::TextNotification(const QString& message,
                                    int creation_time, Size moving_vector,
                                    int life_time,
                                    double size_change_coefficient,
-                                   bool is_accelerated)
+                                   bool is_accelerated, bool center_align)
     : GameObject({0, 0}, start_position), message_(message),
       force_vector_(moving_vector), color_(color),
       creation_time_(creation_time), life_time_(life_time),
       size_change_coefficient_(size_change_coefficient),
-      is_accelerated_(is_accelerated) {}
+      is_accelerated_(is_accelerated), center_align_(center_align) {}
 
 void TextNotification::Tick(int current_time) {
   UpdateTime(current_time);
@@ -37,9 +37,14 @@ void TextNotification::Draw(QPainter* painter,
   painter->setFont(font);
 
   // Position, for camera span
-  Coordinate point = size_handler.GameToWindowCoordinate(
-      {position_.x - font_size * message_.size() * 0.35,
-       position_.y + font_size / 4});
+  Coordinate point;
+  if (center_align_) {
+    point = size_handler.GameToWindowCoordinate(
+        {position_.x - font_size * message_.size() * 0.35,
+         position_.y + font_size / 4});
+  } else {
+    point = size_handler.GameToWindowCoordinate({position_.x, position_.y});
+  }
   if (font_size <= kMaxTextSize + constants::kEpsilon) {
     painter->drawText(point.x, point.y, message_);
   }

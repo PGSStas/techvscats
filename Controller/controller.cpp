@@ -50,6 +50,9 @@ void Controller::Tick(int current_time) {
     }
     case WindowType::kTitles: {
       TickTextNotifications();
+      if (model_->GetTextNotifications()->empty()) {
+        view_->ShowSettingsButton();
+      }
       break;
     }
     default: {
@@ -478,17 +481,14 @@ int Controller::GetRoundsCount() const {
 void Controller::CreateTitles() {
   window_type_ = WindowType::kTitles;
   view_->StartTitles();
-  // tbd: норм текст в титрах
-  QString titles = QObject::tr("Tech vs Cats\nGiggling Penguin\n"
-                               "watislaf\nuustrica\nPGSStas\nlfeden");
-  auto title = titles.split('\n');
-  double j = 1;
-  for (const auto& line : title) {
-    Coordinate start = {constants::kGameWidth / 2,
-                        constants::kGameHeight + 60 * j};
+  auto titles = model_->GetTitles();
+  double i = 1;
+  for (const auto& line : titles) {
+    Coordinate start = {constants::kGameWidth / 4,
+                        constants::kGameHeight + 60 * i};
     TextNotification notification(line, start, Qt::white, current_game_time_,
-                                  {0, -10}, 13000, 1, false);
-    j++;
+                                  {0, -10}, 23500, 1, false, false);
+    i++;
     notification.SetFontSize(40);
     model_->AddTextNotification(notification);
   }
@@ -497,4 +497,5 @@ void Controller::CreateTitles() {
 void Controller::EndTitles() {
   window_type_ = WindowType::kMainMenu;
   view_->EndTitles();
+  model_->GetTextNotifications()->clear();
 }

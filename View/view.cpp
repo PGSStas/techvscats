@@ -356,7 +356,6 @@ void View::DrawBars(QPainter* painter) {
 
 void View::StartTitles() {
   button_handler_->SetSettingsUiVisible(false);
-  button_handler_->SetTitlesVisible(true, size_handler_);
   repaint();
 }
 
@@ -371,4 +370,8 @@ void View::DrawTitles(QPainter* painter) {
   for (auto& notification : text_notifications) {
     notification.Draw(painter, size_handler_);
   }
+}
+
+void View::ShowSettingsButton() {
+  button_handler_->SetTitlesVisible(true, size_handler_);
 }

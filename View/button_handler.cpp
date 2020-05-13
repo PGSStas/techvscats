@@ -72,12 +72,14 @@ void ButtonHandler::SetPauseMenuUiVisible(bool visible) {
 }
 
 void ButtonHandler::SetTitlesVisible(bool visible, SizeHandler size_handler) {
-  to_main_menu_button_->setVisible(visible);
   if (visible) {
     RescaleTitleButtons(size_handler);
   } else {
     RescaleSettingsButtons(size_handler);
   }
+  to_main_menu_button_->setVisible(visible);
+  // proper fix in uustrica
+  to_main_menu_button_->setStyleSheet("background-color: #ffffff;");
 }
 
 WindowType ButtonHandler::GetWindowType() const {
@@ -234,7 +236,6 @@ void ButtonHandler::CreateSettingsButtons() {
   auto titles_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kTitles;
-    RescaleButtons();
     controller_->CreateTitles();
   };
   connect(titles_button_, &QPushButton::clicked, titles_click);
@@ -384,5 +385,4 @@ void ButtonHandler::SetSpeedButtonsState(Speed speed) {
 void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
   to_main_menu_button_->SetGeometry({10, 10},
                                     size_handler);
-  to_main_menu_button_->show();
 }

@@ -63,6 +63,7 @@ void MenuButton::SetGeometry(
   if (text() != "") {
     border_size_ =
         size_handler.GameToWindowLength(button_constants::kMenuBorderSize);
+
     QString style_sheet =
         "border: " + QString::number(border_size_) + "px solid #000000;";
     setStyleSheet(style_sheet);
