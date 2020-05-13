@@ -487,7 +487,7 @@ void Controller::CreateTitles() {
     Coordinate start = {constants::kGameWidth / 4,
                         constants::kGameHeight + 60 * i};
     TextNotification notification(line, start, Qt::white, current_game_time_,
-                                  {0, -10}, 23500, 1, false, false);
+                                  {0, -10}, 83500, 1, false, false);
     i++;
     notification.SetFontSize(40);
     model_->AddTextNotification(notification);
