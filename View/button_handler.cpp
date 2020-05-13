@@ -9,6 +9,7 @@ ButtonHandler::ButtonHandler(QMainWindow* main_window,
       constants::kApplicationName);
   SetCurrentLevel(settings.value("levels_passed", 0).toInt() + 1);
   SetSoundOn(settings.value("sound_on", true).toBool());
+  SetFullscreen(settings.value("fullscreen", true).toBool());
   window_type_ = WindowType::kMainMenu;
 }
 
@@ -40,6 +41,7 @@ void ButtonHandler::SetSettingsUiVisible(bool visible) {
   sound_button_->setVisible(visible);
   reset_game_button_->setVisible(visible);
   to_main_menu_button_->setVisible(visible);
+  fullscreen_button_->setVisible(visible);
 }
 
 void ButtonHandler::SetGameUiVisible(bool visible) {
@@ -187,11 +189,18 @@ void ButtonHandler::CreateSettingsButtons() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     SetSoundOn(!is_sound_on_);
     settings.setValue("sound_on", is_sound_on_);
-    controller_->SetGameVolume(100 * static_cast<int>(!is_sound_on_));
-    sound_button_->EnableSecondIcon(is_sound_on_);
-    is_sound_on_ = !is_sound_on_;
   };
   connect(sound_button_, &QPushButton::clicked, sound_button_click);
+
+  fullscreen_button_ = new MenuButton(
+      tr("ОКОННЫЙ РЕЖИМ"), long_button_size_, main_window_, font_id_);
+  auto fullscreen_click = [this]() {
+    QSettings settings(constants::kCompanyName, constants::kApplicationName);
+    controller_->GetMusicPlayer()->PlayButtonSound();
+    SetFullscreen(!is_fullscreen_);
+    settings.setValue("fullscreen", is_fullscreen_);
+  };
+  connect(fullscreen_button_, &QPushButton::clicked, fullscreen_click);
 
   reset_game_button_ = new MenuButton(
       tr("СБРОСИТЬ ПРОГРЕСС"), long_button_size_, main_window_, font_id_);
@@ -230,11 +239,12 @@ void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
       first_button_coordinate_ + Size(long_button_size_.width / 2, 0)
           - Size(short_button_size_.width, 0) + Size(shift.height, 0),
       size_handler);
-
-  reset_game_button_->SetGeometry(first_button_coordinate_ + shift,
+  fullscreen_button_->SetGeometry(first_button_coordinate_ + shift,
                                   size_handler);
-  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 2,
-                                    size_handler);
+  reset_game_button_->SetGeometry(first_button_coordinate_ + shift * 2,
+      size_handler);
+  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 3,
+      size_handler);
 }
 
 void ButtonHandler::CreateGameButtons() {
@@ -360,4 +370,16 @@ void ButtonHandler::SetSoundOn(bool sound_on) {
 
 int ButtonHandler::GetCurrentLevel() const {
   return level_number_;
+}
+
+void ButtonHandler::SetFullscreen(bool fullscreen) {
+  is_fullscreen_ = fullscreen;
+  fullscreen_button_->setText(
+      fullscreen ? tr("ОКОННЫЙ РЕЖИМ") : tr("ПОЛНОЭКРАННЫЙ РЕЖИМ"));
+  main_window_->hide();
+  if (fullscreen) {
+    main_window_->showFullScreen();
+  } else {
+    main_window_->showNormal();
+  }
 }

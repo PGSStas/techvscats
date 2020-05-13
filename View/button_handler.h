@@ -55,6 +55,7 @@ class ButtonHandler : public QObject {
   void RescalePauseMenuButtons(SizeHandler size_handler);
 
   void SetSoundOn(bool sound_on);
+  void SetFullscreen(bool fullscreen);
 
  private:
   QMainWindow* main_window_;
@@ -79,6 +80,7 @@ class ButtonHandler : public QObject {
   // Settings window
   MenuButton* language_button_;
   MenuButton* sound_button_;
+  MenuButton* fullscreen_button_;
   MenuButton* reset_game_button_;
   MenuButton* to_main_menu_button_;
 
@@ -94,6 +96,7 @@ class ButtonHandler : public QObject {
       button_constants::kFirstButtonCoordinate;
   int shift_ = button_constants::kShift;
   bool is_sound_on_ = true;
+  bool is_fullscreen_ = true;
   int font_id_;
 
   // left to check icons
