@@ -1,9 +1,10 @@
 #include "button_handler.h"
 
 ButtonHandler::ButtonHandler(QMainWindow* main_window,
-                             AbstractController* controller, int font_id)
+                             AbstractController* controller,
+                             SizeHandler* size_handler, int font_id)
     : QObject(main_window), main_window_(main_window), controller_(controller),
-      font_id_(font_id) {
+      size_handler_(size_handler), font_id_(font_id) {
   CreateButtons();
   window_type_ = WindowType::kMainMenu;
 }
@@ -15,14 +16,28 @@ void ButtonHandler::CreateButtons() {
   CreatePauseMenuButtons();
 }
 
-void ButtonHandler::RescaleButtons(SizeHandler size_handler) {
-  RescaleMainMenuButtons(size_handler);
-  RescaleSettingsButtons(size_handler);
-  RescaleGameButtons(size_handler);
-  if (window_type_ == WindowType::kTitles) {
-    RescaleTitleButtons(size_handler);
-  } else {
-    RescalePauseMenuButtons(size_handler);
+void ButtonHandler::RescaleButtons() {
+  switch(window_type_) {
+    case WindowType::kMainMenu: {
+      RescaleMainMenuButtons(*size_handler_);
+      break;
+    }
+    case WindowType::kSettings: {
+      RescaleSettingsButtons(*size_handler_);
+      break;
+    }
+    case WindowType::kGame: {
+      RescaleGameButtons(*size_handler_);
+      break;
+    }
+    case WindowType::kTitles: {
+      RescaleTitleButtons(*size_handler_);
+      break;
+    }
+    case WindowType::kPauseMenu: {
+      RescalePauseMenuButtons(*size_handler_);
+      break;
+    }
   }
 }
 
@@ -75,6 +90,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   auto start_game_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
+    RescaleButtons();
     controller_->StartGame(level_number_);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
@@ -85,6 +101,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   auto settings_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kSettings;
+    RescaleButtons();
     main_window_->repaint();
   };
   connect(settings_button_, &QPushButton::clicked, settings_button_click);
@@ -217,6 +234,7 @@ void ButtonHandler::CreateSettingsButtons() {
   auto titles_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kTitles;
+    RescaleButtons();
     controller_->CreateTitles();
   };
   connect(titles_button_, &QPushButton::clicked, titles_click);
@@ -232,6 +250,7 @@ void ButtonHandler::CreateSettingsButtons() {
       controller_->EndTitles();
     }
     window_type_ = WindowType::kMainMenu;
+    RescaleButtons();
   };
   connect(to_main_menu_button_, &QPushButton::clicked, back_to_main_menu_click);
 }
@@ -264,6 +283,7 @@ void ButtonHandler::CreateGameButtons() {
   auto pause_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kPauseMenu;
+    RescaleButtons();
     controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
   };
   connect(pause_button_, &QPushButton::clicked, pause_button_click);
@@ -328,6 +348,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   auto restart_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
+    RescaleButtons();
     controller_->EndGame();
     controller_->StartGame(level_number_);
     SetSpeedButtonsState(Speed::kNormalSpeed);
@@ -339,6 +360,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   auto continue_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
+    RescaleButtons();
     controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
@@ -349,6 +371,8 @@ void ButtonHandler::RescalePauseMenuButtons(SizeHandler size_handler) {
   Size shift = Size({0, long_button_size_.height + shift_});
   continue_button_->SetGeometry(first_button_coordinate_, size_handler);
   restart_button_->SetGeometry(first_button_coordinate_ + shift, size_handler);
+  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 2,
+                              size_handler);
 }
 
 void ButtonHandler::SetSpeedButtonsState(Speed speed) {

@@ -4,18 +4,22 @@ TextNotification::TextNotification(const QString& message,
                                    Coordinate start_position, QColor color,
                                    int creation_time, Size moving_vector,
                                    int life_time,
-                                   double size_change_coefficient)
+                                   double size_change_coefficient,
+                                   bool is_accelerated)
     : GameObject({0, 0}, start_position), message_(message),
       force_vector_(moving_vector), color_(color),
       creation_time_(creation_time), life_time_(life_time),
-      size_change_coefficient_(size_change_coefficient) {}
+      size_change_coefficient_(size_change_coefficient),
+      is_accelerated_(is_accelerated) {}
 
 void TextNotification::Tick(int current_time) {
   UpdateTime(current_time);
   position_ += force_vector_ * delta_time_ / constants::kTimeScale;
   font_size *= size_change_coefficient_;
   font_size = std::min(font_size, kMaxTextSize);
-  force_vector_ *= kSlowdownCoefficient;
+  if (is_accelerated_) {
+    force_vector_ *= kSlowdownCoefficient;
+  }
   life_time_ -= delta_time_;
   if (life_time_ < 0) {
     is_dead_ = true;

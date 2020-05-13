@@ -481,11 +481,17 @@ void Controller::CreateTitles() {
   // tbd: норм текст в титрах
   QString titles = QObject::tr("Tech vs Cats\nGiggling Penguin\n"
                                "watislaf\nuustrica\nPGSStas\nlfeden");
-  Coordinate start = {constants::kGameWidth / 2, constants::kGameHeight};
-  TextNotification notification(titles, start, Qt::white, current_game_time_,
-      {0, -50}, 10000);
-  notification.SetFontSize(40);
-  model_->AddTextNotification(notification);
+  auto title = titles.split('\n');
+  double j = title.size();
+  for (const auto& line : title) {
+    Coordinate start = {constants::kGameWidth / 2,
+                        constants::kGameHeight - 60 * j};
+    TextNotification notification(line, start, Qt::white, current_game_time_,
+                                  {0, -10}, 10000, 1, false);
+    j--;
+    notification.SetFontSize(40);
+    model_->AddTextNotification(notification);
+  }
 }
 
 void Controller::EndTitles() {

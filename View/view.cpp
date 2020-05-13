@@ -14,7 +14,8 @@ View::View(AbstractController* controller)
 }
 
 void View::SecondConstructorPart() {
-  button_handler_ = std::make_shared<ButtonHandler>(this, controller_, 0);
+  button_handler_ = std::make_shared<ButtonHandler>(this, controller_,
+                                                    &size_handler_, 0);
   button_handler_->SetGameUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetSettingsUiVisible(false);
@@ -63,7 +64,7 @@ void View::paintEvent(QPaintEvent*) {
 
 void View::Resize() {
   size_handler_.ChangeSystem(this->width(), this->height());
-  button_handler_->RescaleButtons(size_handler_);
+  button_handler_->RescaleButtons();
   tower_menu_.RescaleButtons(size_handler_);
   controller_->RescaleObjects(size_handler_);
 }

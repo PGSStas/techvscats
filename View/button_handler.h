@@ -20,11 +20,11 @@ class ButtonHandler : public QObject {
 
  public:
   ButtonHandler(QMainWindow* main_window, AbstractController* controller,
-                int font_id);
+                SizeHandler* size_handler, int font_id);
   ~ButtonHandler() override = default;
 
   void CreateButtons();
-  void RescaleButtons(SizeHandler size_handler);
+  void RescaleButtons();
 
   void SetMainMenuUiVisible(bool visible);
   void SetSettingsUiVisible(bool visible);
@@ -82,6 +82,7 @@ class ButtonHandler : public QObject {
   MenuButton* restart_button_;
   // to_main_menu_button_ is also here
 
+  SizeHandler* size_handler_;
   int level_number_ = 1;
   Size long_button_size_ = button_constants::kLongButtonSize;
   Size short_button_size_ = button_constants::kShortButtonSize;
