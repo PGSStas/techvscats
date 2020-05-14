@@ -26,7 +26,7 @@ void Building::Tick(int current_time) {
     case Action::kWait: {
       if (is_ready_to_shoot_) {
         action_ = Action::kBeforeFire;
-        wait_time_ = delta_time_  ;
+        wait_time_ = delta_time_;
       }
       break;
     }
@@ -39,7 +39,7 @@ void Building::Tick(int current_time) {
       if (wait_time_ > action_timings_[static_cast<int>(Action::kBeforeFire)]) {
         is_ready_to_create_projectiles_ = true;
         action_ = Action::kAfterFire;
-        wait_time_ -=action_timings_[static_cast<int>(Action::kBeforeFire)];
+        wait_time_ -= action_timings_[static_cast<int>(Action::kBeforeFire)];
       }
       break;
     }
@@ -69,7 +69,7 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
       break;
     }
   }
-  if(!need_change_){
+  if (!need_change_) {
     return;
   }
   aims_.clear();
@@ -84,12 +84,12 @@ void Building::UpdateAim(const std::list<std::shared_ptr<Enemy>>& enemies) {
   }
   Coordinate position = position_;
   aims_.sort([&position](const std::shared_ptr<Enemy>& one,
-          const std::shared_ptr<Enemy>& other) {
+                         const std::shared_ptr<Enemy>& other) {
     if (one->GetPriority() != other->GetPriority()) {
       return one->GetPriority() < other->GetPriority();
     }
     return one->GetPosition().GetVectorTo(position).GetLength() <
-      other->GetPosition().GetVectorTo(position).GetLength();
+        other->GetPosition().GetVectorTo(position).GetLength();
   });
   if (aims_.size() > max_aims_) {
     aims_.resize(max_aims_);
@@ -108,8 +108,11 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->restore();
 }
 
-void Building::SetProjectile(int projectile_id, double attack_damage,
-    int attack_range, int max_aims, Size shooting_anchor) {
+void Building::SetProjectile(int projectile_id,
+                             double attack_damage,
+                             int attack_range,
+                             int max_aims,
+                             Size shooting_anchor) {
   projectile_id_ = projectile_id;
   attack_damage_ = attack_damage;
   attack_range_ = attack_range;

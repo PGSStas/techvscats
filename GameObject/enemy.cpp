@@ -38,7 +38,8 @@ void Enemy::Move() {
   if (position_ == destination_) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
-      is_end_reached_ = is_dead_ = true;
+      is_end_reached_ = true;
+      is_dead_ = true;
       return;
     }
     destination_ = (road_->GetNode(node_number_));

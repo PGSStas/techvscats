@@ -175,7 +175,7 @@ void View::DrawGameObjects(QPainter* painter) {
     objects.push_back(enemy.get());
   }
 
-  objects.sort([&](GameObject* a, GameObject* b) {
+  objects.sort([](GameObject* a, GameObject* b) {
     return a->GetPosition().y < b->GetPosition().y;
   });
 
