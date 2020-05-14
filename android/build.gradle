@@ -22,7 +22,6 @@ apply plugin: 'com.google.firebase.appdistribution'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
 }
 
 android {
@@ -40,11 +39,29 @@ android {
      *******************************************************/
 
     compileSdkVersion androidCompileSdkVersion.toInteger()
-
     buildToolsVersion '28.0.3'
 
+    def keystorePropertiesFile = file("keystore.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+    signingConfigs {
+        key {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyPassword keystoreProperties['keyPassword']
+            keyAlias keystoreProperties['keyAlias']
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.key
+        }
+    }
+
     firebaseAppDistribution {
-        releaseNotesFile="android.txt"
+        releaseNotesFile="release_notes.txt"
         testers="vladkozulin@mail.ru"
     }
 
