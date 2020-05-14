@@ -101,7 +101,7 @@ void TowerMenu::Recreate(Coordinate position, int owner_building_index,
   total_cost_ = total_cost;
 }
 
-void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
+void TowerMenu::Tick(const SizeHandler& size_handler) {
   info_field_.SetPosition(position_, button_constants::kShortButtonSize,
                           button_constants::kShift);
   if (active_button_index_ != -1) {
@@ -110,7 +110,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
   for (auto& button : buttons_) {
     button->UpdateIcon();
   }
-  if (current_force_ < 1 || possible_buildings_id_.empty() || delta_time > 50) {
+  if (current_force_ < 1 || possible_buildings_id_.empty()) {
     return;
   }
   if (current_force_ > 70) {
@@ -119,9 +119,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
     }
   }
   info_field_.SetVisible(false);
-  if (slow_disable) {
-    delta_time *= -1;
-  }
+
   int buttons_count = possible_buildings_id_.size();
   double delta_degree;
   if (info_field_.IsOnBottom()) {
@@ -137,7 +135,10 @@ void TowerMenu::Tick(const SizeHandler& size_handler, int delta_time) {
     double radian = move_degree * std::acos(-1) / 180;
     move_degree += delta_degree;
     move_vector = Size(sin(radian), -cos(radian));
-    move_vector *= current_force_ * delta_time / constants::kTimeScale;
+    move_vector *= current_force_ ;
+    if (slow_disable) {
+      move_vector *= -1;
+    }
     if (slow_disable) {
       auto first_vector =
           (buttons_[id]->GetPosition() + move_vector).GetVectorTo(

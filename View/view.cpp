@@ -326,7 +326,7 @@ void View::timerEvent(QTimerEvent* event) {
     controller_->Tick(controller_->GetCurrentTime()
                           + delta_time_ * game_speed_coefficient_);
     // TowerMenu tick
-    tower_menu_.Tick(size_handler_, delta_time_);
+    tower_menu_.Tick(size_handler_);
     if (tower_menu_.IsWantToReplace()) {
       controller_->SetBuilding(
           tower_menu_.GetTownerIndex(),

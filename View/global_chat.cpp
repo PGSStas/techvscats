@@ -13,8 +13,8 @@ GlobalChat::GlobalChat(QMainWindow* window) : QLineEdit(window) {
       ":resources/buttons_resources/inc_level_button.png",
       ":resources/buttons_resources/inc_level_button_active.png");
   send_button->SetSecondIconPath(
-      ":resources/buttons_resources/normal_speed_button.png",
-      ":resources/buttons_resources/normal_speed_button_active.png");
+      ":resources/buttons_resources/send_button.png",
+      ":resources/buttons_resources/send_button_active.png");
   auto send_button_click = [this]() {
     SendMessage();
   };
