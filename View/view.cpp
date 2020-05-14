@@ -4,14 +4,13 @@ View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(),
       tower_menu_(this) {
-  setMinimumSize(960, 540);
+  setMinimumSize(960, 960);
   setMouseTracking(true);
   show();
   setWindowIcon(QIcon(":resources/images/icon.png"));
   setWindowTitle("Tech vs Cats");
-  //showFullScreen();
-  show();
 
+  size_handler_.ChangeSystem(width(), height());
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
@@ -31,7 +30,10 @@ void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   if (!is_model_loaded_) {
     Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-    painter.drawImage(origin.x, origin.y, logo_.scaled(width(), height()));
+    Size size = size_handler_.GameToWindowSize({constants::kGameWidth,
+                                                constants::kGameHeight});
+    painter.drawImage(origin.x, origin.y, logo_.scaled(size.width,
+                                                       size.height));
     return;
   }
 
