@@ -1,12 +1,12 @@
 #include "global_chat.h"
 
-GlobalChat::GlobalChat(QMainWindow* window) {
+GlobalChat::GlobalChat(QMainWindow* window)
+    : q_text_browser_(new QTextBrowser(window)),
+      q_line_edit_(new QLineEdit(window)) {
   QString family = QFontDatabase::applicationFontFamilies(kFontId).at(0);
   QFont font(family);
   font.setFixedPitch(true);
 
-  q_text_browser_ = new QTextBrowser(window);
-  q_line_edit_ = new QLineEdit(window);
   q_text_browser_->setFont(font);
   q_line_edit_->setFont(font);
   send_button = new MenuButton(
@@ -147,7 +147,7 @@ void GlobalChat::Clear() {
 
 void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
   text_browser_messages_ += messages;
- while (text_browser_messages_.size() > kMaxChatSize) {
+  while (text_browser_messages_.size() > kMaxChatSize) {
     text_browser_messages_.removeAt(0);
   }
 

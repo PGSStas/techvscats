@@ -11,7 +11,6 @@ QByteArray Message::CodeToBinary(const Message& message) {
   json_object["type"] = static_cast<int>(message.message_type_);
   json_object["arguments_number_"] = message.arguments_number_;
   for (int i = 0; i < message.arguments_number_; i++) {
-    std::string ef = message.arguments_[i].toStdString();
     json_object["argument_" + QString::number(i)] = message.arguments_[i];
   }
   json_document.setObject(json_object);
