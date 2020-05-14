@@ -20,17 +20,17 @@ class ButtonHandler : public QObject {
 
  public:
   ButtonHandler(QMainWindow* main_window, AbstractController* controller,
-                SizeHandler* size_handler, int font_id);
+      int font_id);
   ~ButtonHandler() override = default;
 
   void CreateButtons();
-  void RescaleButtons();
+  void RescaleButtons(const SizeHandler& size_handler);
 
   void SetMainMenuUiVisible(bool visible);
   void SetSettingsUiVisible(bool visible);
   void SetGameUiVisible(bool visible);
   void SetPauseMenuUiVisible(bool visible);
-  void SetTitlesVisible(bool visible, SizeHandler size_handler);
+  void SetTitlesVisible(bool visible);
 
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
@@ -48,6 +48,8 @@ class ButtonHandler : public QObject {
   // creating pause menu
   void CreatePauseMenuButtons();
   void RescalePauseMenuButtons(SizeHandler size_handler);
+  // creating title
+  void CreateTitleButtons();
   void RescaleTitleButtons(SizeHandler size_handler);
 
  private:
@@ -77,12 +79,14 @@ class ButtonHandler : public QObject {
   MenuButton* titles_button_;
   MenuButton* to_main_menu_button_;
 
+  // Title window
+  MenuButton* to_settings_button_;
+
   // pause menu button
   MenuButton* continue_button_;
   MenuButton* restart_button_;
   // to_main_menu_button_ is also here
 
-  SizeHandler* size_handler_;
   int level_number_ = 1;
   Size long_button_size_ = button_constants::kLongButtonSize;
   Size short_button_size_ = button_constants::kShortButtonSize;

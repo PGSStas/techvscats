@@ -44,6 +44,11 @@ void MusicPlayer::SetVolume(int volume) {
 
 void MusicPlayer::StartMenuMusic() {
   main_playlist_->setCurrentIndex(kMenuMusic);
+  main_player_->play();
+}
+
+void MusicPlayer::Stop() {
+  main_player_->stop();
 }
 
 void MusicPlayer::StartGameMusic() {

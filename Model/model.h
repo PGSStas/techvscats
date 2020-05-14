@@ -76,7 +76,7 @@ class Model {
   const AnimationPlayer& GetInterface() const;
 
   const QImage& GetEmptyZoneTexture(int index) const;
-  std::vector<QString> GetTitles() const;
+  const std::vector<QString>& GetTitles() const;
 
  private:
   void LoadLevel(int level);
@@ -109,6 +109,7 @@ class Model {
   std::vector<Road> roads_;
   std::vector<std::vector<EnemyGroup>> enemy_groups_;
   std::shared_ptr<Base> base_;
+  std::vector<QString> titles_;
 
   std::vector<Coordinate> empty_places_for_towers_;
   int prepared_time_between_rounds_ = 0;

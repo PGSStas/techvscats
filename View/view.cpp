@@ -15,11 +15,12 @@ View::View(AbstractController* controller)
 
 void View::SecondConstructorPart() {
   button_handler_ = std::make_shared<ButtonHandler>(this, controller_,
-                                                    &size_handler_, 0);
+                                                    0);
   button_handler_->SetGameUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetTitlesVisible(false);
   is_model_loaded_ = true;
   Resize();
 }
@@ -64,7 +65,7 @@ void View::paintEvent(QPaintEvent*) {
 
 void View::Resize() {
   size_handler_.ChangeSystem(this->width(), this->height());
-  button_handler_->RescaleButtons();
+  button_handler_->RescaleButtons(size_handler_);
   tower_menu_.RescaleButtons(size_handler_);
   controller_->RescaleObjects(size_handler_);
 }
@@ -114,8 +115,9 @@ void View::DrawGame(QPainter* painter) {
 }
 
 void View::DrawSettings(QPainter*) {
-  button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetTitlesVisible(false);
   button_handler_->SetSettingsUiVisible(true);
+  button_handler_->SetMainMenuUiVisible(false);
 }
 
 void View::DrawPauseMenu(QPainter*) {
@@ -360,8 +362,7 @@ void View::StartTitles() {
 }
 
 void View::EndTitles() {
-  button_handler_->SetTitlesVisible(false, size_handler_);
-  button_handler_->SetMainMenuUiVisible(true);
+  button_handler_->SetTitlesVisible(true);
   repaint();
 }
 
@@ -370,8 +371,4 @@ void View::DrawTitles(QPainter* painter) {
   for (auto& notification : text_notifications) {
     notification.Draw(painter, size_handler_);
   }
-}
-
-void View::ShowSettingsButton() {
-  button_handler_->SetTitlesVisible(true, size_handler_);
 }

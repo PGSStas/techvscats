@@ -51,7 +51,8 @@ void Controller::Tick(int current_time) {
     case WindowType::kTitles: {
       TickTextNotifications();
       if (model_->GetTextNotifications()->empty()) {
-        view_->ShowSettingsButton();
+        view_->EndTitles();
+        music_player_.Stop();
       }
       break;
     }
@@ -481,13 +482,14 @@ int Controller::GetRoundsCount() const {
 void Controller::CreateTitles() {
   window_type_ = WindowType::kTitles;
   view_->StartTitles();
+  music_player_.StartMenuMusic();
   auto titles = model_->GetTitles();
   double i = 1;
   for (const auto& line : titles) {
     Coordinate start = {constants::kGameWidth / 4,
                         constants::kGameHeight + 60 * i};
     TextNotification notification(line, start, Qt::white, current_game_time_,
-                                  {0, -10}, 83500, 1, false, false);
+                                  {0, -10}, 88500, 1, false, false);
     i++;
     notification.SetFontSize(40);
     model_->AddTextNotification(notification);
@@ -496,6 +498,6 @@ void Controller::CreateTitles() {
 
 void Controller::EndTitles() {
   window_type_ = WindowType::kMainMenu;
-  view_->EndTitles();
+  music_player_.StartMenuMusic();
   model_->GetTextNotifications()->clear();
 }

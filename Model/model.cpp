@@ -296,7 +296,19 @@ const QImage& Model::GetEmptyZoneTexture(int index) const {
   return empty_zone_texture_[index];
 }
 
+const std::vector<QString>& Model::GetTitles() const {
+  return titles_;
+}
+
 void Model::LoadDatabase() {
+  QFile titles(":resources/database/titles.txt");
+  titles.open(QIODevice::ReadOnly);
+  QTextStream fin(&titles);
+  fin.setCodec("UTF-8");
+  while (!fin.atEnd()) {
+    titles_.push_back(fin.readLine());
+  }
+
   QFile level_file(":resources/database/database.json");
   if (!level_file.open(QFile::ReadOnly)) {
     qDebug() << "ERROR! Missing database file";
@@ -625,16 +637,4 @@ Model::~Model() {
   for (auto& sound : id_to_particle_sound_) {
     sound.Stop();
   }
-}
-
-std::vector<QString> Model::GetTitles() const {
-  std::vector<QString> result;
-  QFile titles(":resources/database/titles.txt");
-  titles.open(QIODevice::ReadOnly);
-  QTextStream fin(&titles);
-  fin.setCodec("UTF-8");
-  while (!fin.atEnd()) {
-    result.push_back(fin.readLine());
-  }
-  return result;
 }

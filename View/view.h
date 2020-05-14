@@ -46,7 +46,6 @@ class View : public QMainWindow {
 
   void StartTitles();
   void EndTitles();
-  void ShowSettingsButton();
 
  private:
   AbstractController* controller_;

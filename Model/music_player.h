@@ -23,6 +23,7 @@ class MusicPlayer {
 
   void StartMenuMusic();
   void StartGameMusic();
+  void Stop();
   void PlayButtonSound();
   void PlayGameOverSound();
   void PlayGameWonSound();
