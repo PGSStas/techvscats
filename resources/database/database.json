@@ -112,7 +112,7 @@
       "priority": 1,
       "auric_field": {
         "radius": 250,
-        "effect_id": 1
+        "effect_id": 5
       },
       "size": {
         "width": 200,
@@ -134,8 +134,8 @@
       "max_health": 500,
       "priority": 2,
       "size": {
-        "width": 200,
-        "height": 200
+        "width": 120,
+        "height": 120
       },
       "animation": {
         "path": "enemies/washmachine_7",
@@ -277,7 +277,7 @@
       "settle_cost": 100,
       "projectile": {
         "projectile_id": 1,
-        "attack_damage": 24,
+        "attack_damage": 27,
         "attack_range": 600,
         "max_aims": 1,
         "shooting_anchor": {
@@ -292,8 +292,8 @@
       ],
       "action_time": [
         500,
-        2750,
-        2750
+        2450,
+        2450
       ],
       "upgrade_tree": [
         6,
@@ -391,7 +391,7 @@
       "settle_cost": 80,
       "projectile": {
         "projectile_id": 1,
-        "attack_damage": 31,
+        "attack_damage": 35,
         "attack_range": 650,
         "max_aims": 1,
         "shooting_anchor": {
@@ -406,8 +406,8 @@
       ],
       "action_time": [
         500,
-        2200,
-        2200
+        1900,
+        1900
       ],
       "upgrade_tree": [
         10,
@@ -423,11 +423,11 @@
         "towers/laser_lv2_pre_4",
         "towers/laser_lv2_post_4"
       ],
-      "settle_cost": 120,
+      "settle_cost": 180,
       "projectile": {
         "projectile_id": 2,
         "attack_damage": 3.2,
-        "attack_range": 400,
+        "attack_range": 270,
         "max_aims": 2,
         "shooting_anchor": {
           "x": 0,
@@ -504,7 +504,7 @@
       "settle_cost": 140,
       "projectile": {
         "projectile_id": 1,
-        "attack_damage": 24,
+        "attack_damage": 30,
         "attack_range": 800,
         "max_aims": 2,
         "shooting_anchor": {
@@ -530,11 +530,11 @@
       }
     },
     {
-      "settle_cost": 130,
+      "settle_cost": 210,
       "projectile": {
         "projectile_id": 2,
         "attack_damage": 3.4,
-        "attack_range": 300,
+        "attack_range": 240,
         "max_aims": 3,
         "shooting_anchor": {
           "x": 0,
@@ -622,6 +622,14 @@
       "damage_coefficient": 0.15,
       "attack_rate_coefficient": 0.15,
       "range_coefficient": 0.15
+    },
+    {
+      "effect_target": 2,
+      "speed_coefficient": 0,
+      "armor_coefficient": 0,
+      "damage_coefficient": -0.1,
+      "attack_rate_coefficient": -0.15,
+      "range_coefficient": 0
     }
   ],
   "particles": [
