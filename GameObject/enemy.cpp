@@ -127,7 +127,7 @@ int Enemy::ComputeReward() const {
   return reward_;
 }
 
-void Enemy::ShiftCoordinate(Coordinate* coordinate) const {
+void Enemy::ShiftCoordinate(Coordinate* coordinate) {
   // We make small shifts so that enemies move chaotically,
   // not in the linear queue
   coordinate->x += static_cast<int32_t>(random_generator_()) % kMoveShift
