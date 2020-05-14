@@ -19,7 +19,7 @@ void ButtonHandler::UpdateButtonsStatus(bool online_status,
                                         bool register_status) {
   online_button_->EnableSecondIcon(online_status);
   restart_button_->setEnabled(!online_status);
-  start_game_button_->setEnabled(register_status||!online_status);
+  start_game_button_->setEnabled(register_status || !online_status);
 }
 
 void ButtonHandler::RescaleButtons(SizeHandler size_handler) {
@@ -61,15 +61,15 @@ void ButtonHandler::SetPauseMenuUiVisible(bool visible) {
 
 void ButtonHandler::SetSpeed(int casted_int) {
   switch (casted_int) {
-    case 0:{
+    case 0: {
       zero_speed_button_->click();
       break;
     }
-    case 1:{
+    case 1: {
       normal_speed_button_->click();
       break;
     }
-    case 2:{
+    case 2: {
       double_speed_button_->click();
       break;
     }

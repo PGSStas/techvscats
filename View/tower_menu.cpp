@@ -135,7 +135,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler) {
     double radian = move_degree * std::acos(-1) / 180;
     move_degree += delta_degree;
     move_vector = Size(sin(radian), -cos(radian));
-    move_vector *= current_force_ ;
+    move_vector *= current_force_;
     if (slow_disable) {
       move_vector *= -1;
     }
