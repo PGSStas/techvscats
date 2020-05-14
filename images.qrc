@@ -33,6 +33,11 @@
         <file>resources/buttons_resources/inc_level_button.png</file>
         <file>resources/buttons_resources/inc_level_button_active.png</file>
 
+        <file>resources/buttons_resources/online_button_offline.png</file>
+        <file>resources/buttons_resources/online_button_offline_active.png</file>
+        <file>resources/buttons_resources/online_button_online.png</file>
+        <file>resources/buttons_resources/online_button_online_active.png</file>
+
         <file>resources/buttons_resources/sound_button_on.png</file>
         <file>resources/buttons_resources/sound_button_on_active.png</file>
         <file>resources/buttons_resources/sound_button_off.png</file>
@@ -69,6 +74,9 @@
         <file>resources/buttons_resources/decline_h.png</file>
         <file>resources/buttons_resources/accept.png</file>
         <file>resources/buttons_resources/accept_h.png</file>
+
+        <file>resources/buttons_resources/send_button.png</file>
+        <file>resources/buttons_resources/send_button_active.png</file>
 
         <file>resources/images/particles/kaboom0_1.png</file>
         <file>resources/images/particles/kaboom0_2.png</file>
