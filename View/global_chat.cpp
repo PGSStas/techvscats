@@ -156,7 +156,7 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
   QString command_format = "<p class=\"command\">%1</p>";
 
   QString text;
-  for (auto& message: text_browser_messages_) {
+  for (auto& message : text_browser_messages_) {
     QString line = message;
     if (line.startsWith(">")) {
       text.append(global_format.arg(line.replace(">",

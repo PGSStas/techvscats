@@ -75,6 +75,9 @@
         <file>resources/buttons_resources/accept.png</file>
         <file>resources/buttons_resources/accept_h.png</file>
 
+        <file>resources/buttons_resources/send_button.png</file>
+        <file>resources/buttons_resources/send_button_active.png</file>
+
         <file>resources/images/particles/kaboom0_1.png</file>
         <file>resources/images/particles/kaboom0_2.png</file>
         <file>resources/images/particles/kaboom0_3.png</file>

@@ -248,10 +248,11 @@ void View::mousePressEvent(QMouseEvent* event) {
 }
 void View::keyPressEvent(QKeyEvent* event) {
   if (event->key() == Qt::Key_Space) {
+    qDebug() << "lol";
     if (game_speed_coefficient_ == 0) {
-      controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
+      button_handler_->SetSpeed(static_cast<int>(Speed::kNormalSpeed));
     } else {
-      controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
+      button_handler_->SetSpeed(static_cast<int>(Speed::kZeroSpeed));
     }
   }
 }

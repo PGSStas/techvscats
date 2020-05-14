@@ -78,7 +78,7 @@ class MultiplayerClient : public QObject {
 
  private:
   QString AutoGenerateNickName() const;
-  const QStringList first_name_ = {"Greedy", "Bloody", "Big", "Mega", "Optimus"};
+  const QStringList first_name_ = {"Greedy", "Bloody", "Big", "Optimus"};
   const QStringList surname_ = {"finger", "cup", "flex", "cringe", "sage"};
 };
 

@@ -59,6 +59,23 @@ void ButtonHandler::SetPauseMenuUiVisible(bool visible) {
   to_main_menu_button_->setVisible(visible);
 }
 
+void ButtonHandler::SetSpeed(int casted_int) {
+  switch (casted_int) {
+    case 0:{
+      zero_speed_button_->click();
+      break;
+    }
+    case 1:{
+      normal_speed_button_->click();
+      break;
+    }
+    case 2:{
+      double_speed_button_->click();
+      break;
+    }
+  }
+}
+
 WindowType ButtonHandler::GetWindowType() const {
   return window_type_;
 }

@@ -56,7 +56,7 @@ enum class MessageType {
   kToLongMessage,
   kServerIsUnavailable,
 
-  kLast, //  To get size of enum
+  kLast,  // To get size of enum
 
   // To server
   kEnterRoom,  // % lvl_id

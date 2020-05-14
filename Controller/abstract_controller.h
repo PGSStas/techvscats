@@ -74,7 +74,7 @@ class AbstractController {
   virtual void SetGameVolume(int volume) = 0;
 
   virtual MusicPlayer* GetMusicPlayer() = 0;
-  virtual MultiplayerClient* GetClient()  = 0;
+  virtual MultiplayerClient* GetClient() = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

@@ -31,6 +31,7 @@ class ButtonHandler : public QObject {
   void SetSettingsUiVisible(bool visible);
   void SetGameUiVisible(bool visible);
   void SetPauseMenuUiVisible(bool visible);
+  void SetSpeed(int casted_speed);
 
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
