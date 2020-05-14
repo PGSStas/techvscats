@@ -90,7 +90,7 @@ void ButtonHandler::CreateMainMenuButtons() {
       Size(long_button_size_.width - short_button_size_.width * 2 - shift_ * 2,
            long_button_size_.height);
   choose_level_number_ = new MenuButton(
-      tr("УРОВЕНЬ ") + QString::number(level_number_),
+      tr("УРОВЕНЬ") + " " + QString::number(level_number_),
       choose_level_number_size, main_window_, font_id_);
 
   inc_level_button_ = new MenuButton(
