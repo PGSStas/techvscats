@@ -1,13 +1,14 @@
 #include "global_chat.h"
 
-GlobalChat::GlobalChat(QMainWindow* window) : QLineEdit(window) {
+GlobalChat::GlobalChat(QMainWindow* window) {
   QString family = QFontDatabase::applicationFontFamilies(kFontId).at(0);
   QFont font(family);
   font.setFixedPitch(true);
 
   q_text_browser_ = new QTextBrowser(window);
+  q_line_edit_ = new QLineEdit(window);
   q_text_browser_->setFont(font);
-  setFont(font);
+  q_line_edit_->setFont(font);
   send_button = new MenuButton(
       Size(kTextEditSize.height, kTextEditSize.height), window,
       ":resources/buttons_resources/inc_level_button.png",
@@ -19,7 +20,12 @@ GlobalChat::GlobalChat(QMainWindow* window) : QLineEdit(window) {
     SendMessage();
   };
 
+  auto key_press = [this]() {
+    SendMessage();
+  };
+
   QObject::connect(send_button, &QPushButton::clicked, send_button_click);
+  QObject::connect(q_line_edit_, &QLineEdit::returnPressed, key_press);
 
   brick_button = new MenuButton(
       Size(kTextEditSize.height, kTextEditSize.height), window,
@@ -36,7 +42,7 @@ GlobalChat::GlobalChat(QMainWindow* window) : QLineEdit(window) {
                    &QPushButton::clicked,
                    close_open_button_click);
   ChangeStyle();
-  show();
+  q_line_edit_->show();
   brick_button->show();
   send_button->show();
   q_text_browser_->show();
@@ -50,9 +56,10 @@ void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
       kBottomLeftPosition - remove_edit_size);
 
   Size text_edit_size = size_handler.GameToWindowSize(kTextEditSize);
-  setGeometry(text_edit_position.x, text_edit_position.y,
-              text_edit_size.width * how_high_brick_percent_ / 100.0,
-              text_edit_size.height);
+  q_line_edit_->setGeometry(text_edit_position.x, text_edit_position.y,
+                            text_edit_size.width * how_high_brick_percent_
+                                / 100.0,
+                            text_edit_size.height);
 
   send_button->SetGeometry(
       kBottomLeftPosition +
@@ -74,9 +81,9 @@ void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
                                text_browser_size.width,
                                text_browser_size.height);
 
-  auto font_ = font();
+  auto font_ = q_line_edit_->font();
   font_.setPixelSize(size_handler.GameToWindowLength(kFondSize));
-  setFont(font_);
+  q_line_edit_->setFont(font_);
   q_text_browser_->setFont(font_);
 
   brick_button->SetGeometry(
@@ -115,7 +122,7 @@ void GlobalChat::ChangeStyle() {
   if (is_game_style_using_) {
     style_sheet = " background-color : rgba(190,192,213,0.89);";
   }
-  setStyleSheet(style_sheet);
+  q_line_edit_->setStyleSheet(style_sheet);
   q_text_browser_->setStyleSheet(style_sheet);
   brick_button->EnableSecondIcon(is_game_style_using_);
   send_button->EnableSecondIcon(is_game_style_using_);
@@ -140,7 +147,7 @@ void GlobalChat::Clear() {
 
 void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
   text_browser_messages_ += messages;
-  while (text_browser_messages_.size() > kMaxChatSize) {
+ while (text_browser_messages_.size() > kMaxChatSize) {
     text_browser_messages_.removeAt(0);
   }
 
@@ -171,26 +178,17 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
     }
   }
   q_text_browser_->setHtml(html_style + text);
-
   QScrollBar* scroll = q_text_browser_->verticalScrollBar();
   scroll->setValue(scroll->maximum());
 }
 
 void GlobalChat::SendMessage() {
-  QString message = text();
-  clear();
-  if (message == "") {
+  QApplication::inputMethod()->commit();
+  QString message = q_line_edit_->displayText();
+  q_line_edit_->clear();
+  if (message.isEmpty()) {
     return;
   }
   message = message.split(" ", QString::SkipEmptyParts).join(" ");
   send_messages_.push_back(message);
-}
-
-void GlobalChat::keyPressEvent(QKeyEvent* event) {
-  auto* key = static_cast<QKeyEvent*>(event);
-  if (key->text() == "\r") {
-    SendMessage();
-  } else {
-    QLineEdit::keyPressEvent(event);
-  }
 }

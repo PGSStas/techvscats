@@ -150,6 +150,7 @@ void Server::ProcessGlobalChatMessage(const Message& message,
                                   {chat->back()}), client);
     }
   }
+  qDebug() << ":" <<chat->back();
 }
 
 void Server::StartRoom(Room* room) {

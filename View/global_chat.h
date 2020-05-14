@@ -1,11 +1,13 @@
 #ifndef VIEW_GLOBAL_CHAT_H_
 #define VIEW_GLOBAL_CHAT_H_
 
+#include <QApplication>
 #include <QStringList>
 #include <QLineEdit>
 #include <QTextBrowser>
 #include <QMainWindow>
 #include <QScrollBar>
+#include <QInputMethod>
 
 #include <algorithm>
 
@@ -13,10 +15,9 @@
 #include "Model/coordinate.h"
 #include "size_handler.h"
 
-class GlobalChat : public QLineEdit {
+class GlobalChat {
  public:
   explicit GlobalChat(QMainWindow*);
-  ~GlobalChat() override = default;
 
   void RescaleChat(const SizeHandler& size_handler);
   void Tick(const SizeHandler&, int delta_time);
@@ -38,6 +39,7 @@ class GlobalChat : public QLineEdit {
   QStringList send_messages_;
 
   QTextBrowser* q_text_browser_;
+  QLineEdit* q_line_edit_;
   MenuButton* send_button;
   MenuButton* brick_button;
 
@@ -49,9 +51,6 @@ class GlobalChat : public QLineEdit {
   const Coordinate kBottomLeftPosition = {20, 1080};
 
   void SendMessage();
-
- private slots:  // NOLINT
-  void keyPressEvent(QKeyEvent* event) override;
 };
 
 #endif  // VIEW_GLOBAL_CHAT_H_
