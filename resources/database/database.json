@@ -547,9 +547,9 @@
         "towers/laser_lv3_post_4"
       ],
       "action_time": [
-        0,
-        200,
-        0
+        500,
+        100,
+        100
       ],
       "upgrade_tree": [
         0
