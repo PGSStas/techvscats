@@ -34,8 +34,11 @@ TowerMenu::TowerMenu(QMainWindow* window) {
       ":resources/buttons_resources/upgrade_button.png",
       ":resources/buttons_resources/upgrade_button_h.png");
   button_images.emplace_back(
-      ":resources/buttons_resources/second_upgrade_button.png",
-      ":resources/buttons_resources/second_upgrade_button_h.png");
+      ":resources/buttons_resources/upgrade_button.png",
+      ":resources/buttons_resources/upgrade_button_h.png");
+  button_images.emplace_back(
+      ":resources/buttons_resources/upgrade_button.png",
+      ":resources/buttons_resources/upgrade_button_h.png");
   button_images.emplace_back(
       ":resources/buttons_resources/upgrade_button.png",
       ":resources/buttons_resources/upgrade_button_h.png");
@@ -43,14 +46,11 @@ TowerMenu::TowerMenu(QMainWindow* window) {
       ":resources/buttons_resources/second_upgrade_button.png",
       ":resources/buttons_resources/second_upgrade_button_h.png");
   button_images.emplace_back(
-      ":resources/buttons_resources/upgrade_button.png",
-      ":resources/buttons_resources/upgrade_button_h.png");
-  button_images.emplace_back(
       ":resources/buttons_resources/second_upgrade_button.png",
       ":resources/buttons_resources/second_upgrade_button_h.png");
   button_images.emplace_back(
-      ":resources/buttons_resources/upgrade_button.png",
-      ":resources/buttons_resources/upgrade_button_h.png");
+      ":resources/buttons_resources/second_upgrade_button.png",
+      ":resources/buttons_resources/second_upgrade_button_h.png");
   button_images.emplace_back(
       ":resources/buttons_resources/second_upgrade_button.png",
       ":resources/buttons_resources/second_upgrade_button_h.png");
