@@ -203,3 +203,8 @@ bool Building::IsInAttackRange(Coordinate coordinate) const {
 Size Building::GetShootingAnchor() const {
   return shooting_anchor_;
 }
+
+int Building::GetReloadTime() const {
+  return animation_players_[1].GetAnimationDuration()
+      + animation_players_[2].GetAnimationDuration();
+}
