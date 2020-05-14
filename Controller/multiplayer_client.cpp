@@ -6,7 +6,9 @@ std::mt19937 MultiplayerClient::random_generator_ = std::mt19937(
 MultiplayerClient::MultiplayerClient() : QObject(nullptr) {}
 
 MultiplayerClient::~MultiplayerClient() {
-  Disconnect();
+  if(is_online_) {
+    Disconnect();
+  }
 }
 
 void MultiplayerClient::Tick(int current_time) {
