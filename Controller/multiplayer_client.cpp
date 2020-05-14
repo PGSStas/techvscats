@@ -6,7 +6,7 @@ std::mt19937 MultiplayerClient::random_generator_ = std::mt19937(
 MultiplayerClient::MultiplayerClient() : QObject(nullptr) {}
 
 MultiplayerClient::~MultiplayerClient() {
-  if(is_online_) {
+  if (is_online_) {
     Disconnect();
   }
 }
@@ -226,7 +226,6 @@ void MultiplayerClient::CreateVisibleMessage(const Message& message) {
 void MultiplayerClient::OnConnect() {
   connect(server_web_socket_, &QWebSocket::binaryMessageReceived,
           this, &MultiplayerClient::OnMessageReceived);
-  is_online_ = true;
   is_online_ = true;
   is_trying_to_connect_ = false;
   has_permission_to_start_round_ = true;
