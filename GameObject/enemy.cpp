@@ -44,7 +44,7 @@ void Enemy::Move() {
     }
     destination_ = (road_->GetNode(node_number_));
     if (!road_->IsEnd(node_number_ + 1)) {
-      destination_ = ShiftCoordinate(destination_);
+      ShiftCoordinate(&destination_);
     }
   }
 }
@@ -90,7 +90,7 @@ void Enemy::SetRoad(const Road& road) {
   position_ = road_->GetNode(node_number_);
   destination_ = road_->GetNode(node_number_);
   if (!road_->IsEnd(node_number_ + 1)) {
-    destination_ = ShiftCoordinate(destination_);
+    ShiftCoordinate(&destination_);
   }
 }
 const AuricField& Enemy::GetAuricField() const {
@@ -127,14 +127,13 @@ int Enemy::ComputeReward() const {
   return reward_;
 }
 
-Coordinate Enemy::ShiftCoordinate(Coordinate coordinate) const {
+void Enemy::ShiftCoordinate(Coordinate* coordinate) const {
   // We make small shifts so that enemies move chaotically,
   // not in the linear queue
-  coordinate.x += static_cast<int32_t>(random_generator_()) % kMoveShift
+  coordinate->x += static_cast<int32_t>(random_generator_()) % kMoveShift
       - kMoveShift / 2;
-  coordinate.y += static_cast<int32_t>(random_generator_()) % kMoveShift
+  coordinate->y += static_cast<int32_t>(random_generator_()) % kMoveShift
       - kMoveShift / 2;
-  return coordinate;
 }
 
 int Enemy::GetPriority() const {
