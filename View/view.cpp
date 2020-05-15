@@ -12,7 +12,7 @@ View::View(AbstractController* controller)
   if (settings.value("fullscreen", true).toBool()) {
     showFullScreen();
   } else {
-    show();
+    showNormal();
   }
   size_handler_.ChangeSystem(width(), height());
   setMouseTracking(true);

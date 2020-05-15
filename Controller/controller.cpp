@@ -538,7 +538,7 @@ void Controller::ProcessMessage(const Message& message) {
     case VisibleType::kWarning: {
       TextNotification notification(message.GetArgument(0),
           {constants::kGameWidth / 2, constants::kGameHeight / 7},
-          Qt::darkMagenta, view_->GetRealTime(), {0, -40}, 3000, 1,true);
+          Qt::darkMagenta, view_->GetRealTime(), {0, -40}, 3000, 1, true);
       notification.SetFontSize(50);
       model_->AddTextNotification(notification);
       break;
@@ -575,8 +575,9 @@ void Controller::CreateTitles() {
   for (int i = 0; i < titles.size(); i++) {
     Coordinate start = {constants::kGameWidth / 4,
                         static_cast<double>(constants::kGameHeight + 60 * i)};
-    TextNotification notification(titles[i], start, Qt::white, current_game_time_,
-                                  {0, -10}, 84000, 1, false, false, false);
+    TextNotification notification(titles[i], start, Qt::white,
+        current_game_time_, {0, -10},
+        84000, 1, false, false, false);
     notification.SetFontSize(40);
     model_->AddTextNotification(notification);
   }
