@@ -39,16 +39,12 @@ void Enemy::Move() {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
       is_end_reached_ = true;
+      is_dead_ = true;
       return;
     }
     destination_ = (road_->GetNode(node_number_));
     if (!road_->IsEnd(node_number_ + 1)) {
-      // We make small shifts so that enemies move chaotically,
-      // not in the linear queue
-      destination_.x += static_cast<int32_t>(random_generator_()) % kMoveShift
-          - kMoveShift / 2;
-      destination_.y += static_cast<int32_t>(random_generator_()) % kMoveShift
-          - kMoveShift / 2;
+      ShiftCoordinate(&destination_);
     }
   }
 }
@@ -93,6 +89,9 @@ void Enemy::SetRoad(const Road& road) {
   road_ = std::make_shared<const Road>(road);
   position_ = road_->GetNode(node_number_);
   destination_ = road_->GetNode(node_number_);
+  if (!road_->IsEnd(node_number_ + 1)) {
+    ShiftCoordinate(&destination_);
+  }
 }
 const AuricField& Enemy::GetAuricField() const {
   return auric_field_;
@@ -116,10 +115,8 @@ double Enemy::GetDamage() const {
 }
 
 void Enemy::ReceiveDamage(double damage) {
-  // Temporary formula.
-  double armor = armor_ * applied_effect_.GetArmorCoefficient();
-  double multiplier = 1 - ((0.052 * armor) / (0.9 + 0.048 * std::abs(armor)));
-  current_health_ -= std::min(multiplier * damage, current_health_);
+  double armor = armor_ * applied_effect_.GetArmorCoefficient() / 100;
+  current_health_ -= std::min((1 - armor) * damage, current_health_);
   if (current_health_ <= constants::kEpsilon) {
     particle_handler_.PlayOwnerDeath();
     is_dead_ = true;
@@ -127,10 +124,16 @@ void Enemy::ReceiveDamage(double damage) {
 }
 
 int Enemy::ComputeReward() const {
-  // Computing dispersion of delta.
-  int modulus = 0.03 * reward_ + 2;
-  int delta = static_cast<int>(random_generator_()) % modulus - modulus / 2;
-  return reward_ + delta;
+  return reward_;
+}
+
+void Enemy::ShiftCoordinate(Coordinate* coordinate) {
+  // We make small shifts so that enemies move chaotically,
+  // not in the linear queue
+  coordinate->x += static_cast<int32_t>(random_generator_()) % kMoveShift
+      - kMoveShift / 2;
+  coordinate->y += static_cast<int32_t>(random_generator_()) % kMoveShift
+      - kMoveShift / 2;
 }
 
 int Enemy::GetPriority() const {

@@ -17,6 +17,7 @@ MenuButton::MenuButton(const QString& text, const Size& button_size,
   button_size_ = button_size;
   setCursor(Qt::PointingHandCursor);
   setFocusPolicy(Qt::NoFocus);
+  show();
 }
 
 MenuButton::MenuButton(const Size& button_size,
@@ -48,6 +49,7 @@ void MenuButton::SetIsEnter(bool enter) {
 
 void MenuButton::SetGeometry(
     Coordinate game_coordinate, SizeHandler size_handler) {
+  ResetStyleSheet();
   position_ = game_coordinate;
   auto window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);
   Size window_size = size_handler.GameToWindowSize(button_size_);
@@ -63,10 +65,17 @@ void MenuButton::SetGeometry(
   if (text() != "") {
     border_size_ =
         size_handler.GameToWindowLength(button_constants::kMenuBorderSize);
-
-    QString style_sheet =
+    QString style_sheet = styleSheet() +
         "border: " + QString::number(border_size_) + "px solid #000000;";
     setStyleSheet(style_sheet);
+  }
+}
+
+void MenuButton::ResetStyleSheet() {
+  if (text().isEmpty()) {
+    setStyleSheet("background: transparent;");
+  } else {
+    setStyleSheet("background-color: #ffffff;");
   }
 }
 
@@ -100,8 +109,15 @@ void MenuButton::SetSecondIconPath(const QString& main_icon_path,
 }
 
 void MenuButton::EnableSecondIcon(bool is_second_icon_enabled) {
+  if (is_second_icon_enabled_ == is_second_icon_enabled) {
+    return;
+  }
   is_second_icon_enabled_ = is_second_icon_enabled;
-  setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
+  if (have_entered_event_) {
+    setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
+  } else {
+    setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);
+  }
 }
 
 Coordinate MenuButton::GetPosition() const {

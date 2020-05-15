@@ -51,6 +51,7 @@ class Model {
   void RescaleDatabase(const SizeHandler& size_handler);
   void IncreaseCurrentRoundNumber();
   void ClearGameModel();
+  void SetParticlesVolume(int volume);
 
   Base* GetBase();
   std::list<Spawner>* GetSpawners();

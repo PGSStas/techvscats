@@ -54,6 +54,10 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     DrawStatistics(painter, size_handler, text_height);
   }
 
+  if (has_image_) {
+    DrawImage(painter, size_handler, final_text_height);
+  }
+
   painter->restore();
 }
 
@@ -68,11 +72,13 @@ void InfoField::DrawStatistics(QPainter* painter,
   Size size = size_handler.GameToWindowSize(
       {kSize.width * kRelativeStatisticsSize.width,
        kSize.height * kRelativeStatisticsSize.height});
-  painter->drawText(point.x, point.y, size.width, size.height,
-                    Qt::AlignCenter, QObject::tr("Урон")
-                        + ": " + QString::number(damage_) +
-          ", " + QObject::tr("Количество целей") + ": " +
-          QString::number(aims_count_));
+  if (aims_count_ != 0) {
+    painter->drawText(point.x, point.y, size.width, size.height,
+                      Qt::AlignCenter, QObject::tr("Урон")
+                          + ": " + QString::number(damage_) +
+            ", " + QObject::tr("Количество целей") + ": " +
+            QString::number(aims_count_));
+  }
 
   point = size_handler.GameToWindowCoordinate(
       {position_.x, position_.y + kSize.height * (kRelativeHeaderSize.height +
@@ -84,9 +90,11 @@ void InfoField::DrawStatistics(QPainter* painter,
   point = size_handler.GameToWindowCoordinate(
       {position_.x, position_.y + kSize.height * (kRelativeHeaderSize.height +
           2 * kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
-  painter->drawText(point.x, point.y, size.width, size.height,
-                    Qt::AlignCenter, QObject::tr("Скорость атаки")
-                        + ": " + attack_speed_);
+  if (aims_count_ != 0) {
+    painter->drawText(point.x, point.y, size.width, size.height,
+                      Qt::AlignCenter, QObject::tr("Скорость атаки")
+                          + ": " + attack_speed_);
+  }
 
   painter->restore();
 }
@@ -109,6 +117,30 @@ void InfoField::DrawSellInfo(QPainter* painter,
   painter->restore();
 }
 
+void InfoField::DrawImage(QPainter* painter, const SizeHandler& size_handler,
+                          double field_size) const {
+  painter->save();
+  painter->setPen(QPen(QBrush(qRgb(103, 103, 103)), 3));
+  painter->setBrush(QBrush(qRgb(53, 53, 53)));
+
+  Coordinate game_point = {position_.x - 40 - kImagePadSize.width,
+                           position_.y + field_size / 2 -
+                               kImagePadSize.height / 2};
+
+  if (game_point.x < 10) {
+    game_point.x = position_.x + 40 + kSize.width;
+  }
+
+  Coordinate point = size_handler.GameToWindowCoordinate(game_point);
+  Size size = size_handler.GameToWindowSize(kImagePadSize);
+
+  painter->drawRect(point.x, point.y, size.width, size.height);
+
+  // TODO(watislaf): Draw image here.
+
+  painter->restore();
+}
+
 void InfoField::SetInfo(const Building& building, int total_cost) {
   header_ = building.GetHeader();
   info_ = building.GetDescription();
@@ -120,6 +152,15 @@ void InfoField::SetInfo(const Building& building, int total_cost) {
   } else {
     is_sell_info_ = false;
     cost_ = building.GetCost();
+  }
+
+  int reload_time = building.GetReloadTime();
+  if (reload_time < 500) {
+    attack_speed_ = QObject::tr("Very fast");
+  } else if (reload_time < 3000) {
+    attack_speed_ = QObject::tr("Medium");
+  } else {
+    attack_speed_ = QObject::tr("Slow");
   }
 }
 
@@ -151,3 +192,13 @@ void InfoField::SetVisible(bool is_hide) {
 bool InfoField::IsOnBottom() const {
   return is_on_bottom_;
 }
+
+void InfoField::SetImage(QImage image) {
+  has_image_ = true;
+  image_ = std::move(image);
+}
+
+void InfoField::RemoveImage() {
+  has_image_ = false;
+}
+

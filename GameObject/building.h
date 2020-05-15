@@ -5,6 +5,7 @@
 #include <list>
 #include <memory>
 #include <vector>
+#include <utility>
 
 #include "abstract_projectile.h"
 #include "auric_field.h"
@@ -54,6 +55,8 @@ class Building : public GameObject {
   bool IsReadyToCreateProjectiles() const;
   bool IsInAttackRange(Coordinate coordinate) const;
 
+  int GetReloadTime() const;
+
  private:
   AuricField auric_field_;
   Effect applied_effect_ = Effect(EffectTarget::kBuilding);
@@ -68,7 +71,7 @@ class Building : public GameObject {
 
   int projectile_id_ = 0;
   int attack_range_ = 0;
-  uint32_t max_aims_ = 1;
+  uint32_t max_aims_ = 0;
   double attack_damage_ = 0;
   Size shooting_anchor_ = {0, 0};
   bool is_ready_to_create_projectiles_ = false;

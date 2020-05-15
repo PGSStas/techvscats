@@ -1,19 +1,15 @@
 {
   "enemies": [
     {
-      "speed": 13,
-      "damage": 1,
-      "armor": 2,
-      "reward": 100,
-      "max_health": 100,
+      "speed": 7,
+      "damage": 6,
+      "armor": 0,
+      "reward": 4,
+      "max_health": 30,
       "priority": 2,
-      "aura": {
-        "radius": 250,
-        "effect_id": 1
-      },
       "size": {
-        "width": 70,
-        "height": 70
+        "width": 60,
+        "height": 60
       },
       "animation": {
         "path": "enemies/toster_4",
@@ -24,18 +20,22 @@
       }
     },
     {
-      "speed": 11,
-      "damage": 15,
-      "armor": 43,
-      "reward": 500,
-      "max_health": 500,
-      "priority": 1,
+      "speed": 5,
+      "damage": 9,
+      "armor": 20,
+      "reward": 8,
+      "max_health": 85,
+      "priority": 2,
+      "auric_field": {
+        "radius": 300,
+        "effect_id": 0
+      },
       "size": {
-        "width": 100,
-        "height": 100
+        "width": 80,
+        "height": 80
       },
       "animation": {
-        "path": "enemies/washmachine_7",
+        "path": "enemies/toster_4",
         "timing": 550
       },
       "particles": {
@@ -43,34 +43,15 @@
       }
     },
     {
-      "speed": 19,
-      "damage": 6,
-      "armor": 6,
-      "reward": 10,
-      "max_health": 30,
-      "priority": 3,
-      "size": {
-        "width": 70,
-        "height": 70
-      },
-      "animation": {
-        "path": "enemies/mouse_4",
-        "timing": 600
-      },
-      "particles": {
-        "at_death": 0
-      }
-    },
-    {
-      "speed": 15,
-      "damage": 1,
+      "speed": 10,
+      "damage": 2,
       "armor": -5,
-      "reward": 13,
-      "max_health": 100,
-      "priority": 3,
+      "reward": 2,
+      "max_health": 14,
+      "priority": 2,
       "size": {
-        "width": 70,
-        "height": 70
+        "width": 40,
+        "height": 40
       },
       "animation": {
         "path": "enemies/mouse_4",
@@ -81,23 +62,107 @@
       }
     },
     {
-      "speed": 30,
-      "damage": 6,
-      "armor": 6,
-      "reward": 10,
-      "max_health": 70,
+      "speed": 12,
+      "damage": 3,
+      "armor": 5,
+      "reward": 5,
+      "max_health": 45,
       "priority": 2,
-      "aura": {
-        "radius": 250,
+      "auric_field": {
+        "radius": 500,
         "effect_id": 1
+      },
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "animation": {
+        "path": "enemies/mouse_4",
+        "timing": 800
+      },
+      "particles": {
+        "at_death": 0
+      }
+    },
+    {
+      "speed": 5,
+      "damage": 2,
+      "armor": 50,
+      "reward": 12,
+      "max_health": 100,
+      "priority": 1,
+      "size": {
+        "width": 150,
+        "height": 150
+      },
+      "animation": {
+        "path": "enemies/fridge_8",
+        "timing": 800
+      },
+      "particles": {
+        "at_death": 0
+      }
+    },
+    {
+      "speed": 4,
+      "damage": 3,
+      "armor": 60,
+      "reward": 20,
+      "max_health": 100,
+      "priority": 1,
+      "auric_field": {
+        "radius": 250,
+        "effect_id": 5
+      },
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "animation": {
+        "path": "enemies/fridge_8",
+        "timing": 800
+      },
+      "particles": {
+        "at_death": 0
+      }
+    },
+    {
+      "speed": 2,
+      "damage": 18,
+      "armor": 10,
+      "reward": 30,
+      "max_health": 500,
+      "priority": 2,
+      "size": {
+        "width": 120,
+        "height": 120
+      },
+      "animation": {
+        "path": "enemies/washmachine_7",
+        "timing": 800
+      },
+      "particles": {
+        "at_death": 0
+      }
+    },
+    {
+      "speed": 3,
+      "damage": 2,
+      "armor": 0,
+      "reward": 20,
+      "max_health": 300,
+      "priority": 3,
+      "auric_field": {
+        "radius": 500,
+        "effect_id": 3
       },
       "size": {
         "width": 70,
         "height": 70
       },
       "animation": {
-        "path": "enemies/toster_4",
-        "timing": 400
+        "path": "enemies/router_4",
+        "timing": 800
       },
       "particles": {
         "at_death": 0
@@ -176,17 +241,15 @@
       ],
       "particles": {
         "at_death": 6
-      },
-      "header" : "Продажа башни",
-      "description" : "Ну продажа и продажа, что бубнить то"
+      }
     },
     {
-      "settle_cost": 24,
+      "settle_cost": 70,
       "projectile": {
         "projectile_id": 0,
-        "attack_damage": 10,
-        "attack_range": 340,
-        "max_aims": 2,
+        "attack_damage": 11,
+        "attack_range": 400,
+        "max_aims": 1,
         "shooting_anchor": {
           "x": 0,
           "y": -25
@@ -199,8 +262,8 @@
       ],
       "action_time": [
         500,
-        300,
-        300
+        750,
+        750
       ],
       "upgrade_tree": [
         5,
@@ -208,48 +271,14 @@
       ],
       "particles": {
         "at_death": 6
-      },
-      "header" : "Стрелок клубками lvl. 1",
-      "description" : "Новейшая разработка немецких ученых"
+      }
     },
     {
-      "settle_cost": 24,
-      "projectile": {
-        "projectile_id": 2,
-        "attack_damage": 3,
-        "attack_range": 240,
-        "max_aims": 3,
-        "shooting_anchor": {
-          "x": 0,
-          "y": -34
-        }
-      },
-      "animation_path": [
-        "towers/laser_reload_7",
-        "towers/laser_pre_4",
-        "towers/laser_post_4"
-      ],
-      "action_time": [
-        500,
-        150,
-        150
-      ],
-      "upgrade_tree": [
-        11,
-        0
-      ],
-      "particles": {
-        "at_death": 6
-      },
-      "header" : "Лазерная указка lvl. 1",
-      "description" : "Стырено у школьника первоклассника."
-    },
-    {
-      "settle_cost": 24,
+      "settle_cost": 100,
       "projectile": {
         "projectile_id": 1,
-        "attack_damage": 54,
-        "attack_range": 540,
+        "attack_damage": 27,
+        "attack_range": 600,
         "max_aims": 1,
         "shooting_anchor": {
           "x": 0,
@@ -263,8 +292,38 @@
       ],
       "action_time": [
         500,
-        800,
-        800
+        2450,
+        2450
+      ],
+      "upgrade_tree": [
+        6,
+        0
+      ],
+      "particles": {
+        "at_death": 6
+      }
+    },
+    {
+      "settle_cost": 150,
+      "projectile": {
+        "projectile_id": 2,
+        "attack_damage": 3,
+        "attack_range": 300,
+        "max_aims": 1,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -34
+        }
+      },
+      "animation_path": [
+        "towers/laser_reload_7",
+        "towers/laser_pre_4",
+        "towers/laser_post_4"
+      ],
+      "action_time": [
+        500,
+        100,
+        100
       ],
       "upgrade_tree": [
         7,
@@ -272,14 +331,12 @@
       ],
       "particles": {
         "at_death": 6
-      },
-      "header" : "Атомный бомбомет lvl. 1",
-      "description" : "Ручки крючки запускают бомбючки."
+      }
     },
     {
-      "settle_cost": 24,
+      "settle_cost": 90,
       "auric_field": {
-        "radius": 200,
+        "radius": 250,
         "effect_id": 2
       },
       "animation_path": [
@@ -293,22 +350,20 @@
         0
       ],
       "upgrade_tree": [
-        9,
+        8,
         0
       ],
       "particles": {
         "at_death": 6
-      },
-      "header" : "Саппорт lvl. 1",
-      "description" : "Помогу"
+      }
     },
     {
-      "settle_cost": 24,
+      "settle_cost": 60,
       "projectile": {
         "projectile_id": 0,
-        "attack_damage": 100,
-        "attack_range": 340,
-        "max_aims": 2,
+        "attack_damage": 15,
+        "attack_range": 480,
+        "max_aims": 1,
         "shooting_anchor": {
           "x": 0,
           "y": -25
@@ -321,58 +376,23 @@
       ],
       "action_time": [
         500,
-        300,
-        300
+        700,
+        700
       ],
       "upgrade_tree": [
-        6,
+        9,
         0
       ],
       "particles": {
         "at_death": 6
-      },
-      "header" : "Обычная бума lvl 2",
-      "description" : "Ну бума и бума, что бумбнить то"
+      }
     },
     {
-      "name": "default tower level 3",
-      "settle_cost": 24,
-      "projectile": {
-        "projectile_id": 0,
-        "attack_damage": 100,
-        "attack_range": 340,
-        "max_aims": 2,
-        "shooting_anchor": {
-          "x": 0,
-          "y": -25
-        }
-      },
-      "animation_path": [
-        "towers/default_tower_lv3_reload_4",
-        "towers/default_tower_lv3_pre_4",
-        "towers/default_tower_lv3_post_4"
-      ],
-      "action_time": [
-        500,
-        300,
-        300
-      ],
-      "upgrade_tree": [
-        0
-      ],
-      "particles": {
-        "at_death": 6
-      },
-      "header" : "Обычная супер бума lvl 3",
-      "description" : "Ну супер бума и супер бума, что супер бумбнить то"
-    },
-    {
-      "name": "bomb level 2",
-      "settle_cost": 24,
+      "settle_cost": 80,
       "projectile": {
         "projectile_id": 1,
-        "attack_damage": 54,
-        "attack_range": 540,
+        "attack_damage": 35,
+        "attack_range": 650,
         "max_aims": 1,
         "shooting_anchor": {
           "x": 0,
@@ -386,57 +406,51 @@
       ],
       "action_time": [
         500,
-        800,
-        800
+        1900,
+        1900
       ],
       "upgrade_tree": [
-        8,
+        10,
         0
       ],
       "particles": {
         "at_death": 6
-      },
-      "header" : "Бабаха lvl 2",
-      "description" : "Бабаха бабахает бабахами"
+      }
     },
     {
-      "name": "bomb level 3",
-      "settle_cost": 24,
+      "animation_path": [
+        "towers/laser_lv2_reload_7",
+        "towers/laser_lv2_pre_4",
+        "towers/laser_lv2_post_4"
+      ],
+      "settle_cost": 180,
       "projectile": {
-        "projectile_id": 1,
-        "attack_damage": 54,
-        "attack_range": 540,
-        "max_aims": 1,
+        "projectile_id": 2,
+        "attack_damage": 3.2,
+        "attack_range": 270,
+        "max_aims": 2,
         "shooting_anchor": {
           "x": 0,
-          "y": -25
+          "y": -34
         }
       },
-      "animation_path": [
-        "towers/bomb_lv3_reload_8",
-        "towers/bomb_lv3_pre_5",
-        "towers/bomb_lv3_post_5"
-      ],
       "action_time": [
         500,
-        800,
-        800
+        100,
+        100
       ],
       "upgrade_tree": [
+        11,
         0
       ],
       "particles": {
         "at_death": 6
-      },
-      "header" : "Бубуха lvl 3",
-      "description" : "Бубуха не бубуха, если не бубуха"
-
+      }
     },
     {
-      "name": "support level 2",
-      "settle_cost": 24,
+      "settle_cost": 110,
       "auric_field": {
-        "radius": 200,
+        "radius": 400,
         "effect_id": 2
       },
       "animation_path": [
@@ -450,21 +464,104 @@
         0
       ],
       "upgrade_tree": [
-        10,
+        12,
         0
       ],
       "particles": {
         "at_death": 6
-      },
-      "header" : "Саппорт lvl 2",
-      "description" : "Помогает "
-
+      }
     },
     {
-      "name": "support level 3",
-      "settle_cost": 24,
+      "settle_cost": 80,
+      "projectile": {
+        "projectile_id": 0,
+        "attack_damage": 19,
+        "attack_range": 560,
+        "max_aims": 1,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -25
+        }
+      },
+      "animation_path": [
+        "towers/default_tower_lv3_reload_4",
+        "towers/default_tower_lv3_pre_4",
+        "towers/default_tower_lv3_post_4"
+      ],
+      "action_time": [
+        500,
+        650,
+        650
+      ],
+      "upgrade_tree": [
+        0
+      ],
+      "particles": {
+        "at_death": 6
+      }
+    },
+    {
+      "settle_cost": 140,
+      "projectile": {
+        "projectile_id": 1,
+        "attack_damage": 30,
+        "attack_range": 800,
+        "max_aims": 2,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -25
+        }
+      },
+      "animation_path": [
+        "towers/bomb_lv3_reload_8",
+        "towers/bomb_lv3_pre_5",
+        "towers/bomb_lv3_post_5"
+      ],
+      "action_time": [
+        500,
+        2250,
+        2250
+      ],
+      "upgrade_tree": [
+        0
+      ],
+      "particles": {
+        "at_death": 6
+      }
+    },
+    {
+      "settle_cost": 210,
+      "projectile": {
+        "projectile_id": 2,
+        "attack_damage": 3.4,
+        "attack_range": 240,
+        "max_aims": 3,
+        "shooting_anchor": {
+          "x": 0,
+          "y": -34
+        }
+      },
+      "animation_path": [
+        "towers/laser_lv3_reload_7",
+        "towers/laser_lv3_pre_4",
+        "towers/laser_lv3_post_4"
+      ],
+      "action_time": [
+        500,
+        100,
+        100
+      ],
+      "upgrade_tree": [
+        0
+      ],
+      "particles": {
+        "at_death": 6
+      }
+    },
+    {
+      "settle_cost": 175,
       "auric_field": {
-        "radius": 200,
+        "radius": 600,
         "effect_id": 2
       },
       "animation_path": [
@@ -482,99 +579,57 @@
       ],
       "particles": {
         "at_death": 6
-      },
-      "header" : "Саппорт lvl 3",
-      "description" : "Помогает"
-
-    },
-    {
-      "name": "laser level 2",
-      "settle_cost": 24,
-      "projectile": {
-        "projectile_id": 2,
-        "attack_damage": 3,
-        "attack_range": 240,
-        "max_aims": 3,
-        "shooting_anchor": {
-          "x": 0,
-          "y": -34
-        }
-      },
-      "animation_path": [
-        "towers/laser_lv2_reload_7",
-        "towers/laser_lv2_pre_4",
-        "towers/laser_lv2_post_4"
-      ],
-      "action_time": [
-        500,
-        150,
-        150
-      ],
-      "upgrade_tree": [
-        12,
-        0
-      ],
-      "particles": {
-        "at_death": 6
-      },
-      "header" : "Лэйсер lvl 2",
-      "description" : "лулу"
-    },
-    {
-      "settle_cost": 24,
-      "projectile": {
-        "projectile_id": 2,
-        "attack_damage": 3,
-        "attack_range": 240,
-        "max_aims": 3,
-        "shooting_anchor": {
-          "x": 0,
-          "y": -34
-        }
-      },
-      "animation_path": [
-        "towers/laser_lv3_reload_7",
-        "towers/laser_lv3_pre_4",
-        "towers/laser_lv3_post_4"
-      ],
-      "action_time": [
-        500,
-        150,
-        150
-      ],
-      "upgrade_tree": [
-        0
-      ],
-      "particles": {
-        "at_death": 6
-      },
-      "header" : "Супер пупер лазер lvl. 3",
-      "description" : "Очень очень крутой."
+      }
     }
   ],
   "effects": [
     {
-      "effect_target": 0,
-      "damage_coefficient": -0.5,
-      "attack_rate_coefficient": -0.3,
-      "range_coefficient": -0.1,
-      "speed_coefficient": 0.9
-    },
-    {
-      "effect_target": 0,
-      "speed_coefficient": -0.1,
-      "armor_coefficient": 1,
-      "damage_coefficient": 0.3,
-      "attack_rate_coefficient": 0.3,
-      "range_coefficient": 0.4
+      "effect_target": 1,
+      "damage_coefficient": 0.1,
+      "attack_rate_coefficient": 0,
+      "range_coefficient": 0,
+      "speed_coefficient": 0.05,
+      "armor_coefficient": 0.05
     },
     {
       "effect_target": 1,
-      "speed_coefficient": -0.8,
-      "armor_coefficient": 1,
-      "damage_coefficient": -0.3,
-      "attack_rate_coefficient": -0.4,
-      "range_coefficient": 0.4
+      "speed_coefficient": 0.2,
+      "armor_coefficient": 0,
+      "damage_coefficient": 0.1,
+      "attack_rate_coefficient": 0,
+      "range_coefficient": 0
+    },
+    {
+      "effect_target": 2,
+      "speed_coefficient": 0.2,
+      "armor_coefficient": 0,
+      "damage_coefficient": 0.25,
+      "attack_rate_coefficient": 0.2,
+      "range_coefficient": 0
+    },
+    {
+      "effect_target": 0,
+      "speed_coefficient": 0,
+      "armor_coefficient": 0.15,
+      "damage_coefficient": 0.20,
+      "attack_rate_coefficient": 0.15,
+      "range_coefficient": -0.12
+    },
+    {
+      "effect_target": 2,
+      "speed_coefficient": 0.2,
+      "armor_coefficient": 0,
+      "damage_coefficient": 0.15,
+      "attack_rate_coefficient": 0.15,
+      "range_coefficient": 0.15
+    },
+    {
+      "effect_target": 2,
+      "speed_coefficient": 0,
+      "armor_coefficient": 0,
+      "damage_coefficient": -0.1,
+      "attack_rate_coefficient": -0.15,
+      "range_coefficient": 0
     }
   ],
   "particles": [

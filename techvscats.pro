@@ -1,4 +1,4 @@
-QT += core gui multimedia
+QT += core gui websockets multimedia
 
 android {
 QT += androidextras
@@ -6,19 +6,21 @@ QT += androidextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+DEFINES += QT_DEPRECATED_WARNINGS
+
 TARGET = techvscats
 TEMPLATE = app
-
-DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 
 RESOURCES += database.qrc music.qrc images.qrc
+CONFIG += resources_big
 
 SOURCES += \
         main.cpp \
         Controller/controller.cpp \
+        Controller/multiplayer_client.cpp \
         Controller/spawner.cpp \
         GameObject/abstract_projectile.cpp \
         GameObject/homing_projectile.cpp \
@@ -39,8 +41,10 @@ SOURCES += \
         Model/road.cpp \
         Model/size.cpp \
         Model/sound_vector.cpp \
+        Server/message.cpp \
         View/animation_player.cpp \
         View/button_handler.cpp \
+        View/global_chat.cpp \
         View/info_field.cpp \
         View/menu_button.cpp \
         View/size_handler.cpp \
@@ -51,6 +55,7 @@ SOURCES += \
 HEADERS += \
         Controller/abstract_controller.h \
         Controller/controller.h \
+        Controller/multiplayer_client.h \
         Controller/spawner.h \
         GameObject/abstract_projectile.h \
         GameObject/homing_projectile.h \
@@ -72,9 +77,11 @@ HEADERS += \
         Model/music_player.h \
         Model/road.h \
         Model/size.h \
+        Server/message.h \
         Model/sound_vector.h \
         View/animation_player.h \
         View/button_handler.h \
+        View/global_chat.h \
         View/info_field.h \
         View/menu_button.h \
         View/size_handler.h \
@@ -85,3 +92,12 @@ HEADERS += \
 TRANSLATIONS += \
     resources/translations/translation_en_US.ts \
     resources/translations/translation_ru_RU.ts \
+
+DISTFILES += \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/res/values/libs.xml
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
