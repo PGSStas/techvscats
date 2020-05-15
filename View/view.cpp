@@ -4,10 +4,13 @@ View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(),
       tower_menu_(this) {
-  setMinimumSize(960, 540);
+  setMinimumSize(960, 960);
   setMouseTracking(true);
   show();
+  setWindowIcon(QIcon(":resources/images/icon.png"));
+  setWindowTitle("Tech vs Cats");
 
+  size_handler_.ChangeSystem(width(), height());
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
@@ -28,7 +31,10 @@ void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   if (!is_model_loaded_) {
     Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-    painter.drawImage(origin.x, origin.y, logo_.scaled(width(), height()));
+    Size size = size_handler_.GameToWindowSize({constants::kGameWidth,
+                                                constants::kGameHeight});
+    painter.drawImage(origin.x, origin.y, logo_.scaled(size.width,
+                                                       size.height));
     return;
   }
 
@@ -97,9 +103,8 @@ void View::DrawMainMenu(QPainter*) {
 void View::DrawGame(QPainter* painter) {
   controller_->RescaleObjects(size_handler_);
   DrawTowersAuraAndRange(painter);
-  DrawTowers(painter);
+  DrawGameObjects(painter);
   DrawProjectiles(painter);
-  DrawEnemies(painter);
   DrawBars(painter);
   controller_->GetBase().Draw(painter, size_handler_);
   DrawParticles(painter);
@@ -166,10 +171,24 @@ void View::DrawTextNotification(QPainter* painter) {
   }
 }
 
-void View::DrawTowers(QPainter* painter) {
+void View::DrawGameObjects(QPainter* painter) {
+  std::list<GameObject*> objects;
   const auto& buildings = controller_->GetBuildings();
   for (const auto& building : buildings) {
-    building->Draw(painter, size_handler_);
+    objects.push_back(building.get());
+  }
+
+  const auto& enemies_list = controller_->GetEnemies();
+  for (const auto& enemy : enemies_list) {
+    objects.push_back(enemy.get());
+  }
+
+  objects.sort([](GameObject* a, GameObject* b) {
+    return a->GetPosition().y < b->GetPosition().y;
+  });
+
+  for (auto object : objects) {
+    object->Draw(painter, size_handler_);
   }
 }
 
@@ -190,13 +209,6 @@ void View::DrawTowersAuraAndRange(QPainter* painter) {
     tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
                                        controller_->GetBuildingById(
                                            tower_menu_.GetSellectedTowerId()));
-  }
-}
-
-void View::DrawEnemies(QPainter* painter) {
-  auto enemies_list = controller_->GetEnemies();
-  for (const auto& enemy : enemies_list) {
-    enemy->Draw(painter, size_handler_);
   }
 }
 
@@ -377,15 +389,5 @@ void View::DrawBars(QPainter* painter) {
   const auto& enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
     enemy->DrawHealthBar(painter, size_handler_);
-    enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
-                                                enemy->GetPosition(),
-                                                enemy->GetSize());
-  }
-
-  const auto& buildings_list = controller_->GetBuildings();
-  for (const auto& building : buildings_list) {
-    building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
-                                                   building->GetPosition(),
-                                                   building->GetSize());
   }
 }

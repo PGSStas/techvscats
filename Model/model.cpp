@@ -416,9 +416,9 @@ void Model::LoadEnemies(const QJsonObject& json_object) {
   for (int i = 0; i < enemies_count; i++) {
     enemy = enemies[i].toObject();
     AuricField aura;
-    if (enemy.contains("aura")) {
-      aura = AuricField(enemy["aura"].toObject()["radius"].toInt(),
-                        enemy["aura"].toObject()["effect_id"].toInt());
+    if (enemy.contains("auric_field")) {
+      aura = AuricField(enemy["auric_field"].toObject()["radius"].toInt(),
+                        enemy["auric_field"].toObject()["effect_id"].toInt());
     }
     Size size = Size(enemy["size"].toObject()["width"].toInt(),
                      enemy["size"].toObject()["height"].toInt());

@@ -97,9 +97,8 @@ class View : public QMainWindow {
 
   // Game window
   void DrawTowersAuraAndRange(QPainter* painter);
-  void DrawEnemies(QPainter* painter);
   void DrawProjectiles(QPainter* painter);
-  void DrawTowers(QPainter* painter);
+  void DrawGameObjects(QPainter* painter);
   void DrawParticles(QPainter* painter);
   void DrawBars(QPainter* painter);
   void DrawAdditionalInfo(QPainter* painter);

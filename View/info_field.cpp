@@ -72,11 +72,13 @@ void InfoField::DrawStatistics(QPainter* painter,
   Size size = size_handler.GameToWindowSize(
       {kSize.width * kRelativeStatisticsSize.width,
        kSize.height * kRelativeStatisticsSize.height});
-  painter->drawText(point.x, point.y, size.width, size.height,
-                    Qt::AlignCenter, QObject::tr("Урон")
-                        + ": " + QString::number(damage_) +
-          ", " + QObject::tr("Количество целей") + ": " +
-          QString::number(aims_count_));
+  if (aims_count_ != 0) {
+    painter->drawText(point.x, point.y, size.width, size.height,
+                      Qt::AlignCenter, QObject::tr("Урон")
+                          + ": " + QString::number(damage_) +
+            ", " + QObject::tr("Количество целей") + ": " +
+            QString::number(aims_count_));
+  }
 
   point = size_handler.GameToWindowCoordinate(
       {position_.x, position_.y + kSize.height * (kRelativeHeaderSize.height +
@@ -88,9 +90,11 @@ void InfoField::DrawStatistics(QPainter* painter,
   point = size_handler.GameToWindowCoordinate(
       {position_.x, position_.y + kSize.height * (kRelativeHeaderSize.height +
           2 * kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
-  painter->drawText(point.x, point.y, size.width, size.height,
-                    Qt::AlignCenter, QObject::tr("Скорость атаки")
-                        + ": " + attack_speed_);
+  if (aims_count_ != 0) {
+    painter->drawText(point.x, point.y, size.width, size.height,
+                      Qt::AlignCenter, QObject::tr("Скорость атаки")
+                          + ": " + attack_speed_);
+  }
 
   painter->restore();
 }
@@ -148,6 +152,15 @@ void InfoField::SetInfo(const Building& building, int total_cost) {
   } else {
     is_sell_info_ = false;
     cost_ = building.GetCost();
+  }
+
+  int reload_time = building.GetReloadTime();
+  if (reload_time < 500) {
+    attack_speed_ = QObject::tr("Very fast");
+  } else if (reload_time < 3000) {
+    attack_speed_ = QObject::tr("Medium");
+  } else {
+    attack_speed_ = QObject::tr("Slow");
   }
 }
 
