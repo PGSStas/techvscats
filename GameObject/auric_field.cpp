@@ -15,11 +15,13 @@ void AuricField::Draw(QPainter* painter, const SizeHandler& size_handler,
   }
 
   painter->setPen(Qt::transparent);
-  Coordinate point = size_handler.GameToWindowCoordinate(position);
+  Coordinate
+      point = size_handler.GameToWindowCoordinate(position);
   Size size = size_handler.GameToWindowSize(
       Size(effect_radius_, effect_radius_));
 
-  Coordinate gradient_center = size_handler.GameToWindowCoordinate(position);
+  Coordinate gradient_center =
+      size_handler.GameToWindowCoordinate(position);
 
   QRadialGradient gradient(gradient_center.x,
                            gradient_center.y * 1
@@ -50,7 +52,8 @@ int AuricField::GetEffectId() const {
 }
 
 bool AuricField::IsInRadius(const Coordinate& coordinate) const {
-  return coordinate.IsInEllipse(*carrier_coordinate_, effect_radius_);
+  return coordinate.IsInEllipse(*carrier_coordinate_ + Size(0, 10),
+                                effect_radius_);
 }
 
 bool AuricField::IsValid() const {

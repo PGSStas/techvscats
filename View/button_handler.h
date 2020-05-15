@@ -42,6 +42,7 @@ class ButtonHandler : public QObject {
 
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
+  bool IsToggleActive() const;
 
   void SetCurrentLevel(int level);
   int GetCurrentLevel() const;
@@ -80,6 +81,7 @@ class ButtonHandler : public QObject {
 
   // Game window
   MenuButton* pause_button_;
+  MenuButton* toggle_button_;
   MenuButton* zero_speed_button_;
   MenuButton* normal_speed_button_;
   MenuButton* double_speed_button_;
@@ -104,6 +106,7 @@ class ButtonHandler : public QObject {
   int shift_ = button_constants::kShift;
   bool is_sound_on_ = true;
   bool is_fullscreen_ = true;
+  bool is_toggle_active_ = false;
   int font_id_;
 
   // left to check icons
