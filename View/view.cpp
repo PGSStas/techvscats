@@ -6,14 +6,14 @@ View::View(AbstractController* controller)
       tower_menu_(this) {
   setMinimumSize(960, 540);
   setMouseTracking(true);
-  setWindowIcon(QIcon(":resources/images/icon.png"));
-  setWindowTitle("Tech vs Cats");
   QSettings settings(constants::kCompanyName, constants::kApplicationName);
   if (settings.value("fullscreen", true).toBool()) {
     showFullScreen();
   } else {
     showNormal();
   }
+  setWindowTitle("Tech vs Cats");
+  setWindowIcon(QIcon(":resources/images/icon.png"));
 
   size_handler_.ChangeSystem(width(), height());
   view_timer_.start();
