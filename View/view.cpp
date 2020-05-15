@@ -57,7 +57,7 @@ void View::paintEvent(QPaintEvent*) {
   painter.drawImage(origin.x, origin.y, controller_->GetBackground(
       button_handler_->GetWindowType()).GetCurrentFrame());
 
- window_type_ = button_handler_->GetWindowType();
+  window_type_ = button_handler_->GetWindowType();
   switch (window_type_) {
     case WindowType::kMainMenu: {
       DrawMainMenu(&painter);

@@ -34,9 +34,6 @@ class MusicPlayer {
   void Resume();
 
  private:
-  CurrentState current_state_;
-
- private:
   void SetSound(QMediaPlayer* player, const QString& path);
   std::shared_ptr<QMediaPlayer> main_player_;
   std::shared_ptr<QMediaPlaylist> main_playlist_;
