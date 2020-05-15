@@ -15,6 +15,12 @@ enum MainMusic {
   kGameMusic
 };
 
+enum CurrentState {
+  kStop,
+  kPlay,
+  kPause
+};
+
 class MusicPlayer {
  public:
   MusicPlayer();
@@ -30,7 +36,11 @@ class MusicPlayer {
   void PlaySaleSound();
   void PlayNotEnoughMoneySound();
 
+  void Pause();
+  void Resume();
 
+ private:
+  CurrentState current_state_;
 
  private:
   void SetSound(QMediaPlayer* player, const QString& path);

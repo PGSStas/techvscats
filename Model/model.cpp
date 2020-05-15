@@ -617,14 +617,14 @@ void Model::LoadParticles(const QJsonObject& json_object) {
   }
 }
 
-Model::~Model() {
-  for (auto& sound : id_to_particle_sound_) {
-    sound.Stop();
-  }
-}
-
 void Model::SetParticlesVolume(int volume) {
   for (auto& sound : id_to_particle_sound_) {
     sound.SetVolume(volume);
+  }
+}
+
+Model::~Model() {
+  for (auto& sound : id_to_particle_sound_) {
+    sound.Stop();
   }
 }

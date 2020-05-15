@@ -46,6 +46,8 @@ class ButtonHandler : public QObject {
   void SetCurrentLevel(int level);
   int GetCurrentLevel() const;
 
+  void SetWindowType(WindowType window_type);
+
  private:
   // creating main menu
   void CreateMainMenuButtons();

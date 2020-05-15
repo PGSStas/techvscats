@@ -505,11 +505,11 @@ MusicPlayer* Controller::GetMusicPlayer() {
 }
 
 void Controller::PauseMusic() {
-  music_player_.SetVolume(0);
+  music_player_.Pause();
 }
 
 void Controller::ResumeMusic() {
-  music_player_.SetVolume(100);
+  music_player_.Resume();
 }
 
 const AnimationPlayer& Controller::GetInterface() const {

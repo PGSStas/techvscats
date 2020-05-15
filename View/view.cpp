@@ -21,10 +21,12 @@ View::View(AbstractController* controller)
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
 
   connect(qApp, &QApplication::applicationStateChanged, [this] {
-    if (qApp->applicationState() != Qt::ApplicationActive) {
-      controller_->PauseMusic();
-    } else {
+    if (qApp->applicationState() == Qt::ApplicationActive) {
       controller_->ResumeMusic();
+    }
+    if (qApp->applicationState() == Qt::ApplicationHidden ||
+        qApp->applicationState() == Qt::ApplicationSuspended) {
+      controller_->PauseMusic();
     }
   });
 }
@@ -55,8 +57,8 @@ void View::paintEvent(QPaintEvent*) {
   painter.drawImage(origin.x, origin.y, controller_->GetBackground(
       button_handler_->GetWindowType()).GetCurrentFrame());
 
-  auto window_type = button_handler_->GetWindowType();
-  switch (window_type) {
+ window_type_ = button_handler_->GetWindowType();
+  switch (window_type_) {
     case WindowType::kMainMenu: {
       DrawMainMenu(&painter);
       break;

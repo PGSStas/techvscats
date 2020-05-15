@@ -426,6 +426,10 @@ int ButtonHandler::GetCurrentLevel() const {
   return level_number_;
 }
 
+void ButtonHandler::SetWindowType(WindowType window_type) {
+  window_type_ = window_type;
+}
+
 void ButtonHandler::SetFullscreen(bool fullscreen) {
   if (is_fullscreen_ == fullscreen) {
     return;
