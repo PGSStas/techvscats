@@ -3,6 +3,9 @@
 GlobalChat::GlobalChat(QMainWindow* window)
     : q_text_browser_(new QTextBrowser(window)),
       q_line_edit_(new QLineEdit(window)) {
+  q_text_browser_->setTextInteractionFlags(Qt::NoTextInteraction);
+  QScroller::grabGesture(q_text_browser_, QScroller::TouchGesture);
+
   QString family = QFontDatabase::applicationFontFamilies(kFontId).at(0);
   QFont font(family);
   font.setFixedPitch(true);
@@ -149,18 +152,20 @@ void GlobalChat::HideShow() {
 }
 
 void GlobalChat::ChangeStyle() {
-  is_game_style_using_ = !is_game_style_using_;
+  using_game_style_ = !using_game_style_;
   QString style_sheet;
-  if (is_game_style_using_) {
+  if (using_game_style_) {
     style_sheet =
         "background-color : rgba(199,199,199,0.91);"
         "border : 1px solid black;"
         "border-radius: 8px;";
+  } else {
+    style_sheet = " background-color : rgba(255,255,255,0.89);";
   }
   q_line_edit_->setStyleSheet(style_sheet);
   q_text_browser_->setStyleSheet(style_sheet);
-  brick_button->EnableSecondIcon(is_game_style_using_);
-  send_button->EnableSecondIcon(is_game_style_using_);
+  brick_button->EnableSecondIcon(using_game_style_);
+  send_button->EnableSecondIcon(using_game_style_);
 }
 
 bool GlobalChat::IsMessagesQueueEmpty() const {

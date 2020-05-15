@@ -93,7 +93,7 @@ bool ButtonHandler::IsToggleActive() const {
 
 void ButtonHandler::CreateMainMenuButtons() {
   start_game_button_ = new MenuButton(
-      tr("НАЧАТЬ ИГРУ"), long_button_size_, main_window_, font_id_);
+      tr("START"), long_button_size_, main_window_, font_id_);
   auto start_game_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
@@ -104,7 +104,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
   settings_button_ = new MenuButton(
-      tr("НАСТРОЙКИ"), long_button_size_, main_window_, font_id_);
+      tr("SETTINGS"), long_button_size_, main_window_, font_id_);
   auto settings_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kSettings;
@@ -113,7 +113,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   connect(settings_button_, &QPushButton::clicked, settings_button_click);
 
   exit_button_ = new MenuButton(
-      tr("ВЫЙТИ ИЗ ИГРЫ"), long_button_size_, main_window_, font_id_);
+      tr("LEAVE"), long_button_size_, main_window_, font_id_);
   connect(
       exit_button_, &QPushButton::clicked, main_window_, &QMainWindow::close);
 
@@ -121,7 +121,7 @@ void ButtonHandler::CreateMainMenuButtons() {
       Size(long_button_size_.width - short_button_size_.width * 2 - shift_ * 2,
            long_button_size_.height);
   choose_level_number_ = new MenuButton(
-      tr("УРОВЕНЬ") + " " + QString::number(level_number_),
+      tr("LEVEL") + " " + QString::number(level_number_),
       choose_level_number_size, main_window_, font_id_);
 
   inc_level_button_ = new MenuButton(
@@ -212,16 +212,16 @@ void ButtonHandler::CreateSettingsButtons() {
   auto language_button_click = [this]() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
-    QString text = tr("мы перезапустим приложение.");
+    QString text = tr("we will restart the app.");
 #ifdef Q_OS_ANDROID
     if (QtAndroid::androidSdkVersion() > 27) {
       text = tr("вам придется перезапустить приложение.");
     }
 #endif
-    auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-                                          tr("Чтобы язык приложения изменился,")
+    auto response = QMessageBox::question(main_window_, tr("Attention!"),
+                                          tr("To change the app's language,")
                                               + " " + text + " " +
-                                              tr("Все равно продолжить?"));
+                                              tr("Still continue?"));
     if (response != QMessageBox::Yes) {
       return;
     }
@@ -254,7 +254,7 @@ void ButtonHandler::CreateSettingsButtons() {
   connect(sound_button_, &QPushButton::clicked, sound_button_click);
 
   fullscreen_button_ = new MenuButton(
-      tr("ОКОННЫЙ РЕЖИМ"), long_button_size_, main_window_, font_id_);
+      tr("WINDOW MODE"), long_button_size_, main_window_, font_id_);
   auto fullscreen_click = [this]() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
@@ -264,12 +264,12 @@ void ButtonHandler::CreateSettingsButtons() {
   connect(fullscreen_button_, &QPushButton::clicked, fullscreen_click);
 
   reset_game_button_ = new MenuButton(
-      tr("СБРОСИТЬ ПРОГРЕСС"), long_button_size_, main_window_, font_id_);
+      tr("RESET PROGRESS"), long_button_size_, main_window_, font_id_);
   auto reset_game_click = [this]() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
-    auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-                                          tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
+    auto response = QMessageBox::question(main_window_, tr("Attention!"),
+                                          tr("You can't cancel the progress reset! Still continue?"));
     if (response == QMessageBox::Yes) {
       settings.setValue("levels_passed", 0);
       SetCurrentLevel(1);
@@ -278,7 +278,7 @@ void ButtonHandler::CreateSettingsButtons() {
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);
 
   to_main_menu_button_ = new MenuButton(
-      tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_, font_id_);
+      tr("BACK TO MENU"), long_button_size_, main_window_, font_id_);
   auto back_to_main_menu_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     if (window_type_ == WindowType::kPauseMenu) {
@@ -395,7 +395,7 @@ void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
 
 void ButtonHandler::CreatePauseMenuButtons() {
   restart_button_ = new MenuButton(
-      tr("НАЧАТЬ УРОВЕНЬ ЗАНОВО"), long_button_size_, main_window_, font_id_);
+      tr("START THE LEVEL AGAIN"), long_button_size_, main_window_, font_id_);
   auto restart_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
@@ -407,7 +407,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   connect(restart_button_, &QPushButton::clicked, restart_button_click);
 
   continue_button_ = new MenuButton(
-      tr("ПРОДОЛЖИТЬ"), long_button_size_, main_window_, font_id_);
+      tr("RESUME"), long_button_size_, main_window_, font_id_);
   auto continue_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     controller_->ChangeChatStyle();
@@ -439,7 +439,7 @@ void ButtonHandler::SetCurrentLevel(int level) {
   }
   inc_level_button_->setEnabled(level_number_ != current_max_level);
   dec_level_button_->setEnabled(level_number_ != 1);
-  choose_level_number_->setText(tr("УРОВЕНЬ") + " " +
+  choose_level_number_->setText(tr("LEVEL") + " " +
       QString::number(level_number_));
 }
 
@@ -460,7 +460,7 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
   }
   is_fullscreen_ = fullscreen;
   fullscreen_button_->setText(
-      fullscreen ? tr("ОКОННЫЙ РЕЖИМ") : tr("ПОЛНОЭКРАННЫЙ РЕЖИМ"));
+      fullscreen ? tr("WINDOWED MODE") : tr("FULLSCREEN MODE"));
   main_window_->hide();
   if (fullscreen) {
     main_window_->showFullScreen();

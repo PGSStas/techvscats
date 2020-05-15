@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QStringList>
+#include <QScroller>
 #include <QLineEdit>
 #include <QTextBrowser>
 #include <QMainWindow>
@@ -32,7 +33,7 @@ class GlobalChat {
   void ReceiveNewMessages(const QStringList& messages);
 
  private:
-  bool is_game_style_using_ = true;
+  bool using_game_style_ = true;
 
   bool is_brick_going_up_ = false;
   int how_high_brick_percent_ = 0;
