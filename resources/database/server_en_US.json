@@ -1,0 +1,110 @@
+[
+  {
+    "message": "%1",
+    "type": 0
+  },
+  {
+    "message": "! %1 _DEAD_",
+    "type": 0
+  },
+  {
+    "message": "! Player %1 joined the room.",
+    "type": 0
+  },
+  {
+    "message": "! Player %1 finish the room with %2 HP.",
+    "type": 0
+  },
+  {
+    "message": "< %1 left game... ",
+    "type": 0
+  },
+  {
+    "message": "< %1 WIN THE GAME Wow! With %2 HP.",
+    "type": 0
+  },
+  {
+    "message": "< Room starts in %1 seconds.",
+    "type": 0
+  },
+  {
+    "message": "< Round starts in %1 seconds.",
+    "type": 0
+  },
+  {
+    "message": "< Round starts!!",
+    "type": 0
+  },
+  {
+    "message": "< Connected",
+    "type": 0
+  },
+  {
+    "message": "! Your chat is offline",
+    "type": 0
+  },
+  {
+    "message": "! gold error",
+    "type": 0
+  },
+  {
+    "message": "< Disconnect",
+    "type": 0
+  },
+  {
+    "message": "! command error",
+    "type": 0
+  },
+  {
+    "message": "< Game End",
+    "type": 0
+  },
+  {
+    "message": "! Your Name is null",
+    "type": 0
+  },
+  {
+    "message": "< Enter /register <NickName>.",
+    "type": 0
+  },
+  {
+    "message": "< Or enter /autoregister",
+    "type": 0
+  },
+  {
+    "message": "< ❤_INFINITY HEALTH_❤",
+    "type": 0
+  },
+  {
+    "message": "< $$$ MOOOREE GOOLLDLDLDLD $$$",
+    "type": 0
+  },
+  {
+    "message": "< Ok.",
+    "type": 0
+  },
+  {
+    "message": "< Server closed",
+    "type": 0
+  },
+  {
+    "message": "< Your nickname is : %1",
+    "type": 0
+  },
+  {
+    "message": "! You created the room.",
+    "type": 0
+  },
+  {
+    "message": "! You left the room.",
+    "type": 0
+  },
+  {
+    "message": "! Message is too long.",
+    "type": 0
+  },
+  {
+    "message": "SERVER IS UNAVAILABLE.",
+    "type": 1
+  }
+]

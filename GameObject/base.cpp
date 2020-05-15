@@ -76,8 +76,9 @@ void Base::DrawUI(QPainter* painter, const SizeHandler& size_handler) const {
 }
 
 void Base::DecreaseHealth(double damage) {
-  current_health_ -= std::min(damage, current_health_);
-
+  if (!is_immortal_) {
+    current_health_ -= std::min(damage, current_health_);
+  }
   Coordinate rand_position = position_;
   rand_position +=
       Size(random_generator_() % static_cast<int>(size_.width / 1.5)
@@ -90,6 +91,15 @@ void Base::DecreaseHealth(double damage) {
   if (current_health_ <= constants::kEpsilon) {
     is_dead_ = true;
   }
+}
+
+void Base::SetImmortal() {
+  is_immortal_ = true;
+  current_health_ = 666;
+}
+
+double Base::GetCurrentHealth() const {
+  return current_health_;
 }
 
 int Base::GetGold() const {
@@ -115,4 +125,3 @@ bool Base::IsDead() const {
 Size Base::GetGoldSize() const {
   return kGoldSize;
 }
-

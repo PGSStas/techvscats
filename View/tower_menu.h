@@ -28,7 +28,7 @@ class TowerMenu {
                 const std::vector<int>& possible_buildings_id,
                 int owner_id, const SizeHandler& size_handler,
                 int total_cost);
-  void Tick(const SizeHandler& size_handler, int delta_time);
+  void Tick(const SizeHandler& size_handler);
   void SetIsWantToReplaceToFalse();
   void RescaleButtons(const SizeHandler& size_handler);
   void DrawTowersAuraAndRange(QPainter* painter,
@@ -59,8 +59,8 @@ class TowerMenu {
 
   double current_force_;
 
-  const double kThrowForce = 100;
-  const double kSlowdownCoefficient = 0.88;
+  const double kThrowForce = 18;
+  const double kSlowdownCoefficient = 0.86;
   const Size kSizeOfButton = {60, 60};
 
  private:
