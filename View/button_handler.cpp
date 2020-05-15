@@ -71,7 +71,6 @@ void ButtonHandler::SetPauseMenuUiVisible(bool visible) {
 
 void ButtonHandler::SetTitlesVisible(bool visible) {
   to_settings_button_->setVisible(visible);
-
 }
 
 void ButtonHandler::SetSpeedButtonsState(Speed speed) {
@@ -117,7 +116,6 @@ void ButtonHandler::CreateMainMenuButtons() {
   auto settings_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kSettings;
-    main_window_->repaint();
   };
   connect(settings_button_, &QPushButton::clicked, settings_button_click);
 

@@ -4,18 +4,20 @@ View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(),
       tower_menu_(this) {
+  setWindowIcon(QIcon(":resources/images/icon.png"));
+  setWindowTitle("Tech vs Cats");
   setMinimumSize(960, 540);
-  setMouseTracking(true);
+
   QSettings settings(constants::kCompanyName, constants::kApplicationName);
   if (settings.value("fullscreen", true).toBool()) {
     showFullScreen();
   } else {
-    showNormal();
+    show();
   }
-  setWindowTitle("Tech vs Cats");
-  setWindowIcon(QIcon(":resources/images/icon.png"));
-
   size_handler_.ChangeSystem(width(), height());
+  setMouseTracking(true);
+
+
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
@@ -278,7 +280,7 @@ void View::keyPressEvent(QKeyEvent* event) {
     }
   }
   if (event->key() == Qt::Key_Escape &&
-    button_handler_->GetWindowType() == WindowType::kTitles) {
+      button_handler_->GetWindowType() == WindowType::kTitles) {
     button_handler_->SetWindowType(WindowType::kSettings);
     controller_->EndTitles();
   }
@@ -372,10 +374,6 @@ void View::timerEvent(QTimerEvent* event) {
         controller_->GetClient()->IsOnline(),
         controller_->GetClient()->IsRegistered());
     repaint();
-    if (window_type_ != button_handler_->GetWindowType()) {
-      window_type_ = button_handler_->GetWindowType();
-      controller_->ClearTextNotifications();
-    }
   }
 }
 
@@ -419,14 +417,12 @@ void View::SetChosenLevel(int level) {
 void View::StartTitles() {
   button_handler_->SetSettingsUiVisible(false);
   global_chat_->SetVisible(false);
-  repaint();
 }
 
 void View::EndTitles() {
   button_handler_->SetTitlesVisible(false);
   button_handler_->SetMainMenuUiVisible(true);
   global_chat_->SetVisible(true);
-  repaint();
 }
 
 void View::DrawTitles(QPainter* painter) {

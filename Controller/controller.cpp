@@ -54,7 +54,6 @@ void Controller::Tick(int current_time) {
       break;
     }
     case WindowType::kTitles: {
-      TickTextNotifications();
       if (model_->GetTextNotifications()->empty()) {
         view_->ShowSettingsButton();
       }
@@ -477,10 +476,6 @@ Controller::GetProjectiles() const {
 
 const std::list<TextNotification>& Controller::GetTextNotifications() const {
   return *model_->GetTextNotifications();
-}
-
-void Controller::ClearTextNotifications() {
-  model_->GetTextNotifications()->clear();
 }
 
 const Base& Controller::GetBase() const {
