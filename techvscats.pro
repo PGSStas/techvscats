@@ -11,6 +11,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 TARGET = techvscats
 TEMPLATE = app
 
+RC_ICONS = resources/images/icon.ico
+
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 
