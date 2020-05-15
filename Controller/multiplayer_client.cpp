@@ -218,6 +218,13 @@ void MultiplayerClient::CreateVisibleMessage(const Message& message) {
       ChangePermissionToStartRound(true);
       break;
     }
+    case MessageType::kChatUpdate: {
+      if (!IsRegistered()) {
+        point = static_cast<int>( MessageType::kSomeBodyCall);
+        message_to_send.SetVisibleMessage(
+            database_[point].message, database_[point].type);
+      }
+    }
     default:break;
   }
   received_message_.push_back(message_to_send);

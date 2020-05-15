@@ -106,5 +106,9 @@
   {
     "message": "SERVER IS UNAVAILABLE.",
     "type": 1
+  },
+  {
+    "message": "< Someone is writing to you. Register faster !",
+    "type": 1
   }
 ]
