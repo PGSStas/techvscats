@@ -13,7 +13,7 @@ View::View(AbstractController* controller)
   if (settings.value("fullscreen", true).toBool()) {
     showFullScreen();
   } else {
-    show();
+    showNormal();
   }
 #endif
   setWindowTitle("Tech vs Cats");
