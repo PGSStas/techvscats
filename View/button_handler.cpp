@@ -7,10 +7,13 @@ ButtonHandler::ButtonHandler(QMainWindow* main_window,
       font_id_(font_id) {
   CreateButtons();
   QSettings settings = QSettings(constants::kCompanyName,
-      constants::kApplicationName);
+                                 constants::kApplicationName);
   SetCurrentLevel(settings.value("levels_passed", 0).toInt() + 1);
   SetSoundOn(settings.value("sound_on", true).toBool());
-  SetFullscreen(settings.value("fullscreen", true).toBool());
+  bool is_fullscreen = settings.value("fullscreen", true).toBool();
+  is_fullscreen_ = is_fullscreen;
+  fullscreen_button_->setText(
+      is_fullscreen ? tr("ОКОННЫЙ РЕЖИМ") : tr("ПОЛНОЭКРАННЫЙ РЕЖИМ"));
   window_type_ = WindowType::kMainMenu;
 }
 
@@ -220,14 +223,15 @@ void ButtonHandler::CreateSettingsButtons() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
     QString text = tr("мы перезапустим приложение.");
-    #ifdef Q_OS_ANDROID
+#ifdef Q_OS_ANDROID
     if (QtAndroid::androidSdkVersion() > 27) {
       text = tr("вам придется перезапустить приложение.");
     }
-    #endif
+#endif
     auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-        tr("Чтобы язык приложения изменился,") + " " + text + " " +
-        tr("Все равно продолжить?"));
+                                          tr("Чтобы язык приложения изменился,")
+                                              + " " + text + " " +
+                                              tr("Все равно продолжить?"));
     if (response != QMessageBox::Yes) {
       return;
     }
@@ -275,7 +279,7 @@ void ButtonHandler::CreateSettingsButtons() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
     auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-        tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
+                                          tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
     if (response == QMessageBox::Yes) {
       settings.setValue("levels_passed", 0);
       SetCurrentLevel(1);
@@ -314,7 +318,7 @@ void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
   fullscreen_button_->SetGeometry(first_button_coordinate_ + shift,
                                   size_handler);
   reset_game_button_->SetGeometry(first_button_coordinate_ + shift * 2,
-      size_handler);
+                                  size_handler);
   titles_button_->SetGeometry(first_button_coordinate_ + shift * 3,
                               size_handler);
   to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 4,
@@ -425,7 +429,7 @@ void ButtonHandler::RescalePauseMenuButtons(SizeHandler size_handler) {
   continue_button_->SetGeometry(first_button_coordinate_, size_handler);
   restart_button_->SetGeometry(first_button_coordinate_ + shift, size_handler);
   to_menu_from_pause->SetGeometry(first_button_coordinate_ + shift * 2,
-                                    size_handler);
+                                  size_handler);
 }
 
 void ButtonHandler::CreateTitleButtons() {
@@ -446,14 +450,16 @@ void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
 
 void ButtonHandler::SetCurrentLevel(int level) {
   int current_max_level = QSettings(constants::kCompanyName,
-      constants::kApplicationName).value("levels_passed", 0).toInt() + 1;
+                                    constants::kApplicationName).value(
+      "levels_passed",
+      0).toInt() + 1;
   if (level >= 1 && level <= current_max_level) {
     level_number_ = level;
   }
   inc_level_button_->setEnabled(level_number_ != current_max_level);
   dec_level_button_->setEnabled(level_number_ != 1);
   choose_level_number_->setText(tr("УРОВЕНЬ") + " " +
-    QString::number(level_number_));
+      QString::number(level_number_));
 }
 
 void ButtonHandler::SetSoundOn(bool sound_on) {
@@ -475,6 +481,7 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
   fullscreen_button_->setText(
       fullscreen ? tr("ОКОННЫЙ РЕЖИМ") : tr("ПОЛНОЭКРАННЫЙ РЕЖИМ"));
   main_window_->hide();
+
   if (fullscreen) {
     main_window_->showFullScreen();
   } else {
