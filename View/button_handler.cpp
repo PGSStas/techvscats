@@ -158,9 +158,16 @@ void ButtonHandler::CreateSettingsButtons() {
   auto language_button_click = [this]() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
+    QString text =
+        tr("мы перезапустим приложение.");
+    #ifdef Q_OS_ANDROID
+    if (QtAndroid::androidSdkVersion() > 27) {
+      text = tr("вам придется перезапустить приложение.");
+    }
+    #endif
     auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-        tr("Чтобы язык приложения изменился, его необходимо перезапустить."
-           " Все равно продолжить?"));
+        tr("Чтобы язык приложения изменился, ") + text +
+        tr(" Все равно продолжить?"));
     if (response != QMessageBox::Yes) {
       return;
     }
@@ -373,6 +380,9 @@ int ButtonHandler::GetCurrentLevel() const {
 }
 
 void ButtonHandler::SetFullscreen(bool fullscreen) {
+  if (is_fullscreen_ == fullscreen) {
+    return;
+  }
   is_fullscreen_ = fullscreen;
   fullscreen_button_->setText(
       fullscreen ? tr("ОКОННЫЙ РЕЖИМ") : tr("ПОЛНОЭКРАННЫЙ РЕЖИМ"));

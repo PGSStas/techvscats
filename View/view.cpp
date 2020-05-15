@@ -6,7 +6,13 @@ View::View(AbstractController* controller)
       tower_menu_(this) {
   setMinimumSize(960, 540);
   setMouseTracking(true);
-  show();
+
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+  if (settings.value("fullscreen", true).toBool()) {
+    showFullScreen();
+  } else {
+    showNormal();
+  }
 
   view_timer_.start();
   time_between_ticks_.start();

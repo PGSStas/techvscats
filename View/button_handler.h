@@ -18,6 +18,10 @@
 #include "menu_button.h"
 #include "size_handler.h"
 
+#ifdef Q_OS_ANDROID
+#include <QtAndroidExtras>
+#endif
+
 class ButtonHandler : public QObject {
   Q_OBJECT
 
