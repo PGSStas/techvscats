@@ -43,6 +43,7 @@ class ButtonHandler : public QObject {
 
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
+  void SetWindowType(WindowType type);
 
   void SetCurrentLevel(int level);
   int GetCurrentLevel() const;
@@ -71,7 +72,6 @@ class ButtonHandler : public QObject {
   QMainWindow* main_window_;
   WindowType window_type_ = WindowType::kMainMenu;
   AbstractController* controller_;
-  MusicPlayer* music_player_;
 
   // main_menu
   MenuButton* start_game_button_;

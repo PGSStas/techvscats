@@ -71,7 +71,7 @@ void ButtonHandler::SetPauseMenuUiVisible(bool visible) {
 
 void ButtonHandler::SetTitlesVisible(bool visible) {
   to_settings_button_->setVisible(visible);
-  to_settings_button_->setStyleSheet("background-color: #ffffff");
+
 }
 
 void ButtonHandler::SetSpeedButtonsState(Speed speed) {
@@ -482,4 +482,8 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
   } else {
     main_window_->showNormal();
   }
+}
+
+void ButtonHandler::SetWindowType(WindowType type) {
+  window_type_ = type;
 }

@@ -277,6 +277,11 @@ void View::keyPressEvent(QKeyEvent* event) {
       button_handler_->SetSpeed(static_cast<int>(Speed::kZeroSpeed));
     }
   }
+  if (event->key() == Qt::Key_Escape &&
+    button_handler_->GetWindowType() == WindowType::kTitles) {
+    button_handler_->SetWindowType(WindowType::kSettings);
+    controller_->EndTitles();
+  }
 }
 
 void View::resizeEvent(QResizeEvent*) {
@@ -413,12 +418,14 @@ void View::SetChosenLevel(int level) {
 
 void View::StartTitles() {
   button_handler_->SetSettingsUiVisible(false);
+  global_chat_->SetVisible(false);
   repaint();
 }
 
 void View::EndTitles() {
   button_handler_->SetTitlesVisible(false);
   button_handler_->SetMainMenuUiVisible(true);
+  global_chat_->SetVisible(true);
   repaint();
 }
 

@@ -15,8 +15,8 @@ TextNotification::TextNotification(const QString& message,
 void TextNotification::Tick(int current_time) {
   UpdateTime(current_time);
   position_ += force_vector_ * delta_time_ / constants::kTimeScale;
-  font_size *= size_change_coefficient_;
-  font_size = std::min(font_size, kMaxTextSize);
+  font_size_ *= size_change_coefficient_;
+  font_size_ = std::min(font_size_, kMaxTextSize);
   if (is_accelerated_) {
     force_vector_ *= kSlowdownCoefficient;
   }
@@ -44,12 +44,12 @@ void TextNotification::Draw(QPainter* painter,
   Coordinate point;
   if (center_align_) {
     point = size_handler.GameToWindowCoordinate(
-        {position_.x - font_size * message_.size() * 0.35,
-         position_.y + font_size / 4});
+        {position_.x - font_size_ * message_.size() * 0.35,
+         position_.y + font_size_ / 4});
   } else {
     point = size_handler.GameToWindowCoordinate({position_.x, position_.y});
   }
-  if (font_size <= kMaxTextSize + constants::kEpsilon) {
+  if (font_size_ <= kMaxTextSize + constants::kEpsilon) {
     painter->drawText(point.x, point.y, message_);
   }
 
@@ -61,5 +61,5 @@ bool TextNotification::IsDead() const {
 }
 
 void TextNotification::SetFontSize(int new_size) {
-  font_size = new_size;
+  font_size_ = new_size;
 }
