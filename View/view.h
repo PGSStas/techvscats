@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "Controller/abstract_controller.h"
+#include "global_chat.h"
 #include "button_handler.h"
 #include "tower_menu.h"
 
@@ -32,6 +33,9 @@ class View : public QMainWindow {
   void DisableGameUi();
   void EnableMainMenuUi();
   void DisableMainMenuUi();
+  void ChangeChat();
+
+  void AddGlobalChatMessage(const QStringList& message);
 
   void ReplaceTowerMenu(Coordinate position, int carrier_building_index,
                         const std::vector<int>& possible_buildings_id,
@@ -48,12 +52,15 @@ class View : public QMainWindow {
   AbstractController* controller_;
   SizeHandler size_handler_;
   QElapsedTimer view_timer_;
+  WindowType window_type_ = WindowType::kMainMenu;
 
   int controller_timer_id_;
 
+  // Main Ui
+  std::shared_ptr<ButtonHandler> button_handler_;
+  std::shared_ptr<GlobalChat> global_chat_;
   // Game window
   QElapsedTimer time_between_ticks_;
-  std::shared_ptr<ButtonHandler> button_handler_;
   TowerMenu tower_menu_;
 
   double game_speed_coefficient_ = 1;
@@ -76,6 +83,7 @@ class View : public QMainWindow {
   void timerEvent(QTimerEvent* event) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
+  void keyPressEvent(QKeyEvent* event) override;
 
   void Resize();
 
@@ -85,6 +93,7 @@ class View : public QMainWindow {
   void DrawSettings(QPainter* painter);
   void DrawPauseMenu(QPainter* painter);
   void DrawEndgameMessage(QPainter* painter);
+  void DrawTextNotification(QPainter* painter);
 
   // Game window
   void DrawTowersAuraAndRange(QPainter* painter);

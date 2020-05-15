@@ -24,12 +24,14 @@ class ButtonHandler : public QObject {
   ~ButtonHandler() override = default;
 
   void CreateButtons();
+  void UpdateButtonsStatus(bool online_status, bool register_status);
   void RescaleButtons(SizeHandler size_handler);
 
   void SetMainMenuUiVisible(bool visible);
   void SetSettingsUiVisible(bool visible);
   void SetGameUiVisible(bool visible);
   void SetPauseMenuUiVisible(bool visible);
+  void SetSpeed(int casted_speed);
 
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
@@ -50,7 +52,7 @@ class ButtonHandler : public QObject {
 
  private:
   QMainWindow* main_window_;
-  WindowType window_type_;
+  WindowType window_type_ = WindowType::kMainMenu;
   AbstractController* controller_;
   MusicPlayer* music_player_;
 
@@ -61,6 +63,7 @@ class ButtonHandler : public QObject {
   MenuButton* dec_level_button_;
   MenuButton* settings_button_;
   MenuButton* exit_button_;
+  MenuButton* online_button_;
 
   // Game window
   MenuButton* pause_button_;

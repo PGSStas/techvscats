@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1020921751525",
+    "firebase_url": "https://techvscats.firebaseio.com",
+    "project_id": "techvscats",
+    "storage_bucket": "techvscats.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020921751525:android:49d2cb9aaaeb42b546710c",
+        "android_client_info": {
+          "package_name": "com.giggling.penguin.techvscats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020921751525-h2clrhs3n37qa1c6kbcp589mkdaqkfmh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqtUoJwzgdx98GdRYAuqeizkwgw8d4Gcc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020921751525-h2clrhs3n37qa1c6kbcp589mkdaqkfmh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

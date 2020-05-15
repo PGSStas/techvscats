@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "multiplayer_client.h"
 #include "GameObject/abstract_projectile.h"
 #include "GameObject/base.h"
 #include "GameObject/building.h"
@@ -57,6 +58,7 @@ class AbstractController {
   virtual const std::vector<std::shared_ptr<Building>>&
   GetBuildings() const = 0;
   virtual const std::list<TextNotification>& GetTextNotifications() const = 0;
+  virtual void ClearTextNotifications() = 0;
 
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
@@ -72,6 +74,7 @@ class AbstractController {
   virtual void SetGameVolume(int volume) = 0;
 
   virtual MusicPlayer* GetMusicPlayer() = 0;
+  virtual MultiplayerClient* GetClient() = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_
