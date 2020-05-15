@@ -87,7 +87,7 @@ void View::DrawEmptyZones(QPainter* painter) {
   painter->fillRect(0, 0, horizontal_zone.width, horizontal_zone.height, image);
   painter->fillRect(
       0, size_handler_.GameToWindowCoordinate(
-          {0, constants::kGameHeight}).y - 1,
+          {0, constants::kGameHeight}).y +1,
       horizontal_zone.width + 2, horizontal_zone.height + 2, image);
   Size vertical_zone =
       Size(size_handler_.GameToWindowCoordinate({0, 0}).x, height());
