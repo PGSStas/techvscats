@@ -145,12 +145,16 @@ void Server::ProcessGlobalChatMessage(const Message& message,
     chat->removeAt(0);
   }
   for (auto& client : clients_) {
-    if (!is_room || client.room == owner->room) {
+    if (is_room && client.room == owner->room) {
+      SendMessageToClient(Message(MessageType::kChatUpdate,
+                                  {chat->back()}), client);
+    }
+    if (!is_room && client.room == nullptr) {
       SendMessageToClient(Message(MessageType::kChatUpdate,
                                   {chat->back()}), client);
     }
   }
-  qDebug() << ":" <<chat->back();
+  qDebug() << ":" << chat->back();
 }
 
 void Server::StartRoom(Room* room) {
