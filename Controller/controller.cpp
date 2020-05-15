@@ -521,6 +521,10 @@ void Controller::SetGameVolume(int volume) {
   model_->SetParticlesVolume(volume);
 }
 
+void Controller::ChangeChatStyle() {
+  view_->ChangeChat();
+}
+
 MultiplayerClient* Controller::GetClient() {
   return &client_;
 }

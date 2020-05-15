@@ -55,7 +55,7 @@ enum class MessageType {
   kLeaveRoom,
   kToLongMessage,
   kServerIsUnavailable,
-  kSomeBodyCall,
+  kGoToRoom,  // % room number
 
   kLast,  // To get size of enum
 

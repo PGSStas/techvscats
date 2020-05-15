@@ -23,7 +23,6 @@ void ButtonHandler::CreateButtons() {
 void ButtonHandler::UpdateButtonsStatus(bool online_status,
                                         bool register_status) {
   online_button_->EnableSecondIcon(online_status);
-  restart_button_->setEnabled(!online_status);
   start_game_button_->setEnabled(register_status || !online_status);
   toggle_button_->EnableSecondIcon(is_toggle_active_);
 }
@@ -99,6 +98,7 @@ void ButtonHandler::CreateMainMenuButtons() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
     controller_->StartGame(level_number_);
+    controller_->ChangeChatStyle();
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
@@ -317,6 +317,7 @@ void ButtonHandler::CreateGameButtons() {
   auto pause_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kPauseMenu;
+    controller_->ChangeChatStyle();
     controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
   };
 
@@ -398,6 +399,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   auto restart_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
+    controller_->ChangeChatStyle();
     controller_->EndGame();
     controller_->StartGame(level_number_);
     SetSpeedButtonsState(Speed::kNormalSpeed);
@@ -408,8 +410,8 @@ void ButtonHandler::CreatePauseMenuButtons() {
       tr("ПРОДОЛЖИТЬ"), long_button_size_, main_window_, font_id_);
   auto continue_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
+    controller_->ChangeChatStyle();
     window_type_ = WindowType::kGame;
-    controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(continue_button_, &QPushButton::clicked, continue_button_click);

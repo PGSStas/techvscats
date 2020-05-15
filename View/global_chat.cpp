@@ -153,7 +153,7 @@ void GlobalChat::ChangeStyle() {
   QString style_sheet;
   if (is_game_style_using_) {
     style_sheet =
-        "background-color : rgba(143,144,152,0.88);"
+        "background-color : rgba(199,199,199,0.91);"
         "border : 1px solid black;"
         "border-radius: 8px;";
   }
@@ -189,8 +189,8 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
   QString html_style("<style>"
                      "p.global{color: black; margin: 0; padding: 0;}"
                      "p.local{color: green; margin: 0; padding: 0;}"
-                     "p.error{color: red; margin: 0; padding: 0;}"
-                     "p.command{color: orange; margin: 0; padding: 0;}"
+                     "p.error{color: #92000a; margin: 0; padding: 0;}"
+                     "p.command{color: #cc712f; margin: 0; padding: 0;}"
                      "</style>");
   QString global_format = "<p class=\"global\">%1</p>";
   QString local_format = "<p class=\"local\">%1</p>";

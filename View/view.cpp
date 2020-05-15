@@ -282,7 +282,6 @@ void View::resizeEvent(QResizeEvent*) {
 
 void View::EnableGameUi() {
   controller_->RescaleObjects(size_handler_);
-  ChangeChat();
   DisableTowerMenu();
   button_handler_->SetGameUiVisible(true);
 }
@@ -293,7 +292,6 @@ void View::DisableGameUi() {
 
 void View::EnableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(true);
-  ChangeChat();
 }
 
 void View::DrawAdditionalInfo(QPainter* painter) {
@@ -360,6 +358,7 @@ void View::timerEvent(QTimerEvent* event) {
     button_handler_->UpdateButtonsStatus(
         controller_->GetClient()->IsOnline(),
         controller_->GetClient()->IsRegistered());
+
     repaint();
     if (window_type_ != button_handler_->GetWindowType()) {
       window_type_ = button_handler_->GetWindowType();
