@@ -48,8 +48,20 @@ void Controller::Tick(int current_time) {
   current_game_time_ = current_time;
   TickClient();
   TickTextNotifications();
-  if (window_type_ == WindowType::kGame) {
-    GameProcess();
+  switch (window_type_) {
+    case WindowType::kGame: {
+      GameProcess();
+      break;
+    }
+    case WindowType::kTitles: {
+      if (model_->GetTextNotifications()->empty()) {
+        view_->ShowSettingsButton();
+      }
+      break;
+    }
+    default: {
+      break;
+    }
   }
 }
 
@@ -466,10 +478,6 @@ const std::list<TextNotification>& Controller::GetTextNotifications() const {
   return *model_->GetTextNotifications();
 }
 
-void Controller::ClearTextNotifications() {
-  model_->GetTextNotifications()->clear();
-}
-
 const Base& Controller::GetBase() const {
   return *model_->GetBase();
 }
@@ -528,13 +536,11 @@ MultiplayerClient* Controller::GetClient() {
 void Controller::ProcessMessage(const Message& message) {
   switch (message.GetDialogType()) {
     case VisibleType::kWarning: {
-      model_->AddTextNotification(
-          {message.GetArgument(0),
-           {constants::kGameWidth / 2,
-            constants::kGameHeight / 7},
-           Qt::darkMagenta, view_->GetRealTime(),
-           {0, -40}, 3000, 1,
-           50, true});
+      TextNotification notification(message.GetArgument(0),
+          {constants::kGameWidth / 2, constants::kGameHeight / 7},
+          Qt::darkMagenta, view_->GetRealTime(), {0, -40}, 3000, 1, true);
+      notification.SetFontSize(50);
+      model_->AddTextNotification(notification);
       break;
     }
     case VisibleType::kChat: {
@@ -559,4 +565,27 @@ void Controller::ProcessCommand(const Message& message) {
       break;
     }
   }
+}
+
+void Controller::CreateTitles() {
+  window_type_ = WindowType::kTitles;
+  view_->StartTitles();
+  music_player_.StartTitlesMusic();
+  auto titles = model_->GetTitles();
+  for (int i = 0; i < titles.size(); i++) {
+    Coordinate start = {constants::kGameWidth / 4,
+                        static_cast<double>(constants::kGameHeight + 60 * i)};
+    TextNotification notification(titles[i], start, Qt::white,
+        current_game_time_, {0, -10},
+        kTitlesDuration, 1, false, false, false);
+    notification.SetFontSize(kTitlesSize);
+    model_->AddTextNotification(notification);
+  }
+}
+
+void Controller::EndTitles() {
+  window_type_ = WindowType::kMainMenu;
+  music_player_.StartMenuMusic();
+  model_->GetTextNotifications()->clear();
+  view_->EndTitles();
 }

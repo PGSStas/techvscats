@@ -31,6 +31,8 @@ class GlobalChat {
   void Clear();
   void ReceiveNewMessages(const QStringList& messages);
 
+  void SetVisible(bool visible);
+
  private:
   bool is_game_style_using_ = true;
   bool is_brick_going_up_ = true;
