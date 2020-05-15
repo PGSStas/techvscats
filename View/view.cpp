@@ -7,11 +7,15 @@ View::View(AbstractController* controller)
   setMinimumSize(960, 540);
   setMouseTracking(true);
   QSettings settings(constants::kCompanyName, constants::kApplicationName);
+#ifdef Q_OS_ANDROID
+  showFullScreen();
+#else
   if (settings.value("fullscreen", true).toBool()) {
     showFullScreen();
   } else {
-    showNormal();
+    show();
   }
+#endif
   setWindowTitle("Tech vs Cats");
   setWindowIcon(QIcon(":resources/images/icon.png"));
 
