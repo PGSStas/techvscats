@@ -279,7 +279,7 @@ void ButtonHandler::CreateSettingsButtons() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
     auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-                                          tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
+        tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
     if (response == QMessageBox::Yes) {
       settings.setValue("levels_passed", 0);
       SetCurrentLevel(1);
