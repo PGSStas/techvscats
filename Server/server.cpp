@@ -98,7 +98,7 @@ void Server::ProcessRoomEnterMessage(const Message& message,
   owner->room->timer_id_ = startTimer(1000);
   SendMessageToRoom(Message(MessageType::kYouCreatedRoom), *owner, true);
   for (auto& client : clients_) {
-    if (client.nick_name != "" && client.room == nullptr) {
+    if (!client.nick_name.isEmpty() && client.room == nullptr) {
       SendMessageToClient(Message(MessageType::kGoToRoom,
                                   {QString::number(room_number)}), client);
     }
@@ -154,7 +154,7 @@ void Server::ProcessGlobalChatMessage(const Message& message,
     chat->removeAt(0);
   }
   for (auto& client : clients_) {
-    if (client.nick_name == "") {
+    if (!client.nick_name.isEmpty()) {
       continue;
     }
     if (is_room && client.room == owner->room) {

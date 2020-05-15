@@ -522,7 +522,7 @@ void Controller::SetGameVolume(int volume) {
 }
 
 void Controller::ChangeChatStyle() {
-  view_->ChangeChat();
+  view_->ChangeChatStyle();
 }
 
 MultiplayerClient* Controller::GetClient() {

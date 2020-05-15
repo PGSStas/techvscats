@@ -317,7 +317,7 @@ void View::DisableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(false);
 }
 
-void View::ChangeChat() {
+void View::ChangeChatStyle() {
   global_chat_->ChangeStyle();
   if (controller_->GetClient()->IsOnline()) {
     global_chat_->Clear();
@@ -393,14 +393,14 @@ void View::DrawBars(QPainter* painter) {
   const auto& enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
     enemy->DrawHealthBar(painter, size_handler_);
-    if (button_handler_->IsToggleActive()) {
+    if (button_handler_->IsEffectToggleActive()) {
       enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
                                                   enemy->GetPosition(),
                                                   enemy->GetSize());
     }
   }
 
-  if (button_handler_->IsToggleActive()) {
+  if (button_handler_->IsEffectToggleActive()) {
     const auto& buildings_list = controller_->GetBuildings();
     for (const auto& building : buildings_list) {
       building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,

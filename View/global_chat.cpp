@@ -51,7 +51,6 @@ GlobalChat::GlobalChat(QMainWindow* window)
   q_text_browser_->show();
 
   q_text_browser_->setFocusPolicy(Qt::NoFocus);
-
 }
 
 void GlobalChat::RescaleChat(const SizeHandler& size_handler) {

@@ -15,8 +15,7 @@ void AuricField::Draw(QPainter* painter, const SizeHandler& size_handler,
   }
 
   painter->setPen(Qt::transparent);
-  Coordinate
-      point = size_handler.GameToWindowCoordinate(position);
+  Coordinate point = size_handler.GameToWindowCoordinate(position);
   Size size = size_handler.GameToWindowSize(
       Size(effect_radius_, effect_radius_));
 
