@@ -504,6 +504,14 @@ MusicPlayer* Controller::GetMusicPlayer() {
   return &music_player_;
 }
 
+void Controller::PauseMusic() {
+  music_player_.SetVolume(0);
+}
+
+void Controller::ResumeMusic() {
+  music_player_.SetVolume(100);
+}
+
 const AnimationPlayer& Controller::GetInterface() const {
   return model_->GetInterface();
 }

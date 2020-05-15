@@ -53,6 +53,9 @@ class Controller : public AbstractController {
 
   MusicPlayer* GetMusicPlayer() override;
 
+  virtual void PauseMusic() override;
+  virtual void ResumeMusic() override;
+
  private:
   std::unique_ptr<View> view_;
   std::unique_ptr<Model> model_;

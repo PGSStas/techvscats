@@ -19,6 +19,14 @@ View::View(AbstractController* controller)
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
+
+  connect(qApp, &QApplication::applicationStateChanged, [this] {
+    if (qApp->applicationState() != Qt::ApplicationActive) {
+      controller_->PauseMusic();
+    } else {
+      controller_->ResumeMusic();
+    }
+  });
 }
 
 void View::SecondConstructorPart() {

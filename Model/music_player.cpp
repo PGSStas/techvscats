@@ -29,7 +29,7 @@ MusicPlayer::MusicPlayer()
 
 void MusicPlayer::SetVolume(int volume) {
   if (volume == 0) {
-    main_player_->stop();
+    main_player_->pause();
   } else {
     main_player_->play();
   }
