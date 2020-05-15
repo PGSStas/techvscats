@@ -336,7 +336,7 @@
     {
       "settle_cost": 90,
       "auric_field": {
-        "radius": 200,
+        "radius": 250,
         "effect_id": 2
       },
       "animation_path": [
@@ -604,8 +604,8 @@
       "speed_coefficient": 0.2,
       "armor_coefficient": 0,
       "damage_coefficient": 0.25,
-      "attack_rate_coefficient": 0,
-      "range_coefficient": 0.2
+      "attack_rate_coefficient": 0.2,
+      "range_coefficient": 0
     },
     {
       "effect_target": 0,

@@ -49,7 +49,7 @@ class InfoField {
   QImage image_;
 
   const double kMargin = 10;
-  const Size kSize = {500, 400};
+  const Size kSize = {500, 450};
   const Size kRelativeHeaderSize = {1, 0.2};
   const Size kRelativeTextSize = {1, 0.5};
   const Size kRelativeStatisticsSize = {1.0, 0.2 / 3};
