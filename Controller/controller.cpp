@@ -577,8 +577,8 @@ void Controller::CreateTitles() {
                         static_cast<double>(constants::kGameHeight + 60 * i)};
     TextNotification notification(titles[i], start, Qt::white,
         current_game_time_, {0, -10},
-        84000, 1, false, false, false);
-    notification.SetFontSize(40);
+        kTitlesDuration, 1, false, false, false);
+    notification.SetFontSize(kTitlesSize);
     model_->AddTextNotification(notification);
   }
 }

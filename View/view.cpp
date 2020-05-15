@@ -64,14 +64,11 @@ void View::paintEvent(QPaintEvent*) {
       DrawSettings(&painter);
       break;
     }
-    case WindowType::kTitles: {
-      DrawTitles(&painter);
-      break;
-    }
     case WindowType::kPauseMenu: {
       DrawPauseMenu(&painter);
       break;
     }
+    default: break;
   }
   DrawTextNotification(&painter);
   DrawEmptyZones(&painter);
@@ -203,10 +200,6 @@ void View::DrawGameObjects(QPainter* painter) {
   for (auto object : objects) {
     object->Draw(painter, size_handler_);
   }
-}
-
-const SizeHandler& View::GetSizeHandler() const {
-  return size_handler_;
 }
 
 bool View::IsTowerMenuEnabled() const {
@@ -423,13 +416,6 @@ void View::EndTitles() {
   button_handler_->SetTitlesVisible(false);
   button_handler_->SetMainMenuUiVisible(true);
   global_chat_->SetVisible(true);
-}
-
-void View::DrawTitles(QPainter* painter) {
-  const auto& text_notifications = controller_->GetTextNotifications();
-  for (auto& notification : text_notifications) {
-    notification.Draw(painter, size_handler_);
-  }
 }
 
 void View::ShowSettingsButton() {

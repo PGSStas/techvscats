@@ -74,6 +74,9 @@ class Controller : public AbstractController {
 
   static std::mt19937 random_generator_;
 
+  const int kTitlesSize = 40;
+  const int kTitlesDuration = 84000;
+
  private:
   void GameProcess();
 

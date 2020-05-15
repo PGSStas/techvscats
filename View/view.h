@@ -45,8 +45,6 @@ class View : public QMainWindow {
 
   void ChangeGameSpeed(Speed speed);
 
-  const SizeHandler& GetSizeHandler() const;
-
   int GetRealTime() const;
 
   int GetChosenLevel() const;
@@ -99,7 +97,6 @@ class View : public QMainWindow {
   void DrawMainMenu(QPainter* painter);
   void DrawGame(QPainter* painter);
   void DrawSettings(QPainter* painter);
-  void DrawTitles(QPainter* painter);
   void DrawPauseMenu(QPainter* painter);
   void DrawEndgameMessage(QPainter* painter);
   void DrawTextNotification(QPainter* painter);

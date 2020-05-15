@@ -450,9 +450,7 @@ void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
 
 void ButtonHandler::SetCurrentLevel(int level) {
   int current_max_level = QSettings(constants::kCompanyName,
-                                    constants::kApplicationName).value(
-      "levels_passed",
-      0).toInt() + 1;
+      constants::kApplicationName).value("levels_passed", 0).toInt() + 1;
   if (level >= 1 && level <= current_max_level) {
     level_number_ = level;
   }
