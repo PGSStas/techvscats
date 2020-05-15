@@ -14,6 +14,7 @@
 #include "GameObject/particle.h"
 #include "View/text_notification.h"
 #include "Model/music_player.h"
+#include "multiplayer_client.h"
 
 enum class GameStatus {
   kWin = 0,
@@ -59,6 +60,7 @@ class AbstractController {
   virtual const std::vector<std::shared_ptr<Building>>&
   GetBuildings() const = 0;
   virtual const std::list<TextNotification>& GetTextNotifications() const = 0;
+  virtual void ClearTextNotifications() = 0;
 
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
@@ -74,6 +76,7 @@ class AbstractController {
   virtual void SetGameVolume(int volume) = 0;
 
   virtual MusicPlayer* GetMusicPlayer() = 0;
+  virtual MultiplayerClient* GetClient() = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_

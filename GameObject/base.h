@@ -19,8 +19,10 @@ class Base : public GameObject {
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
   void DrawUI(QPainter* painter, const SizeHandler& size_handler) const;
   void DecreaseHealth(double damage);
+  void SetImmortal();
 
   int GetGold() const;
+  double GetCurrentHealth() const;
   Coordinate GetGoldPosition() const;
   Size GetGoldSize() const;
 
@@ -35,6 +37,7 @@ class Base : public GameObject {
   double current_health_;
 
   bool is_dead_ = false;
+  bool is_immortal_ = false;
 
   const Coordinate kHealthPosition = Coordinate(1748, 811);
   const Size kHealthSize = Size(167, 167);

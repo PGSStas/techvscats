@@ -17,6 +17,7 @@ MenuButton::MenuButton(const QString& text, const Size& button_size,
   button_size_ = button_size;
   setCursor(Qt::PointingHandCursor);
   setFocusPolicy(Qt::NoFocus);
+  show();
 }
 
 MenuButton::MenuButton(const Size& button_size,
@@ -108,8 +109,15 @@ void MenuButton::SetSecondIconPath(const QString& main_icon_path,
 }
 
 void MenuButton::EnableSecondIcon(bool is_second_icon_enabled) {
+  if (is_second_icon_enabled_ == is_second_icon_enabled) {
+    return;
+  }
   is_second_icon_enabled_ = is_second_icon_enabled;
-  setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
+  if (have_entered_event_) {
+    setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
+  } else {
+    setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);
+  }
 }
 
 Coordinate MenuButton::GetPosition() const {

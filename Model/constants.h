@@ -13,8 +13,8 @@ const int kTimeBetweenTicks = 17;
 const int kTimeScale = 100;
 
 // Coefficient describes, how small SemiMinorAxe in compare between SemiMajorAxe
-const double kSemiMinorCoefficient = 0.4;
-const double kRefundCoefficient = 0.3;
+const double kSemiMinorCoefficient = 0.8;
+const double kRefundCoefficient = 0.8;
 
 const double kFontSize = 32;
 const QString kCurrency = "$";

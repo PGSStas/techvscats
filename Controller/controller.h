@@ -35,6 +35,7 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<AbstractProjectile>>&
   GetProjectiles() const override;
   const std::list<TextNotification>& GetTextNotifications() const override;
+  void ClearTextNotifications() override;
 
   const Base& GetBase() const override;
   int GetCurrentTime() const override;
@@ -48,6 +49,7 @@ class Controller : public AbstractController {
   int GetCurrentRoundNumber() const override;
   int GetRoundsCount() const override;
   void SetGameVolume(int volume) override;
+  MultiplayerClient* GetClient() override;
 
   MusicPlayer* GetMusicPlayer() override;
 
@@ -55,10 +57,11 @@ class Controller : public AbstractController {
   std::unique_ptr<View> view_;
   std::unique_ptr<Model> model_;
   MusicPlayer music_player_;
+  MultiplayerClient client_;
 
   GameStatus game_status_ = GameStatus::kPlay;
   WindowType window_type_ = WindowType::kMainMenu;
-  bool is_prepairing_to_spawn_ = false;
+  bool is_preparing_to_spawn_ = false;
   int current_game_time_ = 0;
   int last_round_start_time_ = 0;
 
@@ -71,10 +74,10 @@ class Controller : public AbstractController {
 
  private:
   void GameProcess();
-  void MenuProcess();
 
   bool CanCreateNextWave();
   void CreateNextWave();
+  void TickClient();
   void TickEndGame();
   void TickSpawners();
   void TickParticleHandlers();
@@ -91,6 +94,8 @@ class Controller : public AbstractController {
 
   void CreateTowerMenu(int tower_index);
   void ProcessEnemyDeath(const Enemy& enemy) const;
+  void ProcessMessage(const Message& message);
+  void ProcessCommand(const Message& message);
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_
