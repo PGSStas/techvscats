@@ -15,12 +15,6 @@ enum MainMusic {
   kGameMusic
 };
 
-enum CurrentState {
-  kStop,
-  kPlay,
-  kPause
-};
-
 class MusicPlayer {
  public:
   MusicPlayer();

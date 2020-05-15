@@ -25,7 +25,6 @@ MusicPlayer::MusicPlayer()
 
   SetVolume(100);
   main_player_->play();
-  current_state_ = CurrentState::kPlay;
 }
 
 void MusicPlayer::SetVolume(int volume) {
@@ -92,7 +91,6 @@ MusicPlayer::~MusicPlayer() {
 }
 
 void MusicPlayer::Pause() {
-  current_state_ = CurrentState::kPause;
   if (main_player_->state() == QMediaPlayer::PlayingState) {
     main_player_->pause();
   }
@@ -117,7 +115,6 @@ void MusicPlayer::Pause() {
 }
 
 void MusicPlayer::Resume() {
-  current_state_ = CurrentState::kPause;
   if (main_player_->state() == QMediaPlayer::PausedState) {
     main_player_->play();
   }
