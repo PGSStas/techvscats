@@ -362,7 +362,8 @@ void View::StartTitles() {
 }
 
 void View::EndTitles() {
-  button_handler_->SetTitlesVisible(true);
+  button_handler_->SetTitlesVisible(false);
+  button_handler_->SetMainMenuUiVisible(true);
   repaint();
 }
 
@@ -371,4 +372,8 @@ void View::DrawTitles(QPainter* painter) {
   for (auto& notification : text_notifications) {
     notification.Draw(painter, size_handler_);
   }
+}
+
+void View::ShowSettingsButton() {
+  button_handler_->SetTitlesVisible(true);
 }

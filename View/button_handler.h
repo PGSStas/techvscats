@@ -85,7 +85,7 @@ class ButtonHandler : public QObject {
   // pause menu button
   MenuButton* continue_button_;
   MenuButton* restart_button_;
-  // to_main_menu_button_ is also here
+  MenuButton* to_menu_from_pause;
 
   int level_number_ = 1;
   Size long_button_size_ = button_constants::kLongButtonSize;

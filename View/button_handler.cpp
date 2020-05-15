@@ -52,12 +52,12 @@ void ButtonHandler::SetGameUiVisible(bool visible) {
 void ButtonHandler::SetPauseMenuUiVisible(bool visible) {
   continue_button_->setVisible(visible);
   restart_button_->setVisible(visible);
-  to_main_menu_button_->setVisible(visible);
+  to_menu_from_pause->setVisible(visible);
 }
 
 void ButtonHandler::SetTitlesVisible(bool visible) {
   to_settings_button_->setVisible(visible);
-  to_settings_button_->setStyleSheet("background-color: #ffffff;");
+  to_settings_button_->setStyleSheet("background-color: #ffffff");
 }
 
 void ButtonHandler::SetSpeedButtonsState(Speed speed) {
@@ -226,9 +226,6 @@ void ButtonHandler::CreateSettingsButtons() {
       tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_, font_id_);
   auto back_to_main_menu_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    if (window_type_ == WindowType::kPauseMenu) {
-      controller_->EndGame();
-    }
     window_type_ = WindowType::kMainMenu;
   };
   connect(to_main_menu_button_, &QPushButton::clicked, back_to_main_menu_click);
@@ -247,7 +244,7 @@ void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
 
   reset_game_button_->SetGeometry(first_button_coordinate_ + shift,
                                   size_handler);
-  titles_button_->SetGeometry(first_button_coordinate_ + shift * 3,
+  titles_button_->SetGeometry(first_button_coordinate_ + shift * 2,
                               size_handler);
   to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 3,
                                     size_handler);
@@ -341,23 +338,32 @@ void ButtonHandler::CreatePauseMenuButtons() {
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(continue_button_, &QPushButton::clicked, continue_button_click);
+
+  to_menu_from_pause = new MenuButton(
+      tr("В ГЛАВНОЕ МЕНЮ"), long_button_size_, main_window_, font_id_);
+  auto from_pause_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
+    window_type_ = WindowType::kMainMenu;
+    controller_->EndGame();
+  };
+  connect(to_menu_from_pause, &QPushButton::clicked, from_pause_click);
 }
 
 void ButtonHandler::RescalePauseMenuButtons(SizeHandler size_handler) {
   Size shift = Size({0, long_button_size_.height + shift_});
   continue_button_->SetGeometry(first_button_coordinate_, size_handler);
   restart_button_->SetGeometry(first_button_coordinate_ + shift, size_handler);
-  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 2,
+  to_menu_from_pause->SetGeometry(first_button_coordinate_ + shift * 2,
                                     size_handler);
 }
 
 void ButtonHandler::CreateTitleButtons() {
   to_settings_button_ = new MenuButton(
-      tr("Вернуться"), long_button_size_, main_window_, font_id_);
+      tr("ВЕРНУТЬСЯ"), long_button_size_, main_window_, font_id_);
   auto return_to_settings = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kSettings;
-    main_window_->repaint();
+    controller_->EndTitles();
   };
   connect(to_settings_button_, &QPushButton::clicked, return_to_settings);
 }
