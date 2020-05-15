@@ -46,24 +46,28 @@ GlobalChat::GlobalChat(QMainWindow* window)
   brick_button->show();
   send_button->show();
   q_text_browser_->show();
+
+  q_text_browser_->setFocusPolicy(Qt::NoFocus);
+
 }
 
 void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
   Size remove_edit_size =
-      Size(-kTextEditSize.width * (1 - how_high_brick_percent_ / 100.0),
+      Size(0,
            kTextEditSize.height);
   Coordinate text_edit_position = size_handler.GameToWindowCoordinate(
       kBottomLeftPosition - remove_edit_size);
 
   Size text_edit_size = size_handler.GameToWindowSize(kTextEditSize);
   q_line_edit_->setGeometry(text_edit_position.x, text_edit_position.y,
-                            text_edit_size.width * how_high_brick_percent_
+                            text_edit_size.width * how_right_brick_percent_
                                 / 100.0,
                             text_edit_size.height);
 
   send_button->SetGeometry(
       kBottomLeftPosition +
-          Size(kTextEditSize.width, -kTextEditSize.height),
+          Size(kTextEditSize.width * how_right_brick_percent_ / 100,
+               -kTextEditSize.height),
       size_handler);
 
   Coordinate text_browser_position =
@@ -88,31 +92,59 @@ void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
 
   brick_button->SetGeometry(
       kBottomLeftPosition +
-          Size(kTextEditSize.width, -kTextEditSize.height
-              - kTextEditSize.height * 9 / 100 * how_high_brick_percent_),
+          Size(kTextEditSize.width * how_right_brick_percent_ / 100,
+               -kTextEditSize.height
+                   - kTextEditSize.height * 9 / 100 * how_high_brick_percent_),
       size_handler);
 }
 
 void GlobalChat::Tick(const SizeHandler& size_handler, int delta_time) {
+  if (is_brick_going_right_ && how_right_brick_percent_ < 100) {
+    how_right_brick_percent_ +=
+        kCloseSpeed * delta_time / constants::kTimeScale;
+    how_right_brick_percent_ = std::min(100, how_right_brick_percent_);
+    if (how_right_brick_percent_ == 100) {
+      is_brick_going_up_ = true;
+    }
+    RescaleChat(size_handler);
+    return;
+  }
+
+  if (!is_brick_going_right_ && how_right_brick_percent_ > 0) {
+    how_right_brick_percent_ -=
+        kCloseSpeed * delta_time / constants::kTimeScale;
+    how_right_brick_percent_ = std::max(0, how_right_brick_percent_);
+    RescaleChat(size_handler);
+    return;
+  }
+
   if (is_brick_going_up_ && how_high_brick_percent_ < 100) {
     how_high_brick_percent_ += kCloseSpeed * delta_time / constants::kTimeScale;
     how_high_brick_percent_ = std::min(100, how_high_brick_percent_);
     RescaleChat(size_handler);
+    return;
   }
 
   if (!is_brick_going_up_ && how_high_brick_percent_ > 0) {
     how_high_brick_percent_ -= kCloseSpeed * delta_time / constants::kTimeScale;
     how_high_brick_percent_ = std::max(0, how_high_brick_percent_);
+    if (how_high_brick_percent_ == 0) {
+      is_brick_going_right_ = false;
+    }
     RescaleChat(size_handler);
+    return;
   }
+
 }
 
 void GlobalChat::HideShow() {
-  if (is_brick_going_up_ && how_high_brick_percent_ == 100) {
+  if (is_brick_going_up_ && how_high_brick_percent_ == 100 &&
+      is_brick_going_right_ && how_right_brick_percent_ == 100) {
     is_brick_going_up_ = false;
   }
-  if (!is_brick_going_up_ && how_high_brick_percent_ == 0) {
-    is_brick_going_up_ = true;
+  if (!is_brick_going_up_ && how_high_brick_percent_ == 0 &&
+      !is_brick_going_right_ && how_right_brick_percent_ == 0) {
+    is_brick_going_right_ = true;
   }
 }
 
@@ -120,7 +152,10 @@ void GlobalChat::ChangeStyle() {
   is_game_style_using_ = !is_game_style_using_;
   QString style_sheet;
   if (is_game_style_using_) {
-    style_sheet = " background-color : rgba(190,192,213,0.89);";
+    style_sheet =
+        "background-color : rgba(143,144,152,0.88);"
+        "border : 1px solid black;"
+        "border-radius: 8px;";
   }
   q_line_edit_->setStyleSheet(style_sheet);
   q_text_browser_->setStyleSheet(style_sheet);
