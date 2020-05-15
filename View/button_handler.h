@@ -5,15 +5,22 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QProcess>
 #include <QPushButton>
 #include <QString>
 #include <QSettings>
 #include <QTranslator>
 
+#include <algorithm>
+
 #include "Controller/abstract_controller.h"
 #include "menu_button.h"
 #include "size_handler.h"
+
+#ifdef Q_OS_ANDROID
+#include <QtAndroidExtras>
+#endif
 
 class ButtonHandler : public QObject {
   Q_OBJECT
@@ -36,6 +43,9 @@ class ButtonHandler : public QObject {
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
 
+  void SetCurrentLevel(int level);
+  int GetCurrentLevel() const;
+
  private:
   // creating main menu
   void CreateMainMenuButtons();
@@ -49,6 +59,9 @@ class ButtonHandler : public QObject {
   // creating pause menu
   void CreatePauseMenuButtons();
   void RescalePauseMenuButtons(SizeHandler size_handler);
+
+  void SetSoundOn(bool sound_on);
+  void SetFullscreen(bool fullscreen);
 
  private:
   QMainWindow* main_window_;
@@ -74,6 +87,7 @@ class ButtonHandler : public QObject {
   // Settings window
   MenuButton* language_button_;
   MenuButton* sound_button_;
+  MenuButton* fullscreen_button_;
   MenuButton* reset_game_button_;
   MenuButton* to_main_menu_button_;
 
@@ -89,10 +103,13 @@ class ButtonHandler : public QObject {
       button_constants::kFirstButtonCoordinate;
   int shift_ = button_constants::kShift;
   bool is_sound_on_ = true;
+  bool is_fullscreen_ = true;
   int font_id_;
 
   // left to check icons
   bool is_language_russian_ = true;
+
+  const int kMaxLevel_ = 2;
 };
 
 #endif  // VIEW_BUTTON_HANDLER_H_

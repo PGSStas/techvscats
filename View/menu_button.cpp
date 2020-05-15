@@ -49,6 +49,7 @@ void MenuButton::SetIsEnter(bool enter) {
 
 void MenuButton::SetGeometry(
     Coordinate game_coordinate, SizeHandler size_handler) {
+  ResetStyleSheet();
   position_ = game_coordinate;
   auto window_coordinate = size_handler.GameToWindowCoordinate(game_coordinate);
   Size window_size = size_handler.GameToWindowSize(button_size_);
@@ -64,9 +65,17 @@ void MenuButton::SetGeometry(
   if (text() != "") {
     border_size_ =
         size_handler.GameToWindowLength(button_constants::kMenuBorderSize);
-    QString style_sheet =
+    QString style_sheet = styleSheet() +
         "border: " + QString::number(border_size_) + "px solid #000000;";
     setStyleSheet(style_sheet);
+  }
+}
+
+void MenuButton::ResetStyleSheet() {
+  if (text().isEmpty()) {
+    setStyleSheet("background: transparent;");
+  } else {
+    setStyleSheet("background-color: #ffffff;");
   }
 }
 

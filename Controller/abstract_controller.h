@@ -5,7 +5,8 @@
 #include <memory>
 #include <vector>
 
-#include "multiplayer_client.h"
+#include <QSettings>
+
 #include "GameObject/abstract_projectile.h"
 #include "GameObject/base.h"
 #include "GameObject/building.h"
@@ -13,6 +14,7 @@
 #include "GameObject/particle.h"
 #include "View/text_notification.h"
 #include "Model/music_player.h"
+#include "multiplayer_client.h"
 
 enum class GameStatus {
   kWin = 0,

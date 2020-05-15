@@ -72,8 +72,6 @@ class Controller : public AbstractController {
 
   static std::mt19937 random_generator_;
 
-  bool is_model_loaded_ = false;
-
  private:
   void GameProcess();
 

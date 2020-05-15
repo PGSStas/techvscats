@@ -4,11 +4,16 @@ View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(),
       tower_menu_(this) {
-  setMinimumSize(960, 960);
+  setMinimumSize(960, 540);
   setMouseTracking(true);
-  show();
-  setWindowIcon(QIcon(":resources/images/icon.png"));
+  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+  if (settings.value("fullscreen", true).toBool()) {
+    showFullScreen();
+  } else {
+    showNormal();
+  }
   setWindowTitle("Tech vs Cats");
+  setWindowIcon(QIcon(":resources/images/icon.png"));
 
   size_handler_.ChangeSystem(width(), height());
   view_timer_.start();
@@ -390,4 +395,12 @@ void View::DrawBars(QPainter* painter) {
   for (auto& enemy : enemies_list) {
     enemy->DrawHealthBar(painter, size_handler_);
   }
+}
+
+int View::GetChosenLevel() const {
+  return button_handler_->GetCurrentLevel();
+}
+
+void View::SetChosenLevel(int level) {
+  button_handler_->SetCurrentLevel(level);
 }
