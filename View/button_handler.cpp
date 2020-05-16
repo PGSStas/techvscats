@@ -348,7 +348,7 @@ void ButtonHandler::CreateGameButtons() {
     window_type_ = WindowType::kPauseMenu;
     controller_->ChangeChatStyle();
     controller_->ClearTextNotifications();
-    controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
+    controller_->SetSpeedCoefficient(Speed::kZeroSpeed, true);
   };
 
   connect(pause_button_, &QPushButton::clicked, pause_button_click);
@@ -374,7 +374,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/zero_speed_button_active.png");
   auto zero_speed_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
+    controller_->SetSpeedCoefficient(Speed::kZeroSpeed, true);
     SetSpeedButtonsState(Speed::kZeroSpeed);
   };
   connect(zero_speed_button_, &QPushButton::clicked, zero_speed_button_click);
@@ -386,7 +386,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/normal_speed_button_active.png");
   auto normal_speed_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
+    controller_->SetSpeedCoefficient(Speed::kNormalSpeed,true);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(normal_speed_button_,
@@ -401,7 +401,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/double_speed_button_active.png");
   auto double_speed_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    controller_->SetSpeedCoefficient(Speed::kDoubleSpeed);
+    controller_->SetSpeedCoefficient(Speed::kDoubleSpeed,true);
     SetSpeedButtonsState(Speed::kDoubleSpeed);
   };
   connect(double_speed_button_,

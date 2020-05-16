@@ -35,8 +35,8 @@ GlobalChat::GlobalChat(QMainWindow* window)
       ":resources/buttons_resources/dec_level_button.png",
       ":resources/buttons_resources/dec_level_button_active.png");
   brick_button->SetSecondIconPath(
-      ":resources/buttons_resources/pause_button.png",
-      ":resources/buttons_resources/pause_button_active.png");
+      ":resources/buttons_resources/open_chat.png",
+      ":resources/buttons_resources/open_chat_active.png");
 
   auto close_open_button_click = [this]() {
     HideShow();

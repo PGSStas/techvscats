@@ -22,7 +22,7 @@
 #include "tower_menu.h"
 
 class View : public QMainWindow {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
@@ -43,7 +43,7 @@ class View : public QMainWindow {
   void DisableTowerMenu();
   bool IsTowerMenuEnabled() const;
 
-  void ChangeGameSpeed(Speed speed);
+  void ChangeGameSpeed(Speed speed, bool im_the_button = false);
 
   int GetRealTime() const;
 

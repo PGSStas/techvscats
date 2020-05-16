@@ -16,6 +16,7 @@ View::View(AbstractController* controller)
   }
   size_handler_.ChangeSystem(width(), height());
   setMouseTracking(true);
+  setFocusPolicy(Qt::ClickFocus);
 
   view_timer_.start();
   time_between_ticks_.start();
@@ -264,6 +265,7 @@ void View::mousePressEvent(QMouseEvent* event) {
   }
 }
 void View::keyPressEvent(QKeyEvent* event) {
+  qDebug()<<"ef";
   if (event->key() == Qt::Key_Space) {
     if (game_speed_coefficient_ == 0) {
       button_handler_->SetSpeed(static_cast<int>(Speed::kNormalSpeed));
@@ -369,8 +371,11 @@ void View::timerEvent(QTimerEvent* event) {
   }
 }
 
-void View::ChangeGameSpeed(Speed speed) {
+void View::ChangeGameSpeed(Speed speed, bool im_the_button) {
   game_speed_coefficient_ = static_cast<int>(speed);
+  if(!im_the_button){
+    button_handler_->SetSpeed(static_cast<int>(speed));
+  }
 }
 
 void View::DrawRoundInfo(QPainter* painter) {

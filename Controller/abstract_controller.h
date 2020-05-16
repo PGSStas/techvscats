@@ -47,7 +47,7 @@ class AbstractController {
   virtual void StartGame(int level) = 0;
   virtual void Tick(int current_time) = 0;
   virtual void EndGame() = 0;
-  virtual void SetSpeedCoefficient(Speed speed) = 0;
+  virtual void SetSpeedCoefficient(Speed speed, bool im_the_button = false) = 0;
   virtual void SetBuilding(int index_in_buildings, int replacing_id) = 0;
 
   virtual void MouseEvent(Coordinate position, bool is_press) = 0;

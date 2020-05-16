@@ -64,6 +64,8 @@
 
         <file>resources/buttons_resources/pause_button.png</file>
         <file>resources/buttons_resources/pause_button_active.png</file>
+        <file>resources/buttons_resources/open_chat.png</file>
+        <file>resources/buttons_resources/open_chat_active.png</file>
         <file>resources/buttons_resources/non_toggle.png</file>
         <file>resources/buttons_resources/non_toggle_active.png</file>
         <file>resources/buttons_resources/toggle.png</file>

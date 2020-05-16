@@ -66,8 +66,8 @@ void Controller::Tick(int current_time) {
   }
 }
 
-void Controller::SetSpeedCoefficient(Speed speed) {
-  view_->ChangeGameSpeed(speed);
+void Controller::SetSpeedCoefficient(Speed speed, bool im_the_button) {
+  view_->ChangeGameSpeed(speed, im_the_button);
 }
 
 void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
@@ -209,6 +209,7 @@ void Controller::TickClient() {
 }
 
 void Controller::TickEndGame() {
+  SetSpeedCoefficient(Speed::kNormalSpeed);
   if (last_time_end_particle_created + kParticlesPeriod < current_game_time_) {
     last_time_end_particle_created = current_game_time_;
     ParticleParameters particle(
@@ -546,8 +547,14 @@ void Controller::ProcessMessage(const Message& message) {
   switch (message.GetDialogType()) {
     case VisibleType::kWarning: {
       TextNotification notification(message.GetArgument(0),
-          {constants::kGameWidth / 2, constants::kGameHeight / 7},
-          Qt::darkMagenta, view_->GetRealTime(), {0, -40}, 3000, 1, true);
+                                    {constants::kGameWidth / 2,
+                                     constants::kGameHeight / 7},
+                                    Qt::darkMagenta,
+                                    view_->GetRealTime(),
+                                    {0, -40},
+                                    3000,
+                                    1,
+                                    true);
       notification.SetFontSize(50);
       model_->AddTextNotification(notification);
       break;
@@ -585,8 +592,8 @@ void Controller::CreateTitles() {
     Coordinate start = {constants::kGameWidth / 4,
                         static_cast<double>(constants::kGameHeight + 60 * i)};
     TextNotification notification(titles[i], start, Qt::white,
-        current_game_time_, {0, -10},
-        kTitlesDuration, 1, false, false, false);
+                                  current_game_time_, {0, -10},
+                                  kTitlesDuration, 1, false, false, false);
     notification.SetFontSize(kTitlesSize);
     model_->AddTextNotification(notification);
   }
