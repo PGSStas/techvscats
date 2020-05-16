@@ -235,7 +235,7 @@ void ButtonHandler::CreateSettingsButtons() {
     QString text = tr("we will restart the app.");
 #ifdef Q_OS_ANDROID
     if (QtAndroid::androidSdkVersion() > 27) {
-      text = tr("вам придется перезапустить приложение.");
+      text = tr("You will have to restart the app.");
     }
 #endif
     auto response = QMessageBox::question(
@@ -444,6 +444,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     controller_->ChangeChatStyle();
     window_type_ = WindowType::kGame;
+    controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(continue_button_, &QPushButton::clicked, continue_button_click);
@@ -484,11 +485,9 @@ void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::SetCurrentLevel(int level) {
-  int current_max_level = QSettings(
-      constants::kCompanyName,
-                                    constants::kApplicationName).value(
-      "levels_passed",
-      0).toInt() + 1;
+  int current_max_level =
+      QSettings(constants::kCompanyName, constants::kApplicationName).value(
+          "levels_passed", 0).toInt() + 1;
   if (level >= 1 && level <= current_max_level) {
     level_number_ = level;
   }

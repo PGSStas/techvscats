@@ -55,8 +55,7 @@ GlobalChat::GlobalChat(QMainWindow* window)
 
 void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
   Size remove_edit_size =
-      Size(0,
-           kTextEditSize.height);
+      Size(0, kTextEditSize.height);
   Coordinate text_edit_position = size_handler.GameToWindowCoordinate(
       kBottomLeftPosition - remove_edit_size);
 

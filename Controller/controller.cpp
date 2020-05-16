@@ -23,6 +23,7 @@ void Controller::StartGame(int level_id) {
   model_->SetGameLevel(level_id);
 
   SetSpeedCoefficient(Speed::kNormalSpeed);
+  view_->ChangeGameSpeed(Speed::kNormalSpeed);
   view_->DisableMainMenuUi();
   view_->EnableGameUi();
   if (client_.IsOnline()) {
@@ -580,7 +581,7 @@ void Controller::CreateTitles() {
   view_->StartTitles();
   music_player_.StartTitlesMusic();
   auto titles = model_->GetTitles();
-  for (int i = 0; i < titles.size(); i++) {
+  for (uint32_t i = 0; i < titles.size(); i++) {
     Coordinate start = {constants::kGameWidth / 4,
                         static_cast<double>(constants::kGameHeight + 60 * i)};
     TextNotification notification(titles[i], start, Qt::white,

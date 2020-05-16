@@ -17,7 +17,6 @@ View::View(AbstractController* controller)
   size_handler_.ChangeSystem(width(), height());
   setMouseTracking(true);
 
-
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
@@ -91,7 +90,7 @@ void View::DrawEmptyZones(QPainter* painter) {
   painter->fillRect(0, 0, horizontal_zone.width, horizontal_zone.height, image);
   painter->fillRect(
       0, size_handler_.GameToWindowCoordinate(
-          {0, constants::kGameHeight}).y +1,
+          {0, constants::kGameHeight}).y + 1,
       horizontal_zone.width + 2, horizontal_zone.height + 2, image);
   Size vertical_zone =
       Size(size_handler_.GameToWindowCoordinate({0, 0}).x, height());
@@ -289,6 +288,7 @@ void View::resizeEvent(QResizeEvent*) {
 void View::EnableGameUi() {
   controller_->RescaleObjects(size_handler_);
   DisableTowerMenu();
+
   button_handler_->SetGameUiVisible(true);
 }
 

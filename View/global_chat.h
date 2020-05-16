@@ -2,8 +2,8 @@
 #define VIEW_GLOBAL_CHAT_H_
 
 #include <QApplication>
-#include <QStringList>
 #include <QScroller>
+#include <QStringList>
 #include <QLineEdit>
 #include <QTextBrowser>
 #include <QMainWindow>
