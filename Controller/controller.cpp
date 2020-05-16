@@ -478,6 +478,10 @@ const std::list<TextNotification>& Controller::GetTextNotifications() const {
   return *model_->GetTextNotifications();
 }
 
+void Controller::ClearTextNotifications() {
+  model_->GetTextNotifications()->clear();
+}
+
 const Base& Controller::GetBase() const {
   return *model_->GetBase();
 }
