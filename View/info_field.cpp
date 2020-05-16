@@ -47,7 +47,7 @@ void InfoField::DrawCurrentTower(QPainter* painter,
   Size size = size_handler.GameToWindowSize(
       {kSize.width, kSize.height *
           ((3 + valid_effects) * kRelativeStatisticsSize.height +
-              kRelativeHeaderSize.height) + 2 * kMargin});
+              kRelativeHeaderSize.height) + 3 * kMargin});
   painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->setPen(Qt::white);
@@ -70,11 +70,17 @@ void InfoField::DrawCurrentTower(QPainter* painter,
        kSize.height * kRelativeStatisticsSize.height});
 
   double shift = 0;
+  QString sign;
   if (speed_percent != 0) {
+    if (speed_percent > 0) {
+      sign = "+";
+    } else {
+      sign = "";
+    }
     painter->drawText(point.x, point.y, size.width, size.height,
                       Qt::AlignCenter,
                       QObject::tr("Bullet speed bonus") + ": " +
-                          QString::number(speed_percent) + "%");
+                          sign + QString::number(speed_percent) + "%");
     shift += kSize.height * kRelativeStatisticsSize.height;
   }
 
@@ -83,9 +89,15 @@ void InfoField::DrawCurrentTower(QPainter* painter,
           + shift});
 
   if (rate_percent != 0) {
+    if (rate_percent > 0) {
+      sign = "+";
+    } else {
+      sign = "";
+    }
     painter->drawText(point.x, point.y, size.width, size.height,
-                      Qt::AlignCenter, QObject::tr("Attack rate bonus") + ": " +
-            QString::number(rate_percent) + "%");
+                      Qt::AlignCenter,
+                      QObject::tr("Attack rate bonus") + ": " +
+                          sign + QString::number(rate_percent) + "%");
     shift += kSize.height * kRelativeStatisticsSize.height;
   }
 
@@ -94,13 +106,18 @@ void InfoField::DrawCurrentTower(QPainter* painter,
           + shift});
 
   if (range_percent != 0) {
+    if (range_percent > 0) {
+      sign = "+";
+    } else {
+      sign = "";
+    }
     painter->drawText(point.x, point.y, size.width, size.height,
                       Qt::AlignCenter,
                       QObject::tr("Attack range bonus") + ": " +
-                          QString::number(range_percent) + "%");
+                          sign + QString::number(range_percent) + "%");
   }
 
-  DrawStatistics(painter, size_handler, shift - kMargin);
+  DrawStatistics(painter, size_handler, shift);
 }
 
 void InfoField::DrawPurchasableTower(QPainter* painter,
