@@ -332,9 +332,15 @@ void View::DrawAdditionalInfo(QPainter* painter) {
   DrawRoundInfo(painter);
 
   if (tower_menu_.IsEnable()) {
-    tower_menu_.DrawInfoField(painter, size_handler_,
-                              controller_->GetBuildingById(
-                                  tower_menu_.GetSellectedTowerId()));
+    int button_id = tower_menu_.GetChosenButtonId();
+    if (button_id != -1) {
+      tower_menu_.DrawInfoField(painter, size_handler_,
+                                controller_->GetBuildingById(button_id));
+    } else {
+      button_id = tower_menu_.GetTownerIndex();
+      tower_menu_.DrawInfoField(painter, size_handler_,
+                                *controller_->GetBuildings()[button_id]);
+    }
   }
 
   painter->restore();

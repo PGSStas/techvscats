@@ -104,7 +104,7 @@ void TowerMenu::Recreate(Coordinate position, int owner_building_index,
 void TowerMenu::Tick(const SizeHandler& size_handler) {
   info_field_.SetPosition(position_, button_constants::kShortButtonSize,
                           button_constants::kShift);
-  if (active_button_index_ != -1) {
+  if (active_button_index_ != -1 || owner_building_index_ != -1) {
     info_field_.SetVisible(true);
   }
   for (auto& button : buttons_) {
@@ -224,7 +224,7 @@ void TowerMenu::DrawInfoField(QPainter* painter,
   }
 
   painter->restore();
-  info_field_.SetInfo(instance, total_cost_);
+  info_field_.SetInfo(instance, total_cost_, active_button_index_ == -1);
   info_field_.RemoveImage();
   info_field_.Draw(painter, size_handler);
 }
@@ -271,5 +271,9 @@ void TowerMenu::Disable() {
     buttons_[id]->hide();
   }
   possible_buildings_id_.clear();
+}
+
+int TowerMenu::GetChosenButtonId() const {
+  return active_button_index_;
 }
 
