@@ -279,7 +279,7 @@ void ButtonHandler::CreateSettingsButtons() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
     auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-        tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
+                                          tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
     if (response == QMessageBox::Yes) {
       settings.setValue("levels_passed", 0);
       SetCurrentLevel(1);
@@ -307,21 +307,23 @@ void ButtonHandler::CreateSettingsButtons() {
 
 void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
   Size shift = Size(0, long_button_size_.height + shift_);
-
+  auto first_button_coordinate = Coordinate(
+      first_button_coordinate_.x,
+      first_button_coordinate_.y - shift_ - long_button_size_.height);
   sound_button_->SetGeometry(
-      first_button_coordinate_ + Size(long_button_size_.width / 2, 0)
+      first_button_coordinate + Size(long_button_size_.width / 2, 0)
           - Size(short_button_size_.width, 0), size_handler);
   language_button_->SetGeometry(
-      first_button_coordinate_ + Size(long_button_size_.width / 2, 0)
+      first_button_coordinate + Size(long_button_size_.width / 2, 0)
           - Size(short_button_size_.width, 0) + Size(shift.height, 0),
       size_handler);
-  fullscreen_button_->SetGeometry(first_button_coordinate_ + shift,
+  fullscreen_button_->SetGeometry(first_button_coordinate + shift,
                                   size_handler);
-  reset_game_button_->SetGeometry(first_button_coordinate_ + shift * 2,
+  reset_game_button_->SetGeometry(first_button_coordinate + shift * 2,
                                   size_handler);
-  titles_button_->SetGeometry(first_button_coordinate_ + shift * 3,
+  titles_button_->SetGeometry(first_button_coordinate + shift * 3,
                               size_handler);
-  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 4,
+  to_main_menu_button_->SetGeometry(first_button_coordinate + shift * 4,
                                     size_handler);
 }
 
@@ -418,6 +420,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
       tr("В ГЛАВНОЕ МЕНЮ"), long_button_size_, main_window_, font_id_);
   auto from_pause_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
+    controller_->GetMusicPlayer()->StopNewLevelSound();
     window_type_ = WindowType::kMainMenu;
     controller_->EndGame();
   };
@@ -450,7 +453,9 @@ void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
 
 void ButtonHandler::SetCurrentLevel(int level) {
   int current_max_level = QSettings(constants::kCompanyName,
-      constants::kApplicationName).value("levels_passed", 0).toInt() + 1;
+                                    constants::kApplicationName).value(
+      "levels_passed",
+      0).toInt() + 1;
   if (level >= 1 && level <= current_max_level) {
     level_number_ = level;
   }

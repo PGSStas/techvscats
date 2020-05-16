@@ -29,7 +29,7 @@ void Controller::StartGame(int level_id) {
     client_.EnterRoom(level_id);
   }
   music_player_.StartGameMusic();
-  music_player_.PlayNewWaveSound();
+  music_player_.PlayNewLevelSound();
 }
 
 void Controller::EndGame() {
@@ -102,7 +102,6 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
 
 void Controller::GameProcess() {
   if (game_status_ == GameStatus::kPlay && CanCreateNextWave()) {
-    music_player_.PlayNewWaveSound();
     CreateNextWave();
   }
   if (game_status_ != GameStatus::kPlay) {
