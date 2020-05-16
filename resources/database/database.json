@@ -334,7 +334,7 @@
       }
     },
     {
-      "settle_cost": 90,
+      "settle_cost": 65,
       "auric_field": {
         "radius": 250,
         "effect_id": 2
@@ -448,10 +448,10 @@
       }
     },
     {
-      "settle_cost": 110,
+      "settle_cost": 90,
       "auric_field": {
         "radius": 400,
-        "effect_id": 2
+        "effect_id": 6
       },
       "animation_path": [
         "towers/support_lv2_reload_8",
@@ -559,10 +559,10 @@
       }
     },
     {
-      "settle_cost": 175,
+      "settle_cost": 140,
       "auric_field": {
         "radius": 600,
-        "effect_id": 2
+        "effect_id": 7
       },
       "animation_path": [
         "towers/support_lv3_reload_8",
@@ -609,11 +609,11 @@
     },
     {
       "effect_target": 0,
-      "speed_coefficient": 0,
-      "armor_coefficient": 0.15,
-      "damage_coefficient": 0.20,
-      "attack_rate_coefficient": 0.15,
-      "range_coefficient": -0.12
+      "speed_coefficient": 0.05,
+      "armor_coefficient": 0.18,
+      "damage_coefficient": -0.1,
+      "attack_rate_coefficient": 0,
+      "range_coefficient": -0.1
     },
     {
       "effect_target": 2,
@@ -625,11 +625,27 @@
     },
     {
       "effect_target": 2,
-      "speed_coefficient": 0,
+      "speed_coefficient": -0.1,
       "armor_coefficient": 0,
-      "damage_coefficient": -0.1,
-      "attack_rate_coefficient": -0.15,
+      "damage_coefficient": 0,
+      "attack_rate_coefficient": -0.17,
       "range_coefficient": 0
+    },
+    {
+      "effect_target": 2,
+      "speed_coefficient": 0.3,
+      "armor_coefficient": 0,
+      "damage_coefficient": 0.35,
+      "attack_rate_coefficient": 0.3,
+      "range_coefficient": 0
+    },
+    {
+      "effect_target": 2,
+      "speed_coefficient": 0.35,
+      "armor_coefficient": 0,
+      "damage_coefficient": 0.4,
+      "attack_rate_coefficient": 0.4,
+      "range_coefficient": 0.1
     }
   ],
   "particles": [
