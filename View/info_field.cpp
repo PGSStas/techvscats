@@ -100,7 +100,7 @@ void InfoField::DrawCurrentTower(QPainter* painter,
                           QString::number(range_percent) + "%");
   }
 
-  DrawStatistics(painter, size_handler, shift -kMargin);
+  DrawStatistics(painter, size_handler, shift - kMargin);
 }
 
 void InfoField::DrawPurchasableTower(QPainter* painter,
