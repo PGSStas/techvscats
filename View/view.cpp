@@ -9,11 +9,18 @@ View::View(AbstractController* controller)
   setMinimumSize(960, 540);
 
   QSettings settings(constants::kCompanyName, constants::kApplicationName);
+#ifdef Q_OS_ANDROID
+  showFullScreen();
+#else
   if (settings.value("fullscreen", true).toBool()) {
     showFullScreen();
   } else {
     showNormal();
   }
+#endif
+  setWindowTitle("Tech vs Cats");
+  setWindowIcon(QIcon(":resources/images/icon.png"));
+
   size_handler_.ChangeSystem(width(), height());
   setMouseTracking(true);
 
@@ -21,6 +28,16 @@ View::View(AbstractController* controller)
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
+
+  connect(qApp, &QApplication::applicationStateChanged, [this] {
+    if (qApp->applicationState() == Qt::ApplicationActive) {
+      controller_->ResumeMusic();
+    }
+    if (qApp->applicationState() == Qt::ApplicationHidden ||
+        qApp->applicationState() == Qt::ApplicationSuspended) {
+      controller_->PauseMusic();
+    }
+  });
 }
 
 void View::SecondConstructorPart() {
@@ -50,8 +67,8 @@ void View::paintEvent(QPaintEvent*) {
   painter.drawImage(origin.x, origin.y, controller_->GetBackground(
       button_handler_->GetWindowType()).GetCurrentFrame());
 
-  auto window_type = button_handler_->GetWindowType();
-  switch (window_type) {
+  window_type_ = button_handler_->GetWindowType();
+  switch (window_type_) {
     case WindowType::kMainMenu: {
       DrawMainMenu(&painter);
       break;

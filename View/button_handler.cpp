@@ -55,8 +55,12 @@ void ButtonHandler::SetSettingsUiVisible(bool visible) {
   sound_button_->setVisible(visible);
   reset_game_button_->setVisible(visible);
   to_main_menu_button_->setVisible(visible);
-  fullscreen_button_->setVisible(visible);
   titles_button_->setVisible(visible);
+#ifndef Q_OS_ANDROID
+  fullscreen_button_->setVisible(visible);
+#else
+  fullscreen_button_->setVisible(false);
+#endif
 }
 
 void ButtonHandler::SetGameUiVisible(bool visible) {
@@ -228,10 +232,9 @@ void ButtonHandler::CreateSettingsButtons() {
       text = tr("вам придется перезапустить приложение.");
     }
 #endif
-    auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-                                          tr("Чтобы язык приложения изменился,")
-                                              + " " + text + " " +
-                                              tr("Все равно продолжить?"));
+    auto response = QMessageBox::question(
+        main_window_, tr("Внимание!"), tr("Чтобы язык приложения изменился,")
+            + " " + text + " " + tr("Все равно продолжить?"));
     if (response != QMessageBox::Yes) {
       return;
     }
@@ -278,7 +281,8 @@ void ButtonHandler::CreateSettingsButtons() {
   auto reset_game_click = [this]() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
-    auto response = QMessageBox::question(main_window_, tr("Внимание!"),
+    auto response = QMessageBox::question(
+        main_window_, tr("Внимание!"),
         tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
     if (response == QMessageBox::Yes) {
       settings.setValue("levels_passed", 0);
@@ -315,14 +319,18 @@ void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
       first_button_coordinate_ + Size(long_button_size_.width / 2, 0)
           - Size(short_button_size_.width, 0) + Size(shift.height, 0),
       size_handler);
+  Size temp_shift = {0, 0};
+#ifndef Q_OS_ANDROID
   fullscreen_button_->SetGeometry(first_button_coordinate_ + shift,
                                   size_handler);
-  reset_game_button_->SetGeometry(first_button_coordinate_ + shift * 2,
-                                  size_handler);
-  titles_button_->SetGeometry(first_button_coordinate_ + shift * 3,
-                              size_handler);
-  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 4,
-                                    size_handler);
+  temp_shift = shift;
+#endif
+  reset_game_button_->SetGeometry(first_button_coordinate_ + shift +
+      temp_shift, size_handler);
+  titles_button_->SetGeometry(first_button_coordinate_ + shift * 2 +
+      temp_shift, size_handler);
+  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 3 +
+      temp_shift, size_handler);
 }
 
 void ButtonHandler::CreateGameButtons() {
@@ -450,7 +458,8 @@ void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
 
 void ButtonHandler::SetCurrentLevel(int level) {
   int current_max_level = QSettings(constants::kCompanyName,
-      constants::kApplicationName).value("levels_passed", 0).toInt() + 1;
+                                    constants::kApplicationName).value(
+      "levels_passed", 0).toInt() + 1;
   if (level >= 1 && level <= current_max_level) {
     level_number_ = level;
   }
@@ -471,6 +480,10 @@ int ButtonHandler::GetCurrentLevel() const {
   return level_number_;
 }
 
+void ButtonHandler::SetWindowType(WindowType window_type) {
+  window_type_ = window_type;
+}
+
 void ButtonHandler::SetFullscreen(bool fullscreen) {
   if (is_fullscreen_ == fullscreen) {
     return;
@@ -485,8 +498,4 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
   } else {
     main_window_->showNormal();
   }
-}
-
-void ButtonHandler::SetWindowType(WindowType type) {
-  window_type_ = type;
 }

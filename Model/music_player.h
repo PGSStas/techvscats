@@ -33,6 +33,9 @@ class MusicPlayer {
   void PlaySaleSound();
   void PlayNotEnoughMoneySound();
 
+  void Pause();
+  void Resume();
+
  private:
   void SetSound(QMediaPlayer* player, const QString& path);
   std::shared_ptr<QMediaPlayer> main_player_;

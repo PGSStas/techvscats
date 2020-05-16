@@ -80,6 +80,9 @@ class AbstractController {
 
   virtual MusicPlayer* GetMusicPlayer() = 0;
   virtual MultiplayerClient* GetClient() = 0;
+
+  virtual void PauseMusic() = 0;
+  virtual void ResumeMusic() = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_
