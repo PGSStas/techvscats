@@ -27,22 +27,24 @@ class ButtonHandler : public QObject {
 
  public:
   ButtonHandler(QMainWindow* main_window, AbstractController* controller,
-                int font_id);
+      int font_id);
   ~ButtonHandler() override = default;
 
   void CreateButtons();
   void UpdateButtonsStatus(bool online_status, bool register_status);
-  void RescaleButtons(SizeHandler size_handler);
+  void RescaleButtons(const SizeHandler& size_handler);
 
   void SetMainMenuUiVisible(bool visible);
   void SetSettingsUiVisible(bool visible);
   void SetGameUiVisible(bool visible);
   void SetPauseMenuUiVisible(bool visible);
   void SetSpeed(int casted_speed);
+  void SetTitlesVisible(bool visible);
 
   void SetSpeedButtonsState(Speed speed);
   WindowType GetWindowType() const;
   bool IsEffectToggleActive() const;
+  void SetWindowType(WindowType type);
 
   void SetCurrentLevel(int level);
   int GetCurrentLevel() const;
@@ -60,6 +62,9 @@ class ButtonHandler : public QObject {
   // creating pause menu
   void CreatePauseMenuButtons();
   void RescalePauseMenuButtons(SizeHandler size_handler);
+  // creating title
+  void CreateTitleButtons();
+  void RescaleTitleButtons(SizeHandler size_handler);
 
   void SetSoundOn(bool sound_on);
   void SetFullscreen(bool fullscreen);
@@ -68,7 +73,6 @@ class ButtonHandler : public QObject {
   QMainWindow* main_window_;
   WindowType window_type_ = WindowType::kMainMenu;
   AbstractController* controller_;
-  MusicPlayer* music_player_;
 
   // main_menu
   MenuButton* start_game_button_;
@@ -91,12 +95,16 @@ class ButtonHandler : public QObject {
   MenuButton* sound_button_;
   MenuButton* fullscreen_button_;
   MenuButton* reset_game_button_;
+  MenuButton* titles_button_;
   MenuButton* to_main_menu_button_;
+
+  // Title window
+  MenuButton* to_settings_button_;
 
   // pause menu button
   MenuButton* continue_button_;
   MenuButton* restart_button_;
-  // to_main_menu_button_ is also here
+  MenuButton* to_menu_from_pause;
 
   int level_number_ = 1;
   Size long_button_size_ = button_constants::kLongButtonSize;

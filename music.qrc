@@ -1,6 +1,7 @@
 <RCC>
     <qresource>
         <file>resources/sounds/menu_sound.mp3</file>
+        <file>resources/sounds/titles_sound.mp3</file>
         <file>resources/sounds/game_sound.mp3</file>
         <file>resources/sounds/game_over_sound.mp3</file>
         <file>resources/sounds/game_won_sound.mp3</file>

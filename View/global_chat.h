@@ -32,6 +32,8 @@ class GlobalChat {
   void Clear();
   void ReceiveNewMessages(const QStringList& messages);
 
+  void SetVisible(bool visible);
+
  private:
   bool using_game_style_ = true;
 
