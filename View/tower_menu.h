@@ -43,6 +43,8 @@ class TowerMenu {
   bool IsEnable() const;
   bool IsWantToReplace() const;
 
+  int GetChosenButtonId() const;
+
  private:
   int owner_id_;
   std::vector<MenuButton*> buttons_;

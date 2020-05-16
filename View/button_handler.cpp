@@ -57,8 +57,12 @@ void ButtonHandler::SetSettingsUiVisible(bool visible) {
   sound_button_->setVisible(visible);
   reset_game_button_->setVisible(visible);
   to_main_menu_button_->setVisible(visible);
-  fullscreen_button_->setVisible(visible);
   titles_button_->setVisible(visible);
+#ifndef Q_OS_ANDROID
+  fullscreen_button_->setVisible(visible);
+#else
+  fullscreen_button_->setVisible(false);
+#endif
 }
 
 void ButtonHandler::SetGameUiVisible(bool visible) {
@@ -327,14 +331,18 @@ void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
       first_button_coordinate_ + Size(long_button_size_.width / 2, 0)
           - Size(short_button_size_.width, 0) + Size(shift.height, 0),
       size_handler);
+  Size temp_shift = {0, 0};
+#ifndef Q_OS_ANDROID
   fullscreen_button_->SetGeometry(first_button_coordinate_ + shift,
                                   size_handler);
-  reset_game_button_->SetGeometry(first_button_coordinate_ + shift * 2,
-                                  size_handler);
-  titles_button_->SetGeometry(first_button_coordinate_ + shift * 3,
-                              size_handler);
-  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 4,
-                                    size_handler);
+  temp_shift = shift;
+#endif
+  reset_game_button_->SetGeometry(first_button_coordinate_ + shift +
+      temp_shift, size_handler);
+  titles_button_->SetGeometry(first_button_coordinate_ + shift * 2 +
+      temp_shift, size_handler);
+  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 3 +
+      temp_shift, size_handler);
 }
 
 void ButtonHandler::CreateGameButtons() {
@@ -507,6 +515,10 @@ int ButtonHandler::GetCurrentLevel() const {
   return level_number_;
 }
 
+void ButtonHandler::SetWindowType(WindowType window_type) {
+  window_type_ = window_type;
+}
+
 void ButtonHandler::SetFullscreen(bool fullscreen) {
   if (is_fullscreen_ == fullscreen) {
     return;
@@ -521,8 +533,4 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
   } else {
     main_window_->showNormal();
   }
-}
-
-void ButtonHandler::SetWindowType(WindowType type) {
-  window_type_ = type;
 }

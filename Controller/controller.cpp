@@ -518,6 +518,14 @@ MusicPlayer* Controller::GetMusicPlayer() {
   return &music_player_;
 }
 
+void Controller::PauseMusic() {
+  music_player_.Pause();
+}
+
+void Controller::ResumeMusic() {
+  music_player_.Resume();
+}
+
 const AnimationPlayer& Controller::GetInterface() const {
   return model_->GetInterface();
 }
