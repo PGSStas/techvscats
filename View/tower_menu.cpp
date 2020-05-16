@@ -273,3 +273,7 @@ void TowerMenu::Disable() {
   possible_buildings_id_.clear();
 }
 
+int TowerMenu::GetChosenButtonId() const {
+  return active_button_index_;
+}
+
