@@ -39,6 +39,7 @@ void View::paintEvent(QPaintEvent*) {
     Size size = {16 * coefficient, 9 * coefficient};
     Coordinate origin = {(width() - 16 * coefficient) / 2,
                          (height() - 9 * coefficient) / 2};
+    painter.fillRect(0, 0, 5000, 5000, Qt::white);
     painter.drawImage(origin.x, origin.y, logo_.scaled(size.width,
                                                        size.height));
     return;
