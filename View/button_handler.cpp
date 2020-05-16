@@ -386,7 +386,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/normal_speed_button_active.png");
   auto normal_speed_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    controller_->SetSpeedCoefficient(Speed::kNormalSpeed,true);
+    controller_->SetSpeedCoefficient(Speed::kNormalSpeed, true);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(normal_speed_button_,
@@ -401,7 +401,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/double_speed_button_active.png");
   auto double_speed_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    controller_->SetSpeedCoefficient(Speed::kDoubleSpeed,true);
+    controller_->SetSpeedCoefficient(Speed::kDoubleSpeed, true);
     SetSpeedButtonsState(Speed::kDoubleSpeed);
   };
   connect(double_speed_button_,

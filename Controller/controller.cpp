@@ -546,15 +546,11 @@ MultiplayerClient* Controller::GetClient() {
 void Controller::ProcessMessage(const Message& message) {
   switch (message.GetDialogType()) {
     case VisibleType::kWarning: {
-      TextNotification notification(message.GetArgument(0),
-                                    {constants::kGameWidth / 2,
-                                     constants::kGameHeight / 7},
-                                    Qt::darkMagenta,
-                                    view_->GetRealTime(),
-                                    {0, -40},
-                                    3000,
-                                    1,
-                                    true);
+      TextNotification notification(
+          message.GetArgument(0),
+          {constants::kGameWidth / 2, constants::kGameHeight / 7},
+          Qt::darkMagenta, view_->GetRealTime(),
+          {0, -40}, 3000, 1, true);
       notification.SetFontSize(50);
       model_->AddTextNotification(notification);
       break;
