@@ -4,8 +4,10 @@ View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(),
       tower_menu_(this) {
+  setWindowIcon(QIcon(":resources/images/icon.png"));
+  setWindowTitle("Tech vs Cats");
   setMinimumSize(960, 540);
-  setMouseTracking(true);
+
   QSettings settings(constants::kCompanyName, constants::kApplicationName);
 #ifdef Q_OS_ANDROID
   showFullScreen();
@@ -20,6 +22,9 @@ View::View(AbstractController* controller)
   setWindowIcon(QIcon(":resources/images/icon.png"));
 
   size_handler_.ChangeSystem(width(), height());
+  setMouseTracking(true);
+
+
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
@@ -42,6 +47,7 @@ void View::SecondConstructorPart() {
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetTitlesVisible(false);
   is_model_loaded_ = true;
   Resize();
 }
@@ -79,6 +85,7 @@ void View::paintEvent(QPaintEvent*) {
       DrawPauseMenu(&painter);
       break;
     }
+    default: break;
   }
   DrawTextNotification(&painter);
   DrawEmptyZones(&painter);
@@ -136,8 +143,9 @@ void View::DrawGame(QPainter* painter) {
 }
 
 void View::DrawSettings(QPainter*) {
-  button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetTitlesVisible(false);
   button_handler_->SetSettingsUiVisible(true);
+  button_handler_->SetMainMenuUiVisible(false);
 }
 
 void View::DrawPauseMenu(QPainter*) {
@@ -211,10 +219,6 @@ void View::DrawGameObjects(QPainter* painter) {
   }
 }
 
-const SizeHandler& View::GetSizeHandler() const {
-  return size_handler_;
-}
-
 bool View::IsTowerMenuEnabled() const {
   return tower_menu_.IsEnable();
 }
@@ -284,6 +288,11 @@ void View::keyPressEvent(QKeyEvent* event) {
     } else {
       button_handler_->SetSpeed(static_cast<int>(Speed::kZeroSpeed));
     }
+  }
+  if (event->key() == Qt::Key_Escape &&
+      button_handler_->GetWindowType() == WindowType::kTitles) {
+    button_handler_->SetWindowType(WindowType::kSettings);
+    controller_->EndTitles();
   }
 }
 
@@ -375,10 +384,6 @@ void View::timerEvent(QTimerEvent* event) {
         controller_->GetClient()->IsOnline(),
         controller_->GetClient()->IsRegistered());
     repaint();
-    if (window_type_ != button_handler_->GetWindowType()) {
-      window_type_ = button_handler_->GetWindowType();
-      controller_->ClearTextNotifications();
-    }
   }
 }
 
@@ -417,4 +422,19 @@ int View::GetChosenLevel() const {
 
 void View::SetChosenLevel(int level) {
   button_handler_->SetCurrentLevel(level);
+}
+
+void View::StartTitles() {
+  button_handler_->SetSettingsUiVisible(false);
+  global_chat_->SetVisible(false);
+}
+
+void View::EndTitles() {
+  button_handler_->SetTitlesVisible(false);
+  button_handler_->SetMainMenuUiVisible(true);
+  global_chat_->SetVisible(true);
+}
+
+void View::ShowSettingsButton() {
+  button_handler_->SetTitlesVisible(true);
 }

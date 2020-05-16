@@ -192,3 +192,10 @@ void GlobalChat::SendMessage() {
   message = message.split(" ", QString::SkipEmptyParts).join(" ");
   send_messages_.push_back(message);
 }
+
+void GlobalChat::SetVisible(bool visible) {
+  q_text_browser_->setVisible(visible);
+  q_line_edit_->setVisible(visible);
+  send_button->setVisible(visible);
+  brick_button->setVisible(visible);
+}

@@ -35,7 +35,6 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<AbstractProjectile>>&
   GetProjectiles() const override;
   const std::list<TextNotification>& GetTextNotifications() const override;
-  void ClearTextNotifications() override;
 
   const Base& GetBase() const override;
   int GetCurrentTime() const override;
@@ -50,6 +49,9 @@ class Controller : public AbstractController {
   int GetRoundsCount() const override;
   void SetGameVolume(int volume) override;
   MultiplayerClient* GetClient() override;
+
+  void CreateTitles() override;
+  void EndTitles() override;
 
   MusicPlayer* GetMusicPlayer() override;
 
@@ -74,6 +76,9 @@ class Controller : public AbstractController {
   int last_time_end_particle_created = 0;
 
   static std::mt19937 random_generator_;
+
+  const int kTitlesSize = 40;
+  const int kTitlesDuration = 84000;
 
  private:
   void GameProcess();

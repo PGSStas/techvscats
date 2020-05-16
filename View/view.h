@@ -45,12 +45,14 @@ class View : public QMainWindow {
 
   void ChangeGameSpeed(Speed speed);
 
-  const SizeHandler& GetSizeHandler() const;
-
   int GetRealTime() const;
 
   int GetChosenLevel() const;
   void SetChosenLevel(int level);
+
+  void StartTitles();
+  void EndTitles();
+  void ShowSettingsButton();
 
  private:
   AbstractController* controller_;

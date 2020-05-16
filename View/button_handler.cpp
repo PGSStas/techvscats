@@ -1,7 +1,8 @@
 #include "button_handler.h"
 
 ButtonHandler::ButtonHandler(QMainWindow* main_window,
-                             AbstractController* controller, int font_id)
+                             AbstractController* controller,
+                             int font_id)
     : QObject(main_window), main_window_(main_window), controller_(controller),
       font_id_(font_id) {
   CreateButtons();
@@ -9,7 +10,10 @@ ButtonHandler::ButtonHandler(QMainWindow* main_window,
                                  constants::kApplicationName);
   SetCurrentLevel(settings.value("levels_passed", 0).toInt() + 1);
   SetSoundOn(settings.value("sound_on", true).toBool());
-  SetFullscreen(settings.value("fullscreen", true).toBool());
+  bool is_fullscreen = settings.value("fullscreen", true).toBool();
+  is_fullscreen_ = is_fullscreen;
+  fullscreen_button_->setText(
+      is_fullscreen ? tr("ОКОННЫЙ РЕЖИМ") : tr("ПОЛНОЭКРАННЫЙ РЕЖИМ"));
   window_type_ = WindowType::kMainMenu;
 }
 
@@ -17,6 +21,7 @@ void ButtonHandler::CreateButtons() {
   CreateMainMenuButtons();
   CreateSettingsButtons();
   CreateGameButtons();
+  CreateTitleButtons();
   CreatePauseMenuButtons();
 }
 
@@ -27,10 +32,11 @@ void ButtonHandler::UpdateButtonsStatus(bool online_status,
   start_game_button_->setEnabled(register_status || !online_status);
 }
 
-void ButtonHandler::RescaleButtons(SizeHandler size_handler) {
+void ButtonHandler::RescaleButtons(const SizeHandler& size_handler) {
   RescaleMainMenuButtons(size_handler);
   RescaleSettingsButtons(size_handler);
   RescaleGameButtons(size_handler);
+  RescaleTitleButtons(size_handler);
   RescalePauseMenuButtons(size_handler);
 }
 
@@ -66,7 +72,17 @@ void ButtonHandler::SetGameUiVisible(bool visible) {
 void ButtonHandler::SetPauseMenuUiVisible(bool visible) {
   continue_button_->setVisible(visible);
   restart_button_->setVisible(visible);
-  to_main_menu_button_->setVisible(visible);
+  to_menu_from_pause->setVisible(visible);
+}
+
+void ButtonHandler::SetTitlesVisible(bool visible) {
+  to_settings_button_->setVisible(visible);
+}
+
+void ButtonHandler::SetSpeedButtonsState(Speed speed) {
+  zero_speed_button_->setDisabled(speed == Speed::kZeroSpeed);
+  normal_speed_button_->setDisabled(speed == Speed::kNormalSpeed);
+  double_speed_button_->setDisabled(speed == Speed::kDoubleSpeed);
 }
 
 void ButtonHandler::SetSpeed(int casted_int) {
@@ -106,7 +122,6 @@ void ButtonHandler::CreateMainMenuButtons() {
   auto settings_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kSettings;
-    main_window_->repaint();
   };
   connect(settings_button_, &QPushButton::clicked, settings_button_click);
 
@@ -275,15 +290,20 @@ void ButtonHandler::CreateSettingsButtons() {
   };
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);
 
+  titles_button_ = new MenuButton(
+      tr("ТИТРЫ"), long_button_size_, main_window_, font_id_);
+  auto titles_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
+    window_type_ = WindowType::kTitles;
+    controller_->CreateTitles();
+  };
+  connect(titles_button_, &QPushButton::clicked, titles_click);
+
   to_main_menu_button_ = new MenuButton(
       tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_, font_id_);
   auto back_to_main_menu_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    if (window_type_ == WindowType::kPauseMenu) {
-      controller_->EndGame();
-    }
     window_type_ = WindowType::kMainMenu;
-    main_window_->repaint();
   };
   connect(to_main_menu_button_, &QPushButton::clicked, back_to_main_menu_click);
 }
@@ -398,18 +418,39 @@ void ButtonHandler::CreatePauseMenuButtons() {
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(continue_button_, &QPushButton::clicked, continue_button_click);
+
+  to_menu_from_pause = new MenuButton(
+      tr("В ГЛАВНОЕ МЕНЮ"), long_button_size_, main_window_, font_id_);
+  auto from_pause_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
+    window_type_ = WindowType::kMainMenu;
+    controller_->EndGame();
+  };
+  connect(to_menu_from_pause, &QPushButton::clicked, from_pause_click);
 }
 
 void ButtonHandler::RescalePauseMenuButtons(SizeHandler size_handler) {
   Size shift = Size({0, long_button_size_.height + shift_});
   continue_button_->SetGeometry(first_button_coordinate_, size_handler);
   restart_button_->SetGeometry(first_button_coordinate_ + shift, size_handler);
+  to_menu_from_pause->SetGeometry(first_button_coordinate_ + shift * 2,
+                                  size_handler);
 }
 
-void ButtonHandler::SetSpeedButtonsState(Speed speed) {
-  zero_speed_button_->setDisabled(speed == Speed::kZeroSpeed);
-  normal_speed_button_->setDisabled(speed == Speed::kNormalSpeed);
-  double_speed_button_->setDisabled(speed == Speed::kDoubleSpeed);
+void ButtonHandler::CreateTitleButtons() {
+  to_settings_button_ = new MenuButton(
+      tr("ВЕРНУТЬСЯ"), long_button_size_, main_window_, font_id_);
+  auto return_to_settings = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
+    window_type_ = WindowType::kSettings;
+    controller_->EndTitles();
+  };
+  connect(to_settings_button_, &QPushButton::clicked, return_to_settings);
+}
+
+void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
+  to_settings_button_->SetGeometry({10, 10},
+                                   size_handler);
 }
 
 void ButtonHandler::SetCurrentLevel(int level) {
@@ -448,9 +489,14 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
   fullscreen_button_->setText(
       fullscreen ? tr("ОКОННЫЙ РЕЖИМ") : tr("ПОЛНОЭКРАННЫЙ РЕЖИМ"));
   main_window_->hide();
+
   if (fullscreen) {
     main_window_->showFullScreen();
   } else {
     main_window_->showNormal();
   }
+}
+
+void ButtonHandler::SetWindowType(WindowType type) {
+  window_type_ = type;
 }

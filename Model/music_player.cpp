@@ -13,6 +13,7 @@ MusicPlayer::MusicPlayer()
 
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/menu_sound.mp3"));
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/game_sound.mp3"));
+  main_playlist_->addMedia(QUrl("qrc:resources/sounds/titles_sound.mp3"));
   main_playlist_->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
 
   SetSound(button_sound_.get(), "qrc:resources/sounds/button_click.mp3");
@@ -39,10 +40,20 @@ void MusicPlayer::SetVolume(int volume) {
 
 void MusicPlayer::StartMenuMusic() {
   main_playlist_->setCurrentIndex(kMenuMusic);
+  main_player_->play();
+}
+
+void MusicPlayer::Stop() {
+  main_player_->stop();
 }
 
 void MusicPlayer::StartGameMusic() {
   main_playlist_->setCurrentIndex(kGameMusic);
+  main_player_->play();
+}
+
+void MusicPlayer::StartTitlesMusic() {
+  main_playlist_->setCurrentIndex(kTitlesMusic);
   main_player_->play();
 }
 
