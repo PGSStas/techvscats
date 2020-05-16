@@ -34,7 +34,7 @@ class View : public QMainWindow {
   void DisableGameUi();
   void EnableMainMenuUi();
   void DisableMainMenuUi();
-  void ChangeChat();
+  void ChangeChatStyle();
 
   void AddGlobalChatMessage(const QStringList& message);
 
@@ -44,7 +44,7 @@ class View : public QMainWindow {
   void DisableTowerMenu();
   bool IsTowerMenuEnabled() const;
 
-  void ChangeGameSpeed(Speed speed);
+  void ChangeGameSpeed(Speed speed, bool im_the_button = false);
 
   int GetRealTime() const;
 

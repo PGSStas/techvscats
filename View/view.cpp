@@ -23,7 +23,7 @@ View::View(AbstractController* controller)
 
   size_handler_.ChangeSystem(width(), height());
   setMouseTracking(true);
-
+  setFocusPolicy(Qt::ClickFocus);
 
   view_timer_.start();
   time_between_ticks_.start();
@@ -110,7 +110,7 @@ void View::DrawEmptyZones(QPainter* painter) {
   painter->fillRect(0, 0, horizontal_zone.width, horizontal_zone.height, image);
   painter->fillRect(
       0, size_handler_.GameToWindowCoordinate(
-          {0, constants::kGameHeight}).y - 1,
+          {0, constants::kGameHeight}).y + 1,
       horizontal_zone.width + 2, horizontal_zone.height + 2, image);
   Size vertical_zone =
       Size(size_handler_.GameToWindowCoordinate({0, 0}).x, height());
@@ -307,8 +307,8 @@ void View::resizeEvent(QResizeEvent*) {
 
 void View::EnableGameUi() {
   controller_->RescaleObjects(size_handler_);
-  ChangeChat();
   DisableTowerMenu();
+
   button_handler_->SetGameUiVisible(true);
 }
 
@@ -318,7 +318,6 @@ void View::DisableGameUi() {
 
 void View::EnableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(true);
-  ChangeChat();
 }
 
 void View::DrawAdditionalInfo(QPainter* painter) {
@@ -350,7 +349,7 @@ void View::DisableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(false);
 }
 
-void View::ChangeChat() {
+void View::ChangeChatStyle() {
   global_chat_->ChangeStyle();
   if (controller_->GetClient()->IsOnline()) {
     global_chat_->Clear();
@@ -391,12 +390,16 @@ void View::timerEvent(QTimerEvent* event) {
     button_handler_->UpdateButtonsStatus(
         controller_->GetClient()->IsOnline(),
         controller_->GetClient()->IsRegistered());
+
     repaint();
   }
 }
 
-void View::ChangeGameSpeed(Speed speed) {
+void View::ChangeGameSpeed(Speed speed, bool notify_button_handler) {
   game_speed_coefficient_ = static_cast<int>(speed);
+  if (!notify_button_handler) {
+    button_handler_->SetSpeed(static_cast<int>(speed));
+  }
 }
 
 void View::DrawRoundInfo(QPainter* painter) {
@@ -421,6 +424,20 @@ void View::DrawBars(QPainter* painter) {
   const auto& enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
     enemy->DrawHealthBar(painter, size_handler_);
+    if (button_handler_->IsEffectToggleActive()) {
+      enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                  enemy->GetPosition(),
+                                                  enemy->GetSize());
+    }
+  }
+
+  if (button_handler_->IsEffectToggleActive()) {
+    const auto& buildings_list = controller_->GetBuildings();
+    for (const auto& building : buildings_list) {
+      building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                     building->GetPosition(),
+                                                     building->GetSize());
+    }
   }
 }
 

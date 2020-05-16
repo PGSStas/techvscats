@@ -179,9 +179,9 @@ void InfoField::DrawStatistics(QPainter* painter,
        kSize.height * kRelativeStatisticsSize.height});
   if (aims_count_ != 0) {
     painter->drawText(point.x, point.y, size.width, size.height,
-                      Qt::AlignCenter, QObject::tr("Урон")
+                      Qt::AlignCenter, QObject::tr("Damage")
                           + ": " + QString::number(damage_) +
-            ", " + QObject::tr("Количество целей") + ": " +
+            ", " + QObject::tr("Number of target") + ": " +
             QString::number(aims_count_));
   }
 
@@ -189,7 +189,7 @@ void InfoField::DrawStatistics(QPainter* painter,
       {position_.x, position_.y + kSize.height * (kRelativeHeaderSize.height +
           kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
   painter->drawText(point.x, point.y, size.width, size.height,
-                    Qt::AlignCenter, QObject::tr("Стоимость") +
+                    Qt::AlignCenter, QObject::tr("Сost") +
           ": " + QString::number(cost_));
 
   point = size_handler.GameToWindowCoordinate(
@@ -197,7 +197,7 @@ void InfoField::DrawStatistics(QPainter* painter,
           2 * kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
   if (aims_count_ != 0) {
     painter->drawText(point.x, point.y, size.width, size.height,
-                      Qt::AlignCenter, QObject::tr("Скорость атаки")
+                      Qt::AlignCenter, QObject::tr("Attack speed")
                           + ": " + attack_speed_);
   }
 
@@ -216,7 +216,7 @@ void InfoField::DrawSellInfo(QPainter* painter,
       {kSize.width * kRelativeStatisticsSize.width,
        kSize.height * kRelativeStatisticsSize.height});
   painter->drawText(point.x, point.y, size.width, size.height,
-                    Qt::AlignCenter, QObject::tr("Стоимость продажи") +
+                    Qt::AlignCenter, QObject::tr("Sell cost") +
           ": " + QString::number(cost_));
 
   painter->restore();

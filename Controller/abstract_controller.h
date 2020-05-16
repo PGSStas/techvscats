@@ -47,7 +47,8 @@ class AbstractController {
   virtual void StartGame(int level) = 0;
   virtual void Tick(int current_time) = 0;
   virtual void EndGame() = 0;
-  virtual void SetSpeedCoefficient(Speed speed) = 0;
+  virtual void SetSpeedCoefficient(Speed speed,
+                                   bool notify_button_handler = false) = 0;
   virtual void SetBuilding(int index_in_buildings, int replacing_id) = 0;
 
   virtual void MouseEvent(Coordinate position, bool is_press) = 0;
@@ -61,6 +62,7 @@ class AbstractController {
   virtual const std::vector<std::shared_ptr<Building>>&
   GetBuildings() const = 0;
   virtual const std::list<TextNotification>& GetTextNotifications() const = 0;
+  virtual void ClearTextNotifications() = 0;
 
   virtual const Base& GetBase() const = 0;
   virtual int GetCurrentTime() const = 0;
@@ -74,6 +76,7 @@ class AbstractController {
   virtual int GetCurrentRoundNumber() const = 0;
   virtual int GetRoundsCount() const = 0;
   virtual void SetGameVolume(int volume) = 0;
+  virtual void ChangeChatStyle() = 0;
 
   virtual void CreateTitles() = 0;
   virtual void EndTitles() = 0;

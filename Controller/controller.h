@@ -22,7 +22,8 @@ class Controller : public AbstractController {
   void StartGame(int level) override;
   void EndGame() override;
   void Tick(int current_time) override;
-  void SetSpeedCoefficient(Speed speed) override;
+  void SetSpeedCoefficient(Speed speed,
+                           bool notify_button_handler = false) override;
   void SetBuilding(int index_in_buildings, int replacing_id) override;
 
   void MouseEvent(Coordinate position, bool is_press) override;
@@ -35,6 +36,7 @@ class Controller : public AbstractController {
   const std::list<std::shared_ptr<AbstractProjectile>>&
   GetProjectiles() const override;
   const std::list<TextNotification>& GetTextNotifications() const override;
+  void ClearTextNotifications() override;
 
   const Base& GetBase() const override;
   int GetCurrentTime() const override;
@@ -48,6 +50,8 @@ class Controller : public AbstractController {
   int GetCurrentRoundNumber() const override;
   int GetRoundsCount() const override;
   void SetGameVolume(int volume) override;
+  void ChangeChatStyle() override;
+
   MultiplayerClient* GetClient() override;
 
   void CreateTitles() override;
