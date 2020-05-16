@@ -57,6 +57,8 @@ class Building : public GameObject {
 
   int GetReloadTime() const;
 
+  const Effect& GetEffect() const;
+
  private:
   AuricField auric_field_;
   Effect applied_effect_ = Effect(EffectTarget::kBuilding);
