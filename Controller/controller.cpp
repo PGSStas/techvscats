@@ -66,8 +66,8 @@ void Controller::Tick(int current_time) {
   }
 }
 
-void Controller::SetSpeedCoefficient(Speed speed, bool im_the_button) {
-  view_->ChangeGameSpeed(speed, im_the_button);
+void Controller::SetSpeedCoefficient(Speed speed, bool notify_button_handler) {
+  view_->ChangeGameSpeed(speed, notify_button_handler);
 }
 
 void Controller::SetBuilding(int index_in_buildings, int replacing_id) {

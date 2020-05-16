@@ -370,9 +370,9 @@ void View::timerEvent(QTimerEvent* event) {
   }
 }
 
-void View::ChangeGameSpeed(Speed speed, bool im_the_button) {
+void View::ChangeGameSpeed(Speed speed, bool notify_button_handler) {
   game_speed_coefficient_ = static_cast<int>(speed);
-  if (!im_the_button) {
+  if (!notify_button_handler) {
     button_handler_->SetSpeed(static_cast<int>(speed));
   }
 }
