@@ -64,6 +64,9 @@ void ButtonHandler::SetGameUiVisible(bool visible) {
   zero_speed_button_->setVisible(visible);
   normal_speed_button_->setVisible(visible);
   double_speed_button_->setVisible(visible);
+  if (!visible) {
+    next_level_button_->setVisible(visible);
+  }
 }
 
 void ButtonHandler::SetPauseMenuUiVisible(bool visible) {
@@ -380,6 +383,22 @@ void ButtonHandler::CreateGameButtons() {
   connect(double_speed_button_,
           &QPushButton::clicked,
           double_speed_button_click);
+
+  next_level_button_ = new MenuButton(
+      tr("ИГРАТЬ ДАЛЬШЕ ->"),
+      Size(long_button_size_.width, long_button_size_.height * 2),
+      main_window_, font_id_);
+  auto next_level_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
+    if (level_number_ < kMaxLevel_) {
+      SetCurrentLevel(level_number_ + 1);
+      controller_->BeginNextLevel();
+    } else {
+      window_type_ = WindowType::kTitles;
+      controller_->CreateTitles();
+    }
+  };
+  connect(next_level_button_, &QPushButton::clicked, next_level_button_click);
 }
 
 void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
@@ -392,6 +411,7 @@ void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
                                     size_handler);
   double_speed_button_->SetGeometry(zero_speed_button_coordinate + shift * 2,
                                     size_handler);
+  next_level_button_->SetGeometry(first_button_coordinate_, size_handler);
 }
 
 void ButtonHandler::CreatePauseMenuButtons() {
@@ -456,10 +476,11 @@ void ButtonHandler::SetCurrentLevel(int level) {
                                     constants::kApplicationName).value(
       "levels_passed",
       0).toInt() + 1;
-  if (level >= 1 && level <= current_max_level) {
+  if (level >= 1 && level <= current_max_level && level <= kMaxLevel_) {
     level_number_ = level;
   }
-  inc_level_button_->setEnabled(level_number_ != current_max_level);
+  inc_level_button_->setEnabled(
+      level_number_ != current_max_level && level_number_ != kMaxLevel_);
   dec_level_button_->setEnabled(level_number_ != 1);
   choose_level_number_->setText(tr("УРОВЕНЬ") + " " +
       QString::number(level_number_));
@@ -468,8 +489,7 @@ void ButtonHandler::SetCurrentLevel(int level) {
 void ButtonHandler::SetSoundOn(bool sound_on) {
   is_sound_on_ = sound_on;
   sound_button_->EnableSecondIcon(!is_sound_on_);
-  controller_->GetMusicPlayer()->SetVolume(
-      100 * static_cast<int>(is_sound_on_));
+  controller_->SetGameVolume(100 * static_cast<int>(is_sound_on_));
 }
 
 int ButtonHandler::GetCurrentLevel() const {
@@ -494,4 +514,12 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
 
 void ButtonHandler::SetWindowType(WindowType type) {
   window_type_ = type;
+}
+
+void ButtonHandler::SetNextLevelButtonVisible(bool visible) {
+  next_level_button_->setVisible(visible);
+}
+
+int ButtonHandler::GetMaxLevel() const {
+  return kMaxLevel_;
 }

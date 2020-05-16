@@ -17,7 +17,6 @@ View::View(AbstractController* controller)
   size_handler_.ChangeSystem(width(), height());
   setMouseTracking(true);
 
-
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
@@ -420,4 +419,19 @@ void View::EndTitles() {
 
 void View::ShowSettingsButton() {
   button_handler_->SetTitlesVisible(true);
+}
+
+void View::ShowNextLevelButton() {
+  button_handler_->SetNextLevelButtonVisible(true);
+}
+
+void View::BeginNextLevel() {
+  controller_->EndGame();
+  controller_->StartGame(button_handler_->GetCurrentLevel());
+  button_handler_->SetNextLevelButtonVisible(false);
+  button_handler_->SetSpeedButtonsState(Speed::kNormalSpeed);
+}
+
+bool View::IsLastLevel() {
+  return button_handler_->GetCurrentLevel() == button_handler_->GetMaxLevel();
 }

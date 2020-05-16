@@ -40,7 +40,7 @@ void MusicPlayer::SetVolume(int volume) {
   game_won_sound_->setVolume(volume);
   sale_sound_->setVolume(volume);
   not_enough_money_sound_->setVolume(volume);
-  new_level_sound_->setVolume(0.4 * volume);
+  new_level_sound_->setVolume(0.2 * volume);
 }
 
 void MusicPlayer::StartMenuMusic() {

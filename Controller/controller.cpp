@@ -29,6 +29,7 @@ void Controller::StartGame(int level_id) {
     client_.EnterRoom(level_id);
   }
   music_player_.StartGameMusic();
+  music_player_.StopNewLevelSound();
   music_player_.PlayNewLevelSound();
 }
 
@@ -106,6 +107,10 @@ void Controller::GameProcess() {
   }
   if (game_status_ != GameStatus::kPlay) {
     TickEndGame();
+    if (game_status_ == GameStatus::kWin
+        && model_->GetTextNotifications()->empty()) {
+      view_->ShowNextLevelButton();
+    }
   }
   TickSpawners();
   TickEnemies();
@@ -126,7 +131,7 @@ bool Controller::CanCreateNextWave() {
     game_status_ = GameStatus::kWin;
     client_.RoundCompleted(model_->GetBase()->GetCurrentHealth(),
                            static_cast<int>(GameStatus::kWin));
-    int life_time = 16000;
+    int life_time = 8000;
     double size_coefficient = 1.03;
     model_->AddTextNotification({"Level Complete",
                                  {constants::kGameWidth / 2,
@@ -138,7 +143,6 @@ bool Controller::CanCreateNextWave() {
     int level = std::max(settings.value("levels_passed", 0).toInt(),
                          view_->GetChosenLevel());
     settings.setValue("levels_passed", level);
-    view_->SetChosenLevel(level);
   }
 
   if (!model_->GetEnemies()->empty()
@@ -536,8 +540,14 @@ void Controller::ProcessMessage(const Message& message) {
   switch (message.GetDialogType()) {
     case VisibleType::kWarning: {
       TextNotification notification(message.GetArgument(0),
-          {constants::kGameWidth / 2, constants::kGameHeight / 7},
-          Qt::darkMagenta, view_->GetRealTime(), {0, -40}, 3000, 1, true);
+                                    {constants::kGameWidth / 2,
+                                     constants::kGameHeight / 7},
+                                    Qt::darkMagenta,
+                                    view_->GetRealTime(),
+                                    {0, -40},
+                                    3000,
+                                    1,
+                                    true);
       notification.SetFontSize(50);
       model_->AddTextNotification(notification);
       break;
@@ -569,14 +579,15 @@ void Controller::ProcessCommand(const Message& message) {
 void Controller::CreateTitles() {
   window_type_ = WindowType::kTitles;
   view_->StartTitles();
+  view_->DisableGameUi();
   music_player_.StartTitlesMusic();
   auto titles = model_->GetTitles();
   for (int i = 0; i < titles.size(); i++) {
     Coordinate start = {constants::kGameWidth / 4,
                         static_cast<double>(constants::kGameHeight + 60 * i)};
     TextNotification notification(titles[i], start, Qt::white,
-        current_game_time_, {0, -10},
-        kTitlesDuration, 1, false, false, false);
+                                  current_game_time_, {0, -10},
+                                  kTitlesDuration, 1, false, false, false);
     notification.SetFontSize(kTitlesSize);
     model_->AddTextNotification(notification);
   }
@@ -587,4 +598,8 @@ void Controller::EndTitles() {
   music_player_.StartMenuMusic();
   model_->GetTextNotifications()->clear();
   view_->EndTitles();
+}
+
+void Controller::BeginNextLevel() {
+  view_->BeginNextLevel();
 }

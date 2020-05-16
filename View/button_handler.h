@@ -38,6 +38,7 @@ class ButtonHandler : public QObject {
   void SetSettingsUiVisible(bool visible);
   void SetGameUiVisible(bool visible);
   void SetPauseMenuUiVisible(bool visible);
+  void SetNextLevelButtonVisible(bool visible);
   void SetSpeed(int casted_speed);
   void SetTitlesVisible(bool visible);
 
@@ -47,6 +48,7 @@ class ButtonHandler : public QObject {
 
   void SetCurrentLevel(int level);
   int GetCurrentLevel() const;
+  int GetMaxLevel() const;
 
  private:
   // creating main menu
@@ -87,6 +89,7 @@ class ButtonHandler : public QObject {
   MenuButton* zero_speed_button_;
   MenuButton* normal_speed_button_;
   MenuButton* double_speed_button_;
+  MenuButton* next_level_button_;
 
   // Settings window
   MenuButton* language_button_;
@@ -117,7 +120,7 @@ class ButtonHandler : public QObject {
   // left to check icons
   bool is_language_russian_ = true;
 
-  const int kMaxLevel_ = 2;
+  const int kMaxLevel_ = 3;
 };
 
 #endif  // VIEW_BUTTON_HANDLER_H_
