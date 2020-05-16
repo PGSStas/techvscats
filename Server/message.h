@@ -64,7 +64,7 @@ enum class MessageType {
   kEnterRoom = 1000,  // % lvl_id
   kGlobalChat = 1001,  // % message
   kNewConnection = 1002,
-  kRoundCompletedByPlayer = 1003,  // % base_current_health % casted game_process
+  kRoundCompletedByPlayer = 1003,  // % base_current_health % game_process
 
   kLastServer,
 
