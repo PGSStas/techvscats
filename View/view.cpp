@@ -315,7 +315,6 @@ void View::DrawAdditionalInfo(QPainter* painter) {
       button_id = tower_menu_.GetTownerIndex();
       tower_menu_.DrawInfoField(painter, size_handler_,
                                 *controller_->GetBuildings()[button_id]);
-      qDebug() << button_id;
     }
   }
 

@@ -28,9 +28,26 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
 void InfoField::DrawCurrentTower(QPainter* painter,
                                  const SizeHandler& size_handler) const {
   Coordinate point = size_handler.GameToWindowCoordinate(position_);
+
+  int speed_percent = std::round(effect_.GetMoveSpeedCoefficient() * 100) - 100;
+  int rate_percent = std::round(effect_.GetAttackRateCoefficient() * 100) - 100;
+  int range_percent = std::round(effect_.GetRangeCoefficient() * 100) - 100;
+
+  int valid_effects = 0;
+  if (speed_percent != 0) {
+    valid_effects++;
+  }
+  if (rate_percent != 0) {
+    valid_effects++;
+  }
+  if (range_percent != 0) {
+    valid_effects++;
+  }
+
   Size size = size_handler.GameToWindowSize(
-      {kSize.width, kSize.height * (6 * kRelativeStatisticsSize.height +
-          kRelativeHeaderSize.height) + 2 * kMargin});
+      {kSize.width, kSize.height *
+          ((3 + valid_effects) * kRelativeStatisticsSize.height +
+              kRelativeHeaderSize.height) + 2 * kMargin});
   painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->setPen(Qt::white);
@@ -52,31 +69,38 @@ void InfoField::DrawCurrentTower(QPainter* painter,
       {kSize.width * kRelativeStatisticsSize.width,
        kSize.height * kRelativeStatisticsSize.height});
 
-  int percent = std::round(effect_.GetMoveSpeedCoefficient() * 100);
-  painter->drawText(point.x, point.y, size.width, size.height,
-                    Qt::AlignCenter, QObject::tr("Bullet speed bonus") + ": " +
-          QString::number(percent) + "%");
+  double shift = 0;
+  if (speed_percent != 0) {
+    painter->drawText(point.x, point.y, size.width, size.height,
+                      Qt::AlignCenter,
+                      QObject::tr("Bullet speed bonus") + ": " +
+                          QString::number(speed_percent) + "%");
+    shift += kSize.height * kRelativeStatisticsSize.height;
+  }
 
   point = size_handler.GameToWindowCoordinate(
       {position_.x, position_.y + kSize.height * kRelativeHeaderSize.height
-          + kSize.height * kRelativeStatisticsSize.height});
+          + shift});
 
-  percent = std::round(effect_.GetAttackRateCoefficient() * 100);
-  painter->drawText(point.x, point.y, size.width, size.height,
-                    Qt::AlignCenter, QObject::tr("Attack rate bonus") + ": " +
-          QString::number(percent) + "%");
+  if (rate_percent != 0) {
+    painter->drawText(point.x, point.y, size.width, size.height,
+                      Qt::AlignCenter, QObject::tr("Attack rate bonus") + ": " +
+            QString::number(rate_percent) + "%");
+    shift += kSize.height * kRelativeStatisticsSize.height;
+  }
 
   point = size_handler.GameToWindowCoordinate(
       {position_.x, position_.y + kSize.height * kRelativeHeaderSize.height
-          + 2 * kSize.height * kRelativeStatisticsSize.height});
+          + shift});
 
-  percent = std::round(effect_.GetRangeCoefficient() * 100);
-  painter->drawText(point.x, point.y, size.width, size.height,
-                    Qt::AlignCenter, QObject::tr("Attack range bonus") + ": " +
-          QString::number(percent) + "%");
+  if (range_percent != 0) {
+    painter->drawText(point.x, point.y, size.width, size.height,
+                      Qt::AlignCenter,
+                      QObject::tr("Attack range bonus") + ": " +
+                          QString::number(range_percent) + "%");
+  }
 
-  DrawStatistics(painter, size_handler,
-                 3 * kSize.height * kRelativeStatisticsSize.height - kMargin);
+  DrawStatistics(painter, size_handler, shift -kMargin);
 }
 
 void InfoField::DrawPurchasableTower(QPainter* painter,
