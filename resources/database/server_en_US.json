@@ -110,5 +110,9 @@
   {
     "message": "< Someone started the game at level %1!! Connect faster!",
     "type": 0
+  },
+  {
+    "message": "! Cheats don't work in multiplayer :(",
+    "type": 0
   }
 ]
