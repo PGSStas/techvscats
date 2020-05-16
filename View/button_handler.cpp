@@ -55,6 +55,7 @@ void ButtonHandler::SetSettingsUiVisible(bool visible) {
   sound_button_->setVisible(visible);
   reset_game_button_->setVisible(visible);
   to_main_menu_button_->setVisible(visible);
+  titles_button_->setVisible(visible);
 #ifndef Q_OS_ANDROID
   fullscreen_button_->setVisible(visible);
 #else
@@ -326,7 +327,9 @@ void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
 #endif
   reset_game_button_->SetGeometry(first_button_coordinate_ + shift +
       temp_shift, size_handler);
-  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 2 +
+  titles_button_->SetGeometry(first_button_coordinate_ + shift * 2 +
+      temp_shift, size_handler);
+  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 3 +
       temp_shift, size_handler);
 }
 
@@ -495,8 +498,4 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
   } else {
     main_window_->showNormal();
   }
-}
-
-void ButtonHandler::SetWindowType(WindowType type) {
-  window_type_ = type;
 }
