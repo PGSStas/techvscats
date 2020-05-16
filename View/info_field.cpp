@@ -47,7 +47,7 @@ void InfoField::DrawCurrentTower(QPainter* painter,
   Size size = size_handler.GameToWindowSize(
       {kSize.width, kSize.height *
           ((3 + valid_effects) * kRelativeStatisticsSize.height +
-              kRelativeHeaderSize.height) + 3 * kMargin});
+              kRelativeHeaderSize.height) + 4 * kMargin});
   painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->setPen(Qt::white);
