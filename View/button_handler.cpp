@@ -216,10 +216,9 @@ void ButtonHandler::CreateSettingsButtons() {
       text = tr("вам придется перезапустить приложение.");
     }
 #endif
-    auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-                                          tr("Чтобы язык приложения изменился,")
-                                              + " " + text + " " +
-                                              tr("Все равно продолжить?"));
+    auto response = QMessageBox::question(
+        main_window_, tr("Внимание!"), tr("Чтобы язык приложения изменился,")
+            + " " + text + " " + tr("Все равно продолжить?"));
     if (response != QMessageBox::Yes) {
       return;
     }
@@ -415,8 +414,7 @@ void ButtonHandler::SetSpeedButtonsState(Speed speed) {
 void ButtonHandler::SetCurrentLevel(int level) {
   int current_max_level = QSettings(constants::kCompanyName,
                                     constants::kApplicationName).value(
-      "levels_passed",
-      0).toInt() + 1;
+      "levels_passed", 0).toInt() + 1;
   if (level >= 1 && level <= current_max_level) {
     level_number_ = level;
   }
