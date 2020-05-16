@@ -146,19 +146,19 @@
       }
     },
     {
-      "speed": 3,
+      "speed": 5,
       "damage": 2,
       "armor": 0,
       "reward": 20,
-      "max_health": 300,
+      "max_health": 200,
       "priority": 3,
       "auric_field": {
         "radius": 500,
         "effect_id": 3
       },
       "size": {
-        "width": 70,
-        "height": 70
+        "width": 90,
+        "height": 90
       },
       "animation": {
         "path": "enemies/router_4",

@@ -404,11 +404,11 @@ void ButtonHandler::SetSpeedButtonsState(Speed speed) {
 }
 
 void ButtonHandler::SetCurrentLevel(int level) {
-  int current_max_level = QSettings(constants::kCompanyName,
-      constants::kApplicationName).value("levels_passed", 0).toInt() + 1;
-  if (level >= 1 && level <= current_max_level) {
-    level_number_ = level;
-  }
+  int current_max_level = std::min(QSettings(constants::kCompanyName,
+          constants::kApplicationName).value(
+          "levels_passed", 0).toInt() + 1, kMaxLevel_);
+  level_number_ = std::max(1, level);
+  level_number_ = std::min(current_max_level, level);
   inc_level_button_->setEnabled(level_number_ != current_max_level);
   dec_level_button_->setEnabled(level_number_ != 1);
   choose_level_number_->setText(tr("УРОВЕНЬ") + " " +
