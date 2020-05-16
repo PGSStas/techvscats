@@ -190,7 +190,7 @@ void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
   exit_button_->SetGeometry(first_button_coordinate_ + shift * 3, size_handler);
   online_button_->SetGeometry(
       Coordinate(constants::kGameWidth, constants::kGameHeight)
-          - Size(short_button_size_.height + 20, 100),
+          - Size(short_button_size_.height + 20, short_button_size_.width + 20),
       size_handler);
 }
 
@@ -279,7 +279,7 @@ void ButtonHandler::CreateSettingsButtons() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
     auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-        tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
+                                          tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
     if (response == QMessageBox::Yes) {
       settings.setValue("levels_passed", 0);
       SetCurrentLevel(1);
@@ -382,7 +382,9 @@ void ButtonHandler::CreateGameButtons() {
 
 void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
   Size shift = Size(0, short_button_size_.width + shift_);
-  pause_button_->SetGeometry({constants::kGameWidth - 80, 20}, size_handler);
+  pause_button_->SetGeometry(
+      {constants::kGameWidth -
+          button_constants::kShortButtonSize.width - 20, 20}, size_handler);
   Coordinate zero_speed_button_coordinate =
       Coordinate(20, 480) + shift;
   zero_speed_button_->SetGeometry(zero_speed_button_coordinate, size_handler);
@@ -450,7 +452,9 @@ void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
 
 void ButtonHandler::SetCurrentLevel(int level) {
   int current_max_level = QSettings(constants::kCompanyName,
-      constants::kApplicationName).value("levels_passed", 0).toInt() + 1;
+                                    constants::kApplicationName).value(
+      "levels_passed",
+      0).toInt() + 1;
   if (level >= 1 && level <= current_max_level) {
     level_number_ = level;
   }

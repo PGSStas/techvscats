@@ -48,7 +48,7 @@ class GlobalChat {
   const int kMaxChatSize = 30;
   const int kFontId = 0;
   const int kCloseSpeed = 60;
-  const Size kTextEditSize = {700, 60};
+  const Size kTextEditSize = {700, button_constants::kShortButtonSize.height};
   const double kFondSize = 26;
   const Coordinate kBottomLeftPosition = {20, 1080};
 
