@@ -165,6 +165,7 @@ void ButtonHandler::CreateMainMenuButtons() {
       ":resources/buttons_resources/online_button_online_active.png");
   connect(
       online_button_, &QPushButton::clicked, main_window_, online_click);
+  SetMainMenuUiVisible(false);
 }
 
 void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
@@ -292,6 +293,7 @@ void ButtonHandler::CreateSettingsButtons() {
     main_window_->repaint();
   };
   connect(to_main_menu_button_, &QPushButton::clicked, back_to_main_menu_click);
+  SetSettingsUiVisible(false);
 }
 
 void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
@@ -382,6 +384,7 @@ void ButtonHandler::CreateGameButtons() {
   connect(double_speed_button_,
           &QPushButton::clicked,
           double_speed_button_click);
+  SetGameUiVisible(false);
 }
 
 void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
@@ -420,6 +423,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(continue_button_, &QPushButton::clicked, continue_button_click);
+  SetGameUiVisible(false);
 }
 
 void ButtonHandler::RescalePauseMenuButtons(SizeHandler size_handler) {
