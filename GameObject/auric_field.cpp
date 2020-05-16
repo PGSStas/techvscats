@@ -51,7 +51,7 @@ int AuricField::GetEffectId() const {
 }
 
 bool AuricField::IsInRadius(const Coordinate& coordinate) const {
-  return coordinate.IsInEllipse(*carrier_coordinate_ + Size(0, 10),
+  return coordinate.IsInEllipse(*carrier_coordinate_,
                                 effect_radius_);
 }
 

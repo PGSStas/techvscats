@@ -32,7 +32,6 @@ void ButtonHandler::UpdateButtonsStatus(bool online_status,
   effect_toggle_button_->EnableSecondIcon(is_effect_toggle_active_);
   start_game_button_->setText(
       !online_status ? tr("START") : tr("START MULTIPLAYER"));
-
 }
 
 void ButtonHandler::RescaleButtons(const SizeHandler& size_handler) {
