@@ -1,6 +1,7 @@
 #ifndef VIEW_VIEW_H_
 #define VIEW_VIEW_H_
 
+#include <algorithm>
 #include <QElapsedTimer>
 #include <QLabel>
 #include <QMainWindow>

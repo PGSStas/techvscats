@@ -55,9 +55,11 @@ void View::SecondConstructorPart() {
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   if (!is_model_loaded_) {
-    Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-    Size size = size_handler_.GameToWindowSize({constants::kGameWidth,
-                                                constants::kGameHeight});
+    double coefficient = std::min(width() / 16, height() / 9);
+    Size size = {16 * coefficient, 9 * coefficient};
+    Coordinate origin = {(width() - 16 * coefficient) / 2,
+                         (height() - 9 * coefficient) / 2};
+    painter.fillRect(0, 0, width(), height(), Qt::white);
     painter.drawImage(origin.x, origin.y, logo_.scaled(size.width,
                                                        size.height));
     return;
