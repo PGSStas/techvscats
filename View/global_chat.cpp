@@ -136,7 +136,6 @@ void GlobalChat::Tick(const SizeHandler& size_handler, int delta_time) {
     RescaleChat(size_handler);
     return;
   }
-
 }
 
 void GlobalChat::HideShow() {

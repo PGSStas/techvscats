@@ -25,6 +25,9 @@ void ButtonHandler::UpdateButtonsStatus(bool online_status,
   online_button_->EnableSecondIcon(online_status);
   start_game_button_->setEnabled(register_status || !online_status);
   effect_toggle_button_->EnableSecondIcon(is_effect_toggle_active_);
+  start_game_button_->setText(
+      !online_status ? tr("START") : tr("START MULTIPLAYER"));
+
 }
 
 void ButtonHandler::RescaleButtons(SizeHandler size_handler) {
@@ -268,8 +271,9 @@ void ButtonHandler::CreateSettingsButtons() {
   auto reset_game_click = [this]() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
-    auto response = QMessageBox::question(main_window_, tr("Attention!"),
-                                          tr("You can't cancel the progress reset! Still continue?"));
+    auto response = QMessageBox::question(
+        main_window_, tr("Attention!"),
+        tr("You can't cancel the progress reset! Still continue?"));
     if (response == QMessageBox::Yes) {
       settings.setValue("levels_passed", 0);
       SetCurrentLevel(1);
@@ -318,6 +322,7 @@ void ButtonHandler::CreateGameButtons() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kPauseMenu;
     controller_->ChangeChatStyle();
+    controller_->ClearTextNotifications();
     controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
   };
 

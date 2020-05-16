@@ -111,7 +111,7 @@ void Server::ProcessRoundCompletedByPlayer(const Message& message,
       message.GetArgument(1).toInt());
   switch (game_process) {
     case GameProcess::kLoose: {
-      owner->game_process=GameProcess::kLoose;
+      owner->game_process = GameProcess::kLoose;
       owner->room->players_loose_++;
       SendMessageToRoom(Message(MessageType::kNickNameDead, {owner->nick_name}),
                         *owner,
@@ -119,7 +119,7 @@ void Server::ProcessRoundCompletedByPlayer(const Message& message,
       break;
     }
     case GameProcess::kWin: {
-      owner->game_process=GameProcess::kWin;
+      owner->game_process = GameProcess::kWin;
       owner->room->players_win_++;
       SendMessageToRoom(Message(MessageType::kNickNameWinWithHp, {
           owner->nick_name,
@@ -127,7 +127,7 @@ void Server::ProcessRoundCompletedByPlayer(const Message& message,
       break;
     }
     default: {
-      owner->game_process=GameProcess::kPlay;
+      owner->game_process = GameProcess::kPlay;
       SendMessageToRoom(Message(MessageType::kNickNameFinishRoundWithHp, {
           owner->nick_name,
           QString::number(message.GetArgument(0).toInt())}), *owner, true);
@@ -201,7 +201,7 @@ void Server::SendMessageToClient(const Message& message,
 
 void Server::RoomLeave(const GameClient& client) {
   client.room->players_count--;
-  if(!client.room->is_in_active_search) {
+  if (!client.room->is_in_active_search) {
     switch (client.game_process) {
       case GameProcess::kPlay: {
         client.room->players_in_round--;
