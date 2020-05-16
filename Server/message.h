@@ -60,14 +60,14 @@ enum class MessageType {
   kLast,  // To get size of enum
 
   // To server
-  kEnterRoom = 100,  // % lvl_id
-  kGlobalChat = 101,  // % message
-  kNewConnection = 102,
-  kRoundCompletedByPlayer = 103,  // % base_current_health % casted game_process
+  kEnterRoom = 1000,  // % lvl_id
+  kGlobalChat = 1001,  // % message
+  kNewConnection = 1002,
+  kRoundCompletedByPlayer = 1003,  // % base_current_health % casted game_process
 
   // To controller
-  kControllerCommand = 104,
-  kVisibleMessage = 105
+  kControllerCommand = 1004,
+  kVisibleMessage = 1005
 };
 
 // The main class of data transfer between the server and the client.
