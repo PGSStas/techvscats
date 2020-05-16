@@ -146,11 +146,11 @@ void InfoField::DrawPurchasableTower(QPainter* painter,
       constants::kFontSize * 0.7));
   painter->setFont(font);
 
-  point = size_handler.GameToWindowCoordinate({position_.x + kMargin,
+  point = size_handler.GameToWindowCoordinate({position_.x + 2 * kMargin,
                                                position_.y + kSize.height *
                                                    kRelativeHeaderSize.height});
   size = size_handler.GameToWindowSize(
-      {kSize.width * kRelativeTextSize.width - 2 * kMargin,
+      {kSize.width * kRelativeTextSize.width - 4 * kMargin,
        text_height - 2 * kMargin});
   painter->drawText(point.x, point.y,
                     size.width, size.height, Qt::TextWordWrap, info_);
