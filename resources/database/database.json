@@ -169,19 +169,19 @@
       }
     },
     {
-      "speed": 3,
+      "speed": 2,
       "damage": 100,
       "armor": 0,
       "reward": 465,
-      "max_health": 1721,
+      "max_health": 2221,
       "priority": 0,
       "auric_field": {
         "radius": 600,
         "effect_id": 8
       },
       "size": {
-        "width": 450,
-        "height": 300
+        "width": 525,
+        "height": 350
       },
       "animation": {
         "path": "enemies/vaccleaner_4",

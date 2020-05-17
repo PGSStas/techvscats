@@ -68,11 +68,9 @@ class Enemy : public MovingObject {
 
   // boss
   bool is_boss_ = false;
-  const double tower_kill_radius_ = 600;
-  const int kill_reload_ = 15000;
-  const int stop_time_reload = 5000;
+  const double tower_kill_radius_ = 500;
+  const int kill_reload_ = 12000;
   int wait_to_kill_ = kill_reload_ / 3;
-  int wait_to_stop_time = stop_time_reload;
 
  private:
   void ShiftCoordinate(Coordinate* coordinate);

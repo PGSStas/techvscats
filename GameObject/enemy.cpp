@@ -30,7 +30,6 @@ void Enemy::Tick(int current_time) {
   animation_players_[0].Tick(delta_time_ *
       applied_effect_.GetMoveSpeedCoefficient());
   wait_to_kill_ -= delta_time_;
-  wait_to_stop_time -= delta_time_;
 }
 
 void Enemy::Move() {
