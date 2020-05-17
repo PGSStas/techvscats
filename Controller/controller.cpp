@@ -539,9 +539,9 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
     auto instance = enemy;
     instance.SetPosition(enemy);
     auto boss_size = instance.GetSize();
-    if (boss_size.width > 270) {
+    if (boss_size.width > 290) {
       instance.SetSize(boss_size / 1.2);
-      instance.SetSpeed(instance.GetSpeed() * 1.2);
+      instance.SetSpeed(instance.GetSpeed() * 1.4);
       model_->AddEnemyFromInstance(instance, true);
       model_->AddEnemyFromInstance(instance, true);
     }
