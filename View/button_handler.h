@@ -120,7 +120,7 @@ class ButtonHandler : public QObject {
   // left to check icons
   bool is_language_russian_ = true;
 
-  const int kMaxLevel_ = 2;
+  const int kMaxLevel_ = 3;
 };
 
 #endif  // VIEW_BUTTON_HANDLER_H_

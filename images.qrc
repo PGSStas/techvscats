@@ -190,6 +190,7 @@
 
         <file>resources/images/backgrounds/map_level_1_1.png</file>
         <file>resources/images/backgrounds/map_level_2_1.png</file>
+        <file>resources/images/backgrounds/map_level_3_1.png</file>
         <file>resources/images/backgrounds/main_background_1.png</file>
         <file>resources/images/backgrounds/settings_background_1.png</file>
         <file>resources/images/backgrounds/titles_background_1.png</file>
@@ -382,5 +383,6 @@
         <file>resources/images/backgrounds/logo.png</file>
         <file>resources/images/backgrounds/texture_level_1.png</file>
         <file>resources/images/backgrounds/texture_level_2.png</file>
+        <file>resources/images/backgrounds/texture_level_3.png</file>
     </qresource>
 </RCC>

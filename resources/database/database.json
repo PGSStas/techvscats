@@ -170,7 +170,7 @@
     },
     {
       "speed": 3,
-      "damage": 40,
+      "damage": 100,
       "armor": 0,
       "reward": 565,
       "max_health": 1721,

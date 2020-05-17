@@ -266,7 +266,6 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   bool boss_is_alive = false;
-  bool stop_the_time = false;
   auto enemies = model_->GetEnemies();
   enemies->remove_if([this](const auto& enemy) {
     if (enemy->IsDead() && !enemy->IsEndReached()) {
@@ -283,6 +282,12 @@ void Controller::TickEnemies() {
     if (enemy->IsBoss()) {
       boss_is_alive = true;
       BossTowerKill(enemy.get());
+      if (enemy->GetPosition().GetVectorTo(base->GetPosition()).GetLength()
+          < 300) {
+        if (enemy->GetSize().width > base->GetSize().width) {
+          enemy->SetSize(enemy->GetSize() *= 0.99);
+        }
+      }
     }
   }
   if (boss_is_alive_ != boss_is_alive) {
