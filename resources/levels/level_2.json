@@ -785,6 +785,15 @@
         "group_size": 40,
         "road_to_spawn": 2
       }
+    ],
+    [
+      {
+        "spawn_period": 0,
+        "enemy_id": 8,
+        "time_of_next_spawn": 0,
+        "group_size": 1,
+        "road_to_spawn": 0
+      }
     ]
   ],
   "empty_towers": [
