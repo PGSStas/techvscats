@@ -62,7 +62,7 @@ class MultiplayerClient : public QObject {
   QWebSocket* server_web_socket_{};
   // const QString address_ = "ws://localhost:1234";
   const QString address_ = "ws://49.12.75.135:1234";
-  const int kMaxMessageSize_ = 30;
+  const int kMaxMessageSize_ = 80;
   bool is_online_ = false;
   bool is_end_round_message_sent_ = true;
   bool has_permission_to_start_round_ = true;
