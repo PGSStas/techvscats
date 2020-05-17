@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
   QCoreApplication::setOrganizationName(constants::kCompanyName);
   QCoreApplication::setApplicationName(constants::kApplicationName);
 
-  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+  QSettings settings;
 
   QString language = settings.value("locale", "en_US").toString();
   QTranslator translator;
