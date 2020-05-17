@@ -22,6 +22,7 @@ struct VisibleMessage {
 enum class CommandType {
   kGoldChange,
   kHealthGrow,
+  kChatClear
 };
 
 enum class MessageType {
@@ -56,7 +57,10 @@ enum class MessageType {
   kToLongMessage,
   kServerIsUnavailable,
   kGoToRoom,  // % room number
-  kNoCheat,  // % room number
+  kNoCheat,
+  kHelpGold,
+  kHelpImmortal,
+  kHelpClear,
 
   kLastTranslatable,  // To get size of enum
 
