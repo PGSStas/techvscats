@@ -15,9 +15,6 @@ Building::Building(const Building& other) :
 }
 
 void Building::Tick(int current_time) {
-  if (max_aims_ == 0) {
-    return;
-  }
   UpdateTime(current_time);
   wait_time_ += delta_time_ * applied_effect_.GetAttackRateCoefficient();
 
