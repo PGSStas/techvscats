@@ -266,6 +266,7 @@ void Controller::TickSpawners() {
 
 void Controller::TickEnemies() {
   bool boss_is_alive = false;
+  bool stop_the_time = false;
   auto enemies = model_->GetEnemies();
   enemies->remove_if([this](const auto& enemy) {
     if (enemy->IsDead() && !enemy->IsEndReached()) {
@@ -286,7 +287,6 @@ void Controller::TickEnemies() {
   }
   if (boss_is_alive_ != boss_is_alive) {
     boss_is_alive_ = boss_is_alive;
-
     if (boss_is_alive) {
       music_player_.StartEpicBossMusic();
       music_player_.PlayNewWaveSound();

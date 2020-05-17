@@ -30,6 +30,7 @@ void Enemy::Tick(int current_time) {
   animation_players_[0].Tick(delta_time_ *
       applied_effect_.GetMoveSpeedCoefficient());
   wait_to_kill_ -= delta_time_;
+  wait_to_stop_time -= delta_time_;
 }
 
 void Enemy::Move() {
@@ -161,6 +162,14 @@ bool Enemy::IsBoss() const {
 
 bool Enemy::IsTimeToKill() const {
   return wait_to_kill_ < 0;
+}
+
+bool Enemy::IsTimeToStopTheTime() const {
+  return wait_to_stop_time < 0;
+}
+
+void Enemy::TimeStopReload() {
+  wait_to_stop_time = stop_time_reload;
 }
 
 void Enemy::KillReload() {

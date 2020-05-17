@@ -25,7 +25,7 @@
     [
       {
         "x": 68,
-        "y": -50
+        "y": -250
       },
       {
         "x": 500,
@@ -200,6 +200,15 @@
     ]
   ],
   "rounds": [
+[
+  {
+    "spawn_period": 0,
+    "enemy_id": 8,
+    "time_of_next_spawn": 0,
+    "group_size": 1,
+    "road_to_spawn": 0
+  }
+],
     [
       {
         "spawn_period": 6000,
@@ -730,69 +739,60 @@
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 25000,
+        "spawn_period": 15000,
         "enemy_id": 6,
         "time_of_next_spawn": 1000,
         "group_size": 4,
         "road_to_spawn": 2
       },
       {
-        "spawn_period": 5000,
+        "spawn_period": 15000,
         "enemy_id": 5,
         "time_of_next_spawn": 5000,
-        "group_size": 8,
+        "group_size": 4,
         "road_to_spawn": 2
       },
       {
-        "spawn_period": 5000,
+        "spawn_period": 15000,
         "enemy_id": 7,
         "time_of_next_spawn": 8500,
         "group_size": 2,
         "road_to_spawn": 2
       },
       {
-        "spawn_period": 5000,
+        "spawn_period": 15000,
         "enemy_id": 5,
         "time_of_next_spawn": 5000,
         "group_size": 8,
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 5000,
+        "spawn_period": 15000,
         "enemy_id": 7,
         "time_of_next_spawn": 8500,
         "group_size": 4,
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 500,
+        "spawn_period": 1000,
         "enemy_id": 3,
         "time_of_next_spawn": 16000,
         "group_size": 40,
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 500,
+        "spawn_period": 1000,
         "enemy_id": 3,
         "time_of_next_spawn": 16000,
         "group_size": 40,
         "road_to_spawn": 1
       },
       {
-        "spawn_period": 500,
+        "spawn_period": 1000,
         "enemy_id": 3,
         "time_of_next_spawn": 16000,
         "group_size": 40,
         "road_to_spawn": 2
-      }
-    ],
-    [
-      {
-        "spawn_period": 0,
-        "enemy_id": 8,
-        "time_of_next_spawn": 0,
-        "group_size": 1,
-        "road_to_spawn": 0
       }
     ]
   ],
