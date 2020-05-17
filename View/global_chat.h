@@ -2,6 +2,7 @@
 #define VIEW_GLOBAL_CHAT_H_
 
 #include <QApplication>
+#include <QScroller>
 #include <QStringList>
 #include <QLineEdit>
 #include <QTextBrowser>
@@ -34,9 +35,13 @@ class GlobalChat {
   void SetVisible(bool visible);
 
  private:
-  bool is_game_style_using_ = true;
-  bool is_brick_going_up_ = true;
-  int how_high_brick_percent_ = 100;
+  bool using_game_style_ = true;
+
+  bool is_brick_going_up_ = false;
+  int how_high_brick_percent_ = 0;
+  bool is_brick_going_right_ = false;
+  int how_right_brick_percent_ = 0;
+
   QStringList text_browser_messages_;
   QStringList send_messages_;
 
@@ -50,7 +55,7 @@ class GlobalChat {
   const int kCloseSpeed = 60;
   const Size kTextEditSize = {700, button_constants::kShortButtonSize.height};
   const double kFondSize = 26;
-  const Coordinate kBottomLeftPosition = {20, 1080};
+  const Coordinate kBottomLeftPosition = {20, 1060};
 
   void SendMessage();
 };

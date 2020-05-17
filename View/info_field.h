@@ -18,6 +18,11 @@
 class InfoField {
  public:
   void Draw(QPainter* painter, const SizeHandler& size_handler) const;
+  void DrawCurrentTower(QPainter* painter,
+                        const SizeHandler& size_handler) const;
+  void DrawPurchasableTower(QPainter* painter,
+                            const SizeHandler& size_handler,
+                            const QFontMetrics& metrics) const;
   void DrawStatistics(QPainter* painter, const SizeHandler& size_handler,
                       double text_height) const;
   void DrawSellInfo(QPainter* painter, const SizeHandler& size_handler,
@@ -25,7 +30,8 @@ class InfoField {
   void DrawImage(QPainter* painter, const SizeHandler& size_handler,
                  double field_size) const;
 
-  void SetInfo(const Building& building, int total_cost);
+  void SetInfo(const Building& building, int total_cost,
+               bool is_current_tower);
   void SetPosition(Coordinate position, Size button_size, double shift);
   void SetVisible(bool is_hide);
   void SetImage(QImage image);
@@ -45,8 +51,10 @@ class InfoField {
   int cost_ = 0;
   QString attack_speed_;
 
+  bool is_current_tower_;
   bool has_image_ = false;
   QImage image_;
+  Effect effect_ = Effect(EffectTarget::kBuilding);
 
   const double kMargin = 10;
   const Size kSize = {500, 450};

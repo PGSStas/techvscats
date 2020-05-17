@@ -36,7 +36,7 @@ void MultiplayerClient::LoadDatabase() {
   }
   QJsonArray description_array = QJsonDocument::fromJson(
       description_file.readAll()).array();
-  int enum_size = static_cast<int>(MessageType::kLast);
+  int enum_size = static_cast<int>(MessageType::kLastTranslatable);
   database_.resize(enum_size);
   for (int i = 0; i < description_array.count(); i++) {
     auto info = description_array[i].toObject();
@@ -182,21 +182,29 @@ void MultiplayerClient::ProcessCommand(QString command) {
   }
   if (words[0] == "gold" && words.size() == 2) {
     if (words[1].toInt()) {
-      received_message_.push_back(
-          Message().SetCommandMessage(words[1],
-                                      CommandType::kGoldChange));
+      if (IsOnline()) {
+        CreateVisibleMessage(Message(MessageType::kNoCheat));
+      } else {
+        received_message_.push_back(
+            Message().SetCommandMessage(words[1],
+                                        CommandType::kGoldChange));
 
-      CreateVisibleMessage(Message(MessageType::kMoreGold));
+        CreateVisibleMessage(Message(MessageType::kMoreGold));
+      }
     } else {
       CreateVisibleMessage(Message(MessageType::kGoldError));
     }
     return;
   }
   if (words[0] == "iddqd") {
-    received_message_.push_back(
-        Message().SetCommandMessage(words[0],
-                                    CommandType::kHealthGrow));
-    CreateVisibleMessage(Message(MessageType::kInfinityHealth));
+    if (IsOnline()) {
+      CreateVisibleMessage(Message(MessageType::kNoCheat));
+    } else {
+      received_message_.push_back(
+          Message().SetCommandMessage(words[0],
+                                      CommandType::kHealthGrow));
+      CreateVisibleMessage(Message(MessageType::kInfinityHealth));
+    }
     return;
   }
   CreateVisibleMessage(Message(MessageType::kErrorCommand));

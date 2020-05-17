@@ -28,8 +28,10 @@ void ButtonHandler::CreateButtons() {
 void ButtonHandler::UpdateButtonsStatus(bool online_status,
                                         bool register_status) {
   online_button_->EnableSecondIcon(online_status);
-  restart_button_->setEnabled(!online_status);
   start_game_button_->setEnabled(register_status || !online_status);
+  effect_toggle_button_->EnableSecondIcon(is_effect_toggle_active_);
+  start_game_button_->setText(
+      !online_status ? tr("START") : tr("START MULTIPLAYER"));
 }
 
 void ButtonHandler::RescaleButtons(const SizeHandler& size_handler) {
@@ -55,12 +57,17 @@ void ButtonHandler::SetSettingsUiVisible(bool visible) {
   sound_button_->setVisible(visible);
   reset_game_button_->setVisible(visible);
   to_main_menu_button_->setVisible(visible);
-  fullscreen_button_->setVisible(visible);
   titles_button_->setVisible(visible);
+#ifndef Q_OS_ANDROID
+  fullscreen_button_->setVisible(visible);
+#else
+  fullscreen_button_->setVisible(false);
+#endif
 }
 
 void ButtonHandler::SetGameUiVisible(bool visible) {
   pause_button_->setVisible(visible);
+  effect_toggle_button_->setVisible(visible);
   zero_speed_button_->setVisible(visible);
   normal_speed_button_->setVisible(visible);
   double_speed_button_->setVisible(visible);
@@ -103,19 +110,24 @@ WindowType ButtonHandler::GetWindowType() const {
   return window_type_;
 }
 
+bool ButtonHandler::IsEffectToggleActive() const {
+  return is_effect_toggle_active_;
+}
+
 void ButtonHandler::CreateMainMenuButtons() {
   start_game_button_ = new MenuButton(
-      tr("НАЧАТЬ ИГРУ"), long_button_size_, main_window_, font_id_);
+      tr("START"), long_button_size_, main_window_, font_id_);
   auto start_game_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
     controller_->StartGame(level_number_);
+    controller_->ChangeChatStyle();
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(start_game_button_, &QPushButton::clicked, start_game_button_click);
 
   settings_button_ = new MenuButton(
-      tr("НАСТРОЙКИ"), long_button_size_, main_window_, font_id_);
+      tr("SETTINGS"), long_button_size_, main_window_, font_id_);
   auto settings_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kSettings;
@@ -123,7 +135,7 @@ void ButtonHandler::CreateMainMenuButtons() {
   connect(settings_button_, &QPushButton::clicked, settings_button_click);
 
   exit_button_ = new MenuButton(
-      tr("ВЫЙТИ ИЗ ИГРЫ"), long_button_size_, main_window_, font_id_);
+      tr("LEAVE"), long_button_size_, main_window_, font_id_);
   connect(
       exit_button_, &QPushButton::clicked, main_window_, &QMainWindow::close);
 
@@ -131,7 +143,7 @@ void ButtonHandler::CreateMainMenuButtons() {
       Size(long_button_size_.width - short_button_size_.width * 2 - shift_ * 2,
            long_button_size_.height);
   choose_level_number_ = new MenuButton(
-      tr("УРОВЕНЬ") + " " + QString::number(level_number_),
+      tr("LEVEL") + " " + QString::number(level_number_),
       choose_level_number_size, main_window_, font_id_);
 
   inc_level_button_ = new MenuButton(
@@ -172,6 +184,7 @@ void ButtonHandler::CreateMainMenuButtons() {
       ":resources/buttons_resources/online_button_online_active.png");
   connect(
       online_button_, &QPushButton::clicked, main_window_, online_click);
+  SetMainMenuUiVisible(false);
 }
 
 void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
@@ -222,16 +235,17 @@ void ButtonHandler::CreateSettingsButtons() {
   auto language_button_click = [this]() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
-    QString text = tr("мы перезапустим приложение.");
+    QString text = tr("we will restart the app.");
 #ifdef Q_OS_ANDROID
     if (QtAndroid::androidSdkVersion() > 27) {
-      text = tr("вам придется перезапустить приложение.");
+      text = tr("You will have to restart the app.");
     }
 #endif
-    auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-                                          tr("Чтобы язык приложения изменился,")
-                                              + " " + text + " " +
-                                              tr("Все равно продолжить?"));
+    auto response = QMessageBox::question(
+        main_window_, tr("Attention!"),
+        tr("To change the app's language,")
+            + " " + text + " " +
+            tr("Still continue?"));
     if (response != QMessageBox::Yes) {
       return;
     }
@@ -264,7 +278,7 @@ void ButtonHandler::CreateSettingsButtons() {
   connect(sound_button_, &QPushButton::clicked, sound_button_click);
 
   fullscreen_button_ = new MenuButton(
-      tr("ОКОННЫЙ РЕЖИМ"), long_button_size_, main_window_, font_id_);
+      tr("WINDOW MODE"), long_button_size_, main_window_, font_id_);
   auto fullscreen_click = [this]() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
@@ -274,12 +288,13 @@ void ButtonHandler::CreateSettingsButtons() {
   connect(fullscreen_button_, &QPushButton::clicked, fullscreen_click);
 
   reset_game_button_ = new MenuButton(
-      tr("СБРОСИТЬ ПРОГРЕСС"), long_button_size_, main_window_, font_id_);
+      tr("RESET PROGRESS"), long_button_size_, main_window_, font_id_);
   auto reset_game_click = [this]() {
     QSettings settings(constants::kCompanyName, constants::kApplicationName);
     controller_->GetMusicPlayer()->PlayButtonSound();
-    auto response = QMessageBox::question(main_window_, tr("Внимание!"),
-                                          tr("Сброс прогресса нельзя отменить! Все равно продолжить?"));
+    auto response = QMessageBox::question(
+        main_window_, tr("Attention!"),
+        tr("You can't cancel the progress reset! Still continue?"));
     if (response == QMessageBox::Yes) {
       settings.setValue("levels_passed", 0);
       SetCurrentLevel(1);
@@ -297,12 +312,13 @@ void ButtonHandler::CreateSettingsButtons() {
   connect(titles_button_, &QPushButton::clicked, titles_click);
 
   to_main_menu_button_ = new MenuButton(
-      tr("ВЕРНУТЬСЯ В МЕНЮ"), long_button_size_, main_window_, font_id_);
+      tr("BACK TO MENU"), long_button_size_, main_window_, font_id_);
   auto back_to_main_menu_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kMainMenu;
   };
   connect(to_main_menu_button_, &QPushButton::clicked, back_to_main_menu_click);
+  SetSettingsUiVisible(false);
 }
 
 void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
@@ -315,14 +331,18 @@ void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
       first_button_coordinate_ + Size(long_button_size_.width / 2, 0)
           - Size(short_button_size_.width, 0) + Size(shift.height, 0),
       size_handler);
+  Size temp_shift = {0, 0};
+#ifndef Q_OS_ANDROID
   fullscreen_button_->SetGeometry(first_button_coordinate_ + shift,
                                   size_handler);
-  reset_game_button_->SetGeometry(first_button_coordinate_ + shift * 2,
-                                  size_handler);
-  titles_button_->SetGeometry(first_button_coordinate_ + shift * 3,
-                              size_handler);
-  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 4,
-                                    size_handler);
+  temp_shift = shift;
+#endif
+  reset_game_button_->SetGeometry(first_button_coordinate_ + shift +
+      temp_shift, size_handler);
+  titles_button_->SetGeometry(first_button_coordinate_ + shift * 2 +
+      temp_shift, size_handler);
+  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 3 +
+      temp_shift, size_handler);
 }
 
 void ButtonHandler::CreateGameButtons() {
@@ -334,9 +354,26 @@ void ButtonHandler::CreateGameButtons() {
   auto pause_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kPauseMenu;
-    controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
+    controller_->ChangeChatStyle();
+    controller_->ClearTextNotifications();
+    controller_->SetSpeedCoefficient(Speed::kZeroSpeed, true);
   };
+
   connect(pause_button_, &QPushButton::clicked, pause_button_click);
+
+  effect_toggle_button_ = new MenuButton(
+      short_button_size_,
+      main_window_,
+      ":resources/buttons_resources/toggle.png",
+      ":resources/buttons_resources/toggle_active.png");
+  effect_toggle_button_->SetSecondIconPath(
+      ":resources/buttons_resources/non_toggle.png",
+      ":resources/buttons_resources/non_toggle_active.png");
+  auto effect_toggle_click = [this]() {
+    is_effect_toggle_active_ = !is_effect_toggle_active_;
+  };
+
+  connect(effect_toggle_button_, &QPushButton::clicked, effect_toggle_click);
 
   zero_speed_button_ = new MenuButton(
       short_button_size_,
@@ -345,7 +382,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/zero_speed_button_active.png");
   auto zero_speed_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    controller_->SetSpeedCoefficient(Speed::kZeroSpeed);
+    controller_->SetSpeedCoefficient(Speed::kZeroSpeed, true);
     SetSpeedButtonsState(Speed::kZeroSpeed);
   };
   connect(zero_speed_button_, &QPushButton::clicked, zero_speed_button_click);
@@ -357,7 +394,7 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/normal_speed_button_active.png");
   auto normal_speed_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
+    controller_->SetSpeedCoefficient(Speed::kNormalSpeed, true);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(normal_speed_button_,
@@ -372,12 +409,13 @@ void ButtonHandler::CreateGameButtons() {
       ":resources/buttons_resources/double_speed_button_active.png");
   auto double_speed_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    controller_->SetSpeedCoefficient(Speed::kDoubleSpeed);
+    controller_->SetSpeedCoefficient(Speed::kDoubleSpeed, true);
     SetSpeedButtonsState(Speed::kDoubleSpeed);
   };
   connect(double_speed_button_,
           &QPushButton::clicked,
           double_speed_button_click);
+  SetGameUiVisible(false);
 }
 
 void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
@@ -387,6 +425,8 @@ void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
           button_constants::kShortButtonSize.width - 20, 20}, size_handler);
   Coordinate zero_speed_button_coordinate =
       Coordinate(20, 480) + shift;
+  effect_toggle_button_->SetGeometry(zero_speed_button_coordinate - shift,
+                                     size_handler);
   zero_speed_button_->SetGeometry(zero_speed_button_coordinate, size_handler);
   normal_speed_button_->SetGeometry(zero_speed_button_coordinate + shift,
                                     size_handler);
@@ -396,10 +436,11 @@ void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
 
 void ButtonHandler::CreatePauseMenuButtons() {
   restart_button_ = new MenuButton(
-      tr("НАЧАТЬ УРОВЕНЬ ЗАНОВО"), long_button_size_, main_window_, font_id_);
+      tr("START THE LEVEL AGAIN"), long_button_size_, main_window_, font_id_);
   auto restart_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kGame;
+    controller_->ChangeChatStyle();
     controller_->EndGame();
     controller_->StartGame(level_number_);
     SetSpeedButtonsState(Speed::kNormalSpeed);
@@ -407,9 +448,10 @@ void ButtonHandler::CreatePauseMenuButtons() {
   connect(restart_button_, &QPushButton::clicked, restart_button_click);
 
   continue_button_ = new MenuButton(
-      tr("ПРОДОЛЖИТЬ"), long_button_size_, main_window_, font_id_);
+      tr("RESUME"), long_button_size_, main_window_, font_id_);
   auto continue_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
+    controller_->ChangeChatStyle();
     window_type_ = WindowType::kGame;
     controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
     SetSpeedButtonsState(Speed::kNormalSpeed);
@@ -424,6 +466,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
     controller_->EndGame();
   };
   connect(to_menu_from_pause, &QPushButton::clicked, from_pause_click);
+  SetGameUiVisible(false);
 }
 
 void ButtonHandler::RescalePauseMenuButtons(SizeHandler size_handler) {
@@ -451,16 +494,15 @@ void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::SetCurrentLevel(int level) {
-  int current_max_level = QSettings(constants::kCompanyName,
-                                    constants::kApplicationName).value(
-      "levels_passed",
-      0).toInt() + 1;
+  int current_max_level =
+      QSettings(constants::kCompanyName, constants::kApplicationName).value(
+          "levels_passed", 0).toInt() + 1;
   if (level >= 1 && level <= current_max_level) {
     level_number_ = level;
   }
   inc_level_button_->setEnabled(level_number_ != current_max_level);
   dec_level_button_->setEnabled(level_number_ != 1);
-  choose_level_number_->setText(tr("УРОВЕНЬ") + " " +
+  choose_level_number_->setText(tr("LEVEL") + " " +
       QString::number(level_number_));
 }
 
@@ -475,13 +517,17 @@ int ButtonHandler::GetCurrentLevel() const {
   return level_number_;
 }
 
+void ButtonHandler::SetWindowType(WindowType window_type) {
+  window_type_ = window_type;
+}
+
 void ButtonHandler::SetFullscreen(bool fullscreen) {
   if (is_fullscreen_ == fullscreen) {
     return;
   }
   is_fullscreen_ = fullscreen;
   fullscreen_button_->setText(
-      fullscreen ? tr("ОКОННЫЙ РЕЖИМ") : tr("ПОЛНОЭКРАННЫЙ РЕЖИМ"));
+      fullscreen ? tr("WINDOWED MODE") : tr("FULLSCREEN MODE"));
   main_window_->hide();
 
   if (fullscreen) {
@@ -489,8 +535,4 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
   } else {
     main_window_->showNormal();
   }
-}
-
-void ButtonHandler::SetWindowType(WindowType type) {
-  window_type_ = type;
 }
