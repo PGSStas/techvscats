@@ -422,7 +422,7 @@ void ButtonHandler::CreateGameButtons() {
           double_speed_button_click);
 
   next_level_button_ = new MenuButton(
-      tr("ИГРАТЬ ДАЛЬШЕ ->"),
+      tr("PLAY NEXT ->"),
       Size(long_button_size_.width, long_button_size_.height * 2),
       main_window_, font_id_);
   auto next_level_button_click = [this]() {
