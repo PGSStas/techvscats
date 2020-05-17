@@ -154,7 +154,7 @@ void Server::ProcessGlobalChatMessage(const Message& message,
     chat->removeAt(0);
   }
   for (auto& client : clients_) {
-    if (!client.nick_name.isEmpty()) {
+    if (client.nick_name.isEmpty()) {
       continue;
     }
     if (is_room && client.room == owner->room) {

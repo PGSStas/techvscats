@@ -75,7 +75,7 @@ void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
                   * (1 - how_high_brick_percent_ / 100.0)});
   Size text_browser_size = size_handler.GameToWindowSize(
       {kTextEditSize.width + kTextEditSize.height,
-       kTextEditSize.height * 9 * how_high_brick_percent_ / 100});
+       kTextEditSize.height * 8 * how_high_brick_percent_ / 100});
 
   q_text_browser_->setGeometry(text_browser_position.x,
                                text_browser_position.y,
