@@ -45,10 +45,6 @@ GlobalChat::GlobalChat(QMainWindow* window)
                    &QPushButton::clicked,
                    close_open_button_click);
   ChangeStyle();
-  q_line_edit_->show();
-  brick_button->show();
-  send_button->show();
-  q_text_browser_->show();
 
   q_text_browser_->setFocusPolicy(Qt::NoFocus);
 }
@@ -74,8 +70,8 @@ void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
   Coordinate text_browser_position =
       size_handler.GameToWindowCoordinate(
           {kBottomLeftPosition.x, kBottomLeftPosition.y
-              - kTextEditSize.height * 10
-              + kTextEditSize.height * 9
+              - kTextEditSize.height * 9
+              + kTextEditSize.height * 8
                   * (1 - how_high_brick_percent_ / 100.0)});
   Size text_browser_size = size_handler.GameToWindowSize(
       {kTextEditSize.width + kTextEditSize.height,
@@ -95,7 +91,7 @@ void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
       kBottomLeftPosition +
           Size(kTextEditSize.width * how_right_brick_percent_ / 100,
                -kTextEditSize.height
-                   - kTextEditSize.height * 9 / 100 * how_high_brick_percent_),
+                   - kTextEditSize.height * 8 / 100 * how_high_brick_percent_),
       size_handler);
 }
 

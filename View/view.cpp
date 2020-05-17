@@ -50,6 +50,7 @@ void View::SecondConstructorPart() {
   button_handler_->SetTitlesVisible(false);
   is_model_loaded_ = true;
   Resize();
+  global_chat_->SetVisible(true);
 }
 
 void View::paintEvent(QPaintEvent*) {
