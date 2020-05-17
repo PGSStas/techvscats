@@ -62,12 +62,14 @@ void MenuButton::SetGeometry(
       button_constants::kMenuFontSize));
   setFont(font);
 
-  if (text() != "") {
+  if (!text().isEmpty()) {
     border_size_ =
         size_handler.GameToWindowLength(button_constants::kMenuBorderSize);
     QString style_sheet = styleSheet() +
         "border: " + QString::number(border_size_) + "px solid #000000;";
     setStyleSheet(style_sheet);
+  } else {
+    setStyleSheet("background: transparent; border: transparent;");
   }
 }
 
@@ -80,23 +82,27 @@ void MenuButton::ResetStyleSheet() {
 }
 
 void MenuButton::enterEvent(QEvent*) {
-  if (text() != "") {
+  if (!text().isEmpty()) {
     QString style_sheet =
         "border: " + QString::number(border_size_) + "px solid #000000;";
     style_sheet += "background-color: " +
         QColor::fromRgb(static_cast<int32_t>(random_generator_())).name() + ";";
     setStyleSheet(style_sheet);
+  } else {
+    setStyleSheet("background: transparent; border: transparent;");
   }
   have_entered_event_ = true;
   setIcon((is_second_icon_enabled_) ? active_icon_2_ : active_icon_1_);
 }
 
 void MenuButton::leaveEvent(QEvent*) {
-  if (text() != "") {
+  if (!text().isEmpty()) {
     QString style_sheet =
         "border: " + QString::number(border_size_) + "px solid #000000;";
     style_sheet += "background-color: #ffffff;";
     setStyleSheet(style_sheet);
+  } else {
+    setStyleSheet("background: transparent; border: transparent;");
   }
   have_entered_event_ = false;
   setIcon((is_second_icon_enabled_) ? main_icon_2_ : main_icon_1_);

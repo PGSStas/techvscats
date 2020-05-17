@@ -61,9 +61,13 @@ class TowerMenu {
 
   double current_force_;
 
+#ifndef Q_OS_ANDROID
   const double kThrowForce = 18;
+#else
+  const double kThrowForce = 24;
+#endif
   const double kSlowdownCoefficient = 0.86;
-  const Size kSizeOfButton = {60, 60};
+  const Size kSizeOfButton = button_constants::kShortButtonSize * 0.8;
 
  private:
   void Disable();

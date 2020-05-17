@@ -114,5 +114,17 @@
   {
     "message": "! Cheats don't work in multiplayer :(",
     "type": 0
+  },
+  {
+    "message": "< /gold N - add N gold to your balance",
+    "type": 0
+  },
+  {
+    "message": "< /idqdd - immortality ",
+    "type": 0
+  },
+  {
+    "message": "< /clear - clear chat ",
+    "type": 0
   }
 ]
