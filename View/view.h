@@ -45,6 +45,7 @@ class View : public QMainWindow {
   bool IsTowerMenuEnabled() const;
 
   void ChangeGameSpeed(Speed speed, bool im_the_button = false);
+  void ClearChat();
 
   int GetRealTime() const;
 

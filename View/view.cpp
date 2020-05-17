@@ -403,6 +403,10 @@ void View::ChangeGameSpeed(Speed speed, bool notify_button_handler) {
   }
 }
 
+void View::ClearChat() {
+  global_chat_->Clear();
+}
+
 void View::DrawRoundInfo(QPainter* painter) {
   auto font = painter->font();
   font.setPixelSize(size_handler_.GameToWindowLength(constants::kFontSize));

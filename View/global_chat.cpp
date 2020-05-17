@@ -5,7 +5,6 @@ GlobalChat::GlobalChat(QMainWindow* window)
       q_line_edit_(new QLineEdit(window)) {
   q_text_browser_->setTextInteractionFlags(Qt::NoTextInteraction);
   QScroller::grabGesture(q_text_browser_, QScroller::TouchGesture);
-
   QString family = QFontDatabase::applicationFontFamilies(kFontId).at(0);
   QFont font(family);
   font.setFixedPitch(true);

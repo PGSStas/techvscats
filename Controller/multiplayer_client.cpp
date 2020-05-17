@@ -180,6 +180,18 @@ void MultiplayerClient::ProcessCommand(QString command) {
     }
     return;
   }
+  if (words[0] == "clear" && words.size() == 1) {
+    received_message_.push_back(
+        Message().SetCommandMessage("",
+                                    CommandType::kChatClear));
+    return;
+  }
+  if (words[0] == "help" && words.size() == 1) {
+    CreateVisibleMessage(Message(MessageType::kHelpClear));
+    CreateVisibleMessage(Message(MessageType::kHelpImmortal));
+    CreateVisibleMessage(Message(MessageType::kHelpGold));
+    return;
+  }
   if (words[0] == "gold" && words.size() == 2) {
     if (words[1].toInt()) {
       if (IsOnline()) {
