@@ -580,6 +580,32 @@
       "particles": {
         "at_death": 6
       }
+    },
+    {
+      "speed": 3,
+      "damage": 30,
+      "armor": 0,
+      "reward": 565,
+      "max_health": 2021,
+      "priority": 0,
+      "auric_field": {
+        "radius": 600,
+        "effect_id": 8
+      },
+      "size": {
+        "width": 450,
+        "height": 300
+      },
+      "animation": {
+        "path": "enemies/vaccleaner_4",
+        "timing": 800
+      },
+      "particles": {
+        "at_death": 0,
+        "while_alive": 2,
+        "period": 600
+      },
+      "is_tower_killer": true
     }
   ],
   "effects": [
