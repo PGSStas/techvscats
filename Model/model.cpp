@@ -452,8 +452,8 @@ void Model::LoadEnemies(const QJsonObject& json_object) {
                               enemy["armor"].toInt(), enemy["reward"].toInt(),
                               enemy["max_health"].toInt(),
                               size, enemy["priority"].toInt(), aura);
-    if (enemy.contains("is_tower_killer")) {
-      id_to_enemy_.back().SetBoss(enemy["is_tower_killer"].toBool());
+    if (enemy.contains("is_boss")) {
+      id_to_enemy_.back().SetBoss(enemy["is_boss"].toBool());
     }
     SetAnimationToGameObject(
         &id_to_enemy_.back(),

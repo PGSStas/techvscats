@@ -630,6 +630,10 @@ void Controller::ProcessCommand(const Message& message) {
       }
       break;
     }
+    case CommandType::kChatClear: {
+      view_->ClearChat();
+      break;
+    }
   }
 }
 
