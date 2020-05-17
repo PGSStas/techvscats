@@ -765,21 +765,21 @@
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 1000,
+        "spawn_period": 500,
         "enemy_id": 3,
         "time_of_next_spawn": 16000,
         "group_size": 40,
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 1000,
+        "spawn_period": 500,
         "enemy_id": 3,
         "time_of_next_spawn": 16000,
         "group_size": 40,
         "road_to_spawn": 1
       },
       {
-        "spawn_period": 1000,
+        "spawn_period": 500,
         "enemy_id": 3,
         "time_of_next_spawn": 16000,
         "group_size": 40,
