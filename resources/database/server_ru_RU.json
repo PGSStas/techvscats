@@ -116,7 +116,7 @@
     "type": 0
   },
   {
-    "message": "< /gold <int> - больше денег",
+    "message": "< /gold N - добавляет N денег",
     "type": 0
   },
   {

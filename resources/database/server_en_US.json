@@ -116,11 +116,11 @@
     "type": 0
   },
   {
-    "message": "< /gold <int> - more gold ",
+    "message": "< /gold N - add N gold to your balance",
     "type": 0
   },
   {
-    "message": "< /idqdd - immortal ",
+    "message": "< /idqdd - immortality ",
     "type": 0
   },
   {
