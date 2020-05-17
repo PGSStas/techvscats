@@ -232,9 +232,15 @@ int View::GetRealTime() const {
 
 void View::DrawTowersAuraAndRange(QPainter* painter) {
   if (tower_menu_.IsEnable()) {
-    tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
-                                       *controller_->GetBuildings()[
-                                           tower_menu_.GetTownerIndex()]);
+    if (tower_menu_.GetChosenButtonId() != -1) {
+      tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
+                                         controller_->GetBuildingById(
+                                             tower_menu_.GetChosenButtonId()));
+    } else {
+      tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
+                                         *controller_->GetBuildings()[
+                                             tower_menu_.GetTownerIndex()]);
+    }
   }
 }
 

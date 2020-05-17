@@ -21,10 +21,6 @@ void Base::Tick(int current_time) {
 }
 
 void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
-  if(current_health_<=0){
-    return;
-  }
-
   painter->save();
 
   Coordinate point = size_handler.GameToWindowCoordinate(

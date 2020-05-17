@@ -197,9 +197,6 @@ void Controller::CreateNextWave() {
     model_->AddSpawner(enemy_group);
   }
   model_->IncreaseCurrentRoundNumber();
-  if (model_->IsLastRound()) {
-    music_player_.StartEpicBossMusic();
-  }
 }
 
 void Controller::TickClient() {
