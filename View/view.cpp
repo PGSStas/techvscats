@@ -294,7 +294,7 @@ void View::keyPressEvent(QKeyEvent* event) {
   }
   if (event->key() == Qt::Key_Escape &&
       button_handler_->GetWindowType() == WindowType::kTitles) {
-    button_handler_->SetWindowType(WindowType::kSettings);
+    button_handler_->SetWindowType(WindowType::kMainMenu);
     controller_->EndTitles();
   }
 }
@@ -470,7 +470,11 @@ void View::ShowSettingsButton() {
 }
 
 void View::ShowNextLevelButton() {
-  button_handler_->SetNextLevelButtonVisible(true);
+  if (IsLastLevel()) {
+    button_handler_->SetTitlesButtonVisible(true);
+  } else {
+    button_handler_->SetNextLevelButtonVisible(true);
+  }
 }
 
 void View::BeginNextLevel() {

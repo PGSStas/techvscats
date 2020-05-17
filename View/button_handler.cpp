@@ -504,7 +504,7 @@ void ButtonHandler::CreateTitleButtons() {
       tr("ВЕРНУТЬСЯ"), long_button_size_, main_window_, font_id_);
   auto return_to_settings = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    window_type_ = WindowType::kSettings;
+    window_type_ = WindowType::kMainMenu;
     controller_->EndTitles();
   };
   connect(to_settings_button_, &QPushButton::clicked, return_to_settings);
@@ -562,4 +562,9 @@ void ButtonHandler::SetNextLevelButtonVisible(bool visible) {
 
 int ButtonHandler::GetMaxLevel() const {
   return kMaxLevel_;
+}
+
+void ButtonHandler::SetTitlesButtonVisible(bool visible) {
+    next_level_button_->setText(tr("TITLES ->"));
+    next_level_button_->setVisible(visible);
 }
