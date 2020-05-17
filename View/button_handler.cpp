@@ -424,7 +424,7 @@ void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
       {constants::kGameWidth -
           button_constants::kShortButtonSize.width - 20, 20}, size_handler);
   Coordinate zero_speed_button_coordinate =
-      Coordinate(20, 480) + shift;
+      Coordinate(20, 400) + shift;
   effect_toggle_button_->SetGeometry(zero_speed_button_coordinate - shift,
                                      size_handler);
   zero_speed_button_->SetGeometry(zero_speed_button_coordinate, size_handler);
