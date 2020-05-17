@@ -80,6 +80,7 @@ class AbstractController {
 
   virtual void CreateTitles() = 0;
   virtual void EndTitles() = 0;
+  virtual void BeginNextLevel() = 0;
 
   virtual MusicPlayer* GetMusicPlayer() = 0;
   virtual MultiplayerClient* GetClient() = 0;

@@ -29,7 +29,8 @@ class MusicPlayer {
   void PlayButtonSound();
   void PlayGameOverSound();
   void PlayGameWonSound();
-  void PlayNewWaveSound();
+  void PlayNewLevelSound();
+  void StopNewLevelSound();
   void PlaySaleSound();
   void PlayNotEnoughMoneySound();
 
@@ -46,7 +47,7 @@ class MusicPlayer {
   std::shared_ptr<QMediaPlayer> game_won_sound_;
   std::shared_ptr<QMediaPlayer> sale_sound_;
   std::shared_ptr<QMediaPlayer> not_enough_money_sound_;
-  std::shared_ptr<QMediaPlayer> new_wave_;
+  std::shared_ptr<QMediaPlayer> new_level_sound_;
   std::vector<std::shared_ptr<QMediaPlaylist>> playlists_;
 };
 

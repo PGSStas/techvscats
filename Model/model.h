@@ -8,7 +8,6 @@
 #include <vector>
 
 #include <QCoreApplication>
-#include <QDebug>
 #include <QDir>
 #include <QSettings>
 #include <QString>

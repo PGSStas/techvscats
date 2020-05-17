@@ -8,7 +8,7 @@ MusicPlayer::MusicPlayer()
       game_won_sound_(std::make_shared<QMediaPlayer>()),
       sale_sound_(std::make_shared<QMediaPlayer>()),
       not_enough_money_sound_(std::make_shared<QMediaPlayer>()),
-      new_wave_(std::make_shared<QMediaPlayer>()) {
+      new_level_sound_(std::make_shared<QMediaPlayer>()) {
   main_player_->setPlaylist(main_playlist_.get());
 
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/menu_sound.mp3"));
@@ -22,7 +22,7 @@ MusicPlayer::MusicPlayer()
   SetSound(sale_sound_.get(), "qrc:resources/sounds/sale_sound.mp3");
   SetSound(not_enough_money_sound_.get(),
            "qrc:resources/sounds/not_enough_money_sound.mp3");
-  SetSound(new_wave_.get(), "qrc:resources/sounds/new_wave_sound.mp3");
+  SetSound(new_level_sound_.get(), "qrc:resources/sounds/new_wave_sound.mp3");
 
   SetVolume(100);
   main_player_->play();
@@ -35,7 +35,7 @@ void MusicPlayer::SetVolume(int volume) {
   game_won_sound_->setVolume(volume);
   sale_sound_->setVolume(volume);
   not_enough_money_sound_->setVolume(volume);
-  new_wave_->setVolume(0.4 * volume);
+  new_level_sound_->setVolume(0.2 * volume);
 }
 
 void MusicPlayer::StartMenuMusic() {
@@ -69,8 +69,8 @@ void MusicPlayer::PlayGameWonSound() {
   game_won_sound_->play();
 }
 
-void MusicPlayer::PlayNewWaveSound() {
-  new_wave_->play();
+void MusicPlayer::PlayNewLevelSound() {
+  new_level_sound_->play();
 }
 
 void MusicPlayer::PlaySaleSound() {
@@ -98,7 +98,11 @@ MusicPlayer::~MusicPlayer() {
   game_won_sound_->stop();
   sale_sound_->stop();
   not_enough_money_sound_->stop();
-  new_wave_->stop();
+  new_level_sound_->stop();
+}
+
+void MusicPlayer::StopNewLevelSound() {
+  new_level_sound_->stop();
 }
 
 void MusicPlayer::Pause() {
@@ -120,8 +124,8 @@ void MusicPlayer::Pause() {
   if (not_enough_money_sound_->state() == QMediaPlayer::PlayingState) {
     not_enough_money_sound_->pause();
   }
-  if (new_wave_->state() == QMediaPlayer::PlayingState) {
-    new_wave_->pause();
+  if (new_level_sound_->state() == QMediaPlayer::PlayingState) {
+    new_level_sound_->pause();
   }
 }
 
@@ -144,7 +148,7 @@ void MusicPlayer::Resume() {
   if (not_enough_money_sound_->state() == QMediaPlayer::PausedState) {
     not_enough_money_sound_->play();
   }
-  if (new_wave_->state() == QMediaPlayer::PausedState) {
-    new_wave_->play();
+  if (new_level_sound_->state() == QMediaPlayer::PausedState) {
+    new_level_sound_->play();
   }
 }

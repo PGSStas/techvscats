@@ -55,6 +55,9 @@ class View : public QMainWindow {
   void StartTitles();
   void EndTitles();
   void ShowSettingsButton();
+  void ShowNextLevelButton();
+  void BeginNextLevel();
+  bool IsLastLevel();
 
  private:
   AbstractController* controller_;

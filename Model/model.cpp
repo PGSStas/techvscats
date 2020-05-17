@@ -190,7 +190,6 @@ void Model::LoadLevel(int level) {
   QFile level_file(":resources/levels/level_"
                        + QString::number(level) + ".json");
   if (!level_file.open(QFile::ReadOnly)) {
-    qDebug() << "ERROR! Missing level file";
     return;
   }
   QJsonObject json_object =
@@ -311,7 +310,6 @@ void Model::LoadDatabase() {
 
   QFile level_file(":resources/database/database.json");
   if (!level_file.open(QFile::ReadOnly)) {
-    qDebug() << "ERROR! Missing database file";
     return;
   }
   QJsonObject json_object = QJsonDocument::fromJson(
@@ -479,7 +477,6 @@ void Model::LoadBuildings(const QJsonObject& json_object) {
 
   QFile description_file(":resources/database/description_" + locale + ".json");
   if (!description_file.open(QFile::ReadOnly)) {
-    qDebug() << "ERROR! Missing description file";
     return;
   }
 

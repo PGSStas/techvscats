@@ -70,6 +70,9 @@ void ButtonHandler::SetGameUiVisible(bool visible) {
   zero_speed_button_->setVisible(visible);
   normal_speed_button_->setVisible(visible);
   double_speed_button_->setVisible(visible);
+  if (!visible) {
+    next_level_button_->setVisible(visible);
+  }
 }
 
 void ButtonHandler::SetPauseMenuUiVisible(bool visible) {
@@ -322,25 +325,27 @@ void ButtonHandler::CreateSettingsButtons() {
 
 void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
   Size shift = Size(0, long_button_size_.height + shift_);
-
+  auto first_button_coordinate = Coordinate(
+      first_button_coordinate_.x,
+      first_button_coordinate_.y - shift_ - long_button_size_.height);
   sound_button_->SetGeometry(
-      first_button_coordinate_ + Size(long_button_size_.width / 2, 0)
+      first_button_coordinate + Size(long_button_size_.width / 2, 0)
           - Size(short_button_size_.width, 0), size_handler);
   language_button_->SetGeometry(
-      first_button_coordinate_ + Size(long_button_size_.width / 2, 0)
+      first_button_coordinate + Size(long_button_size_.width / 2, 0)
           - Size(short_button_size_.width, 0) + Size(shift.height, 0),
       size_handler);
   Size temp_shift = {0, 0};
 #ifndef Q_OS_ANDROID
-  fullscreen_button_->SetGeometry(first_button_coordinate_ + shift,
+  fullscreen_button_->SetGeometry(first_button_coordinate + shift,
                                   size_handler);
   temp_shift = shift;
 #endif
-  reset_game_button_->SetGeometry(first_button_coordinate_ + shift +
+  reset_game_button_->SetGeometry(first_button_coordinate + shift +
       temp_shift, size_handler);
-  titles_button_->SetGeometry(first_button_coordinate_ + shift * 2 +
+  titles_button_->SetGeometry(first_button_coordinate + shift * 2 +
       temp_shift, size_handler);
-  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 3 +
+  to_main_menu_button_->SetGeometry(first_button_coordinate + shift * 3 +
       temp_shift, size_handler);
 }
 
@@ -414,6 +419,22 @@ void ButtonHandler::CreateGameButtons() {
   connect(double_speed_button_,
           &QPushButton::clicked,
           double_speed_button_click);
+
+  next_level_button_ = new MenuButton(
+      Size(long_button_size_.width, long_button_size_.height * 2),
+      main_window_, ":resources/buttons_resources/next_level_button.png",
+      ":resources/buttons_resources/next_level_button_active.png");
+  auto next_level_button_click = [this]() {
+    controller_->GetMusicPlayer()->PlayButtonSound();
+    if (level_number_ < kMaxLevel_) {
+      SetCurrentLevel(level_number_ + 1);
+      controller_->BeginNextLevel();
+    } else {
+      window_type_ = WindowType::kTitles;
+      controller_->CreateTitles();
+    }
+  };
+  connect(next_level_button_, &QPushButton::clicked, next_level_button_click);
   SetGameUiVisible(false);
 }
 
@@ -431,6 +452,7 @@ void ButtonHandler::RescaleGameButtons(SizeHandler size_handler) {
                                     size_handler);
   double_speed_button_->SetGeometry(zero_speed_button_coordinate + shift * 2,
                                     size_handler);
+  next_level_button_->SetGeometry(first_button_coordinate_, size_handler);
 }
 
 void ButtonHandler::CreatePauseMenuButtons() {
@@ -461,6 +483,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
       tr("В ГЛАВНОЕ МЕНЮ"), long_button_size_, main_window_, font_id_);
   auto from_pause_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
+    controller_->GetMusicPlayer()->StopNewLevelSound();
     window_type_ = WindowType::kMainMenu;
     controller_->EndGame();
   };
@@ -481,7 +504,7 @@ void ButtonHandler::CreateTitleButtons() {
       tr("ВЕРНУТЬСЯ"), long_button_size_, main_window_, font_id_);
   auto return_to_settings = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
-    window_type_ = WindowType::kSettings;
+    window_type_ = WindowType::kMainMenu;
     controller_->EndTitles();
   };
   connect(to_settings_button_, &QPushButton::clicked, return_to_settings);
@@ -506,8 +529,7 @@ void ButtonHandler::SetCurrentLevel(int level) {
 void ButtonHandler::SetSoundOn(bool sound_on) {
   is_sound_on_ = sound_on;
   sound_button_->EnableSecondIcon(!is_sound_on_);
-  controller_->GetMusicPlayer()->SetVolume(
-      100 * static_cast<int>(is_sound_on_));
+  controller_->SetGameVolume(100 * static_cast<int>(is_sound_on_));
 }
 
 int ButtonHandler::GetCurrentLevel() const {
@@ -532,4 +554,12 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
   } else {
     main_window_->showNormal();
   }
+}
+
+void ButtonHandler::SetNextLevelButtonVisible(bool visible) {
+  next_level_button_->setVisible(visible);
+}
+
+int ButtonHandler::GetMaxLevel() const {
+  return kMaxLevel_;
 }
