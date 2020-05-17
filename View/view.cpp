@@ -50,7 +50,6 @@ void View::SecondConstructorPart() {
   button_handler_->SetTitlesVisible(false);
   is_model_loaded_ = true;
   Resize();
-  global_chat_->SetVisible(true);
 }
 
 void View::paintEvent(QPaintEvent*) {
@@ -233,8 +232,8 @@ int View::GetRealTime() const {
 void View::DrawTowersAuraAndRange(QPainter* painter) {
   if (tower_menu_.IsEnable()) {
     tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
-                                       controller_->GetBuildingById(
-                                           tower_menu_.GetSellectedTowerId()));
+                                       *controller_->GetBuildings()[
+                                           tower_menu_.GetTownerIndex()]);
   }
 }
 
@@ -401,10 +400,6 @@ void View::ChangeGameSpeed(Speed speed, bool notify_button_handler) {
   if (!notify_button_handler) {
     button_handler_->SetSpeed(static_cast<int>(speed));
   }
-}
-
-void View::ClearChat() {
-  global_chat_->Clear();
 }
 
 void View::DrawRoundInfo(QPainter* painter) {
