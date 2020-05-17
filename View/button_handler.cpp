@@ -338,15 +338,15 @@ void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
       size_handler);
   Size temp_shift = {0, 0};
 #ifndef Q_OS_ANDROID
-  fullscreen_button_->SetGeometry(first_button_coordinate_ + shift,
+  fullscreen_button_->SetGeometry(first_button_coordinate + shift,
                                   size_handler);
   temp_shift = shift;
 #endif
-  reset_game_button_->SetGeometry(first_button_coordinate_ + shift +
+  reset_game_button_->SetGeometry(first_button_coordinate + shift +
       temp_shift, size_handler);
-  titles_button_->SetGeometry(first_button_coordinate_ + shift * 2 +
+  titles_button_->SetGeometry(first_button_coordinate + shift * 2 +
       temp_shift, size_handler);
-  to_main_menu_button_->SetGeometry(first_button_coordinate_ + shift * 3 +
+  to_main_menu_button_->SetGeometry(first_button_coordinate + shift * 3 +
       temp_shift, size_handler);
 }
 

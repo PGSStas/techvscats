@@ -124,8 +124,8 @@ void MusicPlayer::Pause() {
   if (not_enough_money_sound_->state() == QMediaPlayer::PlayingState) {
     not_enough_money_sound_->pause();
   }
-  if (new_wave_->state() == QMediaPlayer::PlayingState) {
-    new_wave_->pause();
+  if (new_level_sound_->state() == QMediaPlayer::PlayingState) {
+    new_level_sound_->pause();
   }
 }
 
@@ -148,7 +148,7 @@ void MusicPlayer::Resume() {
   if (not_enough_money_sound_->state() == QMediaPlayer::PausedState) {
     not_enough_money_sound_->play();
   }
-  if (new_wave_->state() == QMediaPlayer::PausedState) {
-    new_wave_->play();
+  if (new_level_sound_->state() == QMediaPlayer::PausedState) {
+    new_level_sound_->play();
   }
 }
