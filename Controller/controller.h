@@ -83,6 +83,7 @@ class Controller : public AbstractController {
 
   const int kTitlesSize = 40;
   const int kTitlesDuration = 84000;
+  bool boss_is_alive_ = false;
 
  private:
   void GameProcess();
@@ -108,6 +109,8 @@ class Controller : public AbstractController {
   void ProcessEnemyDeath(const Enemy& enemy) const;
   void ProcessMessage(const Message& message);
   void ProcessCommand(const Message& message);
+
+  void BossTowerKill(Enemy* enemy);
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

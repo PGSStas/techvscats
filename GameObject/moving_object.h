@@ -10,9 +10,12 @@ class MovingObject : public GameObject {
   ~MovingObject() override = default;
 
   void MoveToDestination();
+  void SetSpeed(double speed);
+  double GetSpeed() const;
   virtual void Move() = 0;
   virtual bool IsDead() const;
   bool IsEndReached() const;
+
  protected:
   double speed_;
   Coordinate destination_;

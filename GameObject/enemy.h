@@ -25,6 +25,7 @@ class Enemy : public MovingObject {
   void DrawHealthBar(QPainter* painter, const SizeHandler& size_handler) const;
 
   void SetRoad(const Road& road);
+  void SetPosition(const Enemy& instance, bool go_back = false);
 
   const AuricField& GetAuricField() const;
   Effect* GetAppliedEffect();
@@ -33,6 +34,13 @@ class Enemy : public MovingObject {
   Coordinate GetPredictPosition(double predict_power = 1) const;
   void ReceiveDamage(double damage);
   int ComputeReward() const;
+
+  // boss
+  void SetBoss(bool is_boss);
+  bool IsBoss() const;
+  bool IsTimeToKill() const;
+  void KillReload();
+  double GetKillRadius() const;
 
  private:
   double damage_;
@@ -54,8 +62,14 @@ class Enemy : public MovingObject {
   static std::mt19937 random_generator_;
 
   const int kMoveShift = 20;
-  const Size kHealthBarShift = {18, 24};
-  const Size kHealthBar = {36, 5};
+  Size health_bar_shift_ = {18, 24};
+  Size health_bar_size_ = {36, 5};
+
+  // boss
+  bool is_boss_ = false;
+  const double tower_kill_radius_ = 600;
+  const int kill_reload_ = 15000;
+  int wait_to_kill_ = kill_reload_/3;
 
  private:
   void ShiftCoordinate(Coordinate* coordinate);

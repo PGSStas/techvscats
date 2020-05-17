@@ -13,7 +13,8 @@
 enum MainMusic {
   kMenuMusic,
   kGameMusic,
-  kTitlesMusic
+  kTitlesMusic,
+  kEpicBossMusic
 };
 
 class MusicPlayer {
@@ -25,6 +26,7 @@ class MusicPlayer {
   void StartMenuMusic();
   void StartGameMusic();
   void StartTitlesMusic();
+  void StartEpicBossMusic();
   void Stop();
   void PlayButtonSound();
   void PlayGameOverSound();
