@@ -421,9 +421,9 @@ void ButtonHandler::CreateGameButtons() {
           double_speed_button_click);
 
   next_level_button_ = new MenuButton(
-      tr("PLAY NEXT ->"),
       Size(long_button_size_.width, long_button_size_.height * 2),
-      main_window_, font_id_);
+      main_window_, ":resources/buttons_resources/next_level_button.png",
+      ":resources/buttons_resources/next_level_button_active.png");
   auto next_level_button_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     if (level_number_ < kMaxLevel_) {
@@ -562,9 +562,4 @@ void ButtonHandler::SetNextLevelButtonVisible(bool visible) {
 
 int ButtonHandler::GetMaxLevel() const {
   return kMaxLevel_;
-}
-
-void ButtonHandler::SetTitlesButtonVisible(bool visible) {
-    next_level_button_->setText(tr("TITLES ->"));
-    next_level_button_->setVisible(visible);
 }

@@ -76,6 +76,8 @@
         <file>resources/buttons_resources/normal_speed_button_active.png</file>
         <file>resources/buttons_resources/zero_speed_button.png</file>
         <file>resources/buttons_resources/zero_speed_button_active.png</file>
+        <file>resources/buttons_resources/next_level_button.png</file>
+        <file>resources/buttons_resources/next_level_button_active.png</file>
 
         <file>resources/buttons_resources/bomb_button.png</file>
         <file>resources/buttons_resources/bomb_button_h.png</file>

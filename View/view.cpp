@@ -470,11 +470,7 @@ void View::ShowSettingsButton() {
 }
 
 void View::ShowNextLevelButton() {
-  if (IsLastLevel()) {
-    button_handler_->SetTitlesButtonVisible(true);
-  } else {
     button_handler_->SetNextLevelButtonVisible(true);
-  }
 }
 
 void View::BeginNextLevel() {
