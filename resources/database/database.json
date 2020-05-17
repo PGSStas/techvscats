@@ -172,7 +172,7 @@
       "speed": 2,
       "damage": 100,
       "armor": 0,
-      "reward": 465,
+      "reward": 165,
       "max_health": 2221,
       "priority": 0,
       "auric_field": {
@@ -611,7 +611,7 @@
   "effects": [
     {
       "effect_target": 1,
-      "damage_coefficient": 0.1,
+      "damage_coefficient": 0.001,
       "attack_rate_coefficient": 0,
       "range_coefficient": 0,
       "speed_coefficient": 0.05,
@@ -619,7 +619,7 @@
     },
     {
       "effect_target": 1,
-      "speed_coefficient": 0.2,
+      "speed_coefficient": 0.002,
       "armor_coefficient": 0,
       "damage_coefficient": 0.1,
       "attack_rate_coefficient": 0,
@@ -635,7 +635,7 @@
     },
     {
       "effect_target": 0,
-      "speed_coefficient": 0.05,
+      "speed_coefficient": 0.0005,
       "armor_coefficient": 0.18,
       "damage_coefficient": -0.1,
       "attack_rate_coefficient": 0,

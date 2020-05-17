@@ -36,8 +36,10 @@ void Enemy::Move() {
   if (is_end_reached_) {
     return;
   }
-
+  double speed = speed_;
+  speed_ *= applied_effect_.GetMoveSpeedCoefficient();
   MoveToDestination();
+  speed_ = speed;
   if (position_ == destination_) {
     node_number_++;
     if (road_->IsEnd(node_number_)) {
@@ -65,9 +67,9 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     // mirroring the image
     painter->scale(-1.0, 1.0);
   }
-  QPoint left_(0,0);
-  if(is_boss_){
-    left_=QPoint(size.width/6, -size.width/6);
+  QPoint left_(0, 0);
+  if (is_boss_) {
+    left_ = QPoint(size.width / 6, -size.width / 6);
   }
   painter->drawImage(left_, animation_players_[0].GetCurrentFrame());
 
