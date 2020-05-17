@@ -283,9 +283,9 @@ void Controller::TickEnemies() {
       boss_is_alive = true;
       BossTowerKill(enemy.get());
       if (enemy->GetPosition().GetVectorTo(base->GetPosition()).GetLength()
-          < 300) {
+          < 100) {
         if (enemy->GetSize().width > base->GetSize().width) {
-          enemy->SetSize(enemy->GetSize() *= 0.99);
+          enemy->SetSize(enemy->GetSize() *= 0.999);
         }
       }
     }
