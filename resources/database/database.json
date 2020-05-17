@@ -172,8 +172,8 @@
       "speed": 2,
       "damage": 100,
       "armor": 0,
-      "reward": 365,
-      "max_health": 2521,
+      "reward": 265,
+      "max_health": 1521,
       "priority": 0,
       "auric_field": {
         "radius": 600,
@@ -678,7 +678,7 @@
       "speed_coefficient": -0.01,
       "armor_coefficient": 0,
       "damage_coefficient": 0,
-      "attack_rate_coefficient": 0.2,
+      "attack_rate_coefficient": 0.35,
       "range_coefficient": 0.5
     }
   ],
