@@ -13,6 +13,7 @@ MusicPlayer::MusicPlayer()
 
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/menu_sound.mp3"));
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/game_sound.mp3"));
+  main_playlist_->addMedia(QUrl("qrc:resources/sounds/titles_sound.mp3"));
   main_playlist_->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
 
   SetSound(button_sound_.get(), "qrc:resources/sounds/button_click.mp3");
@@ -28,11 +29,6 @@ MusicPlayer::MusicPlayer()
 }
 
 void MusicPlayer::SetVolume(int volume) {
-  if (volume == 0) {
-    main_player_->stop();
-  } else {
-    main_player_->play();
-  }
   main_player_->setVolume(volume);
   game_over_sound_->setVolume(volume);
   button_sound_->setVolume(volume);
@@ -44,10 +40,20 @@ void MusicPlayer::SetVolume(int volume) {
 
 void MusicPlayer::StartMenuMusic() {
   main_playlist_->setCurrentIndex(kMenuMusic);
+  main_player_->play();
+}
+
+void MusicPlayer::Stop() {
+  main_player_->stop();
 }
 
 void MusicPlayer::StartGameMusic() {
   main_playlist_->setCurrentIndex(kGameMusic);
+  main_player_->play();
+}
+
+void MusicPlayer::StartTitlesMusic() {
+  main_playlist_->setCurrentIndex(kTitlesMusic);
   main_player_->play();
 }
 
@@ -93,4 +99,52 @@ MusicPlayer::~MusicPlayer() {
   sale_sound_->stop();
   not_enough_money_sound_->stop();
   new_wave_->stop();
+}
+
+void MusicPlayer::Pause() {
+  if (main_player_->state() == QMediaPlayer::PlayingState) {
+    main_player_->pause();
+  }
+  if (game_over_sound_->state() == QMediaPlayer::PlayingState) {
+    game_over_sound_->pause();
+  }
+  if (button_sound_->state() == QMediaPlayer::PlayingState) {
+    button_sound_->pause();
+  }
+  if (game_won_sound_->state() == QMediaPlayer::PlayingState) {
+    game_won_sound_->pause();
+  }
+  if (sale_sound_->state() == QMediaPlayer::PlayingState) {
+    sale_sound_->pause();
+  }
+  if (not_enough_money_sound_->state() == QMediaPlayer::PlayingState) {
+    not_enough_money_sound_->pause();
+  }
+  if (new_wave_->state() == QMediaPlayer::PlayingState) {
+    new_wave_->pause();
+  }
+}
+
+void MusicPlayer::Resume() {
+  if (main_player_->state() == QMediaPlayer::PausedState) {
+    main_player_->play();
+  }
+  if (game_over_sound_->state() == QMediaPlayer::PausedState) {
+    game_over_sound_->play();
+  }
+  if (button_sound_->state() == QMediaPlayer::PausedState) {
+    button_sound_->play();
+  }
+  if (game_won_sound_->state() == QMediaPlayer::PausedState) {
+    game_won_sound_->play();
+  }
+  if (sale_sound_->state() == QMediaPlayer::PausedState) {
+    sale_sound_->play();
+  }
+  if (not_enough_money_sound_->state() == QMediaPlayer::PausedState) {
+    not_enough_money_sound_->play();
+  }
+  if (new_wave_->state() == QMediaPlayer::PausedState) {
+    new_wave_->play();
+  }
 }

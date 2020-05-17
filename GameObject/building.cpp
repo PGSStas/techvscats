@@ -205,3 +205,7 @@ int Building::GetReloadTime() const {
   return animation_players_[1].GetAnimationDuration()
       + animation_players_[2].GetAnimationDuration();
 }
+
+const Effect& Building::GetEffect() const {
+  return applied_effect_;
+}

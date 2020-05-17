@@ -3,6 +3,9 @@
 GlobalChat::GlobalChat(QMainWindow* window)
     : q_text_browser_(new QTextBrowser(window)),
       q_line_edit_(new QLineEdit(window)) {
+  q_text_browser_->setTextInteractionFlags(Qt::NoTextInteraction);
+  QScroller::grabGesture(q_text_browser_, QScroller::TouchGesture);
+
   QString family = QFontDatabase::applicationFontFamilies(kFontId).at(0);
   QFont font(family);
   font.setFixedPitch(true);
@@ -32,8 +35,8 @@ GlobalChat::GlobalChat(QMainWindow* window)
       ":resources/buttons_resources/dec_level_button.png",
       ":resources/buttons_resources/dec_level_button_active.png");
   brick_button->SetSecondIconPath(
-      ":resources/buttons_resources/pause_button.png",
-      ":resources/buttons_resources/pause_button_active.png");
+      ":resources/buttons_resources/open_chat.png",
+      ":resources/buttons_resources/open_chat_active.png");
 
   auto close_open_button_click = [this]() {
     HideShow();
@@ -46,24 +49,26 @@ GlobalChat::GlobalChat(QMainWindow* window)
   brick_button->show();
   send_button->show();
   q_text_browser_->show();
+
+  q_text_browser_->setFocusPolicy(Qt::NoFocus);
 }
 
 void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
   Size remove_edit_size =
-      Size(-kTextEditSize.width * (1 - how_high_brick_percent_ / 100.0),
-           kTextEditSize.height);
+      Size(0, kTextEditSize.height);
   Coordinate text_edit_position = size_handler.GameToWindowCoordinate(
       kBottomLeftPosition - remove_edit_size);
 
   Size text_edit_size = size_handler.GameToWindowSize(kTextEditSize);
   q_line_edit_->setGeometry(text_edit_position.x, text_edit_position.y,
-                            text_edit_size.width * how_high_brick_percent_
+                            text_edit_size.width * how_right_brick_percent_
                                 / 100.0,
                             text_edit_size.height);
 
   send_button->SetGeometry(
       kBottomLeftPosition +
-          Size(kTextEditSize.width, -kTextEditSize.height),
+          Size(kTextEditSize.width * how_right_brick_percent_ / 100,
+               -kTextEditSize.height),
       size_handler);
 
   Coordinate text_browser_position =
@@ -88,44 +93,76 @@ void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
 
   brick_button->SetGeometry(
       kBottomLeftPosition +
-          Size(kTextEditSize.width, -kTextEditSize.height
-              - kTextEditSize.height * 9 / 100 * how_high_brick_percent_),
+          Size(kTextEditSize.width * how_right_brick_percent_ / 100,
+               -kTextEditSize.height
+                   - kTextEditSize.height * 9 / 100 * how_high_brick_percent_),
       size_handler);
 }
 
 void GlobalChat::Tick(const SizeHandler& size_handler, int delta_time) {
+  if (is_brick_going_right_ && how_right_brick_percent_ < 100) {
+    how_right_brick_percent_ +=
+        kCloseSpeed * delta_time / constants::kTimeScale;
+    how_right_brick_percent_ = std::min(100, how_right_brick_percent_);
+    if (how_right_brick_percent_ == 100) {
+      is_brick_going_up_ = true;
+    }
+    RescaleChat(size_handler);
+    return;
+  }
+
+  if (!is_brick_going_right_ && how_right_brick_percent_ > 0) {
+    how_right_brick_percent_ -=
+        kCloseSpeed * delta_time / constants::kTimeScale;
+    how_right_brick_percent_ = std::max(0, how_right_brick_percent_);
+    RescaleChat(size_handler);
+    return;
+  }
+
   if (is_brick_going_up_ && how_high_brick_percent_ < 100) {
     how_high_brick_percent_ += kCloseSpeed * delta_time / constants::kTimeScale;
     how_high_brick_percent_ = std::min(100, how_high_brick_percent_);
     RescaleChat(size_handler);
+    return;
   }
 
   if (!is_brick_going_up_ && how_high_brick_percent_ > 0) {
     how_high_brick_percent_ -= kCloseSpeed * delta_time / constants::kTimeScale;
     how_high_brick_percent_ = std::max(0, how_high_brick_percent_);
+    if (how_high_brick_percent_ == 0) {
+      is_brick_going_right_ = false;
+    }
     RescaleChat(size_handler);
+    return;
   }
 }
 
 void GlobalChat::HideShow() {
-  if (is_brick_going_up_ && how_high_brick_percent_ == 100) {
+  if (is_brick_going_up_ && how_high_brick_percent_ == 100 &&
+      is_brick_going_right_ && how_right_brick_percent_ == 100) {
     is_brick_going_up_ = false;
   }
-  if (!is_brick_going_up_ && how_high_brick_percent_ == 0) {
-    is_brick_going_up_ = true;
+  if (!is_brick_going_up_ && how_high_brick_percent_ == 0 &&
+      !is_brick_going_right_ && how_right_brick_percent_ == 0) {
+    is_brick_going_right_ = true;
   }
 }
 
 void GlobalChat::ChangeStyle() {
-  is_game_style_using_ = !is_game_style_using_;
+  using_game_style_ = !using_game_style_;
   QString style_sheet;
-  if (is_game_style_using_) {
-    style_sheet = " background-color : rgba(190,192,213,0.89);";
+  if (using_game_style_) {
+    style_sheet =
+        "background-color : rgba(199,199,199,0.91);"
+        "border : 1px solid black;"
+        "border-radius: 8px;";
+  } else {
+    style_sheet = " background-color : rgba(255,255,255,0.89);";
   }
   q_line_edit_->setStyleSheet(style_sheet);
   q_text_browser_->setStyleSheet(style_sheet);
-  brick_button->EnableSecondIcon(is_game_style_using_);
-  send_button->EnableSecondIcon(is_game_style_using_);
+  brick_button->EnableSecondIcon(using_game_style_);
+  send_button->EnableSecondIcon(using_game_style_);
 }
 
 bool GlobalChat::IsMessagesQueueEmpty() const {
@@ -154,8 +191,8 @@ void GlobalChat::ReceiveNewMessages(const QStringList& messages) {
   QString html_style("<style>"
                      "p.global{color: black; margin: 0; padding: 0;}"
                      "p.local{color: green; margin: 0; padding: 0;}"
-                     "p.error{color: red; margin: 0; padding: 0;}"
-                     "p.command{color: orange; margin: 0; padding: 0;}"
+                     "p.error{color: #92000a; margin: 0; padding: 0;}"
+                     "p.command{color: #cc712f; margin: 0; padding: 0;}"
                      "</style>");
   QString global_format = "<p class=\"global\">%1</p>";
   QString local_format = "<p class=\"local\">%1</p>";
@@ -191,4 +228,11 @@ void GlobalChat::SendMessage() {
   }
   message = message.split(" ", QString::SkipEmptyParts).join(" ");
   send_messages_.push_back(message);
+}
+
+void GlobalChat::SetVisible(bool visible) {
+  q_text_browser_->setVisible(visible);
+  q_line_edit_->setVisible(visible);
+  send_button->setVisible(visible);
+  brick_button->setVisible(visible);
 }

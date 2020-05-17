@@ -49,10 +49,10 @@ void Server::ProcessReceivedMessage(const Message& message,
       break;
     }
     case MessageType::kLeaveRoom: {
-      RoomLeave(*message_owner);
-      message_owner->room = nullptr;
       SendMessageToClient(Message(MessageType::kChatUpdate,
                                   {global_chat_.join("\n")}), *message_owner);
+      RoomLeave(*message_owner);
+      message_owner->room = nullptr;
       break;
     }
     case MessageType::kGlobalChat: {
@@ -97,6 +97,12 @@ void Server::ProcessRoomEnterMessage(const Message& message,
   owner->room = &rooms_.back();
   owner->room->timer_id_ = startTimer(1000);
   SendMessageToRoom(Message(MessageType::kYouCreatedRoom), *owner, true);
+  for (auto& client : clients_) {
+    if (!client.nick_name.isEmpty() && client.room == nullptr) {
+      SendMessageToClient(Message(MessageType::kGoToRoom,
+                                  {QString::number(room_number)}), client);
+    }
+  }
 }
 
 void Server::ProcessRoundCompletedByPlayer(const Message& message,
@@ -105,6 +111,7 @@ void Server::ProcessRoundCompletedByPlayer(const Message& message,
       message.GetArgument(1).toInt());
   switch (game_process) {
     case GameProcess::kLoose: {
+      owner->game_process = GameProcess::kLoose;
       owner->room->players_loose_++;
       SendMessageToRoom(Message(MessageType::kNickNameDead, {owner->nick_name}),
                         *owner,
@@ -112,6 +119,7 @@ void Server::ProcessRoundCompletedByPlayer(const Message& message,
       break;
     }
     case GameProcess::kWin: {
+      owner->game_process = GameProcess::kWin;
       owner->room->players_win_++;
       SendMessageToRoom(Message(MessageType::kNickNameWinWithHp, {
           owner->nick_name,
@@ -119,6 +127,7 @@ void Server::ProcessRoundCompletedByPlayer(const Message& message,
       break;
     }
     default: {
+      owner->game_process = GameProcess::kPlay;
       SendMessageToRoom(Message(MessageType::kNickNameFinishRoundWithHp, {
           owner->nick_name,
           QString::number(message.GetArgument(0).toInt())}), *owner, true);
@@ -145,12 +154,19 @@ void Server::ProcessGlobalChatMessage(const Message& message,
     chat->removeAt(0);
   }
   for (auto& client : clients_) {
-    if (!is_room || client.room == owner->room) {
+    if (!client.nick_name.isEmpty()) {
+      continue;
+    }
+    if (is_room && client.room == owner->room) {
+      SendMessageToClient(Message(MessageType::kChatUpdate,
+                                  {chat->back()}), client);
+    }
+    if (!is_room && client.room == nullptr) {
       SendMessageToClient(Message(MessageType::kChatUpdate,
                                   {chat->back()}), client);
     }
   }
-  qDebug() << ":" <<chat->back();
+  qDebug() << ":" << chat->back();
 }
 
 void Server::StartRoom(Room* room) {
@@ -185,18 +201,20 @@ void Server::SendMessageToClient(const Message& message,
 
 void Server::RoomLeave(const GameClient& client) {
   client.room->players_count--;
-  switch (client.game_process) {
-    case GameProcess::kPlay: {
-      client.room->players_in_round--;
-      break;
-    }
-    case GameProcess::kLoose: {
-      client.room->players_loose_--;
-      break;
-    }
-    case GameProcess::kWin: {
-      client.room->players_win_--;
-      break;
+  if (!client.room->is_in_active_search) {
+    switch (client.game_process) {
+      case GameProcess::kPlay: {
+        client.room->players_in_round--;
+        break;
+      }
+      case GameProcess::kLoose: {
+        client.room->players_loose_--;
+        break;
+      }
+      case GameProcess::kWin: {
+        client.room->players_win_--;
+        break;
+      }
     }
   }
   SendMessageToRoom(Message(MessageType::kNickNameLeft,
@@ -213,15 +231,15 @@ void Server::RoomLeave(const GameClient& client) {
 
 void Server::RoomTimer(Room* room) {
   if (room->is_in_active_search) {
-    SendMessageToRoom(Message(MessageType::kRoomStartsIn,
-                              {QString::number(room->wait_time / 1000)}),
-                      *room);
+    SendMessageToRoom(
+        Message(MessageType::kRoomStartsIn,
+                {QString::number(room->wait_time / 1000)}), *room);
     return;
   }
   if (room->wait_time > 0) {
-    SendMessageToRoom(Message(MessageType::kRoundStartsIn,
-                              {QString::number(room->wait_time / 1000)}),
-                      *room);
+    SendMessageToRoom(
+        Message(MessageType::kRoundStartsIn,
+                {QString::number(room->wait_time / 1000)}), *room);
     return;
   }
 }

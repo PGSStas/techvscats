@@ -12,5 +12,7 @@
 
     <file>resources/database/server_en_US.json</file>
     <file>resources/database/server_ru_RU.json</file>
+
+    <file>resources/database/titles.txt</file>
 </qresource>
 </RCC>

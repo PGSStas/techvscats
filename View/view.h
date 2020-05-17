@@ -1,6 +1,7 @@
 #ifndef VIEW_VIEW_H_
 #define VIEW_VIEW_H_
 
+#include <algorithm>
 #include <QElapsedTimer>
 #include <QLabel>
 #include <QMainWindow>
@@ -33,7 +34,7 @@ class View : public QMainWindow {
   void DisableGameUi();
   void EnableMainMenuUi();
   void DisableMainMenuUi();
-  void ChangeChat();
+  void ChangeChatStyle();
 
   void AddGlobalChatMessage(const QStringList& message);
 
@@ -43,14 +44,16 @@ class View : public QMainWindow {
   void DisableTowerMenu();
   bool IsTowerMenuEnabled() const;
 
-  void ChangeGameSpeed(Speed speed);
-
-  const SizeHandler& GetSizeHandler() const;
+  void ChangeGameSpeed(Speed speed, bool im_the_button = false);
 
   int GetRealTime() const;
 
   int GetChosenLevel() const;
   void SetChosenLevel(int level);
+
+  void StartTitles();
+  void EndTitles();
+  void ShowSettingsButton();
 
  private:
   AbstractController* controller_;

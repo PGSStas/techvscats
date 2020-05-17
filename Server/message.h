@@ -55,19 +55,25 @@ enum class MessageType {
   kLeaveRoom,
   kToLongMessage,
   kServerIsUnavailable,
+  kGoToRoom,  // % room number
+  kNoCheat,  // % room number
 
-  kLast,  // To get size of enum
+  kLastTranslatable,  // To get size of enum
 
   // To server
-  kEnterRoom,  // % lvl_id
-  kGlobalChat,  // % message
-  kNewConnection,
-  kRoundCompletedByPlayer,  // % base_current_health % casted game_process
+  kEnterRoom = 1000,  // % lvl_id
+  kGlobalChat = 1001,  // % message
+  kNewConnection = 1002,
+  kRoundCompletedByPlayer = 1003,  // % base_current_health % game_process
+
+  kLastServer,
 
   // To controller
-  kControllerCommand,
-  kVisibleMessage
-  };
+  kControllerCommand = 1004,
+  kVisibleMessage = 1005,
+
+  kLastController
+};
 
 // The main class of data transfer between the server and the client.
 // The server and client communicate in the language of messages

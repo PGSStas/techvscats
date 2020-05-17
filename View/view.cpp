@@ -4,21 +4,40 @@ View::View(AbstractController* controller)
     : controller_(controller),
       size_handler_(),
       tower_menu_(this) {
+  setWindowIcon(QIcon(":resources/images/icon.png"));
+  setWindowTitle("Tech vs Cats");
   setMinimumSize(960, 540);
-  setMouseTracking(true);
+
   QSettings settings(constants::kCompanyName, constants::kApplicationName);
+#ifdef Q_OS_ANDROID
+  showFullScreen();
+#else
   if (settings.value("fullscreen", true).toBool()) {
     showFullScreen();
   } else {
     showNormal();
   }
+#endif
   setWindowTitle("Tech vs Cats");
   setWindowIcon(QIcon(":resources/images/icon.png"));
 
   size_handler_.ChangeSystem(width(), height());
+  setMouseTracking(true);
+  setFocusPolicy(Qt::ClickFocus);
+
   view_timer_.start();
   time_between_ticks_.start();
   controller_timer_id_ = startTimer(constants::kTimeBetweenTicks);
+
+  connect(qApp, &QApplication::applicationStateChanged, [this] {
+    if (qApp->applicationState() == Qt::ApplicationActive) {
+      controller_->ResumeMusic();
+    }
+    if (qApp->applicationState() == Qt::ApplicationHidden ||
+        qApp->applicationState() == Qt::ApplicationSuspended) {
+      controller_->PauseMusic();
+    }
+  });
 }
 
 void View::SecondConstructorPart() {
@@ -28,6 +47,7 @@ void View::SecondConstructorPart() {
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetTitlesVisible(false);
   is_model_loaded_ = true;
   Resize();
 }
@@ -35,9 +55,11 @@ void View::SecondConstructorPart() {
 void View::paintEvent(QPaintEvent*) {
   QPainter painter(this);
   if (!is_model_loaded_) {
-    Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-    Size size = size_handler_.GameToWindowSize({constants::kGameWidth,
-                                                constants::kGameHeight});
+    double coefficient = std::min(width() / 16, height() / 9);
+    Size size = {16 * coefficient, 9 * coefficient};
+    Coordinate origin = {(width() - 16 * coefficient) / 2,
+                         (height() - 9 * coefficient) / 2};
+    painter.fillRect(0, 0, width(), height(), Qt::white);
     painter.drawImage(origin.x, origin.y, logo_.scaled(size.width,
                                                        size.height));
     return;
@@ -47,8 +69,8 @@ void View::paintEvent(QPaintEvent*) {
   painter.drawImage(origin.x, origin.y, controller_->GetBackground(
       button_handler_->GetWindowType()).GetCurrentFrame());
 
-  auto window_type = button_handler_->GetWindowType();
-  switch (window_type) {
+  window_type_ = button_handler_->GetWindowType();
+  switch (window_type_) {
     case WindowType::kMainMenu: {
       DrawMainMenu(&painter);
       break;
@@ -65,6 +87,7 @@ void View::paintEvent(QPaintEvent*) {
       DrawPauseMenu(&painter);
       break;
     }
+    default: break;
   }
   DrawTextNotification(&painter);
   DrawEmptyZones(&painter);
@@ -87,7 +110,7 @@ void View::DrawEmptyZones(QPainter* painter) {
   painter->fillRect(0, 0, horizontal_zone.width, horizontal_zone.height, image);
   painter->fillRect(
       0, size_handler_.GameToWindowCoordinate(
-          {0, constants::kGameHeight}).y - 1,
+          {0, constants::kGameHeight}).y + 1,
       horizontal_zone.width + 2, horizontal_zone.height + 2, image);
   Size vertical_zone =
       Size(size_handler_.GameToWindowCoordinate({0, 0}).x, height());
@@ -122,8 +145,9 @@ void View::DrawGame(QPainter* painter) {
 }
 
 void View::DrawSettings(QPainter*) {
-  button_handler_->SetMainMenuUiVisible(false);
+  button_handler_->SetTitlesVisible(false);
   button_handler_->SetSettingsUiVisible(true);
+  button_handler_->SetMainMenuUiVisible(false);
 }
 
 void View::DrawPauseMenu(QPainter*) {
@@ -197,10 +221,6 @@ void View::DrawGameObjects(QPainter* painter) {
   }
 }
 
-const SizeHandler& View::GetSizeHandler() const {
-  return size_handler_;
-}
-
 bool View::IsTowerMenuEnabled() const {
   return tower_menu_.IsEnable();
 }
@@ -271,6 +291,11 @@ void View::keyPressEvent(QKeyEvent* event) {
       button_handler_->SetSpeed(static_cast<int>(Speed::kZeroSpeed));
     }
   }
+  if (event->key() == Qt::Key_Escape &&
+      button_handler_->GetWindowType() == WindowType::kTitles) {
+    button_handler_->SetWindowType(WindowType::kSettings);
+    controller_->EndTitles();
+  }
 }
 
 void View::resizeEvent(QResizeEvent*) {
@@ -282,8 +307,8 @@ void View::resizeEvent(QResizeEvent*) {
 
 void View::EnableGameUi() {
   controller_->RescaleObjects(size_handler_);
-  ChangeChat();
   DisableTowerMenu();
+
   button_handler_->SetGameUiVisible(true);
 }
 
@@ -293,7 +318,6 @@ void View::DisableGameUi() {
 
 void View::EnableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(true);
-  ChangeChat();
 }
 
 void View::DrawAdditionalInfo(QPainter* painter) {
@@ -307,9 +331,15 @@ void View::DrawAdditionalInfo(QPainter* painter) {
   DrawRoundInfo(painter);
 
   if (tower_menu_.IsEnable()) {
-    tower_menu_.DrawInfoField(painter, size_handler_,
-                              controller_->GetBuildingById(
-                                  tower_menu_.GetSellectedTowerId()));
+    int button_id = tower_menu_.GetChosenButtonId();
+    if (button_id != -1) {
+      tower_menu_.DrawInfoField(painter, size_handler_,
+                                controller_->GetBuildingById(button_id));
+    } else {
+      button_id = tower_menu_.GetTownerIndex();
+      tower_menu_.DrawInfoField(painter, size_handler_,
+                                *controller_->GetBuildings()[button_id]);
+    }
   }
 
   painter->restore();
@@ -319,7 +349,7 @@ void View::DisableMainMenuUi() {
   button_handler_->SetMainMenuUiVisible(false);
 }
 
-void View::ChangeChat() {
+void View::ChangeChatStyle() {
   global_chat_->ChangeStyle();
   if (controller_->GetClient()->IsOnline()) {
     global_chat_->Clear();
@@ -360,16 +390,16 @@ void View::timerEvent(QTimerEvent* event) {
     button_handler_->UpdateButtonsStatus(
         controller_->GetClient()->IsOnline(),
         controller_->GetClient()->IsRegistered());
+
     repaint();
-    if (window_type_ != button_handler_->GetWindowType()) {
-      window_type_ = button_handler_->GetWindowType();
-      controller_->ClearTextNotifications();
-    }
   }
 }
 
-void View::ChangeGameSpeed(Speed speed) {
+void View::ChangeGameSpeed(Speed speed, bool notify_button_handler) {
   game_speed_coefficient_ = static_cast<int>(speed);
+  if (!notify_button_handler) {
+    button_handler_->SetSpeed(static_cast<int>(speed));
+  }
 }
 
 void View::DrawRoundInfo(QPainter* painter) {
@@ -394,6 +424,20 @@ void View::DrawBars(QPainter* painter) {
   const auto& enemies_list = controller_->GetEnemies();
   for (auto& enemy : enemies_list) {
     enemy->DrawHealthBar(painter, size_handler_);
+    if (button_handler_->IsEffectToggleActive()) {
+      enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                  enemy->GetPosition(),
+                                                  enemy->GetSize());
+    }
+  }
+
+  if (button_handler_->IsEffectToggleActive()) {
+    const auto& buildings_list = controller_->GetBuildings();
+    for (const auto& building : buildings_list) {
+      building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
+                                                     building->GetPosition(),
+                                                     building->GetSize());
+    }
   }
 }
 
@@ -403,4 +447,19 @@ int View::GetChosenLevel() const {
 
 void View::SetChosenLevel(int level) {
   button_handler_->SetCurrentLevel(level);
+}
+
+void View::StartTitles() {
+  button_handler_->SetSettingsUiVisible(false);
+  global_chat_->SetVisible(false);
+}
+
+void View::EndTitles() {
+  button_handler_->SetTitlesVisible(false);
+  button_handler_->SetMainMenuUiVisible(true);
+  global_chat_->SetVisible(true);
+}
+
+void View::ShowSettingsButton() {
+  button_handler_->SetTitlesVisible(true);
 }

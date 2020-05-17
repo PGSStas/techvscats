@@ -22,7 +22,8 @@ class Controller : public AbstractController {
   void StartGame(int level) override;
   void EndGame() override;
   void Tick(int current_time) override;
-  void SetSpeedCoefficient(Speed speed) override;
+  void SetSpeedCoefficient(Speed speed,
+                           bool notify_button_handler = false) override;
   void SetBuilding(int index_in_buildings, int replacing_id) override;
 
   void MouseEvent(Coordinate position, bool is_press) override;
@@ -49,9 +50,17 @@ class Controller : public AbstractController {
   int GetCurrentRoundNumber() const override;
   int GetRoundsCount() const override;
   void SetGameVolume(int volume) override;
+  void ChangeChatStyle() override;
+
   MultiplayerClient* GetClient() override;
 
+  void CreateTitles() override;
+  void EndTitles() override;
+
   MusicPlayer* GetMusicPlayer() override;
+
+  void PauseMusic() override;
+  void ResumeMusic() override;
 
  private:
   std::unique_ptr<View> view_;
@@ -71,6 +80,9 @@ class Controller : public AbstractController {
   int last_time_end_particle_created = 0;
 
   static std::mt19937 random_generator_;
+
+  const int kTitlesSize = 40;
+  const int kTitlesDuration = 84000;
 
  private:
   void GameProcess();

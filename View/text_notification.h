@@ -15,14 +15,16 @@ class TextNotification : public GameObject {
   TextNotification(const QString& message, Coordinate start_position,
                    QColor color, int creation_time,
                    Size moving_vector = Size(0, -50), int life_time = 1000,
-                   double size_change_coefficient = 1, double font_size = 18,
-                   bool fade = false);
+                   double size_change_coefficient = 1, bool fade = false,
+                   bool is_accelerated = true, bool center_align = true);
   ~TextNotification() override = default;
 
   void Tick(int current_time) override;
   void Draw(QPainter* painter, const SizeHandler& size_handler) const override;
 
   bool IsDead() const;
+
+  void SetFontSize(int new_size);
 
  private:
   QString message_;
@@ -34,8 +36,10 @@ class TextNotification : public GameObject {
   double size_change_coefficient_;
 
   bool is_dead_ = false;
-  double font_size_;
+  double font_size_ = 18;
   bool is_fade_ = false;
+  bool is_accelerated_ = true;
+  bool center_align_ = true;
 
   const double kSlowdownCoefficient = 0.85;
   const double kMaxTextSize = 40000;

@@ -12,7 +12,8 @@
 
 enum MainMusic {
   kMenuMusic,
-  kGameMusic
+  kGameMusic,
+  kTitlesMusic
 };
 
 class MusicPlayer {
@@ -23,12 +24,17 @@ class MusicPlayer {
 
   void StartMenuMusic();
   void StartGameMusic();
+  void StartTitlesMusic();
+  void Stop();
   void PlayButtonSound();
   void PlayGameOverSound();
   void PlayGameWonSound();
   void PlayNewWaveSound();
   void PlaySaleSound();
   void PlayNotEnoughMoneySound();
+
+  void Pause();
+  void Resume();
 
  private:
   void SetSound(QMediaPlayer* player, const QString& path);

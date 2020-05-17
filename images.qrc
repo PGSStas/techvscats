@@ -64,6 +64,12 @@
 
         <file>resources/buttons_resources/pause_button.png</file>
         <file>resources/buttons_resources/pause_button_active.png</file>
+        <file>resources/buttons_resources/open_chat.png</file>
+        <file>resources/buttons_resources/open_chat_active.png</file>
+        <file>resources/buttons_resources/non_toggle.png</file>
+        <file>resources/buttons_resources/non_toggle_active.png</file>
+        <file>resources/buttons_resources/toggle.png</file>
+        <file>resources/buttons_resources/toggle_active.png</file>
         <file>resources/buttons_resources/double_speed_button.png</file>
         <file>resources/buttons_resources/double_speed_button_active.png</file>
         <file>resources/buttons_resources/normal_speed_button.png</file>
@@ -186,6 +192,7 @@
         <file>resources/images/backgrounds/map_level_2_1.png</file>
         <file>resources/images/backgrounds/main_background_1.png</file>
         <file>resources/images/backgrounds/settings_background_1.png</file>
+        <file>resources/images/backgrounds/titles_background_1.png</file>
         <file>resources/images/backgrounds/pause_menu_background_1.png</file>
 
         <file>resources/images/backgrounds/cloud.png</file>

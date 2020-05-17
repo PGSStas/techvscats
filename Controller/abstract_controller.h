@@ -29,10 +29,11 @@ enum class Speed {
 };
 
 enum class WindowType {
-  kMainMenu = 0,
-  kSettings = 1,
-  kPauseMenu = 2,
-  kGame = 3
+  kMainMenu,
+  kSettings,
+  kTitles,
+  kPauseMenu,
+  kGame,
 };
 
 // AbstractController is needed to avoid the problem with looping include
@@ -46,7 +47,8 @@ class AbstractController {
   virtual void StartGame(int level) = 0;
   virtual void Tick(int current_time) = 0;
   virtual void EndGame() = 0;
-  virtual void SetSpeedCoefficient(Speed speed) = 0;
+  virtual void SetSpeedCoefficient(Speed speed,
+                                   bool notify_button_handler = false) = 0;
   virtual void SetBuilding(int index_in_buildings, int replacing_id) = 0;
 
   virtual void MouseEvent(Coordinate position, bool is_press) = 0;
@@ -74,9 +76,16 @@ class AbstractController {
   virtual int GetCurrentRoundNumber() const = 0;
   virtual int GetRoundsCount() const = 0;
   virtual void SetGameVolume(int volume) = 0;
+  virtual void ChangeChatStyle() = 0;
+
+  virtual void CreateTitles() = 0;
+  virtual void EndTitles() = 0;
 
   virtual MusicPlayer* GetMusicPlayer() = 0;
   virtual MultiplayerClient* GetClient() = 0;
+
+  virtual void PauseMusic() = 0;
+  virtual void ResumeMusic() = 0;
 };
 
 #endif  // CONTROLLER_ABSTRACT_CONTROLLER_H_
