@@ -57,7 +57,7 @@ class GlobalChat {
 #ifndef Q_OS_ANDROID
   const double kFondSize = 26;
 #else
-  const double kFondSize = 32;
+  const double kFondSize = 38;
 #endif
   const Coordinate kBottomLeftPosition = {20, 1060};
 

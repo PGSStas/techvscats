@@ -113,7 +113,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler) {
   if (current_force_ < 1 || possible_buildings_id_.empty()) {
     return;
   }
-  if (current_force_ > 70) {
+  if (current_force_ > 8) {
     for (auto& button : buttons_) {
       button->SetIsEnter(false);
     }
