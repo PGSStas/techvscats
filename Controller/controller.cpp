@@ -292,8 +292,6 @@ void Controller::TickEnemies() {
     if (boss_is_alive) {
       music_player_.StartEpicBossMusic();
       music_player_.PlayNewWaveSound();
-    } else {
-      music_player_.StartGameMusic();
     }
   }
 }
@@ -541,7 +539,7 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
     auto instance = enemy;
     instance.SetPosition(enemy);
     auto boss_size = instance.GetSize();
-    if (boss_size.width > 240) {
+    if (boss_size.width > 270) {
       instance.SetSize(boss_size / 1.2);
       instance.SetSpeed(instance.GetSpeed() * 1.2);
       model_->AddEnemyFromInstance(instance, true);

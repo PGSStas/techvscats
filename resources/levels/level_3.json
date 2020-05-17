@@ -209,45 +209,17 @@
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 9000,
-        "enemy_id": 8,
-        "time_of_next_spawn": 100000,
-        "group_size": 2,
-        "road_to_spawn": 0
-      },
-      {
-        "spawn_period": 300,
+        "spawn_period": 400,
         "enemy_id": 0,
         "time_of_next_spawn": 18000,
         "group_size": 350,
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 300,
+        "spawn_period": 400,
         "enemy_id": 0,
         "time_of_next_spawn": 18000,
         "group_size": 350,
-        "road_to_spawn": 1
-      },
-      {
-        "spawn_period": 100,
-        "enemy_id": 0,
-        "time_of_next_spawn": 100000,
-        "group_size": 900,
-        "road_to_spawn": 0
-      },
-      {
-        "spawn_period": 100,
-        "enemy_id": 7,
-        "time_of_next_spawn": 85000,
-        "group_size": 40,
-        "road_to_spawn": 0
-      },
-      {
-        "spawn_period": 100,
-        "enemy_id": 7,
-        "time_of_next_spawn": 85000,
-        "group_size": 40,
         "road_to_spawn": 1
       }
     ]
