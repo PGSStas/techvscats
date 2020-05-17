@@ -6,8 +6,7 @@ ButtonHandler::ButtonHandler(QMainWindow* main_window,
     : QObject(main_window), main_window_(main_window), controller_(controller),
       font_id_(font_id) {
   CreateButtons();
-  QSettings settings = QSettings(constants::kCompanyName,
-                                 constants::kApplicationName);
+  QSettings settings;
   SetCurrentLevel(settings.value("levels_passed", 0).toInt() + 1);
   SetSoundOn(settings.value("sound_on", true).toBool());
   bool is_fullscreen = settings.value("fullscreen", true).toBool();
@@ -58,11 +57,11 @@ void ButtonHandler::SetSettingsUiVisible(bool visible) {
   reset_game_button_->setVisible(visible);
   to_main_menu_button_->setVisible(visible);
   titles_button_->setVisible(visible);
-#ifndef Q_OS_ANDROID
-  fullscreen_button_->setVisible(visible);
-#else
-  fullscreen_button_->setVisible(false);
-#endif
+  #ifndef Q_OS_ANDROID
+    fullscreen_button_->setVisible(visible);
+  #else
+    fullscreen_button_->setVisible(false);
+  #endif
 }
 
 void ButtonHandler::SetGameUiVisible(bool visible) {
@@ -211,7 +210,7 @@ void ButtonHandler::RescaleMainMenuButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::CreateSettingsButtons() {
-  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+  QSettings settings;
   QString locale = settings.value("locale", "en_US").toString();
   if (locale == "en_US") {
     is_language_russian_ = false;
@@ -236,7 +235,7 @@ void ButtonHandler::CreateSettingsButtons() {
   }
 
   auto language_button_click = [this]() {
-    QSettings settings(constants::kCompanyName, constants::kApplicationName);
+    QSettings settings;
     controller_->GetMusicPlayer()->PlayButtonSound();
     QString text = tr("we will restart the app.");
 #ifdef Q_OS_ANDROID
@@ -283,7 +282,7 @@ void ButtonHandler::CreateSettingsButtons() {
   fullscreen_button_ = new MenuButton(
       tr("WINDOW MODE"), long_button_size_, main_window_, font_id_);
   auto fullscreen_click = [this]() {
-    QSettings settings(constants::kCompanyName, constants::kApplicationName);
+    QSettings settings;
     controller_->GetMusicPlayer()->PlayButtonSound();
     SetFullscreen(!is_fullscreen_);
     settings.setValue("fullscreen", is_fullscreen_);
@@ -517,14 +516,11 @@ void ButtonHandler::RescaleTitleButtons(SizeHandler size_handler) {
 }
 
 void ButtonHandler::SetCurrentLevel(int level) {
-  int current_max_level =
-      QSettings(constants::kCompanyName, constants::kApplicationName).value(
-          "levels_passed", 0).toInt() + 1;
-  if (level >= 1 && level <= current_max_level && level <= kMaxLevel_) {
-    level_number_ = level;
-  }
-  inc_level_button_->setEnabled(
-      level_number_ != current_max_level && level_number_ != kMaxLevel_);
+  int current_max_level = std::min(QSettings().value(
+      "levels_passed", 0).toInt() + 1, kMaxLevel_);
+  level_number_ = std::max(1, level);
+  level_number_ = std::min(current_max_level, level);
+  inc_level_button_->setEnabled(level_number_ != current_max_level);
   dec_level_button_->setEnabled(level_number_ != 1);
   choose_level_number_->setText(tr("LEVEL") + " " +
       QString::number(level_number_));

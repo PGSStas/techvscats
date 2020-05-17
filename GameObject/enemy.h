@@ -53,7 +53,7 @@ class Enemy : public MovingObject {
 
   static std::mt19937 random_generator_;
 
-  const int kMoveShift = 25;
+  const int kMoveShift = 20;
   const Size kHealthBarShift = {18, 24};
   const Size kHealthBar = {36, 5};
 
