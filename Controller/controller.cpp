@@ -136,7 +136,7 @@ bool Controller::CanCreateNextWave() {
                                  view_->GetRealTime(), {0, 0}, life_time,
                                  size_coefficient});
     music_player_.PlayGameWonSound();
-    QSettings settings(constants::kCompanyName, constants::kApplicationName);
+    QSettings settings;
     int level = std::max(settings.value("levels_passed", 0).toInt(),
                          view_->GetChosenLevel());
     settings.setValue("levels_passed", level);
