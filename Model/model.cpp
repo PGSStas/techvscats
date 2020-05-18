@@ -279,7 +279,7 @@ void Model::LoadLevel(int level) {
       GetImagesByFramePath("backgrounds/map_level_" +
           QString::number(level) + "_1"));
 
-  empty_zone_texture_[4] = QImage(":resources/images/backgrounds/texture_level_"
+  empty_zone_texture_[4] = QPixmap(":resources/images/backgrounds/texture_level_"
                                       + QString::number(level) + ".png");
 }
 
@@ -291,7 +291,7 @@ const AnimationPlayer& Model::GetInterface() const {
   return interface_;
 }
 
-const QImage& Model::GetEmptyZoneTexture(int index) const {
+const QPixmap& Model::GetEmptyZoneTexture(int index) const {
   return empty_zone_texture_[index];
 }
 
@@ -378,12 +378,12 @@ void Model::SetAnimationToGameObject(GameObject* object,
   object->SetAnimationPlayers(std::move(animations));
 }
 
-std::shared_ptr<std::vector<QImage>> Model::GetImagesByFramePath(
+std::shared_ptr<std::vector<QPixmap>> Model::GetImagesByFramePath(
     const QString& animation_last_frames, const QString& picture_type) const {
   QString clear_path = ":resources/images/" + animation_last_frames;
   QStringList splitted_path = clear_path.split("_");
 
-  auto images = std::make_shared<std::vector<QImage>>();
+  auto images = std::make_shared<std::vector<QPixmap>>();
   int count = splitted_path.back().toInt();
 
   for (int i = 1; i <= count; i++) {
@@ -460,15 +460,15 @@ void Model::LoadBackground(const QJsonObject&) {
   interface_ = AnimationPlayer(GetImagesByFramePath("interface/interface_1"));
   // Empty zone
   empty_zone_texture_.push_back(
-      QImage(":resources/images/backgrounds/cloud.png"));
+      QPixmap(":resources/images/backgrounds/cloud.png"));
   empty_zone_texture_.push_back(
-      QImage(":resources/images/backgrounds/cloud.png"));
+      QPixmap(":resources/images/backgrounds/cloud.png"));
   empty_zone_texture_.push_back(
-      QImage(":resources/images/backgrounds/titles_background_1.png"));
+      QPixmap(":resources/images/backgrounds/titles_background_1.png"));
   empty_zone_texture_.push_back(
-      QImage(":resources/images/backgrounds/cloud.png"));
+      QPixmap(":resources/images/backgrounds/cloud.png"));
   empty_zone_texture_.push_back(
-      QImage(":resources/images/backgrounds/cloud.png"));
+      QPixmap(":resources/images/backgrounds/cloud.png"));
 }
 
 void Model::LoadBuildings(const QJsonObject& json_object) {

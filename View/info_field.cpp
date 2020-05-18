@@ -78,7 +78,7 @@ void InfoField::DrawCurrentTower(QPainter* painter,
     if (speed_percent > 0) {
       sign = "+";
     } else {
-      sign = "";
+      sign = "-";
     }
     painter->drawText(point.x, point.y, size.width, size.height,
                       Qt::AlignCenter,
@@ -95,7 +95,7 @@ void InfoField::DrawCurrentTower(QPainter* painter,
     if (rate_percent > 0) {
       sign = "+";
     } else {
-      sign = "";
+      sign = "-";
     }
     painter->drawText(point.x, point.y, size.width, size.height,
                       Qt::AlignCenter,
@@ -112,7 +112,7 @@ void InfoField::DrawCurrentTower(QPainter* painter,
     if (range_percent > 0) {
       sign = "+";
     } else {
-      sign = "";
+      sign = "-";
     }
     painter->drawText(point.x, point.y, size.width, size.height,
                       Qt::AlignCenter,
@@ -203,11 +203,12 @@ void InfoField::DrawStatistics(QPainter* painter,
                     Qt::AlignCenter, QObject::tr("Сost") +
           ": " + QString::number(cost_));
 
-  point = size_handler.GameToWindowCoordinate(
-      {true_position_.x, true_position_.y +
-          kSize.height * (kRelativeHeaderSize.height +
-              2 * kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
   if (aims_count_ != 0) {
+    point = size_handler.GameToWindowCoordinate(
+        {true_position_.x, true_position_.y +
+            kSize.height * (kRelativeHeaderSize.height +
+                2 * kRelativeStatisticsSize.height) + text_height
+            + 2 * kMargin});
     painter->drawText(point.x, point.y, size.width, size.height,
                       Qt::AlignCenter, QObject::tr("Attack speed")
                           + ": " + attack_speed_);
@@ -292,7 +293,7 @@ void InfoField::SetPosition(const Coordinate& position) {
 Coordinate InfoField::FixPosition(Size field_size) {
   Coordinate position = position_;
   position.x -= field_size.width / 2;
-  double shift = 50 + 2 * kMargin;
+  double shift = 2 * kMargin;
   is_on_bottom_ = IsOnBottom();
   if (!is_on_bottom_) {
     position.y -= field_size.height + shift;
@@ -315,14 +316,5 @@ void InfoField::SetVisible(bool is_hide) {
 }
 
 bool InfoField::IsOnBottom() const {
-  return position_.y + kSize.height + 2 * kMargin + 50 < constants::kGameHeight;
-}
-
-void InfoField::SetImage(QImage image) {
-  has_image_ = true;
-  image_ = std::move(image);
-}
-
-void InfoField::RemoveImage() {
-  has_image_ = false;
+  return position_.y + kSize.height + 2 * kMargin < constants::kGameHeight;
 }

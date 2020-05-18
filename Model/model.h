@@ -75,7 +75,7 @@ class Model {
   const AnimationPlayer& GetBackGround(int back_ground_id) const;
   const AnimationPlayer& GetInterface() const;
 
-  const QImage& GetEmptyZoneTexture(int index) const;
+  const QPixmap& GetEmptyZoneTexture(int index) const;
   const std::vector<QString>& GetTitles() const;
 
  private:
@@ -85,7 +85,7 @@ class Model {
   void SetAnimationToGameObject(GameObject* object,
                                 const std::vector<int>& timings,
                                 const std::vector<QString>& paths);
-  std::shared_ptr<std::vector<QImage>> GetImagesByFramePath(
+  std::shared_ptr<std::vector<QPixmap>> GetImagesByFramePath(
       const QString& path, const QString& picture_type = ".png") const;
   void SetParticlesToGameObject(GameObject* p_enemy, QJsonObject object);
   void LoadEffects(const QJsonObject& json_object);
@@ -125,7 +125,7 @@ class Model {
   std::vector<SoundVector> id_to_particle_sound_;
 
   // Images
-  std::vector<QImage> empty_zone_texture_;
+  std::vector<QPixmap> empty_zone_texture_;
   std::vector<AnimationPlayer> backgrounds_;
   AnimationPlayer interface_;
 };

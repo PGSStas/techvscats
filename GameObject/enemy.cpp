@@ -62,7 +62,7 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     // mirroring the image
     painter->scale(-1.0, 1.0);
   }
-  painter->drawImage(QPoint(0, 0), animation_players_[0].GetCurrentFrame());
+  painter->drawPixmap(QPoint(0, 0), animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }
