@@ -23,7 +23,7 @@
 #include "tower_menu.h"
 
 class View : public QMainWindow {
- Q_OBJECT
+  Q_OBJECT
 
  public:
   explicit View(AbstractController* controller);
