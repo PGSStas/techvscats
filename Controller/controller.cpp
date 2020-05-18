@@ -135,7 +135,7 @@ bool Controller::CanCreateNextWave() {
     game_status_ = GameStatus::kWin;
     client_.RoundCompleted(model_->GetBase()->GetCurrentHealth(),
                            static_cast<int>(GameStatus::kWin));
-    int life_time = 5000;
+    int life_time = 8000;
     double size_coefficient = 1.03;
     model_->AddTextNotification({"Level Complete",
                                  {constants::kGameWidth / 2,

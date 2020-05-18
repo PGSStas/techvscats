@@ -196,6 +196,8 @@ void MultiplayerClient::ProcessCommand(QString command) {
     if (words[1].toInt()) {
       if (IsOnline()) {
         CreateVisibleMessage(Message(MessageType::kNoCheat));
+      } else if (words[1].toInt() < 0) {
+        CreateVisibleMessage(Message(MessageType::kGoldError));
       } else {
         received_message_.push_back(
             Message().SetCommandMessage(words[1],

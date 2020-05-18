@@ -1,9 +1,6 @@
 #include "info_field.h"
 
-void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
-  if (is_hidden_ || (is_current_tower_ && is_sell_info_)) {
-    return;
-  }
+void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) {
   painter->save();
   painter->setPen(QPen(QBrush(qRgb(103, 103, 103)), 3));
   painter->setBrush(QBrush(qRgb(53, 53, 53)));
@@ -26,9 +23,7 @@ void InfoField::Draw(QPainter* painter, const SizeHandler& size_handler) const {
 }
 
 void InfoField::DrawCurrentTower(QPainter* painter,
-                                 const SizeHandler& size_handler) const {
-  Coordinate point = size_handler.GameToWindowCoordinate(position_);
-
+                                 const SizeHandler& size_handler) {
   int speed_percent = std::round(effect_.GetMoveSpeedCoefficient() * 100) - 100;
   int rate_percent = std::round(effect_.GetAttackRateCoefficient() * 100) - 100;
   int range_percent = std::round(effect_.GetRangeCoefficient() * 100) - 100;
@@ -44,10 +39,17 @@ void InfoField::DrawCurrentTower(QPainter* painter,
     valid_effects++;
   }
 
-  Size size = size_handler.GameToWindowSize(
-      {kSize.width, kSize.height *
-          ((3 + valid_effects) * kRelativeStatisticsSize.height +
-              kRelativeHeaderSize.height) + 4 * kMargin});
+  Size true_size = {kSize.width, kSize.height *
+      ((3 + valid_effects) * kRelativeStatisticsSize.height +
+          kRelativeHeaderSize.height) + 4 * kMargin};
+  Size size = size_handler.GameToWindowSize(true_size);
+  true_position_ = FixPosition(true_size);
+  Coordinate point = size_handler.GameToWindowCoordinate(true_position_);
+
+  if (is_hidden_ || (is_current_tower_ && is_sell_info_)) {
+    return;
+  }
+
   painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->setPen(Qt::white);
@@ -64,7 +66,8 @@ void InfoField::DrawCurrentTower(QPainter* painter,
   painter->setFont(font);
 
   point = size_handler.GameToWindowCoordinate(
-      {position_.x, position_.y + kSize.height * kRelativeHeaderSize.height});
+      {true_position_.x, true_position_.y +
+          kSize.height * kRelativeHeaderSize.height});
   size = size_handler.GameToWindowSize(
       {kSize.width * kRelativeStatisticsSize.width,
        kSize.height * kRelativeStatisticsSize.height});
@@ -85,8 +88,8 @@ void InfoField::DrawCurrentTower(QPainter* painter,
   }
 
   point = size_handler.GameToWindowCoordinate(
-      {position_.x, position_.y + kSize.height * kRelativeHeaderSize.height
-          + shift});
+      {true_position_.x, true_position_.y +
+          kSize.height * kRelativeHeaderSize.height + shift});
 
   if (rate_percent != 0) {
     if (rate_percent > 0) {
@@ -102,8 +105,8 @@ void InfoField::DrawCurrentTower(QPainter* painter,
   }
 
   point = size_handler.GameToWindowCoordinate(
-      {position_.x, position_.y + kSize.height * kRelativeHeaderSize.height
-          + shift});
+      {true_position_.x, true_position_.y +
+          kSize.height * kRelativeHeaderSize.height + shift});
 
   if (range_percent != 0) {
     if (range_percent > 0) {
@@ -122,15 +125,21 @@ void InfoField::DrawCurrentTower(QPainter* painter,
 
 void InfoField::DrawPurchasableTower(QPainter* painter,
                                      const SizeHandler& size_handler,
-                                     const QFontMetrics& metrics) const {
+                                     const QFontMetrics& metrics) {
   auto info_size = size_handler.GameToWindowLength(kSize.width - 2 * kMargin);
   double text_height = size_handler.WindowToGameLength(metrics.boundingRect(
       0, 0, info_size, 0, Qt::TextWordWrap, info_).height() + 2 * kMargin);
   double final_text_height = std::min(kSize.height, text_height +
       (1 - kRelativeTextSize.height) * kSize.height);
 
-  Coordinate point = size_handler.GameToWindowCoordinate(position_);
+  true_position_ = FixPosition({kSize.width, final_text_height});
+  Coordinate point = size_handler.GameToWindowCoordinate(true_position_);
   Size size = size_handler.GameToWindowSize({kSize.width, final_text_height});
+
+  if (is_hidden_ || (is_current_tower_ && is_sell_info_)) {
+    return;
+  }
+
   painter->drawRect(point.x, point.y, size.width, size.height);
 
   painter->setPen(Qt::white);
@@ -146,8 +155,8 @@ void InfoField::DrawPurchasableTower(QPainter* painter,
       constants::kFontSize * 0.7));
   painter->setFont(font);
 
-  point = size_handler.GameToWindowCoordinate({position_.x + 2 * kMargin,
-                                               position_.y + kSize.height *
+  point = size_handler.GameToWindowCoordinate({true_position_.x + 2 * kMargin,
+                                               true_position_.y + kSize.height *
                                                    kRelativeHeaderSize.height});
   size = size_handler.GameToWindowSize(
       {kSize.width * kRelativeTextSize.width - 4 * kMargin,
@@ -168,11 +177,12 @@ void InfoField::DrawPurchasableTower(QPainter* painter,
 
 void InfoField::DrawStatistics(QPainter* painter,
                                const SizeHandler& size_handler,
-                               double text_height) const {
+                               double text_height) {
   painter->save();
 
   Coordinate point = size_handler.GameToWindowCoordinate(
-      {position_.x, position_.y + kSize.height * kRelativeHeaderSize.height
+      {true_position_.x, true_position_.y +
+          kSize.height * kRelativeHeaderSize.height
           + text_height + 2 * kMargin});
   Size size = size_handler.GameToWindowSize(
       {kSize.width * kRelativeStatisticsSize.width,
@@ -186,15 +196,17 @@ void InfoField::DrawStatistics(QPainter* painter,
   }
 
   point = size_handler.GameToWindowCoordinate(
-      {position_.x, position_.y + kSize.height * (kRelativeHeaderSize.height +
-          kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
+      {true_position_.x, true_position_.y +
+          kSize.height * (kRelativeHeaderSize.height +
+              kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
   painter->drawText(point.x, point.y, size.width, size.height,
                     Qt::AlignCenter, QObject::tr("Сost") +
           ": " + QString::number(cost_));
 
   point = size_handler.GameToWindowCoordinate(
-      {position_.x, position_.y + kSize.height * (kRelativeHeaderSize.height +
-          2 * kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
+      {true_position_.x, true_position_.y +
+          kSize.height * (kRelativeHeaderSize.height +
+              2 * kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
   if (aims_count_ != 0) {
     painter->drawText(point.x, point.y, size.width, size.height,
                       Qt::AlignCenter, QObject::tr("Attack speed")
@@ -206,12 +218,13 @@ void InfoField::DrawStatistics(QPainter* painter,
 
 void InfoField::DrawSellInfo(QPainter* painter,
                              const SizeHandler& size_handler,
-                             double text_height) const {
+                             double text_height) {
   painter->save();
 
   Coordinate point = size_handler.GameToWindowCoordinate(
-      {position_.x, position_.y + kSize.height * (kRelativeHeaderSize.height +
-          kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
+      {true_position_.x, true_position_.y +
+          kSize.height * (kRelativeHeaderSize.height +
+              kRelativeStatisticsSize.height) + text_height + 2 * kMargin});
   Size size = size_handler.GameToWindowSize(
       {kSize.width * kRelativeStatisticsSize.width,
        kSize.height * kRelativeStatisticsSize.height});
@@ -223,17 +236,17 @@ void InfoField::DrawSellInfo(QPainter* painter,
 }
 
 void InfoField::DrawImage(QPainter* painter, const SizeHandler& size_handler,
-                          double field_size) const {
+                          double field_size) {
   painter->save();
   painter->setPen(QPen(QBrush(qRgb(103, 103, 103)), 3));
   painter->setBrush(QBrush(qRgb(53, 53, 53)));
 
-  Coordinate game_point = {position_.x - 40 - kImagePadSize.width,
-                           position_.y + field_size / 2 -
+  Coordinate game_point = {true_position_.x - 40 - kImagePadSize.width,
+                           true_position_.y + field_size / 2 -
                                kImagePadSize.height / 2};
 
   if (game_point.x < 10) {
-    game_point.x = position_.x + 40 + kSize.width;
+    game_point.x = true_position_.x + 40 + kSize.width;
   }
 
   Coordinate point = size_handler.GameToWindowCoordinate(game_point);
@@ -272,25 +285,29 @@ void InfoField::SetInfo(const Building& building, int total_cost,
   }
 }
 
-void InfoField::SetPosition(Coordinate position, Size button_size,
-                            double shift) {
+void InfoField::SetPosition(const Coordinate& position) {
   position_ = position;
-  position_.x -= kSize.width / 2;
-  shift += button_size.height;
-  if (position_.y + kSize.height + shift >= constants::kGameHeight) {
-    position_.y -= kSize.height + shift;
-    is_on_bottom_ = false;
+}
+
+Coordinate InfoField::FixPosition(Size field_size) {
+  Coordinate position = position_;
+  position.x -= field_size.width / 2;
+  double shift = 50 + 2 * kMargin;
+  is_on_bottom_ = IsOnBottom();
+  if (!is_on_bottom_) {
+    position.y -= field_size.height + shift;
   } else {
-    position_.y += shift;
-    is_on_bottom_ = true;
+    position.y += shift;
   }
 
-  if (position_.x + kSize.width > constants::kGameWidth) {
-    position_.x = constants::kGameWidth - kSize.width - 10;
+  if (position.x + field_size.width > constants::kGameWidth) {
+    position.x = constants::kGameWidth - field_size.width - shift;
   }
-  if (position_.x < 0) {
-    position_.x = 0;
+  if (position.x < 0) {
+    position.x = shift;
   }
+
+  return position;
 }
 
 void InfoField::SetVisible(bool is_hide) {
@@ -298,7 +315,7 @@ void InfoField::SetVisible(bool is_hide) {
 }
 
 bool InfoField::IsOnBottom() const {
-  return is_on_bottom_;
+  return position_.y + kSize.height + 2 * kMargin + 50 < constants::kGameHeight;
 }
 
 void InfoField::SetImage(QImage image) {
