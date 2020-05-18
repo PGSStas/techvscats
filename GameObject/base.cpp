@@ -111,7 +111,8 @@ Coordinate Base::GetGoldPosition() const {
 }
 
 void Base::AddGoldAmount(int gold_amount) {
-  gold_ += gold_amount;
+  gold_ += std::max(gold_amount, 0);
+  gold_ = std::min(9999, gold_);
 }
 
 void Base::SubtractGoldAmount(int gold_amount) {

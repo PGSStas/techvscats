@@ -15,6 +15,8 @@ RC_ICONS = resources/images/icon.ico
 
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -O3
 
 RESOURCES += database.qrc music.qrc images.qrc
 CONFIG += resources_big

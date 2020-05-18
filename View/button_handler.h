@@ -6,7 +6,6 @@
 #include <QJsonObject>
 #include <QMainWindow>
 #include <QMessageBox>
-#include <QProcess>
 #include <QPushButton>
 #include <QString>
 #include <QSettings>
