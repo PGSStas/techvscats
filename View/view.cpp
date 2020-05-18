@@ -61,13 +61,13 @@ void View::paintEvent(QPaintEvent*) {
     Coordinate origin = {(width() - 16 * coefficient) / 2,
                          (height() - 9 * coefficient) / 2};
     painter.fillRect(0, 0, width(), height(), Qt::white);
-    painter.drawImage(origin.x, origin.y, logo_.scaled(size.width,
+    painter.drawPixmap(origin.x, origin.y, logo_.scaled(size.width,
                                                        size.height));
     return;
   }
 
   Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-  painter.drawImage(origin.x, origin.y, controller_->GetBackground(
+  painter.drawPixmap(origin.x, origin.y, controller_->GetBackground(
       button_handler_->GetWindowType()).GetCurrentFrame());
 
   window_type_ = button_handler_->GetWindowType();
@@ -104,7 +104,7 @@ void View::Resize() {
 
 void View::DrawEmptyZones(QPainter* painter) {
   painter->save();
-  const QImage& image = controller_->GetEmptyZoneTexture(
+  const QPixmap& image = controller_->GetEmptyZoneTexture(
       button_handler_->GetWindowType());
   Size horizontal_zone =
       Size(width(), size_handler_.GameToWindowCoordinate({0, 0}).y);
@@ -159,7 +159,7 @@ void View::DrawPauseMenu(QPainter*) {
 }
 
 void View::DrawEndgameMessage(QPainter* painter) {
-  if (controller_->GetCurrentStatus() != GameStatus::kPlay) {
+  if (controller_->GetCurrentStatus() == GameStatus::kLose) {
     tower_menu_.Hide(true);
     painter->save();
 
@@ -337,8 +337,8 @@ void View::DrawAdditionalInfo(QPainter* painter) {
   controller_->GetBase().DrawUI(painter, size_handler_);
 
   Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-  painter->drawImage(origin.x, origin.y,
-                     controller_->GetInterface().GetCurrentFrame());
+  painter->drawPixmap(origin.x, origin.y,
+                      controller_->GetInterface().GetCurrentFrame());
   DrawRoundInfo(painter);
 
   if (tower_menu_.IsEnable()) {

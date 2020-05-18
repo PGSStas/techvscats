@@ -243,7 +243,7 @@ void Controller::TickEndGame() {
             random_generator_()
                 % static_cast<int>(constants::kGameHeight)));
     model_->CreateParticles({particle});
-    if (random_generator_() % 1000 < 100) {
+    if (random_generator_() % 10000 < 50) {
       const auto& buildings = model_->GetBuildings();
       for (uint32_t i = 0; i < buildings.size(); i++) {
         if (buildings[i]->GetId() != 0) {
@@ -562,7 +562,7 @@ GameStatus Controller::GetCurrentStatus() const {
   return game_status_;
 }
 
-const QImage& Controller::GetEmptyZoneTexture(WindowType type) const {
+const QPixmap& Controller::GetEmptyZoneTexture(WindowType type) const {
   return model_->GetEmptyZoneTexture(static_cast<int>(type));
 }
 

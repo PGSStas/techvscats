@@ -17,7 +17,7 @@ void GameObject::SetPosition(Coordinate position) {
   position_ = position;
 }
 
-const QImage& GameObject::GetSprite() const {
+const QPixmap& GameObject::GetSprite() const {
   return animation_players_[0].GetCurrentFrame();
 }
 

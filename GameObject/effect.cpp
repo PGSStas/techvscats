@@ -113,11 +113,11 @@ void Effect::DrawEffectIcon(QPainter* painter, Coordinate* point,
   painter->save();
   EffectVisualization effect_visualization = effect_visualizations_[index];
   if (coefficient > 1) {
-    painter->drawImage(QPoint(point->x, point->y),
-                       effect_visualization.increased.GetCurrentFrame());
+    painter->drawPixmap(QPoint(point->x, point->y),
+                        effect_visualization.increased.GetCurrentFrame());
   } else if (coefficient < 1) {
-    painter->drawImage(QPoint(point->x, point->y),
-                       effect_visualization.reduced.GetCurrentFrame());
+    painter->drawPixmap(QPoint(point->x, point->y),
+                        effect_visualization.reduced.GetCurrentFrame());
   }
   point->x += size.width * kNearbyCoefficient;
   painter->restore();

@@ -71,7 +71,7 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   if (is_boss_) {
     new_position = QPoint(size.width / 6, -size.width / 6);
   }
-  painter->drawImage(new_position, animation_players_[0].GetCurrentFrame());
+  painter->drawPixmap(QPoint(0, 0), animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }

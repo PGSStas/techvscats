@@ -44,7 +44,7 @@ class Controller : public AbstractController {
 
   const AnimationPlayer& GetBackground(WindowType type) const override;
 
-  const QImage& GetEmptyZoneTexture(WindowType type) const override;
+  const QPixmap& GetEmptyZoneTexture(WindowType type) const override;
   const AnimationPlayer& GetInterface() const override;
 
   int GetCurrentRoundNumber() const override;

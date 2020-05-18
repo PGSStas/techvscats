@@ -1,7 +1,7 @@
 #include "animation_player.h"
 
 AnimationPlayer::AnimationPlayer(
-    const std::shared_ptr<std::vector<QImage>>& frames, int animation_duration)
+    const std::shared_ptr<std::vector<QPixmap>>& frames, int animation_duration)
     : frames_(frames), frames_rescaled_(*frames) {
   time_between_frames_ = 1.0 * animation_duration / frames->size();
   Reset();
@@ -16,7 +16,7 @@ void AnimationPlayer::Tick(int delta_time) {
   wait_till_next_frame_ = time_between_frames_;
 }
 
-const QImage& AnimationPlayer::GetCurrentFrame() const {
+const QPixmap& AnimationPlayer::GetCurrentFrame() const {
   return frames_rescaled_[current_frame_];
 }
 

@@ -224,7 +224,6 @@ void TowerMenu::DrawInfoField(QPainter* painter,
 
   painter->restore();
   info_field_.SetInfo(instance, total_cost_, active_button_index_ == -1);
-  info_field_.RemoveImage();
   info_field_.Draw(painter, size_handler);
 }
 

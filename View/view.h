@@ -85,7 +85,7 @@ class View : public QMainWindow {
   const Coordinate kRoundPosition = {1758, 1001};
   const Size kRoundSize = {120, 60};
 
-  QImage logo_ = QImage(":resources/images/backgrounds/logo.png");
+  QPixmap logo_ = QPixmap(":resources/images/backgrounds/logo.png");
   bool is_model_loaded_ = false;
 
  private:

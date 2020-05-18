@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <QFontDatabase>
-#include <QImage>
+#include <QPixmap>
 #include <QPainter>
 #include <QString>
 #include <utility>
@@ -35,8 +35,6 @@ class InfoField {
   void SetPosition(const Coordinate& position);
   Coordinate FixPosition(Size button_size);
   void SetVisible(bool is_hide);
-  void SetImage(QImage image);
-  void RemoveImage();
   bool IsOnBottom() const;
 
  private:
@@ -55,7 +53,6 @@ class InfoField {
 
   bool is_current_tower_;
   bool has_image_ = false;
-  QImage image_;
   Effect effect_ = Effect(EffectTarget::kBuilding);
 
   const double kMargin = 10;
