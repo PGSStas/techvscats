@@ -85,7 +85,7 @@ void Server::ProcessRoomEnterMessage(const Message& message,
         && room.wait_time > kRoomSmallPrepareTime) {
       int additional_time = kLifeRoomTimeForOneNewPlayer;
       additional_time =
-          std::max(0, additional_time - 1000 * room.players_count);
+          std::max(0, additional_time - 1000 * room.max_time_add_times_--);
       room.wait_time += additional_time;
       room.players_count++;
       owner->room = &room;
