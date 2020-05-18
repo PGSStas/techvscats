@@ -300,7 +300,7 @@ void View::keyPressEvent(QKeyEvent* event) {
   }
   if (event->key() == Qt::Key_Escape &&
       button_handler_->GetWindowType() == WindowType::kTitles) {
-    button_handler_->SetWindowType(WindowType::kSettings);
+    button_handler_->SetWindowType(WindowType::kMainMenu);
     controller_->EndTitles();
   }
 }
@@ -473,4 +473,19 @@ void View::EndTitles() {
 
 void View::ShowSettingsButton() {
   button_handler_->SetTitlesVisible(true);
+}
+
+void View::ShowNextLevelButton() {
+    button_handler_->SetNextLevelButtonVisible(true);
+}
+
+void View::BeginNextLevel() {
+  controller_->EndGame();
+  controller_->StartGame(button_handler_->GetCurrentLevel());
+  button_handler_->SetNextLevelButtonVisible(false);
+  button_handler_->SetSpeedButtonsState(Speed::kNormalSpeed);
+}
+
+bool View::IsLastLevel() {
+  return button_handler_->GetCurrentLevel() == button_handler_->GetMaxLevel();
 }

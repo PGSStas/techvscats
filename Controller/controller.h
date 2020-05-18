@@ -56,6 +56,7 @@ class Controller : public AbstractController {
 
   void CreateTitles() override;
   void EndTitles() override;
+  void BeginNextLevel() override;
 
   MusicPlayer* GetMusicPlayer() override;
 

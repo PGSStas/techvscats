@@ -2,7 +2,6 @@
 #define  VIEW_SIZE_HANDLER_H_
 
 #include <algorithm>
-#include <QDebug>
 #include <QMainWindow>
 
 #include "Model/coordinate.h"
