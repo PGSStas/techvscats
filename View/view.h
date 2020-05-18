@@ -50,6 +50,7 @@ class View : public QMainWindow {
   int GetRealTime() const;
 
   int GetChosenLevel() const;
+  void UnlockLevels();
 
   void StartTitles();
   void EndTitles();

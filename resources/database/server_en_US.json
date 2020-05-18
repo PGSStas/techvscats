@@ -126,5 +126,13 @@
   {
     "message": "< /clear - clear chat ",
     "type": 0
+  },
+  {
+    "message": "< /unlock - to unlock levels ",
+    "type": 0
+  },
+  {
+    "message": "< You are the smartest guy I've ever seen...",
+    "type": 0
   }
 ]
