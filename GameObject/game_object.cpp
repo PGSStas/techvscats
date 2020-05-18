@@ -45,3 +45,7 @@ ParticleHandler* GameObject::GetParticleHandler() {
 Size GameObject::GetSize() const {
   return size_;
 }
+
+void GameObject::SetSize(Size size) {
+  size_ = size;
+}

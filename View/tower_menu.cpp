@@ -3,7 +3,7 @@
 void TowerMenu::ButtonTapped(int button_index) {
   if (active_button_index_ == static_cast<int>(button_index)) {
     id_to_replace_ = true;
-    Close();
+    Close(false);
     return;
   }
   if (active_button_index_ != -1) {
@@ -237,9 +237,13 @@ void TowerMenu::Hide(bool is_hidden) {
   }
 }
 
-void TowerMenu::Close() {
-  slow_disable = true;
-  current_force_ = kThrowForce * 1.3;
+void TowerMenu::Close(bool is_fast_disable) {
+  if (is_fast_disable) {
+    Disable();
+  } else {
+    current_force_ = kThrowForce * 1.3;
+  }
+  slow_disable = !is_fast_disable;
 }
 
 int TowerMenu::GetTownerIndex() const {

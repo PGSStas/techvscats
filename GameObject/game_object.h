@@ -29,6 +29,7 @@ class GameObject {
   Coordinate GetPosition() const;
   ParticleHandler* GetParticleHandler();
   Size GetSize() const;
+  void SetSize(Size size);
 
  protected:
   std::vector<AnimationPlayer> animation_players_;
