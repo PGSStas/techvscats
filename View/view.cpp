@@ -62,7 +62,7 @@ void View::paintEvent(QPaintEvent*) {
                          (height() - 9 * coefficient) / 2};
     painter.fillRect(0, 0, width(), height(), Qt::white);
     painter.drawPixmap(origin.x, origin.y, logo_.scaled(size.width,
-                                                       size.height));
+                                                        size.height));
     return;
   }
 
@@ -268,8 +268,8 @@ void View::ReplaceTowerMenu(Coordinate position, int carrier_building_index,
                        size_handler_, total_cost);
 }
 
-void View::DisableTowerMenu() {
-  tower_menu_.Close();
+void View::DisableTowerMenu(bool is_fast_disable) {
+  tower_menu_.Close(is_fast_disable);
 }
 
 void View::mouseReleaseEvent(QMouseEvent* event) {
