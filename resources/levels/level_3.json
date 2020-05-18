@@ -1,16 +1,16 @@
 {
   "prepared_time_between_rounds_": 3000,
-  "gold": 1940,
+  "gold": 1540,
   "score": 0,
   "base": {
     "max_health": 100,
     "size": {
-      "width": 245,
-      "height": 180
+      "width": 255,
+      "height": 190
     },
     "position": {
-      "x": 1730,
-      "y": 170
+      "x": 1745,
+      "y": 155
     },
     "animation": {
       "timing": 750,
@@ -212,14 +212,14 @@
         "spawn_period": 400,
         "enemy_id": 0,
         "time_of_next_spawn": 18000,
-        "group_size": 100,
+        "group_size": 140,
         "road_to_spawn": 0
       },
       {
         "spawn_period": 400,
         "enemy_id": 0,
         "time_of_next_spawn": 18000,
-        "group_size": 100,
+        "group_size": 140,
         "road_to_spawn": 1
       }
     ]

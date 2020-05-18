@@ -69,7 +69,7 @@ class Enemy : public MovingObject {
   // boss
   bool is_boss_ = false;
   const double tower_kill_radius_ = 300;
-  const int kill_reload_ = 17000;
+  const int kill_reload_ = 16500;
   int wait_to_kill_ = kill_reload_ / 2;
 
  private:

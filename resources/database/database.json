@@ -181,7 +181,7 @@
       },
       "size": {
         "width": 525,
-        "height": 350
+        "height": 250
       },
       "animation": {
         "path": "enemies/vaccleaner_4",

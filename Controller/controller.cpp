@@ -280,9 +280,9 @@ void Controller::TickEnemies() {
       boss_is_alive = true;
       BossTowerKill(enemy.get());
       if (enemy->GetPosition().GetVectorTo(base->GetPosition()).GetLength()
-          < 100) {
-        if (enemy->GetSize().width > base->GetSize().width) {
-          enemy->SetSize(enemy->GetSize() *= 0.999);
+          < 200) {
+        if (enemy->GetSize().width > base->GetSize().width-20) {
+          enemy->SetSize(enemy->GetSize() *= 0.995);
         }
       }
     }
@@ -291,7 +291,6 @@ void Controller::TickEnemies() {
     boss_is_alive_ = boss_is_alive;
     if (boss_is_alive) {
       music_player_.StartEpicBossMusic();
-      music_player_.PlayNewWaveSound();
     }
   }
 }
@@ -541,7 +540,7 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
     auto boss_size = instance.GetSize();
     if (boss_size.width > 310) {
       instance.SetSize(boss_size / 1.3);
-      instance.SetSpeed(instance.GetSpeed() * 1.4);
+      instance.SetSpeed(instance.GetSpeed() * 1.35);
       model_->AddEnemyFromInstance(instance, true);
       model_->AddEnemyFromInstance(instance, true);
     }
