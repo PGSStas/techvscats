@@ -41,7 +41,7 @@ class View : public QMainWindow {
   void ReplaceTowerMenu(Coordinate position, int carrier_building_index,
                         const std::vector<int>& possible_buildings_id,
                         int carrier_id_, int total_cost);
-  void DisableTowerMenu();
+  void DisableTowerMenu(bool fast_disable = false);
   bool IsTowerMenuEnabled() const;
 
   void ChangeGameSpeed(Speed speed, bool im_the_button = false);
@@ -75,6 +75,7 @@ class View : public QMainWindow {
   TowerMenu tower_menu_;
 
   double game_speed_coefficient_ = 1;
+  double previous_game_speed_coefficient = 0;
 
   const QString kEndgameMessage = tr("Restart level or go to the main menu");
   Coordinate message_position_ = {constants::kGameWidth / 2, 900};
@@ -84,7 +85,7 @@ class View : public QMainWindow {
   const Coordinate kRoundPosition = {1758, 1001};
   const Size kRoundSize = {120, 60};
 
-  QImage logo_ = QImage(":resources/images/backgrounds/logo.png");
+  QPixmap logo_ = QPixmap(":resources/images/backgrounds/logo.png");
   bool is_model_loaded_ = false;
 
  private:

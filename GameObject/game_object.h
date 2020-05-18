@@ -22,7 +22,7 @@ class GameObject {
   virtual void Draw(QPainter* painter,
                     const SizeHandler& size_handler) const = 0;
 
-  const QImage& GetSprite() const;
+  const QPixmap& GetSprite() const;
   void SetAnimationPlayers(std::vector<AnimationPlayer> animation_players);
   void Rescale(Size to_size);
 
@@ -30,6 +30,7 @@ class GameObject {
   Coordinate GetPosition() const;
   ParticleHandler* GetParticleHandler();
   Size GetSize() const;
+  void SetSize(Size size);
 
  protected:
   std::vector<AnimationPlayer> animation_players_;

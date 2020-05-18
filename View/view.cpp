@@ -43,14 +43,14 @@ View::View(AbstractController* controller)
 void View::SecondConstructorPart() {
   button_handler_ = std::make_shared<ButtonHandler>(this, controller_, 0);
   global_chat_ = std::make_shared<GlobalChat>(this);
+  Resize();
   button_handler_->SetGameUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetMainMenuUiVisible(false);
   button_handler_->SetTitlesVisible(false);
+  global_chat_->SetVisible(false);
   is_model_loaded_ = true;
-  Resize();
-  global_chat_->SetVisible(true);
 }
 
 void View::paintEvent(QPaintEvent*) {
@@ -61,13 +61,13 @@ void View::paintEvent(QPaintEvent*) {
     Coordinate origin = {(width() - 16 * coefficient) / 2,
                          (height() - 9 * coefficient) / 2};
     painter.fillRect(0, 0, width(), height(), Qt::white);
-    painter.drawImage(origin.x, origin.y, logo_.scaled(size.width,
-                                                       size.height));
+    painter.drawPixmap(origin.x, origin.y, logo_.scaled(size.width,
+                                                        size.height));
     return;
   }
 
   Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-  painter.drawImage(origin.x, origin.y, controller_->GetBackground(
+  painter.drawPixmap(origin.x, origin.y, controller_->GetBackground(
       button_handler_->GetWindowType()).GetCurrentFrame());
 
   window_type_ = button_handler_->GetWindowType();
@@ -104,7 +104,7 @@ void View::Resize() {
 
 void View::DrawEmptyZones(QPainter* painter) {
   painter->save();
-  const QImage& image = controller_->GetEmptyZoneTexture(
+  const QPixmap& image = controller_->GetEmptyZoneTexture(
       button_handler_->GetWindowType());
   Size horizontal_zone =
       Size(width(), size_handler_.GameToWindowCoordinate({0, 0}).y);
@@ -127,6 +127,7 @@ void View::DrawMainMenu(QPainter*) {
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetMainMenuUiVisible(true);
+  global_chat_->SetVisible(true);
 }
 
 void View::DrawGame(QPainter* painter) {
@@ -158,7 +159,7 @@ void View::DrawPauseMenu(QPainter*) {
 }
 
 void View::DrawEndgameMessage(QPainter* painter) {
-  if (controller_->GetCurrentStatus() != GameStatus::kPlay) {
+  if (controller_->GetCurrentStatus() == GameStatus::kLose) {
     tower_menu_.Hide(true);
     painter->save();
 
@@ -232,9 +233,15 @@ int View::GetRealTime() const {
 
 void View::DrawTowersAuraAndRange(QPainter* painter) {
   if (tower_menu_.IsEnable()) {
-    tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
-                                       controller_->GetBuildingById(
-                                           tower_menu_.GetSellectedTowerId()));
+    if (tower_menu_.GetChosenButtonId() != -1) {
+      tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
+                                         controller_->GetBuildingById(
+                                             tower_menu_.GetChosenButtonId()));
+    } else {
+      tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
+                                         *controller_->GetBuildings()[
+                                             tower_menu_.GetTownerIndex()]);
+    }
   }
 }
 
@@ -261,8 +268,8 @@ void View::ReplaceTowerMenu(Coordinate position, int carrier_building_index,
                        size_handler_, total_cost);
 }
 
-void View::DisableTowerMenu() {
-  tower_menu_.Close();
+void View::DisableTowerMenu(bool is_fast_disable) {
+  tower_menu_.Close(is_fast_disable);
 }
 
 void View::mouseReleaseEvent(QMouseEvent* event) {
@@ -286,8 +293,11 @@ void View::mousePressEvent(QMouseEvent* event) {
 }
 void View::keyPressEvent(QKeyEvent* event) {
   if (event->key() == Qt::Key_Space) {
-    if (game_speed_coefficient_ == 0) {
+    if (game_speed_coefficient_ == 0 && previous_game_speed_coefficient == 1) {
       button_handler_->SetSpeed(static_cast<int>(Speed::kNormalSpeed));
+    } else if (game_speed_coefficient_ == 0
+        && previous_game_speed_coefficient == 2) {
+      button_handler_->SetSpeed(static_cast<int>(Speed::kDoubleSpeed));
     } else {
       button_handler_->SetSpeed(static_cast<int>(Speed::kZeroSpeed));
     }
@@ -327,8 +337,8 @@ void View::DrawAdditionalInfo(QPainter* painter) {
   controller_->GetBase().DrawUI(painter, size_handler_);
 
   Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
-  painter->drawImage(origin.x, origin.y,
-                     controller_->GetInterface().GetCurrentFrame());
+  painter->drawPixmap(origin.x, origin.y,
+                      controller_->GetInterface().GetCurrentFrame());
   DrawRoundInfo(painter);
 
   if (tower_menu_.IsEnable()) {
@@ -397,6 +407,7 @@ void View::timerEvent(QTimerEvent* event) {
 }
 
 void View::ChangeGameSpeed(Speed speed, bool notify_button_handler) {
+  previous_game_speed_coefficient = game_speed_coefficient_;
   game_speed_coefficient_ = static_cast<int>(speed);
   if (!notify_button_handler) {
     button_handler_->SetSpeed(static_cast<int>(speed));
@@ -470,7 +481,7 @@ void View::ShowSettingsButton() {
 }
 
 void View::ShowNextLevelButton() {
-    button_handler_->SetNextLevelButtonVisible(true);
+  button_handler_->SetNextLevelButtonVisible(true);
 }
 
 void View::BeginNextLevel() {

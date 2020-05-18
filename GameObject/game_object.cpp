@@ -17,7 +17,7 @@ void GameObject::SetPosition(Coordinate position) {
   position_ = position;
 }
 
-const QImage& GameObject::GetSprite() const {
+const QPixmap& GameObject::GetSprite() const {
   return animation_players_[0].GetCurrentFrame();
 }
 
@@ -46,4 +46,8 @@ ParticleHandler* GameObject::GetParticleHandler() {
 
 Size GameObject::GetSize() const {
   return size_;
+}
+
+void GameObject::SetSize(Size size) {
+  size_ = size;
 }

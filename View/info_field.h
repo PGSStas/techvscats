@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <QFontDatabase>
-#include <QImage>
+#include <QPixmap>
 #include <QPainter>
 #include <QString>
 #include <utility>
@@ -17,29 +17,29 @@
 
 class InfoField {
  public:
-  void Draw(QPainter* painter, const SizeHandler& size_handler) const;
+  void Draw(QPainter* painter, const SizeHandler& size_handler);
   void DrawCurrentTower(QPainter* painter,
-                        const SizeHandler& size_handler) const;
+                        const SizeHandler& size_handler);
   void DrawPurchasableTower(QPainter* painter,
                             const SizeHandler& size_handler,
-                            const QFontMetrics& metrics) const;
+                            const QFontMetrics& metrics);
   void DrawStatistics(QPainter* painter, const SizeHandler& size_handler,
-                      double text_height) const;
+                      double text_height);
   void DrawSellInfo(QPainter* painter, const SizeHandler& size_handler,
-                    double text_height) const;
+                    double text_height);
   void DrawImage(QPainter* painter, const SizeHandler& size_handler,
-                 double field_size) const;
+                 double field_size);
 
   void SetInfo(const Building& building, int total_cost,
                bool is_current_tower);
-  void SetPosition(Coordinate position, Size button_size, double shift);
+  void SetPosition(const Coordinate& position);
+  Coordinate FixPosition(Size button_size);
   void SetVisible(bool is_hide);
-  void SetImage(QImage image);
-  void RemoveImage();
   bool IsOnBottom() const;
 
  private:
   Coordinate position_;
+  Coordinate true_position_;
   bool is_hidden_ = false;
   bool is_on_bottom_ = true;
   bool is_sell_info_ = false;
@@ -53,11 +53,10 @@ class InfoField {
 
   bool is_current_tower_;
   bool has_image_ = false;
-  QImage image_;
   Effect effect_ = Effect(EffectTarget::kBuilding);
 
   const double kMargin = 10;
-  const Size kSize = {500, 450};
+  const Size kSize = {500, 500};
   const Size kRelativeHeaderSize = {1, 0.2};
   const Size kRelativeTextSize = {1, 0.5};
   const Size kRelativeStatisticsSize = {1.0, 0.2 / 3};

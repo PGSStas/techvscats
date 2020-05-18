@@ -46,7 +46,6 @@ void ParticleHandler::SetParticlePacks(const ParticleHandler& other) {
 void ParticleHandler::PlayOwnerDeath() {
   if (event_to_id_[static_cast<int>(Event::kDeath)] != -1) {
     CreateParticleFromId(event_to_id_[static_cast<int>(Event::kDeath)]);
-    event_to_id_[static_cast<int>(Event::kDeath)] = -1;
   }
 }
 

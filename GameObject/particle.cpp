@@ -28,7 +28,7 @@ void Particle::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   point = size_handler.GameToWindowCoordinate(position_ - size_ / 2);
 
   painter->translate(point.x, point.y);
-  painter->drawImage(0, 0, animation_players_[0].GetCurrentFrame());
+  painter->drawPixmap(0, 0, animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }

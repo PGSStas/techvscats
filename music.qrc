@@ -5,6 +5,7 @@
         <file>resources/sounds/game_sound.mp3</file>
         <file>resources/sounds/game_over_sound.mp3</file>
         <file>resources/sounds/game_won_sound.mp3</file>
+        <file>resources/sounds/epic_boss.mp3</file>
         <file>resources/sounds/button_click.mp3</file>
         <file>resources/sounds/sale_sound.mp3</file>
         <file>resources/sounds/not_enough_money_sound.mp3</file>

@@ -7,7 +7,7 @@ set(CMAKE_AUTOMOC ON) # Enable Qt MOC compiler for managing signals / slots
 set(CMAKE_AUTORCC ON) # Enable Qt resources compiler
 set(CMAKE_AUTOUIC ON) # Enable Qt UI compiler
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -Wextra ")
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -Wextra -O3")
 
 # set(CMAKE_PREFIX_PATH "~/Qt/5.13.2/gcc_64/lib/cmake")  # Linux
 set(CMAKE_PREFIX_PATH "E:/QT/5.14.2/mingw73_64/lib/cmake")  # Windows

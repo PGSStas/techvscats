@@ -3,7 +3,7 @@
 void TowerMenu::ButtonTapped(int button_index) {
   if (active_button_index_ == static_cast<int>(button_index)) {
     id_to_replace_ = true;
-    Close();
+    Close(false);
     return;
   }
   if (active_button_index_ != -1) {
@@ -102,8 +102,7 @@ void TowerMenu::Recreate(Coordinate position, int owner_building_index,
 }
 
 void TowerMenu::Tick(const SizeHandler& size_handler) {
-  info_field_.SetPosition(position_, button_constants::kShortButtonSize,
-                          button_constants::kShift);
+  info_field_.SetPosition(position_);
   if (active_button_index_ != -1 || owner_building_index_ != -1) {
     info_field_.SetVisible(true);
   }
@@ -225,7 +224,6 @@ void TowerMenu::DrawInfoField(QPainter* painter,
 
   painter->restore();
   info_field_.SetInfo(instance, total_cost_, active_button_index_ == -1);
-  info_field_.RemoveImage();
   info_field_.Draw(painter, size_handler);
 }
 
@@ -239,9 +237,13 @@ void TowerMenu::Hide(bool is_hidden) {
   }
 }
 
-void TowerMenu::Close() {
-  slow_disable = true;
-  current_force_ = kThrowForce * 1.3;
+void TowerMenu::Close(bool is_fast_disable) {
+  if (is_fast_disable) {
+    Disable();
+  } else {
+    current_force_ = kThrowForce * 1.3;
+  }
+  slow_disable = !is_fast_disable;
   return;
 }
 

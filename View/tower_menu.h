@@ -36,7 +36,7 @@ class TowerMenu {
                               const Building& instance);
   void DrawInfoField(QPainter* painter, const SizeHandler& size_handler,
                      const Building& instance);
-  void Close();
+  void Close(bool is_fast_disable);
   void Hide(bool is_hidden);
   int GetTownerIndex() const;
   int GetSellectedTowerId() const;

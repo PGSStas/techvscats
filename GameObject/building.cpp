@@ -99,7 +99,7 @@ void Building::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
   Coordinate point =
       size_handler.GameToWindowCoordinate(position_ - size_ / 2);
-  painter->drawImage(
+  painter->drawPixmap(
       point.x, point.y,
       animation_players_[static_cast<int>(action_)].GetCurrentFrame());
   painter->restore();

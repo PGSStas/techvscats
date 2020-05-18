@@ -63,6 +63,7 @@ android {
     firebaseAppDistribution {
         releaseNotesFile="release_notes.txt"
         testers="vladkozulin@mail.ru"
+        groups="main-testers"
     }
 
     sourceSets {

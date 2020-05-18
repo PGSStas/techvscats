@@ -25,7 +25,8 @@ void Base::Draw(QPainter* painter, const SizeHandler& size_handler) const {
 
   Coordinate point = size_handler.GameToWindowCoordinate(
       position_ - size_ / 2);
-  painter->drawImage(point.x, point.y, animation_players_[0].GetCurrentFrame());
+  painter->drawPixmap(point.x, point.y,
+                      animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }
@@ -111,7 +112,8 @@ Coordinate Base::GetGoldPosition() const {
 }
 
 void Base::AddGoldAmount(int gold_amount) {
-  gold_ += gold_amount;
+  gold_ += std::max(gold_amount, 0);
+  gold_ = std::min(9999, gold_);
 }
 
 void Base::SubtractGoldAmount(int gold_amount) {

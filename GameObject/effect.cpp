@@ -47,6 +47,7 @@ void Effect::DrawEffectsIcons(QPainter* painter,
     DrawEffectIcon(painter, &point, size, CoefficientType::kArmor);
   }
   if (effect_target_ == EffectTarget::kBuilding) {
+    DrawEffectIcon(painter, &point, size, CoefficientType::kMoveSpeed);
     DrawEffectIcon(painter, &point, size, CoefficientType::kAttackRate);
     DrawEffectIcon(painter, &point, size, CoefficientType::kRange);
   }
@@ -96,7 +97,7 @@ double Effect::GetRangeCoefficient() const {
 Effect& Effect::operator+=(const Effect& other) {
   int n = coefficients_.size();
   for (int i = 0; i < n; i++) {
-    coefficients_[i] = std::max(coefficients_[i] + other.coefficients_[i], 0.0);
+    coefficients_[i] = std::max(coefficients_[i] + other.coefficients_[i], 0.1);
   }
   return *this;
 }
@@ -112,11 +113,11 @@ void Effect::DrawEffectIcon(QPainter* painter, Coordinate* point,
   painter->save();
   EffectVisualization effect_visualization = effect_visualizations_[index];
   if (coefficient > 1) {
-    painter->drawImage(QPoint(point->x, point->y),
-                       effect_visualization.increased.GetCurrentFrame());
+    painter->drawPixmap(QPoint(point->x, point->y),
+                        effect_visualization.increased.GetCurrentFrame());
   } else if (coefficient < 1) {
-    painter->drawImage(QPoint(point->x, point->y),
-                       effect_visualization.reduced.GetCurrentFrame());
+    painter->drawPixmap(QPoint(point->x, point->y),
+                        effect_visualization.reduced.GetCurrentFrame());
   }
   point->x += size.width * kNearbyCoefficient;
   painter->restore();

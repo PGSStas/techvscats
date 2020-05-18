@@ -44,6 +44,9 @@ void Controller::EndGame() {
   }
   current_game_time_ = 0;
   music_player_.StartMenuMusic();
+  if (view_->IsTowerMenuEnabled()) {
+    view_->DisableTowerMenu(true);
+  }
 }
 
 void Controller::Tick(int current_time) {
@@ -72,6 +75,22 @@ void Controller::SetSpeedCoefficient(Speed speed, bool notify_button_handler) {
 }
 
 void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
+  auto upgrade_tree = model_->GetUpgradesTree()[
+      model_->GetBuildings()[index_in_buildings]->GetId()];
+  bool can_upgrade = false;
+  for (int id : upgrade_tree) {
+    if (id == replacing_id) {
+      can_upgrade = true;
+      break;
+    }
+  }
+  if (!can_upgrade) {
+    auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
+    model_->AddTextNotification({QObject::tr("Error") +
+        constants::kCurrency, position, Qt::blue, current_game_time_});
+    music_player_.PlayNotEnoughMoneySound();
+    return;
+  }
   int settle_cost = model_->GetBuildingById(replacing_id).GetCost();
   auto base = model_->GetBase();
   if (base->GetGold() >= settle_cost) {
@@ -132,7 +151,7 @@ bool Controller::CanCreateNextWave() {
     game_status_ = GameStatus::kWin;
     client_.RoundCompleted(model_->GetBase()->GetCurrentHealth(),
                            static_cast<int>(GameStatus::kWin));
-    int life_time = 5000;
+    int life_time = 8000;
     double size_coefficient = 1.03;
     model_->AddTextNotification({"Level Complete",
                                  {constants::kGameWidth / 2,
@@ -216,14 +235,15 @@ void Controller::TickEndGame() {
   if (last_time_end_particle_created + kParticlesPeriod < current_game_time_) {
     last_time_end_particle_created = current_game_time_;
     ParticleParameters particle(
-        (game_status_ == GameStatus::kLose) ? kLooseParticleId : kWinParticleId,
+        (game_status_ == GameStatus::kLose) ? kLooseParticleId
+                                            : kFireWorksParticleId,
         {-1, -1},
         Coordinate(0, 0) + Size(
             random_generator_() % static_cast<int>(constants::kGameWidth),
             random_generator_()
                 % static_cast<int>(constants::kGameHeight)));
     model_->CreateParticles({particle});
-    if (random_generator_() % 1000 < 100) {
+    if (random_generator_() % 10000 < 50) {
       const auto& buildings = model_->GetBuildings();
       for (uint32_t i = 0; i < buildings.size(); i++) {
         if (buildings[i]->GetId() != 0) {
@@ -249,6 +269,7 @@ void Controller::TickSpawners() {
 }
 
 void Controller::TickEnemies() {
+  bool boss_is_alive = false;
   auto enemies = model_->GetEnemies();
   enemies->remove_if([this](const auto& enemy) {
     if (enemy->IsDead() && !enemy->IsEndReached()) {
@@ -261,6 +282,22 @@ void Controller::TickEnemies() {
     enemy->Tick(current_game_time_);
     if (enemy->IsEndReached()) {
       base->DecreaseHealth(enemy->GetDamage());
+    }
+    if (enemy->IsBoss()) {
+      boss_is_alive = true;
+      KillTowerByBoss(enemy.get());
+      if (enemy->GetPosition().GetVectorTo(base->GetPosition()).GetLength()
+          < 200) {
+        if (enemy->GetSize().width > base->GetSize().width - 20) {
+          enemy->SetSize(enemy->GetSize() *= 0.995);
+        }
+      }
+    }
+  }
+  if (boss_is_alive_ != boss_is_alive) {
+    boss_is_alive_ = boss_is_alive;
+    if (boss_is_alive) {
+      music_player_.StartEpicBossMusic();
     }
   }
 }
@@ -503,6 +540,18 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
                                view_->GetRealTime()});
 
   model_->GetBase()->AddGoldAmount(reward);
+
+  if (enemy.IsBoss()) {
+    auto instance = enemy;
+    instance.CopyPosition(enemy);
+    auto boss_size = instance.GetSize();
+    if (boss_size.width > 310) {
+      instance.SetSize(boss_size / 1.3);
+      instance.SetSpeed(instance.GetSpeed() * 1.35);
+      model_->AddEnemyFromInstance(instance, true);
+      model_->AddEnemyFromInstance(instance, true);
+    }
+  }
 }
 
 const AnimationPlayer& Controller::GetBackground(WindowType type) const {
@@ -513,7 +562,7 @@ GameStatus Controller::GetCurrentStatus() const {
   return game_status_;
 }
 
-const QImage& Controller::GetEmptyZoneTexture(WindowType type) const {
+const QPixmap& Controller::GetEmptyZoneTexture(WindowType type) const {
   return model_->GetEmptyZoneTexture(static_cast<int>(type));
 }
 
@@ -620,4 +669,26 @@ void Controller::EndTitles() {
 
 void Controller::BeginNextLevel() {
   view_->BeginNextLevel();
+}
+
+void Controller::KillTowerByBoss(Enemy* enemy) {
+  if (!enemy->IsTimeToKill()) {
+    return;
+  }
+  enemy->KillReload();
+  const auto& buildings = model_->GetBuildings();
+  for (uint32_t i = 0; i < buildings.size(); i++) {
+    bool is_near_the_boss =
+        buildings[i]->GetPosition().IsInEllipse(
+            enemy->GetPosition(), enemy->GetKillRadius());
+    if (buildings[i]->GetId() != 0 && is_near_the_boss) {
+      ParticleParameters particle(
+          kFireWorksParticleId,
+          {-1, -1},
+          buildings[i]->GetPosition());
+      model_->CreateParticles({particle});
+      model_->CreateBuildingAtIndex(i, 0);
+      break;
+    }
+  }
 }

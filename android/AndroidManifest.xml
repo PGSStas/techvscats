@@ -26,9 +26,10 @@
         <activity 
         	android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
             android:name="org.qtproject.qt5.android.bindings.QtActivity"
-            android:label="TechVsCats" 
+            android:label="TechVsCats"
             android:screenOrientation="userLandscape"
-            android:launchMode="singleTop" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:launchMode="singleTop"
             android:resizeableActivity="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
