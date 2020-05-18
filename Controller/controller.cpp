@@ -640,6 +640,10 @@ void Controller::ProcessCommand(const Message& message) {
       view_->ClearChat();
       break;
     }
+    case CommandType::kUnlock: {
+      view_->UnlockLevels();
+      break;
+    }
   }
 }
 
