@@ -35,6 +35,7 @@ struct Room {
   int players_in_round = 0;
   int players_loose_ = 0;
   int players_win_ = 0;
+  int max_time_add_times_ = 6;
 };
 
 struct GameClient {
