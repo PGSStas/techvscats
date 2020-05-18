@@ -16,7 +16,8 @@ void HomingProjectile::Draw(QPainter* painter,
   Coordinate point = handler.GameToWindowCoordinate(
       position_ - size_ / 2);
 
-  painter->drawPixmap(point.x, point.y, animation_players_[0].GetCurrentFrame());
+  painter->drawPixmap(point.x, point.y,
+                      animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }

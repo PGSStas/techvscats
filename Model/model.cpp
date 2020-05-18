@@ -279,8 +279,9 @@ void Model::LoadLevel(int level) {
       GetImagesByFramePath("backgrounds/map_level_" +
           QString::number(level) + "_1"));
 
-  empty_zone_texture_[4] = QPixmap(":resources/images/backgrounds/texture_level_"
-                                      + QString::number(level) + ".png");
+  empty_zone_texture_[4] =
+      QPixmap(":resources/images/backgrounds/texture_level_"
+                  + QString::number(level) + ".png");
 }
 
 const AnimationPlayer& Model::GetBackGround(int background_id) const {

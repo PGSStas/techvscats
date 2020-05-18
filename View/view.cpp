@@ -328,7 +328,7 @@ void View::DrawAdditionalInfo(QPainter* painter) {
 
   Coordinate origin = size_handler_.GameToWindowCoordinate({0, 0});
   painter->drawPixmap(origin.x, origin.y,
-                     controller_->GetInterface().GetCurrentFrame());
+                      controller_->GetInterface().GetCurrentFrame());
   DrawRoundInfo(painter);
 
   if (tower_menu_.IsEnable()) {
