@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
   QCoreApplication::setApplicationName(constants::kApplicationName);
 
   QSettings settings;
-  settings.setValue("levels_passed", 2);
+
   QString language = settings.value("locale", "en_US").toString();
   QTranslator translator;
   if (!translator.load(":resources/translations/translation_" + language)) {

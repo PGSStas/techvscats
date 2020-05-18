@@ -485,7 +485,7 @@ void Model::LoadBackground(const QJsonObject&) {
 }
 
 void Model::LoadBuildings(const QJsonObject& json_object) {
-  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+  QSettings settings;
   QString locale = settings.value("locale", "en_US").toString();
 
   QFile description_file(":resources/database/description_" + locale + ".json");
