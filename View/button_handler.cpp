@@ -562,3 +562,7 @@ void ButtonHandler::SetFullscreen(bool fullscreen) {
 void ButtonHandler::SetNextLevelButtonVisible(bool visible) {
   next_level_button_->setVisible(visible);
 }
+
+int ButtonHandler::GetMaxLevel() const {
+  return kMaxLevel_;
+}
