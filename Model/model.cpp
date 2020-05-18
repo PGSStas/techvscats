@@ -650,6 +650,6 @@ void Model::LoadParticles(const QJsonObject& json_object) {
 
 void Model::SetParticlesVolume(int volume) {
   for (auto& sound : id_to_particle_sound_) {
-    sound.SetVolume(volume);
+    sound.SetVolume(volume * 0.4);
   }
 }
