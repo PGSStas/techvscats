@@ -12,7 +12,7 @@ ButtonHandler::ButtonHandler(QMainWindow* main_window,
   bool is_fullscreen = settings.value("fullscreen", true).toBool();
   is_fullscreen_ = is_fullscreen;
   fullscreen_button_->setText(
-      is_fullscreen ? tr("ОКОННЫЙ РЕЖИМ") : tr("ПОЛНОЭКРАННЫЙ РЕЖИМ"));
+      is_fullscreen ? tr("WINDOWED MODE") : tr("FULLSCREEN MODE"));
   window_type_ = WindowType::kMainMenu;
 }
 
@@ -57,11 +57,11 @@ void ButtonHandler::SetSettingsUiVisible(bool visible) {
   reset_game_button_->setVisible(visible);
   to_main_menu_button_->setVisible(visible);
   titles_button_->setVisible(visible);
-  #ifndef Q_OS_ANDROID
-    fullscreen_button_->setVisible(visible);
-  #else
-    fullscreen_button_->setVisible(false);
-  #endif
+#ifndef Q_OS_ANDROID
+  fullscreen_button_->setVisible(visible);
+#else
+  fullscreen_button_->setVisible(false);
+#endif
 }
 
 void ButtonHandler::SetGameUiVisible(bool visible) {
@@ -305,7 +305,7 @@ void ButtonHandler::CreateSettingsButtons() {
   connect(reset_game_button_, &QPushButton::clicked, reset_game_click);
 
   titles_button_ = new MenuButton(
-      tr("ТИТРЫ"), long_button_size_, main_window_, font_id_);
+      tr("TITLES"), long_button_size_, main_window_, font_id_);
   auto titles_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kTitles;
@@ -480,7 +480,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
   connect(continue_button_, &QPushButton::clicked, continue_button_click);
 
   to_menu_from_pause = new MenuButton(
-      tr("В ГЛАВНОЕ МЕНЮ"), long_button_size_, main_window_, font_id_);
+      tr("MAIN MENU"), long_button_size_, main_window_, font_id_);
   auto from_pause_click = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     controller_->GetMusicPlayer()->StopNewLevelSound();
@@ -501,7 +501,7 @@ void ButtonHandler::RescalePauseMenuButtons(SizeHandler size_handler) {
 
 void ButtonHandler::CreateTitleButtons() {
   to_settings_button_ = new MenuButton(
-      tr("ВЕРНУТЬСЯ"), long_button_size_, main_window_, font_id_);
+      tr("RETURN"), long_button_size_, main_window_, font_id_);
   auto return_to_settings = [this]() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     window_type_ = WindowType::kMainMenu;
