@@ -17,22 +17,23 @@
 
 class InfoField {
  public:
-  void Draw(QPainter* painter, const SizeHandler& size_handler) const;
+  void Draw(QPainter* painter, const SizeHandler& size_handler);
   void DrawCurrentTower(QPainter* painter,
-                        const SizeHandler& size_handler) const;
+                        const SizeHandler& size_handler);
   void DrawPurchasableTower(QPainter* painter,
                             const SizeHandler& size_handler,
-                            const QFontMetrics& metrics) const;
+                            const QFontMetrics& metrics);
   void DrawStatistics(QPainter* painter, const SizeHandler& size_handler,
-                      double text_height) const;
+                      double text_height);
   void DrawSellInfo(QPainter* painter, const SizeHandler& size_handler,
-                    double text_height) const;
+                    double text_height);
   void DrawImage(QPainter* painter, const SizeHandler& size_handler,
-                 double field_size) const;
+                 double field_size);
 
   void SetInfo(const Building& building, int total_cost,
                bool is_current_tower);
-  void SetPosition(Coordinate position, Size button_size, double shift);
+  void SetPosition(const Coordinate& position);
+  Coordinate FixPosition(Size button_size, double shift);
   void SetVisible(bool is_hide);
   void SetImage(QImage image);
   void RemoveImage();
@@ -40,6 +41,7 @@ class InfoField {
 
  private:
   Coordinate position_;
+  Coordinate true_position_;
   bool is_hidden_ = false;
   bool is_on_bottom_ = true;
   bool is_sell_info_ = false;

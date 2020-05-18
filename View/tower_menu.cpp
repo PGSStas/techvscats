@@ -102,8 +102,7 @@ void TowerMenu::Recreate(Coordinate position, int owner_building_index,
 }
 
 void TowerMenu::Tick(const SizeHandler& size_handler) {
-  info_field_.SetPosition(position_, button_constants::kShortButtonSize,
-                          button_constants::kShift);
+  info_field_.SetPosition(position_);
   if (active_button_index_ != -1 || owner_building_index_ != -1) {
     info_field_.SetVisible(true);
   }
