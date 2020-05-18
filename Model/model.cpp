@@ -12,7 +12,7 @@ void Model::LoadDatabase() {
   QTextStream fin(&titles);
   fin.setCodec("UTF-8");
   while (!fin.atEnd()) {
-    titles_.push_back(fin.readLine());
+    titles_.push_back(std::move(fin.readLine()));
   }
 
   QFile level_file(":resources/database/database.json");
@@ -52,7 +52,7 @@ void Model::AddEnemyFromInstance(const Enemy& enemy_instance,
                                  bool position_copy) {
   enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
   if (position_copy) {
-    enemies_.back()->SetPosition(enemy_instance, true);
+    enemies_.back()->CopyPosition(enemy_instance, true);
   }
 }
 

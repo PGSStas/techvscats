@@ -74,7 +74,7 @@ class Controller : public AbstractController {
   int current_game_time_ = 0;
   int last_round_start_time_ = 0;
 
-  const int kWinParticleId = 7;
+  const int kFireWorksParticleId = 7;
   const int kLooseParticleId = 1;
   const int kParticlesPeriod = 100;
   int last_time_end_particle_created = 0;
@@ -110,7 +110,7 @@ class Controller : public AbstractController {
   void ProcessMessage(const Message& message);
   void ProcessCommand(const Message& message);
 
-  void BossTowerKill(Enemy* enemy);
+  void KillTowerByBoss(Enemy* enemy);
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_

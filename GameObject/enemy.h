@@ -25,7 +25,7 @@ class Enemy : public MovingObject {
   void DrawHealthBar(QPainter* painter, const SizeHandler& size_handler) const;
 
   void SetRoad(const Road& road);
-  void SetPosition(const Enemy& instance, bool go_back = false);
+  void CopyPosition(const Enemy& instance, bool go_back = false);
 
   const AuricField& GetAuricField() const;
   Effect* GetAppliedEffect();

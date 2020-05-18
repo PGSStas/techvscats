@@ -67,11 +67,11 @@ void Enemy::Draw(QPainter* painter, const SizeHandler& size_handler) const {
     // mirroring the image
     painter->scale(-1.0, 1.0);
   }
-  QPoint left_(0, 0);
+  QPoint new_position(0, 0);
   if (is_boss_) {
-    left_ = QPoint(size.width / 6, -size.width / 6);
+    new_position = QPoint(size.width / 6, -size.width / 6);
   }
-  painter->drawImage(left_, animation_players_[0].GetCurrentFrame());
+  painter->drawImage(new_position, animation_players_[0].GetCurrentFrame());
 
   painter->restore();
 }
@@ -108,12 +108,12 @@ void Enemy::SetRoad(const Road& road) {
   }
 }
 
-void Enemy::SetPosition(const Enemy& instance, bool go_back) {
+void Enemy::CopyPosition(const Enemy& instance, bool go_back) {
   position_ = instance.position_;
   destination_ = instance.destination_;
   node_number_ = instance.node_number_;
   if (go_back) {
-    node_number_ -= random_generator_() % instance.node_number_ / 3;
+    node_number_ -= random_generator_() % (instance.node_number_ / 3);
     destination_ = (road_->GetNode(node_number_));
   }
 }

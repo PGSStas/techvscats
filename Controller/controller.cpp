@@ -74,9 +74,10 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   auto upgrade_tree = model_->GetUpgradesTree()[
       model_->GetBuildings()[index_in_buildings]->GetId()];
   bool can_upgrade = false;
-  for (auto id:upgrade_tree) {
+  for (int id : upgrade_tree) {
     if (id == replacing_id) {
       can_upgrade = true;
+      break;
     }
   }
   if (!can_upgrade) {
@@ -229,7 +230,8 @@ void Controller::TickEndGame() {
   if (last_time_end_particle_created + kParticlesPeriod < current_game_time_) {
     last_time_end_particle_created = current_game_time_;
     ParticleParameters particle(
-        (game_status_ == GameStatus::kLose) ? kLooseParticleId : kWinParticleId,
+        (game_status_ == GameStatus::kLose) ? kLooseParticleId
+                                            : kFireWorksParticleId,
         {-1, -1},
         Coordinate(0, 0) + Size(
             random_generator_() % static_cast<int>(constants::kGameWidth),
@@ -278,10 +280,10 @@ void Controller::TickEnemies() {
     }
     if (enemy->IsBoss()) {
       boss_is_alive = true;
-      BossTowerKill(enemy.get());
+      KillTowerByBoss(enemy.get());
       if (enemy->GetPosition().GetVectorTo(base->GetPosition()).GetLength()
           < 200) {
-        if (enemy->GetSize().width > base->GetSize().width-20) {
+        if (enemy->GetSize().width > base->GetSize().width - 20) {
           enemy->SetSize(enemy->GetSize() *= 0.995);
         }
       }
@@ -536,7 +538,7 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
 
   if (enemy.IsBoss()) {
     auto instance = enemy;
-    instance.SetPosition(enemy);
+    instance.CopyPosition(enemy);
     auto boss_size = instance.GetSize();
     if (boss_size.width > 310) {
       instance.SetSize(boss_size / 1.3);
@@ -659,23 +661,25 @@ void Controller::EndTitles() {
   view_->EndTitles();
 }
 
-void Controller::BossTowerKill(Enemy* enemy) {
-  if (enemy->IsTimeToKill()) {
-    enemy->KillReload();
-    const auto& buildings = model_->GetBuildings();
-    for (uint32_t i = 0; i < buildings.size(); i++) {
-      bool is_near_the_boss =
-          buildings[i]->GetPosition().IsInEllipse(
-              enemy->GetPosition(), enemy->GetKillRadius());
-      if (buildings[i]->GetId() != 0 && is_near_the_boss) {
-        ParticleParameters particle(
-            kWinParticleId,
-            {-1, -1},
-            buildings[i]->GetPosition());
-        model_->CreateParticles({particle});
-        model_->CreateBuildingAtIndex(i, 0);
-        break;
-      }
+void Controller::KillTowerByBoss(Enemy* enemy) {
+  if (!enemy->IsTimeToKill()) {
+    return;
+  }
+  enemy->KillReload();
+  const auto& buildings = model_->GetBuildings();
+  for (uint32_t i = 0; i < buildings.size(); i++) {
+    bool is_near_the_boss =
+        buildings[i]->GetPosition().IsInEllipse(
+            enemy->GetPosition(), enemy->GetKillRadius());
+    if (buildings[i]->GetId() != 0 && is_near_the_boss) {
+      ParticleParameters particle(
+          kFireWorksParticleId,
+          {-1, -1},
+          buildings[i]->GetPosition());
+      model_->CreateParticles({particle});
+      model_->CreateBuildingAtIndex(i, 0);
+      break;
     }
   }
+
 }

@@ -9,7 +9,7 @@ const double kEpsilon = 0.0001;
 const int kGameWidth = 1920;
 const int kGameHeight = 1080;
 
-const int kTimeBetweenTicks = 17;
+const int kTimeBetweenTicks = 40;
 const int kTimeScale = 100;
 
 // Coefficient describes, how small SemiMinorAxe in compare between SemiMajorAxe
