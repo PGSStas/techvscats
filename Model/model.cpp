@@ -300,7 +300,9 @@ const std::vector<QString>& Model::GetTitles() const {
 }
 
 void Model::LoadDatabase() {
-  QFile titles(":resources/database/titles.txt");
+  QSettings settings;
+  QString locale = settings.value("locale", "en_US").toString();
+  QFile titles(":resources/database/titles_" + locale + ".txt");
   titles.open(QIODevice::ReadOnly);
   QTextStream fin(&titles);
   fin.setCodec("UTF-8");
@@ -472,7 +474,7 @@ void Model::LoadBackground(const QJsonObject&) {
 }
 
 void Model::LoadBuildings(const QJsonObject& json_object) {
-  QSettings settings(constants::kCompanyName, constants::kApplicationName);
+  QSettings settings;
   QString locale = settings.value("locale", "en_US").toString();
 
   QFile description_file(":resources/database/description_" + locale + ".json");
