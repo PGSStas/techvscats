@@ -17,6 +17,7 @@ enum class GameProcess {
   kLoose,
   kPlay
 };
+
 // Room to hold players in one game
 // The game begins with automatic selection of enemies.
 // Room lives kLifeRoomTimeForOneNewPlayer*number of
@@ -24,10 +25,11 @@ enum class GameProcess {
 struct Room {
   Room(int start_time, int level_id)
       : start_time(start_time), level_id(level_id) {}
+
   int start_time;
   int level_id;
   int wait_time = 8000;
-  int timer_id_;
+  int timer_id_ = 0;
   bool is_in_active_search = true;
   bool is_game_end = false;
   QStringList room_chat_;
@@ -42,6 +44,7 @@ struct GameClient {
   GameClient() = default;
   explicit GameClient(QWebSocket* socket) : socket(socket) {}
   bool operator==(const GameClient& other) const;
+
   QWebSocket* socket = nullptr;
   QString nick_name;
   Room* room = nullptr;
@@ -55,7 +58,7 @@ class Server : public QObject {
 
  public:
   explicit Server(uint32_t port);
-  ~Server();
+  ~Server() override;
 
  private:
   // Received Messages
@@ -71,6 +74,7 @@ class Server : public QObject {
   void SendMessageToRoom(const Message& message, const GameClient& owner,
                          bool self_message = false);
   void SendMessageToClient(const Message& message, const GameClient& owner);
+
   void RoomLeave(const GameClient& client);
   void RoomTimer(Room* room);
 
@@ -84,7 +88,7 @@ class Server : public QObject {
 
  private:
   QStringList global_chat_;
-  void timerEvent(QTimerEvent*);
+  void timerEvent(QTimerEvent*) override;
   QWebSocketServer* web_socket_server_;
   std::list<GameClient> clients_;
   std::list<Room> rooms_;

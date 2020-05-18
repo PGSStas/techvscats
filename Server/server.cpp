@@ -8,7 +8,6 @@ Server::Server(uint32_t port) : web_socket_server_(new QWebSocketServer(
     QString("TechVsCats Server"),
     QWebSocketServer::NonSecureMode, this)) {
   if (web_socket_server_->listen(QHostAddress::Any, port)) {
-    qDebug() << "Echoserver listening on port" << port;
     connect(web_socket_server_, &QWebSocketServer::newConnection,
             this, &Server::OnNewConnection);
     connect(web_socket_server_, &QWebSocketServer::closed,
@@ -35,10 +34,8 @@ void Server::ProcessReceivedMessage(const Message& message,
     }
   }
   if (message_owner) {
-    qDebug() << "null owner" << message_owner->nick_name;
     return;
   }
-  qDebug() << "new message from:" << message_owner->nick_name;
   switch (message.GetType()) {
     case MessageType::kNewConnection: {
       ProcessNewConnectionMessage(message, message_owner);
@@ -64,7 +61,6 @@ void Server::ProcessReceivedMessage(const Message& message,
       break;
     }
     default: {
-      qDebug() << "error message";
       break;
     }
   }
@@ -142,7 +138,6 @@ void Server::ProcessRoundCompletedByPlayer(const Message& message,
   if (owner->room->players_in_round == 0) {
     owner->room->wait_time = 3000;
   }
-  qDebug() << "I have finished round";
 }
 
 void Server::ProcessGlobalChatMessage(const Message& message,
@@ -170,7 +165,6 @@ void Server::ProcessGlobalChatMessage(const Message& message,
                                   {chat->back()}), client);
     }
   }
-  qDebug() << ":" << chat->back();
 }
 
 void Server::StartRoom(Room* room) {
@@ -226,7 +220,6 @@ void Server::RoomLeave(const GameClient& client) {
                     true);
   rooms_.remove_if([this](const Room& room) {
     if (room.players_count == 0) {
-      qDebug() << "room close";
       killTimer(room.timer_id_);
     }
     return room.players_count == 0;
@@ -255,24 +248,22 @@ void Server::OnNewConnection() {
   connect(other_socket, &QWebSocket::disconnected,
           this, &Server::OnDisconnect);
   clients_.emplace_back(other_socket);
-  qDebug() << "new connection!";
 }
 
 void Server::ReceiveMessage(const QByteArray& array) {
-  QWebSocket* client_socket = qobject_cast<QWebSocket*>(sender());
+  auto* client_socket = qobject_cast<QWebSocket*>(sender());
   if (client_socket) {
     ProcessReceivedMessage(Message().DecodeFromBinary(array), client_socket);
   }
 }
 
 void Server::OnDisconnect() {
-  QWebSocket* client_socket = qobject_cast<QWebSocket*>(sender());
+  auto* client_socket = qobject_cast<QWebSocket*>(sender());
   clients_.remove_if([&client_socket, this](const GameClient& client) {
     if (client.socket == client_socket) {
       if (client.room != nullptr) {
         RoomLeave(client);
       }
-      qDebug() << "bye bye," << client.nick_name;
       return true;
     }
     return false;

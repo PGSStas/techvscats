@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include <QPainter>
@@ -13,8 +14,9 @@
 #include "View/menu_button.h"
 
 struct ButtonImagePath {
-  ButtonImagePath(const QString& frame_up_path, const QString& frames_down_path)
-      : main_path(frame_up_path), active_path(frames_down_path) {}
+  ButtonImagePath(QString frame_up_path, QString frames_down_path)
+      : main_path(std::move(frame_up_path)),
+        active_path(std::move(frames_down_path)) {}
   QString main_path;
   QString active_path;
 };

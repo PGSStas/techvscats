@@ -87,7 +87,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
   if (!can_upgrade) {
     auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
     model_->AddTextNotification({QObject::tr("Error") +
-        constants::kCurrency, position, Qt::blue, current_game_time_});
+        constants::kCurrency, position, Qt::blue});
     music_player_.PlayNotEnoughMoneySound();
     return;
   }
@@ -99,8 +99,7 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
           * constants::kRefundCoefficient;
 
       model_->AddTextNotification({"+" + QString::number(sell_cost) + " gold",
-                                   base->GetGoldPosition(), Qt::green,
-                                   current_game_time_});
+                                   base->GetGoldPosition(), Qt::green});
       music_player_.PlaySaleSound();
       base->AddGoldAmount(sell_cost);
       model_->CreateBuildingAtIndex(index_in_buildings, replacing_id);
@@ -109,14 +108,13 @@ void Controller::SetBuilding(int index_in_buildings, int replacing_id) {
       base->SubtractGoldAmount(settle_cost);
 
       model_->AddTextNotification({"-" + QString::number(settle_cost) + " gold",
-                                   base->GetGoldPosition(), Qt::red,
-                                   current_game_time_});
+                                   base->GetGoldPosition(), Qt::red});
       music_player_.PlaySaleSound();
     }
   } else {
     auto position = model_->GetBuildings()[index_in_buildings]->GetPosition();
     model_->AddTextNotification({QObject::tr("Not enough ") +
-        constants::kCurrency, position, Qt::blue, current_game_time_});
+        constants::kCurrency, position, Qt::blue});
     music_player_.PlayNotEnoughMoneySound();
   }
 }
@@ -156,7 +154,7 @@ bool Controller::CanCreateNextWave() {
     model_->AddTextNotification({"Level Complete",
                                  {constants::kGameWidth / 2,
                                   constants::kGameHeight / 2}, Qt::red,
-                                 view_->GetRealTime(), {0, 0}, life_time,
+                                  {0, 0}, life_time,
                                  size_coefficient});
     music_player_.PlayGameWonSound();
     QSettings settings;
@@ -330,7 +328,7 @@ void Controller::TickBuildings() {
     model_->AddTextNotification({"GameOver:(",
                                  {constants::kGameWidth / 2,
                                   constants::kGameHeight / 2}, Qt::red,
-                                 view_->GetRealTime(), {0, 0}, life_time,
+                                  {0, 0}, life_time,
                                  size_coefficient});
   }
 }
@@ -536,8 +534,7 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   int reward = enemy.ComputeReward();
   model_->AddTextNotification({QString::number(reward) + " "
                                    + constants::kCurrency,
-                               enemy.GetPosition(), Qt::yellow,
-                               view_->GetRealTime()});
+                               enemy.GetPosition(), Qt::yellow});
 
   model_->GetBase()->AddGoldAmount(reward);
 
@@ -609,8 +606,7 @@ void Controller::ProcessMessage(const Message& message) {
       TextNotification notification(
           message.GetArgument(0),
           {constants::kGameWidth / 2, constants::kGameHeight / 7},
-          Qt::darkMagenta, view_->GetRealTime(),
-          {0, -40}, 3000, 1, true);
+          Qt::darkMagenta, {0, -40}, 3000, 1, true);
       notification.SetFontSize(50);
       model_->AddTextNotification(notification);
       break;
@@ -653,8 +649,7 @@ void Controller::CreateTitles() {
   for (uint32_t i = 0; i < titles.size(); i++) {
     Coordinate start = {constants::kGameWidth / 4,
                         static_cast<double>(constants::kGameHeight + 60 * i)};
-    TextNotification notification(titles[i], start, Qt::white,
-                                  current_game_time_, {0, -10},
+    TextNotification notification(titles[i], start, Qt::white, {0, -10},
                                   kTitlesDuration, 1, false, false, false);
     notification.SetFontSize(kTitlesSize);
     model_->AddTextNotification(notification);

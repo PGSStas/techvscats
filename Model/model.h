@@ -50,7 +50,6 @@ class Model {
   void CreateParticles(const std::list<ParticleParameters>& parameters);
   void RescaleDatabase(const SizeHandler& size_handler);
   void IncreaseCurrentRoundNumber();
-  bool IsLastRound() const;
   void ClearGameModel();
   void SetParticlesVolume(int volume);
 

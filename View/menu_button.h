@@ -16,6 +16,7 @@
 
 namespace button_constants {
 const int kMenuBorderSize = 12;
+
 #ifndef Q_OS_ANDROID
 const Size kLongButtonSize = Size(640, 72);
 const Size kShortButtonSize = Size(72, 72);
@@ -23,12 +24,15 @@ const Size kShortButtonSize = Size(72, 72);
 const Size kLongButtonSize = Size(640, 110);
 const Size kShortButtonSize = Size(110, 110);
 #endif
+
 const int kMenuFontSize = 36;
+
 #ifndef Q_OS_ANDROID
 const Coordinate kFirstButtonCoordinate = Coordinate(640, 360);
 #else
 const Coordinate kFirstButtonCoordinate = Coordinate(640, 240);
 #endif
+
 const int kShift = 20;
 }  // namespace button_constants
 
@@ -48,7 +52,6 @@ class MenuButton : public QPushButton {
                          const QString& active_icon_path);
   Coordinate GetPosition() const;
   void EnableSecondIcon(bool is_second_icon_enabled);
-  void SetSecondIcon();
   void ResetStyleSheet();
 
  private:

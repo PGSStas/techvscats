@@ -1,5 +1,5 @@
 #include "particle_handler.h"
-#include "queue"
+
 std::mt19937 ParticleHandler::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 

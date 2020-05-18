@@ -12,7 +12,7 @@ void Model::LoadDatabase() {
   QTextStream fin(&titles);
   fin.setCodec("UTF-8");
   while (!fin.atEnd()) {
-    titles_.push_back(std::move(fin.readLine()));
+    titles_.push_back(fin.readLine());
   }
 
   QFile level_file(":resources/database/database.json");
@@ -144,10 +144,6 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
 
 void Model::IncreaseCurrentRoundNumber() {
   current_round_number_++;
-}
-
-bool Model::IsLastRound() const {
-  return current_round_number_ == rounds_count_;
 }
 
 void Model::ClearGameModel() {

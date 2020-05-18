@@ -48,7 +48,6 @@ class ButtonHandler : public QObject {
 
   void SetCurrentLevel(int level);
   int GetCurrentLevel() const;
-  int GetMaxLevel() const;
 
  private:
   // creating main menu

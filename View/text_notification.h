@@ -13,10 +13,10 @@
 class TextNotification : public GameObject {
  public:
   TextNotification(QString  message, Coordinate start_position,
-                   QColor color, int creation_time,
-                   Size moving_vector = Size(0, -50), int life_time = 1000,
-                   double size_change_coefficient = 1, bool fade = false,
-                   bool is_accelerated = true, bool center_align = true);
+                   QColor color, Size moving_vector = Size(0, -50),
+                   int life_time = 1000, double size_change_coefficient = 1,
+                   bool fade = false, bool is_accelerated = true,
+                   bool center_align = true);
   ~TextNotification() override = default;
 
   void Tick(int current_time) override;
@@ -30,7 +30,6 @@ class TextNotification : public GameObject {
   QString message_;
   Size force_vector_;
   QColor color_;
-  int creation_time_;
   int life_time_;
   int fade_speed_ = 3;
   double size_change_coefficient_;
