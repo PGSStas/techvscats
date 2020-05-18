@@ -42,13 +42,15 @@ class Model {
   void SetGameLevel(int level);
   void AddSpawner(const EnemyGroup& enemy_group);
   void AddTextNotification(const TextNotification& text_notification);
-  void AddEnemyFromInstance(const Enemy& enemy_instance);
+  void AddEnemyFromInstance(const Enemy& enemy_instance,
+                            bool position_copy = false);
   void CreateBuildingAtIndex(int i, int id);
   void CreateProjectile(const std::shared_ptr<Enemy>& aim,
                         const Building& building);
   void CreateParticles(const std::list<ParticleParameters>& parameters);
   void RescaleDatabase(const SizeHandler& size_handler);
   void IncreaseCurrentRoundNumber();
+  bool IsLastRound() const;
   void ClearGameModel();
   void SetParticlesVolume(int volume);
 

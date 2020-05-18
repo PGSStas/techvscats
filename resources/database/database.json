@@ -127,7 +127,7 @@
       }
     },
     {
-      "speed": 2,
+      "speed": 4,
       "damage": 18,
       "armor": 10,
       "reward": 30,
@@ -167,6 +167,32 @@
       "particles": {
         "at_death": 0
       }
+    },
+    {
+      "speed": 2,
+      "damage": 100,
+      "armor": 0,
+      "reward": 165,
+      "max_health": 1521,
+      "priority": 0,
+      "auric_field": {
+        "radius": 600,
+        "effect_id": 8
+      },
+      "size": {
+        "width": 525,
+        "height": 250
+      },
+      "animation": {
+        "path": "enemies/vaccleaner_4",
+        "timing": 800
+      },
+      "particles": {
+        "at_death": 0,
+        "while_alive": 2,
+        "period": 600
+      },
+      "is_boss": true
     }
   ],
   "projectiles": [
@@ -585,7 +611,7 @@
   "effects": [
     {
       "effect_target": 1,
-      "damage_coefficient": 0.1,
+      "damage_coefficient": 0.001,
       "attack_rate_coefficient": 0,
       "range_coefficient": 0,
       "speed_coefficient": 0.05,
@@ -593,7 +619,7 @@
     },
     {
       "effect_target": 1,
-      "speed_coefficient": 0.2,
+      "speed_coefficient": 0.002,
       "armor_coefficient": 0,
       "damage_coefficient": 0.1,
       "attack_rate_coefficient": 0,
@@ -609,7 +635,7 @@
     },
     {
       "effect_target": 0,
-      "speed_coefficient": 0.05,
+      "speed_coefficient": 0.0005,
       "armor_coefficient": 0.18,
       "damage_coefficient": -0.1,
       "attack_rate_coefficient": 0,
@@ -646,6 +672,14 @@
       "damage_coefficient": 0.4,
       "attack_rate_coefficient": 0.4,
       "range_coefficient": 0.1
+    },
+    {
+      "effect_target": 0,
+      "speed_coefficient": -0.01,
+      "armor_coefficient": 0,
+      "damage_coefficient": 0,
+      "attack_rate_coefficient": 0.35,
+      "range_coefficient": 0.5
     }
   ],
   "particles": [
@@ -720,7 +754,7 @@
         "timing": 630,
         "path": "particles/smoke6_9"
       },
-    "sound": 6
+      "sound": 6
     },
     {
       "size": {

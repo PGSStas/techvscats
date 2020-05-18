@@ -43,14 +43,14 @@ View::View(AbstractController* controller)
 void View::SecondConstructorPart() {
   button_handler_ = std::make_shared<ButtonHandler>(this, controller_, 0);
   global_chat_ = std::make_shared<GlobalChat>(this);
+  Resize();
   button_handler_->SetGameUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetMainMenuUiVisible(false);
   button_handler_->SetTitlesVisible(false);
+  global_chat_->SetVisible(false);
   is_model_loaded_ = true;
-  Resize();
-  global_chat_->SetVisible(true);
 }
 
 void View::paintEvent(QPaintEvent*) {
@@ -62,7 +62,7 @@ void View::paintEvent(QPaintEvent*) {
                          (height() - 9 * coefficient) / 2};
     painter.fillRect(0, 0, width(), height(), Qt::white);
     painter.drawPixmap(origin.x, origin.y, logo_.scaled(size.width,
-                                                       size.height));
+                                                        size.height));
     return;
   }
 
@@ -127,6 +127,7 @@ void View::DrawMainMenu(QPainter*) {
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetMainMenuUiVisible(true);
+  global_chat_->SetVisible(true);
 }
 
 void View::DrawGame(QPainter* painter) {
@@ -232,9 +233,15 @@ int View::GetRealTime() const {
 
 void View::DrawTowersAuraAndRange(QPainter* painter) {
   if (tower_menu_.IsEnable()) {
-    tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
-                                       controller_->GetBuildingById(
-                                           tower_menu_.GetSellectedTowerId()));
+    if (tower_menu_.GetChosenButtonId() != -1) {
+      tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
+                                         controller_->GetBuildingById(
+                                             tower_menu_.GetChosenButtonId()));
+    } else {
+      tower_menu_.DrawTowersAuraAndRange(painter, size_handler_,
+                                         *controller_->GetBuildings()[
+                                             tower_menu_.GetTownerIndex()]);
+    }
   }
 }
 
@@ -261,8 +268,8 @@ void View::ReplaceTowerMenu(Coordinate position, int carrier_building_index,
                        size_handler_, total_cost);
 }
 
-void View::DisableTowerMenu() {
-  tower_menu_.Close();
+void View::DisableTowerMenu(bool is_fast_disable) {
+  tower_menu_.Close(is_fast_disable);
 }
 
 void View::mouseReleaseEvent(QMouseEvent* event) {

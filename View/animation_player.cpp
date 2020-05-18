@@ -13,7 +13,7 @@ void AnimationPlayer::Tick(int delta_time) {
     return;
   }
   current_frame_ = (current_frame_ + 1) % frames_->size();
-  wait_till_next_frame_ += time_between_frames_;
+  wait_till_next_frame_ = time_between_frames_;
 }
 
 const QPixmap& AnimationPlayer::GetCurrentFrame() const {

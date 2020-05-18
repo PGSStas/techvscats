@@ -1,5 +1,39 @@
 #include "model.h"
 
+Model::~Model() {
+  for (auto& sound : id_to_particle_sound_) {
+    sound.Stop();
+  }
+}
+
+void Model::LoadDatabase() {
+  QFile titles(":resources/database/titles.txt");
+  titles.open(QIODevice::ReadOnly);
+  QTextStream fin(&titles);
+  fin.setCodec("UTF-8");
+  while (!fin.atEnd()) {
+    titles_.push_back(std::move(fin.readLine()));
+  }
+
+  QFile level_file(":resources/database/database.json");
+  if (!level_file.open(QFile::ReadOnly)) {
+    return;
+  }
+  QJsonObject json_object = QJsonDocument::fromJson(
+      level_file.readAll()).object();
+
+  LoadEffects(json_object);
+  LoadEnemies(json_object);
+  LoadBackground(json_object);
+  LoadBuildings(json_object);
+  LoadProjectiles(json_object);
+  LoadParticles(json_object);
+
+  // Load fonts
+  QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
+  QFontDatabase::addApplicationFont(":resources/fonts/comics.ttf");
+}
+
 void Model::SetGameLevel(int level_id) {
   LoadLevel(level_id);
   InitializeTowerSlots();
@@ -13,8 +47,12 @@ void Model::AddTextNotification(const TextNotification& text_notification) {
   text_notifications_.push_back(text_notification);
 }
 
-void Model::AddEnemyFromInstance(const Enemy& enemy_instance) {
+void Model::AddEnemyFromInstance(const Enemy& enemy_instance,
+                                 bool position_copy) {
   enemies_.push_back(std::make_shared<Enemy>(enemy_instance));
+  if (position_copy) {
+    enemies_.back()->CopyPosition(enemy_instance, true);
+  }
 }
 
 void Model::CreateBuildingAtIndex(int i, int id) {
@@ -106,6 +144,10 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
 
 void Model::IncreaseCurrentRoundNumber() {
   current_round_number_++;
+}
+
+bool Model::IsLastRound() const {
+  return current_round_number_ == rounds_count_;
 }
 
 void Model::ClearGameModel() {
@@ -300,34 +342,6 @@ const std::vector<QString>& Model::GetTitles() const {
   return titles_;
 }
 
-void Model::LoadDatabase() {
-  QFile titles(":resources/database/titles.txt");
-  titles.open(QIODevice::ReadOnly);
-  QTextStream fin(&titles);
-  fin.setCodec("UTF-8");
-  while (!fin.atEnd()) {
-    titles_.push_back(fin.readLine());
-  }
-
-  QFile level_file(":resources/database/database.json");
-  if (!level_file.open(QFile::ReadOnly)) {
-    return;
-  }
-  QJsonObject json_object = QJsonDocument::fromJson(
-      level_file.readAll()).object();
-
-  LoadEffects(json_object);
-  LoadEnemies(json_object);
-  LoadBackground(json_object);
-  LoadBuildings(json_object);
-  LoadProjectiles(json_object);
-  LoadParticles(json_object);
-
-  // Load fonts
-  QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
-  QFontDatabase::addApplicationFont(":resources/fonts/comics.ttf");
-}
-
 void Model::InitializeTowerSlots() {
   buildings_.reserve(empty_places_for_towers_.size());
   for (Coordinate coordinate : empty_places_for_towers_) {
@@ -437,6 +451,9 @@ void Model::LoadEnemies(const QJsonObject& json_object) {
                               enemy["armor"].toInt(), enemy["reward"].toInt(),
                               enemy["max_health"].toInt(),
                               size, enemy["priority"].toInt(), aura);
+    if (enemy.contains("is_boss")) {
+      id_to_enemy_.back().SetBoss(enemy["is_boss"].toBool());
+    }
     SetAnimationToGameObject(
         &id_to_enemy_.back(),
         {enemy["animation"].toObject()["timing"].toInt()},
@@ -634,11 +651,5 @@ void Model::LoadParticles(const QJsonObject& json_object) {
 void Model::SetParticlesVolume(int volume) {
   for (auto& sound : id_to_particle_sound_) {
     sound.SetVolume(volume);
-  }
-}
-
-Model::~Model() {
-  for (auto& sound : id_to_particle_sound_) {
-    sound.Stop();
   }
 }
