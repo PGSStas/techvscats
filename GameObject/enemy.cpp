@@ -143,7 +143,13 @@ void Enemy::ReceiveDamage(double damage) {
   double armor = armor_ * applied_effect_.GetArmorCoefficient() / 100;
   current_health_ -= std::min((1 - armor) * damage, current_health_);
   if (current_health_ <= constants::kEpsilon) {
+    if (is_boss_) {
+      position_ += Size(size_.width / 6, -size_.width / 6);
+    }
     particle_handler_.PlayOwnerDeath();
+    if (is_boss_) {
+      position_ -= Size(size_.width / 6, -size_.width / 6);
+    }
     is_dead_ = true;
   }
 }
