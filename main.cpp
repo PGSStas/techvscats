@@ -1,7 +1,8 @@
 #include <memory>
 #include <QApplication>
 #include <QSettings>
-#include <QtCore/QLibraryInfo>
+#include <QLibraryInfo>
+#include <QProcess>
 
 #include "Controller/controller.h"
 
@@ -11,6 +12,9 @@
 #endif
 
 int main(int argc, char* argv[]) {
+#ifdef Q_OS_ANDROID
+  qputenv("QT_USE_ANDROID_NATIVE_STYLE", "1");
+#endif
   QApplication a(argc, argv);
 
   QCoreApplication::setOrganizationName(constants::kCompanyName);
@@ -80,7 +84,6 @@ int main(int argc, char* argv[]) {
       QAndroidJniObject::getStaticField<jint>(
           "android/app/AlarmManager", "RTC"),
       jlong(QDateTime::currentMSecsSinceEpoch() + 100), pendingIntent.object());
-
   return 0;
 #else
   if (!QProcess::startDetached(QApplication::applicationFilePath())) {

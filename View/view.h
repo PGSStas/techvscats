@@ -75,6 +75,7 @@ class View : public QMainWindow {
   TowerMenu tower_menu_;
 
   double game_speed_coefficient_ = 1;
+  double previous_game_speed_coefficient = 0;
 
   const QString kEndgameMessage = tr("Restart level or go to the main menu");
   Coordinate message_position_ = {constants::kGameWidth / 2, 900};
