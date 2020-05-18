@@ -288,7 +288,8 @@ void View::keyPressEvent(QKeyEvent* event) {
   if (event->key() == Qt::Key_Space) {
     if (game_speed_coefficient_ == 0 && previous_game_speed_coefficient == 1) {
       button_handler_->SetSpeed(static_cast<int>(Speed::kNormalSpeed));
-    } else if (game_speed_coefficient_ == 0 && previous_game_speed_coefficient == 2) {
+    } else if (game_speed_coefficient_ == 0
+        && previous_game_speed_coefficient == 2) {
       button_handler_->SetSpeed(static_cast<int>(Speed::kDoubleSpeed));
     } else {
       button_handler_->SetSpeed(static_cast<int>(Speed::kZeroSpeed));
@@ -473,7 +474,7 @@ void View::ShowSettingsButton() {
 }
 
 void View::ShowNextLevelButton() {
-    button_handler_->SetNextLevelButtonVisible(true);
+  button_handler_->SetNextLevelButtonVisible(true);
 }
 
 void View::BeginNextLevel() {

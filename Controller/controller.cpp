@@ -44,7 +44,7 @@ void Controller::EndGame() {
   }
   current_game_time_ = 0;
   music_player_.StartMenuMusic();
-  if(view_->IsTowerMenuEnabled()) {
+  if (view_->IsTowerMenuEnabled()) {
     view_->DisableTowerMenu();
   }
 }
