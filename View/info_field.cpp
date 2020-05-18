@@ -43,7 +43,7 @@ void InfoField::DrawCurrentTower(QPainter* painter,
       ((3 + valid_effects) * kRelativeStatisticsSize.height +
           kRelativeHeaderSize.height) + 4 * kMargin};
   Size size = size_handler.GameToWindowSize(true_size);
-  true_position_ = FixPosition(true_size, 2 * kMargin);
+  true_position_ = FixPosition(true_size);
   Coordinate point = size_handler.GameToWindowCoordinate(true_position_);
 
   if (is_hidden_ || (is_current_tower_ && is_sell_info_)) {
@@ -132,7 +132,7 @@ void InfoField::DrawPurchasableTower(QPainter* painter,
   double final_text_height = std::min(kSize.height, text_height +
       (1 - kRelativeTextSize.height) * kSize.height);
 
-  true_position_ = FixPosition({kSize.width, final_text_height}, 2 * kMargin);
+  true_position_ = FixPosition({kSize.width, final_text_height});
   Coordinate point = size_handler.GameToWindowCoordinate(true_position_);
   Size size = size_handler.GameToWindowSize({kSize.width, final_text_height});
 
@@ -289,10 +289,10 @@ void InfoField::SetPosition(const Coordinate& position) {
   position_ = position;
 }
 
-Coordinate InfoField::FixPosition(Size field_size, double shift) {
+Coordinate InfoField::FixPosition(Size field_size) {
   Coordinate position = position_;
   position.x -= field_size.width / 2;
-  shift += 50;
+  double shift = 50 + 2 * kMargin;
   is_on_bottom_ = IsOnBottom();
   if (!is_on_bottom_) {
     position.y -= field_size.height + shift;

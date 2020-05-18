@@ -33,7 +33,7 @@ class InfoField {
   void SetInfo(const Building& building, int total_cost,
                bool is_current_tower);
   void SetPosition(const Coordinate& position);
-  Coordinate FixPosition(Size button_size, double shift);
+  Coordinate FixPosition(Size button_size);
   void SetVisible(bool is_hide);
   void SetImage(QImage image);
   void RemoveImage();
