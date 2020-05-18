@@ -112,8 +112,8 @@ void Enemy::CopyPosition(const Enemy& instance, bool go_back) {
   position_ = instance.position_;
   destination_ = instance.destination_;
   node_number_ = instance.node_number_;
-  if (go_back) {
-    node_number_ -= random_generator_() % (instance.node_number_ / 3);
+  if (go_back) { //r +1
+    node_number_ -= random_generator_() % ((instance.node_number_ ) / 3);
     destination_ = (road_->GetNode(node_number_));
   }
 }

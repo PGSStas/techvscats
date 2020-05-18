@@ -465,6 +465,12 @@ void View::SetChosenLevel(int level) {
   button_handler_->SetCurrentLevel(level);
 }
 
+void View::UnlockLevels() {
+  QSettings settings;
+  settings.setValue("levels_passed", button_handler_->GetMaxLevel());
+  button_handler_->SetCurrentLevel(button_handler_->GetMaxLevel());
+}
+
 void View::StartTitles() {
   button_handler_->SetSettingsUiVisible(false);
   global_chat_->SetVisible(false);

@@ -190,6 +190,7 @@ void MultiplayerClient::ProcessCommand(QString command) {
     CreateVisibleMessage(Message(MessageType::kHelpClear));
     CreateVisibleMessage(Message(MessageType::kHelpImmortal));
     CreateVisibleMessage(Message(MessageType::kHelpGold));
+    CreateVisibleMessage(Message(MessageType::kHelpUnlock));
     return;
   }
   if (words[0] == "gold" && words.size() == 2) {
@@ -219,6 +220,13 @@ void MultiplayerClient::ProcessCommand(QString command) {
                                       CommandType::kHealthGrow));
       CreateVisibleMessage(Message(MessageType::kInfinityHealth));
     }
+    return;
+  }
+  if (words[0] == "unlock") {
+      received_message_.push_back(
+          Message().SetCommandMessage(words[0],
+                                      CommandType::kUnlock));
+      CreateVisibleMessage(Message(MessageType::kYouTheBest));
     return;
   }
   CreateVisibleMessage(Message(MessageType::kErrorCommand));

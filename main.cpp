@@ -21,7 +21,6 @@ int main(int argc, char* argv[]) {
   QCoreApplication::setApplicationName(constants::kApplicationName);
 
   QSettings settings;
-
   QString language = settings.value("locale", "en_US").toString();
   QTranslator translator;
   if (!translator.load(":resources/translations/translation_" + language)) {

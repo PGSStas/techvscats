@@ -51,6 +51,7 @@ class View : public QMainWindow {
 
   int GetChosenLevel() const;
   void SetChosenLevel(int level);
+  void UnlockLevels();
 
   void StartTitles();
   void EndTitles();
