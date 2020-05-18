@@ -31,7 +31,7 @@ MusicPlayer::MusicPlayer()
 
 void MusicPlayer::SetVolume(int volume) {
   main_player_->setVolume(volume);
-  game_over_sound_->setVolume(0.7 * volume);
+  game_over_sound_->setVolume(0.6 * volume);
   button_sound_->setVolume(volume);
   game_won_sound_->setVolume(volume);
   sale_sound_->setVolume(0.7 * volume);
