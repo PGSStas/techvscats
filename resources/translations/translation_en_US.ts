@@ -4,42 +4,6 @@
 <context>
     <name>ButtonHandler</name>
     <message>
-        <source>НАЧАТЬ ИГРУ</source>
-        <translation type="vanished">START</translation>
-    </message>
-    <message>
-        <source>НАСТРОЙКИ</source>
-        <translation type="vanished">SETTINGS</translation>
-    </message>
-    <message>
-        <source>ВЫЙТИ ИЗ ИГРЫ</source>
-        <translation type="vanished">EXIT</translation>
-    </message>
-    <message>
-        <source>УРОВЕНЬ 1</source>
-        <translation type="vanished">LEVEL 1</translation>
-    </message>
-    <message>
-        <source>УРОВЕНЬ </source>
-        <translation type="vanished">LEVEL </translation>
-    </message>
-    <message>
-        <source>СБРОСИТЬ ПРОГРЕСС</source>
-        <translation type="vanished">RESET PROGRESS</translation>
-    </message>
-    <message>
-        <source>ВЕРНУТЬСЯ В МЕНЮ</source>
-        <translation type="vanished">MAIN MENU</translation>
-    </message>
-    <message>
-        <source>НАЧАТЬ УРОВЕНЬ ЗАНОВО</source>
-        <translation type="vanished">RESTART</translation>
-    </message>
-    <message>
-        <source>ПРОДОЛЖИТЬ</source>
-        <translation type="vanished">CONTINUE</translation>
-    </message>
-    <message>
         <location filename="../../View/button_handler.cpp" line="15"/>
         <source>ОКОННЫЙ РЕЖИМ</source>
         <translation>WINDOW MODE</translation>
@@ -164,26 +128,6 @@
         <location filename="../../Controller/controller.cpp" line="99"/>
         <source>Not enough </source>
         <translation>Not enough </translation>
-    </message>
-    <message>
-        <source>Урон</source>
-        <translation type="vanished">Damage</translation>
-    </message>
-    <message>
-        <source>Количество целей</source>
-        <translation type="vanished">Targets amount</translation>
-    </message>
-    <message>
-        <source>Стоимость</source>
-        <translation type="vanished">Cost</translation>
-    </message>
-    <message>
-        <source>Скорость атаки</source>
-        <translation type="vanished">Attack rate</translation>
-    </message>
-    <message>
-        <source>Стоимость продажи</source>
-        <translation type="vanished">Sell cost</translation>
     </message>
     <message>
         <location filename="../../View/info_field.cpp" line="82"/>

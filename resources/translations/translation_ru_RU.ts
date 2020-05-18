@@ -4,42 +4,6 @@
 <context>
     <name>ButtonHandler</name>
     <message>
-        <source>НАЧАТЬ ИГРУ</source>
-        <translation type="vanished">НАЧАТЬ ИГРУ</translation>
-    </message>
-    <message>
-        <source>НАСТРОЙКИ</source>
-        <translation type="vanished">НАСТРОЙКИ</translation>
-    </message>
-    <message>
-        <source>ВЫЙТИ ИЗ ИГРЫ</source>
-        <translation type="vanished">ВЫЙТИ ИЗ ИГРЫ</translation>
-    </message>
-    <message>
-        <source>УРОВЕНЬ 1</source>
-        <translation type="vanished">УРОВЕНЬ 1</translation>
-    </message>
-    <message>
-        <source>УРОВЕНЬ </source>
-        <translation type="vanished">УРОВЕНЬ </translation>
-    </message>
-    <message>
-        <source>СБРОСИТЬ ПРОГРЕСС</source>
-        <translation type="vanished">СБРОСИТЬ ПРОГРЕСС</translation>
-    </message>
-    <message>
-        <source>ВЕРНУТЬСЯ В МЕНЮ</source>
-        <translation type="vanished">ГЛАВНОЕ МЕНЮ</translation>
-    </message>
-    <message>
-        <source>НАЧАТЬ УРОВЕНЬ ЗАНОВО</source>
-        <translation type="vanished">НАЧАТЬ УРОВЕНЬ ЗАНОВО</translation>
-    </message>
-    <message>
-        <source>ПРОДОЛЖИТЬ</source>
-        <translation type="vanished">ПРОДОЛЖИТЬ</translation>
-    </message>
-    <message>
         <location filename="../../View/button_handler.cpp" line="15"/>
         <source>ОКОННЫЙ РЕЖИМ</source>
         <translation>ОКОННЫЙ РЕЖИМ</translation>
@@ -164,26 +128,6 @@
         <location filename="../../Controller/controller.cpp" line="99"/>
         <source>Not enough </source>
         <translation>Не достаточно </translation>
-    </message>
-    <message>
-        <source>Урон</source>
-        <translation type="vanished">Урон</translation>
-    </message>
-    <message>
-        <source>Количество целей</source>
-        <translation type="vanished">Количество целей</translation>
-    </message>
-    <message>
-        <source>Стоимость</source>
-        <translation type="vanished">Стоимость</translation>
-    </message>
-    <message>
-        <source>Скорость атаки</source>
-        <translation type="vanished">Скорость атаки</translation>
-    </message>
-    <message>
-        <source>Стоимость продажи</source>
-        <translation type="vanished">Стоимость продажи</translation>
     </message>
     <message>
         <location filename="../../View/info_field.cpp" line="82"/>
