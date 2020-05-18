@@ -479,7 +479,8 @@ void Model::LoadBackground(const QJsonObject&) {
   // Empty zone
   empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
   empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
-  empty_zone_texture_.emplace_back(":resources/images/backgrounds/titles_background_1.png");
+  empty_zone_texture_.emplace_back(
+      ":resources/images/backgrounds/titles_background_1.png");
   empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
   empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
 }
