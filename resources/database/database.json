@@ -173,7 +173,7 @@
       "damage": 100,
       "armor": 0,
       "reward": 165,
-      "max_health": 521,
+      "max_health": 1521,
       "priority": 0,
       "auric_field": {
         "radius": 600,
