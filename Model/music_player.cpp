@@ -31,11 +31,11 @@ MusicPlayer::MusicPlayer()
 
 void MusicPlayer::SetVolume(int volume) {
   main_player_->setVolume(volume);
-  game_over_sound_->setVolume(volume);
+  game_over_sound_->setVolume(0.7 * volume);
   button_sound_->setVolume(volume);
   game_won_sound_->setVolume(volume);
-  sale_sound_->setVolume(volume);
-  not_enough_money_sound_->setVolume(volume);
+  sale_sound_->setVolume(0.7 * volume);
+  not_enough_money_sound_->setVolume(0.7 * volume);
   new_level_sound_->setVolume(0.2 * volume);
 }
 
