@@ -4,14 +4,20 @@
 <context>
     <name>ButtonHandler</name>
     <message>
-        <location filename="../../View/button_handler.cpp" line="15"/>
         <source>ОКОННЫЙ РЕЖИМ</source>
-        <translation>ОКОННЫЙ РЕЖИМ</translation>
+        <translation type="vanished">ОКОННЫЙ РЕЖИМ</translation>
     </message>
     <message>
-        <location filename="../../View/button_handler.cpp" line="15"/>
         <source>ПОЛНОЭКРАННЫЙ РЕЖИМ</source>
-        <translation>ПОЛНОЭКРАННЫЙ РЕЖИМ</translation>
+        <translation type="vanished">ПОЛНОЭКРАННЫЙ РЕЖИМ</translation>
+    </message>
+    <message>
+        <source>WINDOW</source>
+        <translation type="vanished">ОКОННЫЙ РЕЖИМ</translation>
+    </message>
+    <message>
+        <source>FULLSCREEN</source>
+        <translation type="vanished">FULLSCREEN MODE</translation>
     </message>
     <message>
         <location filename="../../View/button_handler.cpp" line="33"/>
@@ -83,8 +89,22 @@
     </message>
     <message>
         <location filename="../../View/button_handler.cpp" line="308"/>
-        <source>ТИТРЫ</source>
+        <source>TITLES</source>
         <translation>ТИТРЫ</translation>
+    </message>
+    <message>
+        <location filename="../../View/button_handler.cpp" line="483"/>
+        <source>MAIN MENU</source>
+        <translation>ГЛАВНОЕ МЕНЮ</translation>
+    </message>
+    <message>
+        <location filename="../../View/button_handler.cpp" line="504"/>
+        <source>RETURN</source>
+        <translation>В ГЛАВНОЕ МЕНЮ</translation>
+    </message>
+    <message>
+        <source>ТИТРЫ</source>
+        <translation type="vanished">ТИТРЫ</translation>
     </message>
     <message>
         <location filename="../../View/button_handler.cpp" line="317"/>
@@ -102,21 +122,21 @@
         <translation>ПРОДОЛЖИТЬ</translation>
     </message>
     <message>
-        <location filename="../../View/button_handler.cpp" line="483"/>
         <source>В ГЛАВНОЕ МЕНЮ</source>
-        <translation>В ГЛАВНОЕ МЕНЮ</translation>
+        <translation type="vanished">В ГЛАВНОЕ МЕНЮ</translation>
     </message>
     <message>
-        <location filename="../../View/button_handler.cpp" line="504"/>
         <source>ВЕРНУТЬСЯ</source>
-        <translation>В ГЛАВНОЕ МЕНЮ</translation>
+        <translation type="vanished">В ГЛАВНОЕ МЕНЮ</translation>
     </message>
     <message>
+        <location filename="../../View/button_handler.cpp" line="15"/>
         <location filename="../../View/button_handler.cpp" line="549"/>
         <source>WINDOWED MODE</source>
         <translation>ОКОННЫЙ РЕЖИМ</translation>
     </message>
     <message>
+        <location filename="../../View/button_handler.cpp" line="15"/>
         <location filename="../../View/button_handler.cpp" line="549"/>
         <source>FULLSCREEN MODE</source>
         <translation>ПОЛНОЭКРАННЫЙ РЕЖИМ</translation>
@@ -125,62 +145,67 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Controller/controller.cpp" line="99"/>
+        <location filename="../../Controller/controller.cpp" line="89"/>
+        <source>Error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="../../Controller/controller.cpp" line="118"/>
         <source>Not enough </source>
         <translation>Не достаточно </translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="82"/>
+        <location filename="../../View/info_field.cpp" line="85"/>
         <source>Bullet speed bonus</source>
         <translation>Бонус к скорости снарядов</translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="99"/>
+        <location filename="../../View/info_field.cpp" line="102"/>
         <source>Attack rate bonus</source>
         <translation>Бонус к скорости атаки</translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="116"/>
+        <location filename="../../View/info_field.cpp" line="119"/>
         <source>Attack range bonus</source>
         <translation>Бонус к площади атаки</translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="182"/>
+        <location filename="../../View/info_field.cpp" line="192"/>
         <source>Damage</source>
         <translation>Урон</translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="184"/>
+        <location filename="../../View/info_field.cpp" line="194"/>
         <source>Number of target</source>
         <translation>Цели</translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="192"/>
+        <location filename="../../View/info_field.cpp" line="203"/>
         <source>Сost</source>
         <translation>Стоимость</translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="200"/>
+        <location filename="../../View/info_field.cpp" line="213"/>
         <source>Attack speed</source>
         <translation>Скорость атаки</translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="219"/>
+        <location filename="../../View/info_field.cpp" line="233"/>
         <source>Sell cost</source>
         <translation>Продается за</translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="267"/>
+        <location filename="../../View/info_field.cpp" line="281"/>
         <source>Very fast</source>
         <translation>Очень быстро</translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="269"/>
+        <location filename="../../View/info_field.cpp" line="283"/>
         <source>Medium</source>
         <translation>Средне</translation>
     </message>
     <message>
-        <location filename="../../View/info_field.cpp" line="271"/>
+        <location filename="../../View/info_field.cpp" line="285"/>
         <source>Slow</source>
         <translation>Медленно</translation>
     </message>
@@ -188,17 +213,17 @@
 <context>
     <name>View</name>
     <message>
-        <location filename="../../View/view.cpp" line="420"/>
+        <location filename="../../View/view.cpp" line="431"/>
         <source> </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../View/view.cpp" line="421"/>
+        <location filename="../../View/view.cpp" line="432"/>
         <source>/</source>
         <translation>/</translation>
     </message>
     <message>
-        <location filename="../../View/view.h" line="79"/>
+        <location filename="../../View/view.h" line="80"/>
         <source>Restart level or go to the main menu</source>
         <translation>Перезапустите уровень или выйдите в главное меню</translation>
     </message>

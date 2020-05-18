@@ -342,36 +342,6 @@ const std::vector<QString>& Model::GetTitles() const {
   return titles_;
 }
 
-void Model::LoadDatabase() {
-  QSettings settings;
-  QString locale = settings.value("locale", "en_US").toString();
-  QFile titles(":resources/database/titles_" + locale + ".txt");
-  titles.open(QIODevice::ReadOnly);
-  QTextStream fin(&titles);
-  fin.setCodec("UTF-8");
-  while (!fin.atEnd()) {
-    titles_.push_back(fin.readLine());
-  }
-
-  QFile level_file(":resources/database/database.json");
-  if (!level_file.open(QFile::ReadOnly)) {
-    return;
-  }
-  QJsonObject json_object = QJsonDocument::fromJson(
-      level_file.readAll()).object();
-
-  LoadEffects(json_object);
-  LoadEnemies(json_object);
-  LoadBackground(json_object);
-  LoadBuildings(json_object);
-  LoadProjectiles(json_object);
-  LoadParticles(json_object);
-
-  // Load fonts
-  QFontDatabase::addApplicationFont(":resources/fonts/gui_font.ttf");
-  QFontDatabase::addApplicationFont(":resources/fonts/comics.ttf");
-}
-
 void Model::InitializeTowerSlots() {
   buildings_.reserve(empty_places_for_towers_.size());
   for (Coordinate coordinate : empty_places_for_towers_) {
