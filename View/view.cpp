@@ -43,14 +43,14 @@ View::View(AbstractController* controller)
 void View::SecondConstructorPart() {
   button_handler_ = std::make_shared<ButtonHandler>(this, controller_, 0);
   global_chat_ = std::make_shared<GlobalChat>(this);
+  Resize();
   button_handler_->SetGameUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetMainMenuUiVisible(false);
   button_handler_->SetTitlesVisible(false);
+  global_chat_->SetVisible(false);
   is_model_loaded_ = true;
-  Resize();
-  global_chat_->SetVisible(true);
 }
 
 void View::paintEvent(QPaintEvent*) {
@@ -127,6 +127,7 @@ void View::DrawMainMenu(QPainter*) {
   button_handler_->SetSettingsUiVisible(false);
   button_handler_->SetPauseMenuUiVisible(false);
   button_handler_->SetMainMenuUiVisible(true);
+  global_chat_->SetVisible(true);
 }
 
 void View::DrawGame(QPainter* painter) {
