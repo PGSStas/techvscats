@@ -647,6 +647,7 @@ void Controller::CreateTitles() {
   window_type_ = WindowType::kTitles;
   view_->StartTitles();
   view_->DisableGameUi();
+  view_->DisableMainMenuUi();
   music_player_.StartTitlesMusic();
   auto titles = model_->GetTitles();
   for (uint32_t i = 0; i < titles.size(); i++) {
