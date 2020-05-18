@@ -175,9 +175,8 @@ void TowerMenu::DrawTowersAuraAndRange(QPainter* painter,
   Coordinate position = position_;
   position.y += instance.GetSize().height / 3;
   Coordinate center = size_handler.GameToWindowCoordinate(position);
-  Size radius{};
   int attack_range = instance.GetAttackRange();
-  radius = size_handler.GameToWindowSize(Size(attack_range, attack_range));
+  Size radius = size_handler.GameToWindowSize(Size(attack_range, attack_range));
   instance.GetAuricField().Draw(
       painter, size_handler, position);
 

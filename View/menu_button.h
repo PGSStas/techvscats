@@ -57,8 +57,8 @@ class MenuButton : public QPushButton {
   void leaveEvent(QEvent*) override;
 
  private:
-  Size button_size_ = Size(0, 0);
-  Coordinate position_ = Coordinate(0, 0);
+  Size button_size_{0, 0};
+  Coordinate position_{0, 0};
   int border_size_ = 0;
   QIcon main_icon_1_;
   QIcon active_icon_1_;
