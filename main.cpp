@@ -80,8 +80,6 @@ int main(int argc, char* argv[]) {
       QAndroidJniObject::getStaticField<jint>(
           "android/app/AlarmManager", "RTC"),
       jlong(QDateTime::currentMSecsSinceEpoch() + 100), pendingIntent.object());
-
-  qputenv("QT_USE_ANDROID_NATIVE_STYLE", "1");
   return 0;
 #else
   if (!QProcess::startDetached(QApplication::applicationFilePath())) {
