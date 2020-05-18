@@ -474,6 +474,7 @@ void View::UnlockLevels() {
 void View::StartTitles() {
   button_handler_->SetSettingsUiVisible(false);
   global_chat_->SetVisible(false);
+  tower_menu_.Close(true);
 }
 
 void View::EndTitles() {
