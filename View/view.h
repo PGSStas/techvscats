@@ -57,7 +57,6 @@ class View : public QMainWindow {
   void ShowSettingsButton();
   void ShowNextLevelButton();
   void BeginNextLevel();
-  bool IsLastLevel();
 
  private:
   AbstractController* controller_;

@@ -22,7 +22,7 @@ void Controller::StartGame(int level_id) {
   last_round_start_time_ = 0;
   model_->SetGameLevel(level_id);
 
-  SetSpeedCoefficient(Speed::kNormalSpeed);
+  SetSpeedCoefficient(Speed::kNormalSpeed, false);
   view_->ChangeGameSpeed(Speed::kNormalSpeed);
   view_->DisableMainMenuUi();
   view_->EnableGameUi();
@@ -215,7 +215,7 @@ void Controller::TickClient() {
 }
 
 void Controller::TickEndGame() {
-  SetSpeedCoefficient(Speed::kNormalSpeed);
+  SetSpeedCoefficient(Speed::kNormalSpeed, false);
   if (last_time_end_particle_created + kParticlesPeriod < current_game_time_) {
     last_time_end_particle_created = current_game_time_;
     ParticleParameters particle(

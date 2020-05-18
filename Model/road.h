@@ -8,7 +8,7 @@
 
 class Road {
  public:
-  explicit Road(const std::vector<Coordinate>&  nodes);
+  explicit Road(std::vector<Coordinate>   nodes);
 
   Coordinate GetNode(int node_number) const;
   bool IsEnd(int node_number) const;

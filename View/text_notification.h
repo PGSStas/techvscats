@@ -12,7 +12,7 @@
 
 class TextNotification : public GameObject {
  public:
-  TextNotification(const QString& message, Coordinate start_position,
+  TextNotification(QString  message, Coordinate start_position,
                    QColor color, int creation_time,
                    Size moving_vector = Size(0, -50), int life_time = 1000,
                    double size_change_coefficient = 1, bool fade = false,

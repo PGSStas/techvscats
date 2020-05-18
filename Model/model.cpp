@@ -460,16 +460,11 @@ void Model::LoadBackground(const QJsonObject&) {
   // interface
   interface_ = AnimationPlayer(GetImagesByFramePath("interface/interface_1"));
   // Empty zone
-  empty_zone_texture_.push_back(
-      QPixmap(":resources/images/backgrounds/cloud.png"));
-  empty_zone_texture_.push_back(
-      QPixmap(":resources/images/backgrounds/cloud.png"));
-  empty_zone_texture_.push_back(
-      QPixmap(":resources/images/backgrounds/titles_background_1.png"));
-  empty_zone_texture_.push_back(
-      QPixmap(":resources/images/backgrounds/cloud.png"));
-  empty_zone_texture_.push_back(
-      QPixmap(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
+  empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
+  empty_zone_texture_.emplace_back(":resources/images/backgrounds/titles_background_1.png");
+  empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
+  empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
 }
 
 void Model::LoadBuildings(const QJsonObject& json_object) {

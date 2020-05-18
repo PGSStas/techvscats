@@ -483,7 +483,3 @@ void View::BeginNextLevel() {
   button_handler_->SetNextLevelButtonVisible(false);
   button_handler_->SetSpeedButtonsState(Speed::kNormalSpeed);
 }
-
-bool View::IsLastLevel() {
-  return button_handler_->GetCurrentLevel() == button_handler_->GetMaxLevel();
-}

@@ -38,7 +38,6 @@ class ButtonHandler : public QObject {
   void SetGameUiVisible(bool visible);
   void SetPauseMenuUiVisible(bool visible);
   void SetNextLevelButtonVisible(bool visible);
-  void SetTitlesButtonVisible(bool visible);
   void SetSpeed(int casted_speed);
   void SetTitlesVisible(bool visible);
 

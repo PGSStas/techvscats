@@ -1,5 +1,7 @@
 #include "game_object.h"
 
+#include <utility>
+
 GameObject::GameObject(Size size, Coordinate position)
     : size_(size), position_(position),
       particle_handler_(size_, position_, delta_time_) {
@@ -17,13 +19,9 @@ void GameObject::SetPosition(Coordinate position) {
   position_ = position;
 }
 
-const QPixmap& GameObject::GetSprite() const {
-  return animation_players_[0].GetCurrentFrame();
-}
-
 void GameObject::SetAnimationPlayers(
     std::vector<AnimationPlayer> animation_players) {
-  animation_players_ = animation_players;
+  animation_players_ = std::move(animation_players);
   action_timings_.clear();
   for (const auto& animation_player : animation_players_) {
     action_timings_.push_back(animation_player.GetAnimationDuration());

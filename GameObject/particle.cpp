@@ -1,7 +1,5 @@
 #include "particle.h"
 
-#include <utility>
-
 Particle::Particle(Size size, int repeat_number)
     : GameObject(size), repeat_number_(repeat_number) {
 }
@@ -24,8 +22,7 @@ void Particle::Tick(int current_time) {
 void Particle::Draw(QPainter* painter, const SizeHandler& size_handler) const {
   painter->save();
 
-  Coordinate point;
-  point = size_handler.GameToWindowCoordinate(position_ - size_ / 2);
+  Coordinate point = size_handler.GameToWindowCoordinate(position_ - size_ / 2);
 
   painter->translate(point.x, point.y);
   painter->drawPixmap(0, 0, animation_players_[0].GetCurrentFrame());
