@@ -3,7 +3,9 @@
 BombProjectile::BombProjectile(Size size, double speed, double effect_radius,
                                double up_force)
     : AbstractProjectile(size, speed),
-      effect_radius_(effect_radius), up_force_(up_force) {}
+      effect_radius_(effect_radius),
+      up_force_(up_force),
+      start_position_({0, 0}) {}
 
 BombProjectile::BombProjectile(const BombProjectile& other)
     : AbstractProjectile(other), effect_radius_(other.effect_radius_),

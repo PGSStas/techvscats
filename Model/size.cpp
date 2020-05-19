@@ -3,7 +3,7 @@
 Size::Size(double x, double y) noexcept: width(x), height(y) {}
 
 double Size::GetLength() const {
-  return std::sqrt(width * width + height * height);
+  return std::hypot(width, height);
 }
 
 Size& Size::Normalize() {

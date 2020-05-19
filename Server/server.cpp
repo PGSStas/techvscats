@@ -39,6 +39,7 @@ void Server::ProcessReceivedMessage(const Message& message,
     return;
   }
   qDebug() << "new message from:" << message_owner->nick_name;
+
   switch (message.GetType()) {
     case MessageType::kNewConnection: {
       ProcessNewConnectionMessage(message, message_owner);
@@ -259,14 +260,14 @@ void Server::OnNewConnection() {
 }
 
 void Server::ReceiveMessage(const QByteArray& array) {
-  QWebSocket* client_socket = qobject_cast<QWebSocket*>(sender());
+  auto* client_socket = qobject_cast<QWebSocket*>(sender());
   if (client_socket) {
     ProcessReceivedMessage(Message().DecodeFromBinary(array), client_socket);
   }
 }
 
 void Server::OnDisconnect() {
-  QWebSocket* client_socket = qobject_cast<QWebSocket*>(sender());
+  auto* client_socket = qobject_cast<QWebSocket*>(sender());
   clients_.remove_if([&client_socket, this](const GameClient& client) {
     if (client.socket == client_socket) {
       if (client.room != nullptr) {

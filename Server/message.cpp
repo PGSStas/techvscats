@@ -1,7 +1,10 @@
 #include "message.h"
 
 Message::Message(MessageType type, QStringList list)
-    : message_type_(type), arguments_(std::move(list)) {
+    : message_type_(type),
+      dialog_type_(VisibleType::kChat),
+      command_type_(CommandType::kChatClear),
+      arguments_(std::move(list)) {
   arguments_number_ = arguments_.size();
 }
 

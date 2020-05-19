@@ -44,10 +44,6 @@ void MusicPlayer::StartMenuMusic() {
   main_player_->play();
 }
 
-void MusicPlayer::Stop() {
-  main_player_->stop();
-}
-
 void MusicPlayer::StartGameMusic() {
   main_playlist_->setCurrentIndex(kGameMusic);
   main_player_->play();

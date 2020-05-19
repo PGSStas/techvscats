@@ -50,7 +50,6 @@ class View : public QMainWindow {
   int GetRealTime() const;
 
   int GetChosenLevel() const;
-  void SetChosenLevel(int level);
   void UnlockLevels();
 
   void StartTitles();
@@ -58,7 +57,6 @@ class View : public QMainWindow {
   void ShowSettingsButton();
   void ShowNextLevelButton();
   void BeginNextLevel();
-  bool IsLastLevel();
 
  private:
   AbstractController* controller_;
