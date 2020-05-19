@@ -54,11 +54,13 @@ class GlobalChat {
   const int kFontId = 0;
   const int kCloseSpeed = 60;
   const Size kTextEditSize = {700, button_constants::kShortButtonSize.height};
+
 #ifndef Q_OS_ANDROID
   const double kFontSize = 26;
 #else
   const double kFontSize = 38;
 #endif
+
   const Coordinate kBottomLeftPosition = {20, 1060};
 
   void SendMessage();
