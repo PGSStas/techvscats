@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include <QPainter>
@@ -13,8 +14,9 @@
 #include "View/menu_button.h"
 
 struct ButtonImagePath {
-  ButtonImagePath(const QString& frame_up_path, const QString& frames_down_path)
-      : main_path(frame_up_path), active_path(frames_down_path) {}
+  ButtonImagePath(QString frame_up_path, QString frames_down_path)
+      : main_path(std::move(frame_up_path)),
+        active_path(std::move(frames_down_path)) {}
   QString main_path;
   QString active_path;
 };
@@ -46,20 +48,20 @@ class TowerMenu {
   int GetChosenButtonId() const;
 
  private:
-  int owner_id_;
+  int owner_id_ = 0;
   std::vector<MenuButton*> buttons_;
   std::vector<int> possible_buildings_id_;
-  Coordinate position_;
+  Coordinate position_{};
   int owner_building_index_ = -1;
   int active_button_index_ = -1;
   bool id_to_replace_ = false;
   bool slow_disable = false;
-  bool is_hidden_;
-  int total_cost_;
+  bool is_hidden_ = true;
+  int total_cost_ = 0;
 
-  InfoField info_field_;
+  InfoField info_field_{};
 
-  double current_force_;
+  double current_force_ = 0;
 
 #ifndef Q_OS_ANDROID
   const double kThrowForce = 18;

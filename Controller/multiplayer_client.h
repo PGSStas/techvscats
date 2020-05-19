@@ -69,8 +69,8 @@ class MultiplayerClient : public QObject {
   std::list<Message> received_message_;
   static std::mt19937 random_generator_;
 
-  int wait_time_;
-  int current_time_;
+  int wait_time_ = 0;
+  int current_time_ = 0;
   bool is_trying_to_connect_ = false;
   const int kWaitTime_ = 3000;
 

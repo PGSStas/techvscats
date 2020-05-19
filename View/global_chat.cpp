@@ -82,7 +82,7 @@ void GlobalChat::RescaleChat(const SizeHandler& size_handler) {
                                text_browser_size.height);
 
   auto font_ = q_line_edit_->font();
-  font_.setPixelSize(size_handler.GameToWindowLength(kFondSize));
+  font_.setPixelSize(size_handler.GameToWindowLength(kFontSize));
   q_line_edit_->setFont(font_);
   q_text_browser_->setFont(font_);
 

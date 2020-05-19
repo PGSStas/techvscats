@@ -126,7 +126,7 @@ void InfoField::DrawCurrentTower(QPainter* painter,
 void InfoField::DrawPurchasableTower(QPainter* painter,
                                      const SizeHandler& size_handler,
                                      const QFontMetrics& metrics) {
-  auto info_size = size_handler.GameToWindowLength(kSize.width - 2 * kMargin);
+  auto info_size = size_handler.GameToWindowLength(kSize.width - 4 * kMargin);
   double text_height = size_handler.WindowToGameLength(metrics.boundingRect(
       0, 0, info_size, 0, Qt::TextWordWrap, info_).height() + 2 * kMargin);
   double final_text_height = std::min(kSize.height, text_height +

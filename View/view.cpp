@@ -461,10 +461,6 @@ int View::GetChosenLevel() const {
   return button_handler_->GetCurrentLevel();
 }
 
-void View::SetChosenLevel(int level) {
-  button_handler_->SetCurrentLevel(level);
-}
-
 void View::UnlockLevels() {
   QSettings settings;
   settings.setValue("levels_passed", button_handler_->GetMaxLevel());
@@ -496,8 +492,4 @@ void View::BeginNextLevel() {
   controller_->StartGame(button_handler_->GetCurrentLevel());
   button_handler_->SetNextLevelButtonVisible(false);
   button_handler_->SetSpeedButtonsState(Speed::kNormalSpeed);
-}
-
-bool View::IsLastLevel() {
-  return button_handler_->GetCurrentLevel() == button_handler_->GetMaxLevel();
 }

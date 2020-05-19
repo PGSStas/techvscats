@@ -105,6 +105,7 @@ void ButtonHandler::SetSpeed(int casted_int) {
       double_speed_button_->click();
       break;
     }
+    default:break;
   }
 }
 
@@ -335,7 +336,7 @@ void ButtonHandler::RescaleSettingsButtons(SizeHandler size_handler) {
       first_button_coordinate + Size(long_button_size_.width / 2, 0)
           - Size(short_button_size_.width, 0) + Size(shift.height, 0),
       size_handler);
-  Size temp_shift = {0, 0};
+  Size temp_shift{};
 #ifndef Q_OS_ANDROID
   fullscreen_button_->SetGeometry(first_button_coordinate + shift,
                                   size_handler);
@@ -476,7 +477,7 @@ void ButtonHandler::CreatePauseMenuButtons() {
     controller_->GetMusicPlayer()->PlayButtonSound();
     controller_->ChangeChatStyle();
     window_type_ = WindowType::kGame;
-    controller_->SetSpeedCoefficient(Speed::kNormalSpeed);
+    controller_->SetSpeedCoefficient(Speed::kNormalSpeed, false);
     SetSpeedButtonsState(Speed::kNormalSpeed);
   };
   connect(continue_button_, &QPushButton::clicked, continue_button_click);

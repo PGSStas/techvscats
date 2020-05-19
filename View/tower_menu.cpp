@@ -128,7 +128,7 @@ void TowerMenu::Tick(const SizeHandler& size_handler) {
   }
 
   double move_degree = -90 + delta_degree;
-  Size move_vector;
+  Size move_vector{};
   current_force_ *= kSlowdownCoefficient;
   for (auto& id : possible_buildings_id_) {
     double radian = move_degree * std::acos(-1) / 180;
@@ -175,9 +175,8 @@ void TowerMenu::DrawTowersAuraAndRange(QPainter* painter,
   Coordinate position = position_;
   position.y += instance.GetSize().height / 3;
   Coordinate center = size_handler.GameToWindowCoordinate(position);
-  Size radius;
   int attack_range = instance.GetAttackRange();
-  radius = size_handler.GameToWindowSize(Size(attack_range, attack_range));
+  Size radius = size_handler.GameToWindowSize(Size(attack_range, attack_range));
   instance.GetAuricField().Draw(
       painter, size_handler, position);
 
@@ -244,7 +243,6 @@ void TowerMenu::Close(bool is_fast_disable) {
     current_force_ = kThrowForce * 1.3;
   }
   slow_disable = !is_fast_disable;
-  return;
 }
 
 int TowerMenu::GetTownerIndex() const {

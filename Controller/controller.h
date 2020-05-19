@@ -23,7 +23,7 @@ class Controller : public AbstractController {
   void EndGame() override;
   void Tick(int current_time) override;
   void SetSpeedCoefficient(Speed speed,
-                           bool notify_button_handler = false) override;
+                           bool notify_button_handler) override;
   void SetBuilding(int index_in_buildings, int replacing_id) override;
 
   void MouseEvent(Coordinate position, bool is_press) override;

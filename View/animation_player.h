@@ -21,7 +21,7 @@ class AnimationPlayer {
   void Rescale(Size to_size);
 
  private:
-  Size picture_size_;
+  Size picture_size_ = {0, 0};
   uint current_frame_ = 0;
   int wait_till_next_frame_ = 0;
   int time_between_frames_ = 0;

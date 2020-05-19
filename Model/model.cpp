@@ -12,7 +12,7 @@ void Model::LoadDatabase() {
   QTextStream fin(&titles);
   fin.setCodec("UTF-8");
   while (!fin.atEnd()) {
-    titles_.push_back(std::move(fin.readLine()));
+    titles_.push_back(fin.readLine());
   }
 
   QFile level_file(":resources/database/database.json");
@@ -144,10 +144,6 @@ void Model::RescaleDatabase(const SizeHandler& size_handler) {
 
 void Model::IncreaseCurrentRoundNumber() {
   current_round_number_++;
-}
-
-bool Model::IsLastRound() const {
-  return current_round_number_ == rounds_count_;
 }
 
 void Model::ClearGameModel() {
@@ -477,16 +473,12 @@ void Model::LoadBackground(const QJsonObject&) {
   // interface
   interface_ = AnimationPlayer(GetImagesByFramePath("interface/interface_1"));
   // Empty zone
-  empty_zone_texture_.push_back(
-      QPixmap(":resources/images/backgrounds/cloud.png"));
-  empty_zone_texture_.push_back(
-      QPixmap(":resources/images/backgrounds/cloud.png"));
-  empty_zone_texture_.push_back(
-      QPixmap(":resources/images/backgrounds/titles_background_1.png"));
-  empty_zone_texture_.push_back(
-      QPixmap(":resources/images/backgrounds/cloud.png"));
-  empty_zone_texture_.push_back(
-      QPixmap(":resources/images/backgrounds/cloud.png"));
+  empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
+  empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
+  empty_zone_texture_.emplace_back(
+      ":resources/images/backgrounds/titles_background_1.png");
+  empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
+  empty_zone_texture_.emplace_back(":resources/images/backgrounds/cloud.png");
 }
 
 void Model::LoadBuildings(const QJsonObject& json_object) {
