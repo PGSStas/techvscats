@@ -431,9 +431,9 @@ void ButtonHandler::CreateGameButtons() {
       SetCurrentLevel(level_number_ + 1);
       controller_->BeginNextLevel();
     } else {
+      controller_->EndGame();
       window_type_ = WindowType::kTitles;
       controller_->ChangeChatStyle();
-      controller_->EndGame();
       controller_->CreateTitles();
     }
   };

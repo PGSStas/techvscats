@@ -646,8 +646,8 @@ void Controller::ProcessCommand(const Message& message) {
 void Controller::CreateTitles() {
   window_type_ = WindowType::kTitles;
   view_->StartTitles();
-  view_->DisableGameUi();
   view_->DisableMainMenuUi();
+  view_->DisableGameUi();
   music_player_.StartTitlesMusic();
   auto titles = model_->GetTitles();
   for (uint32_t i = 0; i < titles.size(); i++) {
