@@ -34,7 +34,7 @@ void Server::ProcessReceivedMessage(const Message& message,
       break;
     }
   }
-  if (message_owner) {
+  if (!message_owner) {
     qDebug() << "null owner" << message_owner->nick_name;
     return;
   }
