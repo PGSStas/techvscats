@@ -650,6 +650,7 @@ void Controller::ProcessCommand(const Message& message) {
 void Controller::CreateTitles() {
   window_type_ = WindowType::kTitles;
   view_->StartTitles();
+  view_->DisableMainMenuUi();
   view_->DisableGameUi();
   music_player_.StartTitlesMusic();
   auto titles = model_->GetTitles();
