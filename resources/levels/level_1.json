@@ -1,6 +1,6 @@
 {
   "prepared_time_between_rounds_": 2000,
-  "gold": 350,
+  "gold": 420,
   "score": 0,
   "base": {
     "max_health": 100,
@@ -155,19 +155,19 @@
       {
         "spawn_period": 1700,
         "enemy_id": 3,
-        "time_of_next_spawn": 5000,
+        "time_of_next_spawn": 6000,
         "group_size": 4,
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 2500,
+        "spawn_period": 3000,
         "enemy_id": 0,
         "time_of_next_spawn": 6000,
         "group_size": 4,
         "road_to_spawn": 1
       },
       {
-        "spawn_period": 4500,
+        "spawn_period": 5500,
         "enemy_id": 7,
         "time_of_next_spawn": 2000,
         "group_size": 3,
@@ -190,23 +190,23 @@
         "road_to_spawn": 1
       },
       {
-        "spawn_period": 4000,
+        "spawn_period": 5000,
         "enemy_id": 0,
         "time_of_next_spawn": 25000,
         "group_size": 10,
         "road_to_spawn": 1
       },
       {
-        "spawn_period": 2000,
-        "enemy_id": 1,
-        "time_of_next_spawn": 20000,
-        "group_size": 7,
+        "spawn_period": 3000,
+        "enemy_id": 0,
+        "time_of_next_spawn": 25000,
+        "group_size": 10,
         "road_to_spawn": 0
       },
       {
-        "spawn_period": 1000,
+        "spawn_period": 1500,
         "enemy_id": 2,
-        "time_of_next_spawn": 23000,
+        "time_of_next_spawn": 25000,
         "group_size": 8,
         "road_to_spawn": 0
       }
