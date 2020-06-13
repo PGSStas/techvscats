@@ -53,6 +53,7 @@ enum class MessageType {
   kOk,
   kServerClosed,
   kYourNickNameIs,  // %nick_name
+  kNickNameIsBig,
   kYouCreatedRoom,
   kLeaveRoom,
   kToLongMessage,

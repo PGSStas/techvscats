@@ -24,13 +24,13 @@ void ButtonHandler::CreateButtons() {
   CreatePauseMenuButtons();
 }
 
-void ButtonHandler::UpdateButtonsStatus(bool online_status,
+void ButtonHandler::UpdateButtonsStatus(bool is_online,
                                         bool register_status) {
-  online_button_->EnableSecondIcon(online_status);
-  start_game_button_->setEnabled(register_status || !online_status);
+  online_button_->EnableSecondIcon(is_online);
+  start_game_button_->setEnabled(register_status || !is_online);
   effect_toggle_button_->EnableSecondIcon(is_effect_toggle_active_);
   start_game_button_->setText(
-      !online_status ? tr("START") : tr("START MULTIPLAYER"));
+      !is_online ? tr("START") : tr("START MULTIPLAYER"));
 }
 
 void ButtonHandler::RescaleButtons(const SizeHandler& size_handler) {
@@ -67,7 +67,8 @@ void ButtonHandler::SetSettingsUiVisible(bool visible) {
 void ButtonHandler::SetGameUiVisible(bool visible) {
   pause_button_->setVisible(visible);
   effect_toggle_button_->setVisible(visible);
-  zero_speed_button_->setVisible(visible);
+  zero_speed_button_->setVisible(
+      visible && !controller_->GetClient()->IsOnline());
   normal_speed_button_->setVisible(visible);
   double_speed_button_->setVisible(visible);
   if (!visible) {
@@ -361,7 +362,9 @@ void ButtonHandler::CreateGameButtons() {
     window_type_ = WindowType::kPauseMenu;
     controller_->ChangeChatStyle();
     controller_->ClearTextNotifications();
-    controller_->SetSpeedCoefficient(Speed::kZeroSpeed, true);
+    if (!controller_->GetClient()->IsOnline()) {
+      controller_->SetSpeedCoefficient(Speed::kZeroSpeed, true);
+    }
   };
 
   connect(pause_button_, &QPushButton::clicked, pause_button_click);

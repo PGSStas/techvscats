@@ -3,7 +3,10 @@
 std::mt19937 MultiplayerClient::random_generator_ = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
 
-MultiplayerClient::MultiplayerClient() : QObject(nullptr) {}
+MultiplayerClient::MultiplayerClient() : QObject(nullptr) {
+  QSettings settings;
+  nick_name_ = settings.value("nick_name", "").toString();
+}
 
 MultiplayerClient::~MultiplayerClient() {
   if (is_online_) {
@@ -71,6 +74,8 @@ void MultiplayerClient::SendMessageToServer(const Message& message) const {
 
 void MultiplayerClient::Register(const QString& nick_name) {
   nick_name_ = nick_name;
+  QSettings settings;
+  settings.setValue("nick_name", nick_name);
   if (is_online_) {
     SendMessageToServer(Message(MessageType::kNewConnection, {nick_name_}));
   }
@@ -159,6 +164,10 @@ void MultiplayerClient::ProcessCommand(QString command) {
   command.remove(0, 1);
   QStringList words = command.split(" ");
   if (words[0] == "register" && words.size() == 2) {
+    if (words[1].size() >= kMaxNickNameSize_) {
+      CreateVisibleMessage(Message(MessageType::kNickNameIsBig));
+      return;
+    }
     if (!IsRegistered()) {
       Register(words[1]);
       CreateVisibleMessage(Message(MessageType::kOk));
@@ -223,10 +232,10 @@ void MultiplayerClient::ProcessCommand(QString command) {
     return;
   }
   if (words[0] == "unlock") {
-      received_message_.push_back(
-          Message().SetCommandMessage(words[0],
-                                      CommandType::kUnlock));
-      CreateVisibleMessage(Message(MessageType::kYouTheBest));
+    received_message_.push_back(
+        Message().SetCommandMessage(words[0],
+                                    CommandType::kUnlock));
+    CreateVisibleMessage(Message(MessageType::kYouTheBest));
     return;
   }
   CreateVisibleMessage(Message(MessageType::kErrorCommand));

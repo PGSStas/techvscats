@@ -22,15 +22,15 @@
 #endif
 
 class ButtonHandler : public QObject {
-  Q_OBJECT
+ Q_OBJECT
 
  public:
   ButtonHandler(QMainWindow* main_window, AbstractController* controller,
-      int font_id);
+                int font_id);
   ~ButtonHandler() override = default;
 
   void CreateButtons();
-  void UpdateButtonsStatus(bool online_status, bool register_status);
+  void UpdateButtonsStatus(bool is_online, bool register_status);
   void RescaleButtons(const SizeHandler& size_handler);
 
   void SetMainMenuUiVisible(bool visible);

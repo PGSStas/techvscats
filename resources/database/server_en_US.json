@@ -92,6 +92,10 @@
     "type": 0
   },
   {
+    "message": "! Your nickname is too big",
+    "type": 0
+  },
+  {
     "message": "! You created the room.",
     "type": 0
   },
