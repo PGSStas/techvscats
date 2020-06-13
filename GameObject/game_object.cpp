@@ -1,7 +1,5 @@
 #include "game_object.h"
 
-#include <utility>
-
 GameObject::GameObject(Size size, Coordinate position)
     : size_(size), position_(position),
       particle_handler_(size_, position_, delta_time_) {
@@ -28,6 +26,10 @@ void GameObject::SetAnimationPlayers(
   }
 }
 
+void GameObject::SetDrawingAttitude(Size attitude) {
+  drawing_attitude_ = attitude;
+}
+
 void GameObject::Rescale(Size to_size) {
   for (auto& player : animation_players_) {
     player.Rescale(to_size);
@@ -36,6 +38,10 @@ void GameObject::Rescale(Size to_size) {
 
 Coordinate GameObject::GetPosition() const {
   return position_;
+}
+
+Coordinate GameObject::GetPositionWithAttitude() const {
+  return position_ + size_ * drawing_attitude_;
 }
 
 ParticleHandler* GameObject::GetParticleHandler() {

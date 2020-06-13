@@ -441,18 +441,20 @@ void View::DrawBars(QPainter* painter) {
   for (auto& enemy : enemies_list) {
     enemy->DrawHealthBar(painter, size_handler_);
     if (button_handler_->IsEffectToggleActive()) {
-      enemy->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
-                                                  enemy->GetPosition(),
-                                                  enemy->GetSize());
+      enemy->GetAppliedEffect()->DrawEffectsIcons(
+          painter, size_handler_,
+          enemy->GetPositionWithAttitude(),
+          enemy->GetSize());
     }
   }
 
   if (button_handler_->IsEffectToggleActive()) {
     const auto& buildings_list = controller_->GetBuildings();
     for (const auto& building : buildings_list) {
-      building->GetAppliedEffect()->DrawEffectsIcons(painter, size_handler_,
-                                                     building->GetPosition(),
-                                                     building->GetSize());
+      building->GetAppliedEffect()->DrawEffectsIcons(
+          painter, size_handler_,
+          building->GetPositionWithAttitude(),
+          building->GetSize());
     }
   }
 }

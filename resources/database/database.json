@@ -97,7 +97,11 @@
       },
       "animation": {
         "path": "enemies/fridge_8",
-        "timing": 800
+        "timing": 800,
+        "drawing_attitude": {
+          "x": 0,
+          "y": -0.30
+        }
       },
       "particles": {
         "at_death": 0
@@ -120,7 +124,11 @@
       },
       "animation": {
         "path": "enemies/fridge_8",
-        "timing": 800
+        "timing": 800,
+        "drawing_attitude": {
+          "x": 0,
+          "y": -0.30
+        }
       },
       "particles": {
         "at_death": 0
@@ -139,7 +147,11 @@
       },
       "animation": {
         "path": "enemies/washmachine_7",
-        "timing": 800
+        "timing": 800,
+        "drawing_attitude": {
+          "x": 0,
+          "y": -0.19
+        }
       },
       "particles": {
         "at_death": 0
@@ -185,14 +197,41 @@
       },
       "animation": {
         "path": "enemies/vaccleaner_4",
-        "timing": 800
+        "timing": 800,
+        "drawing_attitude": {
+          "x": 0.19,
+          "y": -0.19
+        }
       },
       "particles": {
         "at_death": 0,
         "while_alive": 2,
         "period": 600
       },
-      "is_boss": true
+      "special": {
+        "bigger_health_bar": {
+          "size_attitude": {
+            "size_x_multi": 8,
+            "size_y_multi": 2
+          },
+          "health_position_attitude": 0.3
+        },
+        "tower_killer": {
+          "tower_kill_radius": 300,
+          "kill_reload": 16500
+        },
+        "breeder": {
+          "times": 4,
+          "new_enemies_count": 2,
+          "parameters_attitude": {
+            "damage_coefficient": 1,
+            "speed_coefficient": 1.2,
+            "armor_coefficient": 1,
+            "size_coefficient": 0.76
+          }
+        },
+        "boss_music": 0
+      }
     }
   ],
   "projectiles": [
@@ -615,7 +654,8 @@
       "attack_rate_coefficient": 0,
       "range_coefficient": 0,
       "speed_coefficient": 0.05,
-      "armor_coefficient": 0.05
+      "armor_coefficient": 0.05,
+      "size_coefficient": 0
     },
     {
       "effect_target": 1,
@@ -623,7 +663,8 @@
       "armor_coefficient": 0,
       "damage_coefficient": 0.1,
       "attack_rate_coefficient": 0,
-      "range_coefficient": 0
+      "range_coefficient": 0,
+      "size_coefficient": 0
     },
     {
       "effect_target": 2,
@@ -631,7 +672,8 @@
       "armor_coefficient": 0,
       "damage_coefficient": 0.25,
       "attack_rate_coefficient": 0.2,
-      "range_coefficient": 0
+      "range_coefficient": 0,
+      "size_coefficient": 0
     },
     {
       "effect_target": 0,
@@ -639,7 +681,8 @@
       "armor_coefficient": 0.18,
       "damage_coefficient": -0.1,
       "attack_rate_coefficient": 0,
-      "range_coefficient": -0.1
+      "range_coefficient": -0.1,
+      "size_coefficient": 0
     },
     {
       "effect_target": 2,
@@ -647,7 +690,8 @@
       "armor_coefficient": 0,
       "damage_coefficient": 0.15,
       "attack_rate_coefficient": 0.15,
-      "range_coefficient": 0.15
+      "range_coefficient": 0.15,
+      "size_coefficient": 0
     },
     {
       "effect_target": 2,
@@ -655,7 +699,8 @@
       "armor_coefficient": 0,
       "damage_coefficient": 0,
       "attack_rate_coefficient": -0.17,
-      "range_coefficient": 0
+      "range_coefficient": 0,
+      "size_coefficient": 0
     },
     {
       "effect_target": 2,
@@ -663,7 +708,8 @@
       "armor_coefficient": 0,
       "damage_coefficient": 0.35,
       "attack_rate_coefficient": 0.3,
-      "range_coefficient": 0
+      "range_coefficient": 0,
+      "size_coefficient": 0
     },
     {
       "effect_target": 2,
@@ -671,15 +717,17 @@
       "armor_coefficient": 0,
       "damage_coefficient": 0.4,
       "attack_rate_coefficient": 0.4,
-      "range_coefficient": 0.1
+      "range_coefficient": 0.1,
+      "size_coefficient": 0
     },
     {
-      "effect_target": 2,
+      "effect_target": 1,
       "speed_coefficient": -0.01,
       "armor_coefficient": 0,
       "damage_coefficient": 0,
       "attack_rate_coefficient": 0.45,
-      "range_coefficient": 0.5
+      "range_coefficient": 0.5,
+      "size_coefficient": 0
     }
   ],
   "particles": [

@@ -1,10 +1,11 @@
 #ifndef GAMEOBJECT_GAME_OBJECT_H_
 #define GAMEOBJECT_GAME_OBJECT_H_
 
+#include <QPainter>
 #include <algorithm>
 #include <memory>
 #include <vector>
-#include <QPainter>
+#include <utility>
 
 #include "particle_handler.h"
 #include "Model/coordinate.h"
@@ -23,10 +24,12 @@ class GameObject {
                     const SizeHandler& size_handler) const = 0;
 
   void SetAnimationPlayers(std::vector<AnimationPlayer> animation_players);
+  void SetDrawingAttitude(Size attitude);
   void Rescale(Size to_size);
 
   void SetPosition(Coordinate position);
   Coordinate GetPosition() const;
+  Coordinate GetPositionWithAttitude() const;
   ParticleHandler* GetParticleHandler();
   Size GetSize() const;
   void SetSize(Size size);
@@ -34,7 +37,9 @@ class GameObject {
  protected:
   std::vector<AnimationPlayer> animation_players_;
   std::vector<int> action_timings_;
+  Size drawing_attitude_ = {0, 0};
   Size size_;
+
   Coordinate position_;
   ParticleHandler particle_handler_;
   int object_life_time_ = 0;

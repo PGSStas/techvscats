@@ -11,6 +11,13 @@
 #include "moving_object.h"
 #include "Model/road.h"
 
+struct BreederAttitude {
+  double speed_coefficient = 1;
+  double armor_coefficient = 1;
+  double damage_coefficient = 1;
+  double size_coefficient = 1;
+};
+
 class Enemy : public MovingObject {
  public:
   Enemy(double speed, double damage,
@@ -35,13 +42,26 @@ class Enemy : public MovingObject {
   void ReceiveDamage(double damage);
   int ComputeReward() const;
 
-  // boss
-  void SetBoss(bool is_boss);
-  bool IsBoss() const;
+  // Special powers
+  void SetBigHealth(Size health_bar_size_attitude,
+                    double health_bar_shift_attitude);
+
+  void SetTowerKiller(double tower_kill_radius, int kill_reload);
+  bool IsTowerKiller() const;
   bool IsTimeToKill() const;
+
+  void SetBreeder(int times_to_breed, int count,
+                  BreederAttitude breed_apply_effect);
+  bool IsBreeder() const;
 
   void KillReload();
   double GetKillRadius() const;
+
+  double GetNewEnemiesCount() const;
+  void Breed();
+
+  int GetBossMusicId();
+  void SetBossMusicId(int music_id);
 
  private:
   double damage_;
@@ -66,11 +86,19 @@ class Enemy : public MovingObject {
   Size health_bar_shift_ = {18, 24};
   Size health_bar_size_ = {36, 5};
 
-  // boss
-  bool is_boss_ = false;
-  const double tower_kill_radius_ = 300;
-  const int kill_reload_ = 16500;
-  int wait_to_kill_ = kill_reload_ / 2;
+  // Special powers
+  QColor front_health_color_ = Qt::green;
+  QColor back_health_color_ = Qt::red;
+
+  double tower_kill_radius_ = 0;
+  int kill_reload_ = 0;
+  int wait_to_kill_ = 0;
+
+  int times_to_breed_ = 0;
+  int new_enemies_count_ = 0;
+  BreederAttitude breed_attitude_;
+
+  int boss_music_id_ = -1;
 
  private:
   void ShiftCoordinate(Coordinate* coordinate);

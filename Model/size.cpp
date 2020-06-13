@@ -11,12 +11,21 @@ Size& Size::Normalize() {
   return *this;
 }
 
+Size Size::operator*(Size right) const {
+  return Size(width * right.width, height * right.height);
+}
+
 Size Size::operator*(double right) const {
   return Size(width * right, height * right);
 }
 
 Size Size::operator/(double right) const {
   return Size(width / right, height / right);
+}
+
+Size& Size::operator*=(Size right) {
+  *this = {this->width * right.width, this->height * right.height};
+  return *this;
 }
 
 Size& Size::operator*=(double right) {

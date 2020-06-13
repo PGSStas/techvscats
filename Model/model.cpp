@@ -373,8 +373,9 @@ void Model::LoadEffects(const QJsonObject& json_object) {
        {GetImagesByFramePath("icons/slow_attack_1"),
         GetImagesByFramePath("icons/fast_attack_1")},
        {GetImagesByFramePath("icons/less_range_1"),
-        GetImagesByFramePath("icons/more_range_1")},
+        GetImagesByFramePath("icons/more_range_1")}
       };
+
   Effect::SetEffectVisualizations(effect_visualization);
 }
 
@@ -443,19 +444,63 @@ void Model::LoadEnemies(const QJsonObject& json_object) {
     }
     Size size = Size(enemy["size"].toObject()["width"].toInt(),
                      enemy["size"].toObject()["height"].toInt());
+
     id_to_enemy_.emplace_back(enemy["speed"].toInt(), enemy["damage"].toInt(),
                               enemy["armor"].toInt(), enemy["reward"].toInt(),
                               enemy["max_health"].toInt(),
                               size, enemy["priority"].toInt(), aura);
-    if (enemy.contains("is_boss")) {
-      id_to_enemy_.back().SetBoss(enemy["is_boss"].toBool());
+
+    if (enemy.contains("special")) {
+      auto special = enemy["special"].toObject();
+      if (special.contains("bigger_health_bar")) {
+        auto new_health = special["bigger_health_bar"].toObject();
+        id_to_enemy_.back().SetBigHealth(
+            {
+                new_health["size_attitude"].toObject()["size_x_multi"].toDouble(),
+                new_health["size_attitude"].toObject()["size_y_multi"].toDouble()
+            },
+            new_health["health_position_attitude"].toDouble()
+        );
+      }
+      if (special.contains("tower_killer")) {
+        auto killer_parameters = special["tower_killer"].toObject();
+        id_to_enemy_.back().SetTowerKiller(
+            killer_parameters["tower_kill_radius"].toDouble(),
+            killer_parameters["kill_reload"].toInt()
+        );
+      }
+
+      if (special.contains("breeder")) {
+        auto death_parameters = special["breeder"].toObject();
+        auto parameters = death_parameters["parameters_attitude"].toObject();
+        id_to_enemy_.back().SetBreeder(
+            death_parameters["times"].toInt(),
+            death_parameters["new_enemies_count"].toInt(),
+            {
+                parameters["speed_coefficient"].toDouble(),
+                parameters["armor_coefficient"].toDouble(),
+                parameters["damage_coefficient"].toDouble(),
+                parameters["size_coefficient"].toDouble()
+            }
+        );
+      }
+      if (special.contains("boss_music")) {
+        id_to_enemy_.back().SetBossMusicId(special["boss_music"].toInt());
+      }
+    }
+    SetParticlesToGameObject(&id_to_enemy_.back(),
+                             enemy["particles"].toObject());
+    auto animation = enemy["animation"].toObject();
+    if (animation.contains("drawing_attitude")) {
+      Size attitude = Size(
+          animation["drawing_attitude"].toObject()["x"].toDouble(),
+          animation["drawing_attitude"].toObject()["y"].toDouble());
+      id_to_enemy_.back().SetDrawingAttitude(attitude);
     }
     SetAnimationToGameObject(
         &id_to_enemy_.back(),
-        {enemy["animation"].toObject()["timing"].toInt()},
-        {enemy["animation"].toObject()["path"].toString()});
-    SetParticlesToGameObject(&id_to_enemy_.back(),
-                             enemy["particles"].toObject());
+        {animation["timing"].toInt()},
+        {animation["path"].toString()});
   }
 }
 

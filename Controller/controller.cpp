@@ -154,7 +154,7 @@ bool Controller::CanCreateNextWave() {
     model_->AddTextNotification({"Level Complete",
                                  {constants::kGameWidth / 2,
                                   constants::kGameHeight / 2}, Qt::red,
-                                  {0, 0}, life_time,
+                                 {0, 0}, life_time,
                                  size_coefficient});
     music_player_.PlayGameWonSound();
     QSettings settings;
@@ -267,7 +267,7 @@ void Controller::TickSpawners() {
 }
 
 void Controller::TickEnemies() {
-  bool boss_is_alive = false;
+  int start_boss_music = -1;
   auto enemies = model_->GetEnemies();
   enemies->remove_if([this](const auto& enemy) {
     if (enemy->IsDead() && !enemy->IsEndReached()) {
@@ -281,23 +281,25 @@ void Controller::TickEnemies() {
     if (enemy->IsEndReached()) {
       base->DecreaseHealth(enemy->GetDamage());
     }
-    if (enemy->IsBoss()) {
-      boss_is_alive = true;
-      KillTowerByBoss(enemy.get());
-      if (enemy->GetPosition().GetVectorTo(base->GetPosition()).GetLength()
-          < 200) {
-        if (enemy->GetSize().width > base->GetSize().width - 20) {
-          enemy->SetSize(enemy->GetSize() *= 0.995);
-        }
+    start_boss_music = enemy->GetBossMusicId();
+    if (enemy->IsTowerKiller()) {
+      KillTowerByEnemy(enemy.get());
+    }
+    // Enemy become smaller near the base.
+    if (enemy->GetPosition().GetVectorTo(base->GetPosition()).GetLength()
+        < 200) {
+      if (enemy->GetSize().width > base->GetSize().width-30) {
+        enemy->SetSize(enemy->GetSize() *= 0.995);
       }
     }
   }
-  if (boss_is_alive_ != boss_is_alive) {
-    boss_is_alive_ = boss_is_alive;
-    if (boss_is_alive) {
-      music_player_.StartEpicBossMusic();
+  if (!boss_is_alive_ && start_boss_music != -1) {
+    boss_is_alive_ = true;
+    if (start_boss_music != -1) {
+      music_player_.StartEpicBossMusic(start_boss_music);
     }
   }
+
 }
 
 void Controller::TickBuildings() {
@@ -328,7 +330,7 @@ void Controller::TickBuildings() {
     model_->AddTextNotification({"GameOver:(",
                                  {constants::kGameWidth / 2,
                                   constants::kGameHeight / 2}, Qt::red,
-                                  {0, 0}, life_time,
+                                 {0, 0}, life_time,
                                  size_coefficient});
   }
 }
@@ -529,7 +531,7 @@ const Base& Controller::GetBase() const {
 int Controller::GetCurrentTime() const {
   return current_game_time_;
 }
-
+#include "qdebug.h"
 void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
   int reward = enemy.ComputeReward();
   model_->AddTextNotification({QString::number(reward) + " "
@@ -538,15 +540,13 @@ void Controller::ProcessEnemyDeath(const Enemy& enemy) const {
 
   model_->GetBase()->AddGoldAmount(reward);
 
-  if (enemy.IsBoss()) {
+  if (enemy.IsBreeder()) {
     auto instance = enemy;
     instance.CopyPosition(enemy);
-    auto boss_size = instance.GetSize();
-    if (boss_size.width > 310) {
-      instance.SetSize(boss_size / 1.3);
-      instance.SetSpeed(instance.GetSpeed() * 1.35);
+    int new_enemies_count = enemy.GetNewEnemiesCount();
+    for (int i = 0; i < new_enemies_count; i++) {
       model_->AddEnemyFromInstance(instance, true);
-      model_->AddEnemyFromInstance(instance, true);
+      model_->GetEnemies()->back()->Breed();
     }
   }
 }
@@ -671,17 +671,17 @@ void Controller::BeginNextLevel() {
   view_->BeginNextLevel();
 }
 
-void Controller::KillTowerByBoss(Enemy* enemy) {
+void Controller::KillTowerByEnemy(Enemy* enemy) {
   if (!enemy->IsTimeToKill()) {
     return;
   }
   enemy->KillReload();
   const auto& buildings = model_->GetBuildings();
   for (uint32_t i = 0; i < buildings.size(); i++) {
-    bool is_near_the_boss =
+    bool is_near =
         buildings[i]->GetPosition().IsInEllipse(
             enemy->GetPosition(), enemy->GetKillRadius());
-    if (buildings[i]->GetId() != 0 && is_near_the_boss) {
+    if (buildings[i]->GetId() != 0 && is_near) {
       ParticleParameters particle(
           kFireWorksParticleId,
           {-1, -1},
