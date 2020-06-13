@@ -30,9 +30,9 @@ Tech vs Cats - некоммерческая 2D-игра, написанная н
 ## Статус разработки
 
 Разработка завершена в мае 2020 года. Последняя версия программы - 
-[1.0](https://github.com/PGSStas/techvscats/tree/1.0).
+[1.0](https://github.com/PGSStas/techvscats/tree/v1.0.0).
 
-В секции [releases](https://github.com/PGSStas/techvscats/releases/tag/1.0.0) 
+В секции [releases](https://github.com/PGSStas/techvscats/releases/tag/v1.0.0) 
 можно найти архив с файлами программы, с помощью которого игру можно 
 запустить под 64-разрядной Windows, а также apk-файл для установки игры на
 Android-смартфон. Если вы хотите запустить игру на другой ОС, склонируйте
