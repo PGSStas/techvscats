@@ -63,6 +63,7 @@ class MultiplayerClient : public QObject {
   const QString address_ = "ws://localhost:1234";
   // const QString address_ = "ws://49.12.75.135:1234";
   const int kMaxMessageSize_ = 120;
+  const int kMaxNickNameSize_ = 12;
   bool is_online_ = false;
   bool is_end_round_message_sent_ = true;
   bool has_permission_to_start_round_ = true;

@@ -164,6 +164,10 @@ void MultiplayerClient::ProcessCommand(QString command) {
   command.remove(0, 1);
   QStringList words = command.split(" ");
   if (words[0] == "register" && words.size() == 2) {
+    if (words[1].size() >= kMaxNickNameSize_) {
+      CreateVisibleMessage(Message(MessageType::kNickNameIsBig));
+      return;
+    }
     if (!IsRegistered()) {
       Register(words[1]);
       CreateVisibleMessage(Message(MessageType::kOk));
