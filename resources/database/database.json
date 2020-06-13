@@ -97,7 +97,11 @@
       },
       "animation": {
         "path": "enemies/fridge_8",
-        "timing": 800
+        "timing": 800,
+        "drawing_attitude": {
+          "x": 0,
+          "y": -0.30
+        }
       },
       "particles": {
         "at_death": 0
@@ -120,7 +124,11 @@
       },
       "animation": {
         "path": "enemies/fridge_8",
-        "timing": 800
+        "timing": 800,
+        "drawing_attitude": {
+          "x": 0,
+          "y": -0.30
+        }
       },
       "particles": {
         "at_death": 0
@@ -139,7 +147,11 @@
       },
       "animation": {
         "path": "enemies/washmachine_7",
-        "timing": 800
+        "timing": 800,
+        "drawing_attitude": {
+          "x": 0,
+          "y": -0.19
+        }
       },
       "particles": {
         "at_death": 0
@@ -197,12 +209,12 @@
         "period": 600
       },
       "special": {
-        "bigger_health": {
+        "bigger_health_bar": {
           "size_attitude": {
-            "x": 8,
-            "y": 2
+            "size_x_multi": 8,
+            "size_y_multi": 2
           },
-          "health_attitude": 0.3
+          "health_position_attitude": 0.3
         },
         "tower_killer": {
           "tower_kill_radius": 300,

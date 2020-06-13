@@ -452,14 +452,14 @@ void Model::LoadEnemies(const QJsonObject& json_object) {
 
     if (enemy.contains("special")) {
       auto special = enemy["special"].toObject();
-      if (special.contains("bigger_health")) {
-        auto new_health = special["bigger_health"].toObject();
+      if (special.contains("bigger_health_bar")) {
+        auto new_health = special["bigger_health_bar"].toObject();
         id_to_enemy_.back().SetBigHealth(
             {
-                new_health["size_attitude"].toObject()["x"].toDouble(),
-                new_health["size_attitude"].toObject()["y"].toDouble()
+                new_health["size_attitude"].toObject()["size_x_multi"].toDouble(),
+                new_health["size_attitude"].toObject()["size_y_multi"].toDouble()
             },
-            new_health["health_attitude"].toDouble()
+            new_health["health_position_attitude"].toDouble()
         );
       }
       if (special.contains("tower_killer")) {

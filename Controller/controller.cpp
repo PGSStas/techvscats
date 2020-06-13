@@ -288,7 +288,7 @@ void Controller::TickEnemies() {
     // Enemy become smaller near the base.
     if (enemy->GetPosition().GetVectorTo(base->GetPosition()).GetLength()
         < 200) {
-      if (enemy->GetSize().width > base->GetSize().width - 20) {
+      if (enemy->GetSize().width > base->GetSize().width-30) {
         enemy->SetSize(enemy->GetSize() *= 0.995);
       }
     }
