@@ -14,8 +14,10 @@ struct Size {
   double GetLength() const;
   Size& Normalize();
 
+  Size operator*(Size right) const;
   Size operator*(double right) const;
   Size operator/(double right) const;
+  Size& operator*=(Size right);
   Size& operator*=(double right);
   Size& operator/=(double right);
 

@@ -14,7 +14,9 @@ MusicPlayer::MusicPlayer()
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/menu_sound.mp3"));
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/game_sound.mp3"));
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/titles_sound.mp3"));
+  // boss music
   main_playlist_->addMedia(QUrl("qrc:resources/sounds/epic_boss.mp3"));
+
   main_playlist_->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
 
   SetSound(button_sound_.get(), "qrc:resources/sounds/button_click.mp3");
@@ -54,8 +56,11 @@ void MusicPlayer::StartTitlesMusic() {
   main_player_->play();
 }
 
-void MusicPlayer::StartEpicBossMusic() {
-  main_playlist_->setCurrentIndex(kEpicBossMusic);
+void MusicPlayer::StartEpicBossMusic(int boss_music_id) {
+  if (boss_music_id == -1) {
+    return;
+  }
+  main_playlist_->setCurrentIndex(kEpicBossMusic + boss_music_id);
   main_player_->play();
 }
 

@@ -53,7 +53,8 @@ set(SOURCES
         View/text_notification.cpp
         View/tower_menu.cpp
         View/view.cpp
-        View/global_chat.cpp)
+        View/global_chat.cpp
+        )
 
 add_executable(server
         Server/main.cpp
@@ -61,7 +62,7 @@ add_executable(server
         Server/server.cpp)
 
 
-qt5_add_big_resources(SOURCES database.qrc music.qrc images.qrc)
+#qt5_add_big_resources(SOURCES database.qrc music.qrc images.qrc)
 add_executable(techvscats ${SOURCES})
 
 target_link_libraries(techvscats Qt5::Core)

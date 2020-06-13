@@ -34,7 +34,7 @@ void AnimationPlayer::Rescale(Size to_size) {
     return;
   }
   if (std::abs(picture_size_.width - to_size.width)
-      + std::abs(picture_size_.height - to_size.height) < 5) {
+      + std::abs(picture_size_.height - to_size.height) < 1) {
     return;
   }
   for (uint32_t i = 0; i < frames_->size(); i++) {

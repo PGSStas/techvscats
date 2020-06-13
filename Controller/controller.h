@@ -111,7 +111,7 @@ class Controller : public AbstractController {
   void ProcessMessage(const Message& message);
   void ProcessCommand(const Message& message);
 
-  void KillTowerByBoss(Enemy* enemy);
+  void KillTowerByEnemy(Enemy* enemy);
 };
 
 #endif  // CONTROLLER_CONTROLLER_H_
