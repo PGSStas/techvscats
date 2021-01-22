@@ -11,7 +11,7 @@ Tech vs Cats is a Tower Defense game. This means that there is a number of roads
 that are followed by the enemies. Their aim is to attack the player's base, so the player, 
 in return, must protect it - at all costs! To do this, you can build or upgrade 
 existing towers, which shoot the enemies with the different missiles. The enemies
-would apply different spells to the towers and come in tight groups, hoping to breach
+would cast different spells on the towers and come in tight groups, hoping to breach
 the player's defences. To complete the level, you will need to destroy all of them.
 
 ![Tech vs Cats](https://user-images.githubusercontent.com/50747082/82308029-e18fdf00-99c9-11ea-9d93-37e21cefe14e.jpg)
@@ -54,7 +54,7 @@ The development was finished in May 2020. The last version:
 
 In [releases](https://github.com/PGSStas/techvscats/releases/tag/v1.0.0) 
 one can find the zip-archive with the program files needed to run the game on 
-WindowsX64, and the apk-file needed to install the game to an Android phone.
+Windows, and the apk-file needed to install the game to an Android phone.
 To run the program on another OS, clone the repository and compile the game 
 according to the instructions below.
 
@@ -134,7 +134,7 @@ The reason is that Qt might be used in other software, so the paths to it might
 have been already present in *Path*. During the compilation the first found 
 libraries are used, so some problems might occur if their versions differ.
 
-After editing *Path*, reload Windows. Then, we recommend to choose the Qt compiler 
+After editing *Path*, reboot Windows. Then, we recommend to choose the Qt compiler 
 in CLion (write the path to it to **Settings - Toolchains**). After that you can work
 with the project.
 
@@ -147,5 +147,5 @@ utilities.
 
 ## Known build problems
 
-Use the last Qt version (5.14.2+) while building the project. Otherwise, the game
+Use the latest Qt version (5.14.2+) while building the project. Otherwise, the game
 won't compile for Android.
