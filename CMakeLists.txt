@@ -3,20 +3,26 @@ project(techvscats)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_AUTOMOC ON) # Enable Qt MOC compiler for managing signals / slots
+set(CMAKE_AUTOMOC ON) # Enable Qt MOC compiler
 set(CMAKE_AUTORCC ON) # Enable Qt resources compiler
 set(CMAKE_AUTOUIC ON) # Enable Qt UI compiler
+
+# You can set CMake prefix path here or pass it to CMake executable.
+set(CMAKE_PREFIX_PATH "~/Qt/5.15.2/gcc_64/lib/cmake")
+#set(CMAKE_PREFIX_PATH "C:/Qt/5.15.2/mingw81_64/lib/cmake")
+
+if (NOT CMAKE_PREFIX_PATH)
+    message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "
+            "(-DCMAKE_PREFIX_PATH=\"path/to/Qt/lib/cmake\")")
+endif ()
+
+set(QT_VERSION 5)
+set(REQUIRED_LIBS Core Widgets Multimedia WebSockets)
+set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Widgets Qt5::Multimedia Qt5::WebSockets)
+find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -Wextra -O3")
-
-# set(CMAKE_PREFIX_PATH "~/Qt/5.13.2/gcc_64/lib/cmake")  # Linux
-set(CMAKE_PREFIX_PATH "E:/QT/5.14.2/mingw73_64/lib/cmake")  # Windows
-
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5WebSockets REQUIRED)
-find_package(Qt5Multimedia REQUIRED)
-
 
 set(SOURCES
         main.cpp
@@ -55,20 +61,11 @@ set(SOURCES
         View/view.cpp
         View/global_chat.cpp)
 
+qt5_add_big_resources(RESOURCES database.qrc music.qrc images.qrc)
+add_executable(${PROJECT_NAME} ${SOURCES} ${RESOURCES})
+target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS_QUALIFIED})
+
 add_executable(server
         Server/main.cpp
         Server/message.cpp
         Server/server.cpp)
-
-
-qt5_add_big_resources(SOURCES database.qrc music.qrc images.qrc)
-add_executable(techvscats ${SOURCES})
-
-target_link_libraries(techvscats Qt5::Core)
-target_link_libraries(techvscats Qt5::Widgets)
-target_link_libraries(techvscats Qt5::Multimedia)
-target_link_libraries(techvscats Qt5::WebSockets)
-
-target_link_libraries(server Qt5::Core)
-target_link_libraries(server Qt5::WebSockets)
-
