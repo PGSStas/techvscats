@@ -12,9 +12,6 @@
 #endif
 
 int main(int argc, char* argv[]) {
-#ifdef Q_OS_ANDROID
-  qputenv("QT_USE_ANDROID_NATIVE_STYLE", "1");
-#endif
   QApplication a(argc, argv);
 
   QCoreApplication::setOrganizationName(constants::kCompanyName);
@@ -32,10 +29,26 @@ int main(int argc, char* argv[]) {
 
   // Translates buttons in QDialog
   QTranslator qtBaseTranslator;
-  if (qtBaseTranslator.load("qtbase_" + language,
+  if (qtBaseTranslator.load(
+      "qtbase_" + language,
       QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
     QApplication::installTranslator(&qtBaseTranslator);
   }
+
+#ifdef Q_OS_ANDROID
+  QtAndroid::runOnAndroidThread([] {
+    auto activity = QtAndroid::androidActivity();
+    auto window =
+        activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
+    const int FLAG_KEEP_SCREEN_ON = 128;
+    window.callMethod<void>("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
+
+    QAndroidJniEnvironment env;
+    if (env->ExceptionCheck()) {
+      env->ExceptionClear();
+    }
+  });
+#endif
 
   auto controller = std::make_shared<Controller>();
 
@@ -48,42 +61,52 @@ int main(int argc, char* argv[]) {
   // Code after won't work for SDK >= 28/29
   qDebug() << QtAndroid::androidSdkVersion();
 
-  auto activity = QtAndroid::androidActivity();
-  auto packageManager = activity.callObjectMethod(
-      "getPackageManager",
-      "()Landroid/content/pm/PackageManager;");
+  QtAndroid::runOnAndroidThread([] {
+    auto activity = QtAndroid::androidActivity();
 
-  auto activityIntent = packageManager.callObjectMethod(
-      "getLaunchIntentForPackage",
-      "(Ljava/lang/String;)Landroid/content/Intent;",
-      activity.callObjectMethod("getPackageName",
-                                "()Ljava/lang/String;").object());
+    auto packageManager = activity.callObjectMethod(
+        "getPackageManager",
+        "()Landroid/content/pm/PackageManager;");
 
-  auto pendingIntent = QAndroidJniObject::callStaticObjectMethod(
-      "android/app/PendingIntent",
-      "getActivity",
-      "(Landroid/content/Context;ILandroid/content/Intent;I)"
-      "Landroid/app/PendingIntent;",
-      activity.object(),
-      jint(0),
-      activityIntent.object(),
-      QAndroidJniObject::getStaticField<jint>("android/content/Intent",
-                                              "FLAG_ACTIVITY_CLEAR_TOP"));
+    auto activityIntent = packageManager.callObjectMethod(
+        "getLaunchIntentForPackage",
+        "(Ljava/lang/String;)Landroid/content/Intent;",
+        activity.callObjectMethod("getPackageName",
+                                  "()Ljava/lang/String;").object());
 
-  auto alarmManager = activity.callObjectMethod(
-      "getSystemService",
-      "(Ljava/lang/String;)Ljava/lang/Object;",
-      QAndroidJniObject::getStaticObjectField(
-          "android/content/Context",
-          "ALARM_SERVICE",
-          "Ljava/lang/String;").object());
+    auto pendingIntent = QAndroidJniObject::callStaticObjectMethod(
+        "android/app/PendingIntent",
+        "getActivity",
+        "(Landroid/content/Context;ILandroid/content/Intent;I)"
+        "Landroid/app/PendingIntent;",
+        activity.object(),
+        jint(0),
+        activityIntent.object(),
+        QAndroidJniObject::getStaticField<jint>("android/content/Intent",
+                                                "FLAG_ACTIVITY_CLEAR_TOP"));
 
-  alarmManager.callMethod<void>(
-      "setExact",
-      "(IJLandroid/app/PendingIntent;)V",
-      QAndroidJniObject::getStaticField<jint>(
-          "android/app/AlarmManager", "RTC"),
-      jlong(QDateTime::currentMSecsSinceEpoch() + 100), pendingIntent.object());
+    auto alarmManager = activity.callObjectMethod(
+        "getSystemService",
+        "(Ljava/lang/String;)Ljava/lang/Object;",
+        QAndroidJniObject::getStaticObjectField(
+            "android/content/Context",
+            "ALARM_SERVICE",
+            "Ljava/lang/String;").object());
+
+    alarmManager.callMethod<void>(
+        "setExact",
+        "(IJLandroid/app/PendingIntent;)V",
+        QAndroidJniObject::getStaticField<jint>(
+            "android/app/AlarmManager", "RTC"),
+        jlong(QDateTime::currentMSecsSinceEpoch() + 100),
+        pendingIntent.object());
+
+    QAndroidJniEnvironment env;
+    if (env->ExceptionCheck()) {
+      env->ExceptionClear();
+    }
+  });
+
   return 0;
 #else
   if (!QProcess::startDetached(QApplication::applicationFilePath())) {

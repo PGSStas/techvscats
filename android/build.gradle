@@ -5,9 +5,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
-        classpath 'com.google.gms:google-services:4.3.3'
-        classpath 'com.google.firebase:firebase-appdistribution-gradle:1.4.1'
+        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.google.gms:google-services:4.3.4'
+        classpath 'com.google.firebase:firebase-appdistribution-gradle:2.0.1'
     }
 }
 
@@ -39,14 +39,14 @@ android {
      *******************************************************/
 
     compileSdkVersion androidCompileSdkVersion.toInteger()
-    buildToolsVersion '28.0.3'
+    buildToolsVersion androidBuildToolsVersion
 
-    def keystorePropertiesFile = file("keystore.properties")
+    def keystorePropertiesFile = file('keystore.properties')
     def keystoreProperties = new Properties()
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
     signingConfigs {
-        key {
+        release {
             storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
             keyPassword keystoreProperties['keyPassword']
@@ -54,16 +54,10 @@ android {
         }
     }
 
-    buildTypes {
-        release {
-            signingConfig signingConfigs.key
-        }
-    }
-
     firebaseAppDistribution {
-        releaseNotesFile="release_notes.txt"
-        testers="vladkozulin@mail.ru"
-        groups="main-group-tech-vs-cat-project-2020"
+        releaseNotesFile = 'release_notes.txt'
+        testers = 'vladkozulin@mail.ru'
+        groups = 'main-group-tech-vs-cat-project-2020'
     }
 
     sourceSets {
@@ -79,16 +73,31 @@ android {
        }
     }
 
+    tasks.withType(JavaCompile) {
+        options.incremental = true
+    }
+
+    defaultConfig {
+        resConfigs 'en'
+        minSdkVersion = qtMinSdkVersion
+        targetSdkVersion = qtTargetSdkVersion
+
+        applicationId 'com.giggling.penguin.techvscats'
+        versionName '1.0.1'
+        versionCode 2
+     	// signingConfig signingConfigs.release
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     lintOptions {
         abortOnError false
     }
 
-    // Do not compress Qt binary resources file
     aaptOptions {
         noCompress 'rcc'
-    }
-
-    defaultConfig {
-        resConfigs "en"
     }
 }
