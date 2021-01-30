@@ -69,3 +69,4 @@ add_executable(server
         Server/main.cpp
         Server/message.cpp
         Server/server.cpp)
+target_link_libraries(server Qt5::Core Qt5::WebSockets)
