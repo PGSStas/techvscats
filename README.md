@@ -4,7 +4,7 @@
 [![ru](https://img.shields.io/badge/lang-ru-yellow.svg)](README.ru.md)
 
 Tech vs Cats is a non-profit 2D game written in C++ with the usage of
-[Qt framework (5.14.2+)](https://www.qt.io). The game is designed for PC and Android
+[Qt framework (5.15.2+)](https://www.qt.io). The game is designed for PC and Android
 phones.
 
 Tech vs Cats is a Tower Defense game. This means that there is a number of roads
@@ -60,14 +60,7 @@ according to the instructions below.
 
 To run the game on Windows, unpack the archive and run *techvscats.exe*. 
 
-To run the game on Android, install the apk-file. If
-Google Play Protect doesn't allow the installation, you can temporarily turn it
-off in the Play Market settings, or install the program using ADB.
-
-The app was tested on Windows 10 1803, Ubuntu 18.04,
-Android 7.0 (MIUI 11) with aspect ratio 16:9, 
-Android 9.0 (MIUI 11) with aspect ratio 21:9. We don't guarantee the correct 
-performance on machines with other OS.
+To run the game on Android, install the apk-file.
 
 ## Master status
 
@@ -147,5 +140,5 @@ utilities.
 
 ## Known build problems
 
-Use the latest Qt version (5.14.2+) while building the project. Otherwise, the game
+Use the latest Qt version (5.15.2+) while building the project. Otherwise, the game
 won't compile for Android.
