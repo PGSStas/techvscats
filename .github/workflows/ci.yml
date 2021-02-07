@@ -48,7 +48,7 @@ jobs:
       run: sudo apt update
       
     - name: Install packages
-      run: sudo apt install libglu1-mesa-dev libgl1-mesa-dev qt515base qt515multimedia -y
+      run: sudo apt install libglu1-mesa-dev libgl1-mesa-dev qt515base qt515multimedia qt515websockets -y
 
     - name: Configure QMake
       run: sudo /opt/qt515/bin/qt515-env.sh
@@ -60,4 +60,3 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}/${{github.event.repository.name}}
       run: make
-      
